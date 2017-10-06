@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="DomainConstants.cs" />
     <Compile Include="Entities\DailyDeposit.cs" />
+    <Compile Include="Entities\Employee.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TransferObjects\DepositEntryDTO.cs" />
   </ItemGroup>

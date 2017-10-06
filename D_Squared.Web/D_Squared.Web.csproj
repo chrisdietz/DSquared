@@ -19,9 +19,9 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode />
+    <IISExpressAnonymousAuthentication>disabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -239,8 +239,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_Alerts.cshtml" />
     <Content Include="Scripts\jquery-3.2.1.slim.min.map" />
@@ -253,6 +251,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\D_Squared.Data.Employee\D_Squared.Data.Employee.csproj">
+      <Project>{e59d671b-499e-43cb-b3bf-bb2353aacee8}</Project>
+      <Name>D_Squared.Data.Employee</Name>
+    </ProjectReference>
     <ProjectReference Include="..\D_Squared.Data\D_Squared.Data.csproj">
       <Project>{ca349c2d-ce4a-4c1f-8894-3119cc0d0679}</Project>
       <Name>D_Squared.Data</Name>

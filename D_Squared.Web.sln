@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D_Squared.Web", "D_Squared.Web\D_Squared.Web.csproj", "{FA92AFBF-8730-41DE-9027-05A72B58EF3D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D_Squared.Domain", "D_Squared.Domain\D_Squared.Domain.csproj", "{487DF007-2614-476A-A381-90D9A6D780FD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D_Squared.Data", "D_Squared.Data\D_Squared.Data.csproj", "{CA349C2D-CE4A-4C1F-8894-3119CC0D0679}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D_Squared.Data.Employee", "D_Squared.Data.Employee\D_Squared.Data.Employee.csproj", "{E59D671B-499E-43CB-B3BF-BB2353AACEE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,8 +29,15 @@ Global
 		{CA349C2D-CE4A-4C1F-8894-3119CC0D0679}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA349C2D-CE4A-4C1F-8894-3119CC0D0679}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA349C2D-CE4A-4C1F-8894-3119CC0D0679}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E59D671B-499E-43CB-B3BF-BB2353AACEE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E59D671B-499E-43CB-B3BF-BB2353AACEE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E59D671B-499E-43CB-B3BF-BB2353AACEE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E59D671B-499E-43CB-B3BF-BB2353AACEE8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {62608B97-E839-44D7-80AE-A21281966586}
 	EndGlobalSection
 EndGlobal

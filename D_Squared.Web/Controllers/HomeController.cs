@@ -1,4 +1,6 @@
 ﻿using D_Squared.Data.Context;
+using D_Squared.Data.Employees.Context;
+using D_Squared.Data.Employees.Queries;
 using D_Squared.Data.Queries;
 using D_Squared.Domain.TransferObjects;
 using D_Squared.Web.Helpers;
@@ -7,11 +9,13 @@ using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
+
 namespace D_Squared.Web.Controllers
 {
     public class HomeController : BaseController
     {
         private readonly D_SquaredDbContext db;
+        private readonly EmployeeDbContext e_db;
         private readonly DailyDepositQueries ddq;
         private readonly EmployeeQueries eq;
 
@@ -19,7 +23,9 @@ namespace D_Squared.Web.Controllers
         {
             db = new D_SquaredDbContext();
             ddq = new DailyDepositQueries(db);
-            eq = new EmployeeQueries(db);
+
+            e_db = new EmployeeDbContext();
+            eq = new EmployeeQueries(e_db);
         }
 
         public ActionResult Index()
@@ -46,7 +52,6 @@ namespace D_Squared.Web.Controllers
             catch (Exception e)
             {
                 Warning("Error occurred. If this error persists, please contact an administrator.");
-                Warning(e.Message.ToString());
 
                 return RedirectToAction("Index");
             }
@@ -63,19 +68,5 @@ namespace D_Squared.Web.Controllers
             }
             base.Dispose(disposing);
         }
-
-        //public ActionResult About()
-        //{
-        //    ViewBag.Message = "Your application description page.";
-
-        //    return View();
-        //}
-
-        //public ActionResult Contact()
-        //{
-        //    ViewBag.Message = "Your contact page.";
-
-        //    return View();
-        //}
     }
 }
