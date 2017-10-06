@@ -21,7 +21,7 @@ namespace D_Squared.Data.Employees.Migrations
                 Last = "Tuttle",
                 FullName = "Robert Tuttle",
                 Location = "123",
-                sAMAccountName = "DESKTOP-5Q5V2PH\Robert",
+                sAMAccountName = "DESKTOP-5Q5V2PH\\Robert",
                 ObjectType = "type"
             };
 
