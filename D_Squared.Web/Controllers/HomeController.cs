@@ -30,13 +30,25 @@ namespace D_Squared.Web.Controllers
 
         public ActionResult Index()
         {
-            DateTime today = DateTime.Now.ToLocalTime();
-            List<DepositEntryDTO> weekdays = ddq.GetCurrentWeekAsDepositEntryDTOList(DateTime.Today);
-            EmployeeDTO employee = eq.GetEmployeeInfo(User.Identity.Name);
+            if(!eq.EmployeeExists(User.Identity.Name))
+            {
+                ErrorViewModel error = new ErrorViewModel
+                {
+                    Username = User.Identity.Name
+                };
 
-            DailyDepositViewModel model = new DailyDepositViewModel(weekdays, today, employee);
+                return View("EmployeeError", error);
+            }
+            else
+            {
+                DateTime today = DateTime.Now.ToLocalTime();
+                List<DepositEntryDTO> weekdays = ddq.GetCurrentWeekAsDepositEntryDTOList(DateTime.Today);
+                EmployeeDTO employee = eq.GetEmployeeInfo(User.Identity.Name);
 
-            return View(model);
+                DailyDepositViewModel model = new DailyDepositViewModel(weekdays, today, employee);
+
+                return View(model);
+            }        
         }
 
         [HttpPost]

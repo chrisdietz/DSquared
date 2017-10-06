@@ -19,6 +19,11 @@ namespace D_Squared.Data.Employees.Queries
             return db.Employees.Where(e => e.sAMAccountName == windowsUsername).FirstOrDefault().Location;
         }
 
+        public bool EmployeeExists(string windowsUsername)
+        {
+            return db.Employees.Any(e => e.sAMAccountName == windowsUsername);
+        }
+
         public EmployeeDTO GetEmployeeInfo(string windowsUsername)
         {
             Employee employeeRecord = db.Employees.Where(e => e.sAMAccountName == windowsUsername).FirstOrDefault();

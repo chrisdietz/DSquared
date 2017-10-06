@@ -2,6 +2,7 @@
 using System.Data.Entity.Infrastructure;
 using Microsoft.AspNet.Identity.EntityFramework;
 using D_Squared.Domain.Entities;
+using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace D_Squared.Data.Employees.Context
 {
@@ -16,12 +17,18 @@ namespace D_Squared.Data.Employees.Context
             objectContext.CommandTimeout = 60 * 30;
         }
 
-        //was forced to specify full scope due to conflict with "Employee" namespace
         public DbSet<Employee> Employees { get; set; }
 
         public static EmployeeDbContext Create()
         {
             return new EmployeeDbContext();
+        }
+
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Employee>().ToTable("empMAH");
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
