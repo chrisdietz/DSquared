@@ -8,6 +8,11 @@
         Period Ending: @Model.EndingPeriod.ToShortDateString()
         <br />
         Access Date: @Model.AccessTime.ToLocalTime().ToString()
+        <br />
+        User Accessing: @Model.EmployeeInfo.FirstName @Model.EmployeeInfo.LastName
+        <br />
+        <br />
+        Store: <strong><u>@Model.EmployeeInfo.StoreNumber</u></strong>
     </p>
 </div>
 
@@ -57,6 +62,30 @@
         </table>
     </div>
     <div class="row">
-        <input type="submit" value="Save" name="Index" class="btn btn-primary"/>
+        <a data-toggle="modal" href="#myModal" class="btn btn-primary btn-lg">Save Changes</a>
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Are you sure you want to apply these changes?</h4>
+                </div>
+                <div class="modal-body text-center" style="font-size:18px">
+                    @Model.EmployeeInfo.FirstName @Model.EmployeeInfo.LastName, you are submitting this for Restaurant: 
+                    <br />
+                    <strong style="font-size:32px"><u>@Model.EmployeeInfo.StoreNumber</u></strong>
+                    <br />
+                    <br />
+                    <br />
+                    If this is not accurate, please contact the IT Service Desk before saving.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <input type="submit" value="Save" name="Index" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
     </div>
 }

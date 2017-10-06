@@ -32,8 +32,9 @@ namespace D_Squared.Web.Controllers
         {
             DateTime today = DateTime.Now.ToLocalTime();
             List<DepositEntryDTO> weekdays = ddq.GetCurrentWeekAsDepositEntryDTOList(DateTime.Today);
+            EmployeeDTO employee = eq.GetEmployeeInfo(User.Identity.Name);
 
-            DailyDepositViewModel model = new DailyDepositViewModel(weekdays, today);
+            DailyDepositViewModel model = new DailyDepositViewModel(weekdays, today, employee);
 
             return View(model);
         }
@@ -45,7 +46,7 @@ namespace D_Squared.Web.Controllers
             try
             {
                 string userName = User.Identity.Name;
-                string storeNumber = eq.GetStoreNumber(User.Identity.Name);
+                string storeNumber = eq.GetStoreNumber(userName);
 
                 ddq.AddOrUpdateDeposits(model.Weekdays, storeNumber, userName);
             }

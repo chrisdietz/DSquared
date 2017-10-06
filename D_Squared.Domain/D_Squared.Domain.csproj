@@ -79,6 +79,7 @@
     <Compile Include="Entities\Employee.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TransferObjects\DepositEntryDTO.cs" />
+    <Compile Include="TransferObjects\EmployeeDTO.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
