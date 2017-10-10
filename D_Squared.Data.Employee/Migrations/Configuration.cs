@@ -12,21 +12,21 @@ namespace D_Squared.Data.Employees.Migrations
             CommandTimeout = 60 * 5;
         }
 
-        protected override void Seed(EmployeeDbContext context)
-        {
-            Employee dummy = new Employee()
-            {
-                EmployeeId = "Rober123456",
-                First = "Robert",
-                Last = "Tuttle",
-                FullName = "Robert Tuttle",
-                Location = "123",
-                sAMAccountName = "DESKTOP-5Q5V2PH\\Robert",
-                ObjectType = "type"
-            };
+        //protected override void Seed(EmployeeDbContext context)
+        //{
+        //    Employee dummy = new Employee()
+        //    {
+        //        EmployeeId = "Rober123456",
+        //        First = "Robert",
+        //        Last = "Tuttle",
+        //        FullName = "Robert Tuttle",
+        //        Location = "123",
+        //        sAMAccountName = "DESKTOP-5Q5V2PH\\Robert",
+        //        ObjectType = "type"
+        //    };
 
-            context.Employees.AddOrUpdate(dummy);
-            context.SaveChanges();
-        }
+        //    context.Employees.AddOrUpdate(dummy);
+        //    context.SaveChanges();
+        //}
     }
 }

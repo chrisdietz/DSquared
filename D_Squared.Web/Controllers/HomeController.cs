@@ -30,11 +30,13 @@ namespace D_Squared.Web.Controllers
 
         public ActionResult Index()
         {
-            if(!eq.EmployeeExists(User.Identity.Name))
+            string username = User.Identity.Name.Substring(User.Identity.Name.IndexOf('\\') + 1);
+
+            if (!eq.EmployeeExists(username))
             {
                 ErrorViewModel error = new ErrorViewModel
                 {
-                    Username = User.Identity.Name
+                    Username = username
                 };
 
                 return View("EmployeeError", error);
@@ -42,13 +44,14 @@ namespace D_Squared.Web.Controllers
             else
             {
                 DateTime today = DateTime.Now.ToLocalTime();
-                List<DepositEntryDTO> weekdays = ddq.GetCurrentWeekAsDepositEntryDTOList(DateTime.Today);
-                EmployeeDTO employee = eq.GetEmployeeInfo(User.Identity.Name);
+                EmployeeDTO employee = eq.GetEmployeeInfo(username);
+                List<DepositEntryDTO> weekdays = ddq.GetCurrentWeekAsDepositEntryDTOList(DateTime.Today, employee.StoreNumber);
 
                 DailyDepositViewModel model = new DailyDepositViewModel(weekdays, today, employee);
 
                 return View(model);
-            }        
+            }
+
         }
 
         [HttpPost]
@@ -57,7 +60,7 @@ namespace D_Squared.Web.Controllers
         {
             try
             {
-                string userName = User.Identity.Name;
+                string userName = User.Identity.Name.Substring(User.Identity.Name.IndexOf('\\') + 1);
                 string storeNumber = eq.GetStoreNumber(userName);
 
                 ddq.AddOrUpdateDeposits(model.Weekdays, storeNumber, userName);

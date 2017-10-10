@@ -51,10 +51,10 @@
                             @Model.Weekdays[i].DateOfEntry.ToShortDateString()
                         </td>
                         <td>
-                            @Html.EditorFor(model => model.Weekdays[i].CashDeposit, new { htmlAttributes = new { @class = "form-control", @type = "number", @min = "0" } })
+                            @Html.EditorFor(model => model.Weekdays[i].CashDeposit, new { htmlAttributes = new { @class = "form-control", @type = "number", @min = "0", @step = "0.01" } })
                         </td>
                         <td>
-                            @Html.EditorFor(model => model.Weekdays[i].MiscDeposit, new { htmlAttributes = new { @class = "form-control", @type = "number", @min = "0" } })
+                            @Html.EditorFor(model => model.Weekdays[i].MiscDeposit, new { htmlAttributes = new { @class = "form-control", @type = "number", @min = "0", @step = "0.01" } })
                         </td>
                     </tr>
                 }

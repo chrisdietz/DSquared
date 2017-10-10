@@ -19,36 +19,36 @@ namespace D_Squared.Data.Queries
             this.db = db;
         }
 
-        public bool CheckForExistingDepositRecordByDate(DateTime date)
+        public bool CheckForExistingDepositRecordByDate(DateTime date, string storeNumber)
         {
-            if (db.DailyDeposits.Any(dd => dd.BusinessDate == date))
+            if (db.DailyDeposits.Any(dd => dd.BusinessDate == date && dd.StoreNumber == storeNumber))
                 return true;
             else
                 return false;
         }
 
-        public bool CheckForExistingDepositRecordByDateAndType(DateTime date, int GlAccountType)
+        public bool CheckForExistingDepositRecordByDateAndType(DateTime date, int GlAccountType, string storeNumber)
         {
-            if (db.DailyDeposits.Any(dd => dd.BusinessDate == date && dd.GlAccount == GlAccountType))
+            if (db.DailyDeposits.Any(dd => dd.BusinessDate == date && dd.GlAccount == GlAccountType && dd.StoreNumber == storeNumber))
                 return true;
             else
                 return false;
         }
 
-        public DailyDeposit GetDepositRecordByDateAndType(DateTime date, int GlAccount)
+        public DailyDeposit GetDepositRecordByDateAndType(DateTime date, int GlAccount, string storeNumber)
         {
-            return db.DailyDeposits.Where(dd => dd.BusinessDate == date && dd.GlAccount == GlAccount).FirstOrDefault();
+            return db.DailyDeposits.Where(dd => dd.BusinessDate == date && dd.GlAccount == GlAccount && dd.StoreNumber == storeNumber).FirstOrDefault();
         }
 
-        public List<DailyDeposit> GetDepositRecordsByDate(DateTime date)
+        public List<DailyDeposit> GetDepositRecordsByDate(DateTime date, string storeNumber)
         {
             if (db.DailyDeposits.Any(dd => dd.BusinessDate == date))
-                return db.DailyDeposits.Where(dd => dd.BusinessDate == date).ToList();
+                return db.DailyDeposits.Where(dd => dd.BusinessDate == date && dd.StoreNumber == storeNumber).ToList();
             else
                 return new List<DailyDeposit>();
         }
 
-        public List<DepositEntryDTO> GetCurrentWeekAsDepositEntryDTOList(DateTime today)
+        public List<DepositEntryDTO> GetCurrentWeekAsDepositEntryDTOList(DateTime today, string storeNumber)
         {
             List<DepositEntryDTO> theList = new List<DepositEntryDTO>();
 
@@ -64,10 +64,10 @@ namespace D_Squared.Data.Queries
 
             foreach(var day in dates)
             {
-                if (!CheckForExistingDepositRecordByDate(day))
+                if (!CheckForExistingDepositRecordByDate(day, storeNumber))
                     theList.Add(new DepositEntryDTO(day));
                 else
-                    theList.Add(new DepositEntryDTO(GetDepositRecordsByDate(day)));
+                    theList.Add(new DepositEntryDTO(GetDepositRecordsByDate(day, storeNumber)));
             }
 
             return theList;
@@ -77,9 +77,9 @@ namespace D_Squared.Data.Queries
         {
             foreach (var deposit in deposits)
             {
-                if(CheckForExistingDepositRecordByDateAndType(deposit.DateOfEntry, DomainConstants.GL_ACCOUNT_CONSTANTS.CASH_DEPOSIT))
+                if(CheckForExistingDepositRecordByDateAndType(deposit.DateOfEntry, DomainConstants.GL_ACCOUNT_CONSTANTS.CASH_DEPOSIT, storeNumber))
                 {
-                    DailyDeposit entry = GetDepositRecordByDateAndType(deposit.DateOfEntry, DomainConstants.GL_ACCOUNT_CONSTANTS.CASH_DEPOSIT);
+                    DailyDeposit entry = GetDepositRecordByDateAndType(deposit.DateOfEntry, DomainConstants.GL_ACCOUNT_CONSTANTS.CASH_DEPOSIT, storeNumber);
                     entry.Amount = deposit.CashDeposit;
                     entry.StoreNumber = storeNumber;
                     entry.UpdatedBy = userName;
@@ -102,9 +102,9 @@ namespace D_Squared.Data.Queries
                     db.DailyDeposits.Add(entry);
                 }
 
-                if (CheckForExistingDepositRecordByDateAndType(deposit.DateOfEntry, DomainConstants.GL_ACCOUNT_CONSTANTS.MISC_DEPOSIT))
+                if (CheckForExistingDepositRecordByDateAndType(deposit.DateOfEntry, DomainConstants.GL_ACCOUNT_CONSTANTS.MISC_DEPOSIT, storeNumber))
                 {
-                    DailyDeposit entry = GetDepositRecordByDateAndType(deposit.DateOfEntry, DomainConstants.GL_ACCOUNT_CONSTANTS.MISC_DEPOSIT);
+                    DailyDeposit entry = GetDepositRecordByDateAndType(deposit.DateOfEntry, DomainConstants.GL_ACCOUNT_CONSTANTS.MISC_DEPOSIT, storeNumber);
                     entry.Amount = deposit.MiscDeposit;
                     entry.StoreNumber = storeNumber;
                     entry.UpdatedBy = userName;
