@@ -72,7 +72,7 @@ namespace D_Squared.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            Success("Data was saved successfully!");
+            Success("The Daily Deposits for Restaurant: <u>" + model.EmployeeInfo.StoreNumber + "</u> have been saved successfully. You may close this window");
             return RedirectToAction("Index");
         }
 
