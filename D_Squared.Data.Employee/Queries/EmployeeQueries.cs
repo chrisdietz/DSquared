@@ -1,6 +1,7 @@
 ﻿using D_Squared.Data.Employees.Context;
 using D_Squared.Domain.Entities;
 using D_Squared.Domain.TransferObjects;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace D_Squared.Data.Employees.Queries
@@ -37,6 +38,11 @@ namespace D_Squared.Data.Employees.Queries
             };
 
             return employeeInfo;
+        }
+
+        public List<string> GetLocationList()
+        {
+            return db.Employees.Select(e => e.Location).Distinct().ToList();
         }
     }
 }

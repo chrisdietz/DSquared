@@ -42,18 +42,16 @@ namespace D_Squared.Data.Queries
 
         public List<DailyDeposit> GetDepositRecordsByDate(DateTime date, string storeNumber)
         {
-            if (db.DailyDeposits.Any(dd => dd.BusinessDate == date))
+            if (db.DailyDeposits.Any(dd => dd.BusinessDate == date && dd.StoreNumber == storeNumber))
                 return db.DailyDeposits.Where(dd => dd.BusinessDate == date && dd.StoreNumber == storeNumber).ToList();
             else
                 return new List<DailyDeposit>();
         }
 
-        public List<DepositEntryDTO> GetCurrentWeekAsDepositEntryDTOList(DateTime today, string storeNumber)
+        public List<DateTime> GetCurrentWeek(DateTime selectedDay)
         {
-            List<DepositEntryDTO> theList = new List<DepositEntryDTO>();
-
-            int currentDayOfWeek = (int)today.DayOfWeek;
-            DateTime sunday = today.AddDays(-currentDayOfWeek);
+            int currentDayOfWeek = (int)selectedDay.DayOfWeek;
+            DateTime sunday = selectedDay.AddDays(-currentDayOfWeek);
             DateTime monday = sunday.AddDays(1);
 
             if (currentDayOfWeek == 0)
@@ -61,6 +59,15 @@ namespace D_Squared.Data.Queries
                 monday = monday.AddDays(-7);
             }
             var dates = Enumerable.Range(0, 7).Select(days => monday.AddDays(days)).ToList();
+
+            return dates;
+        }
+
+        public List<DepositEntryDTO> GetSpecificWeekAsDepositEntryDTOList(DateTime selectedDay, string storeNumber)
+        {
+            List<DepositEntryDTO> theList = new List<DepositEntryDTO>();
+
+            var dates = GetCurrentWeek(selectedDay);
 
             foreach(var day in dates)
             {
@@ -129,6 +136,34 @@ namespace D_Squared.Data.Queries
             }
 
             db.SaveChanges();
+        }
+
+        public List<DepositSummaryDTO> GetDepositSummaryList (DateTime selectedDate, List<string> locationList)
+        {
+            List<DepositSummaryDTO> summaryList = new List<DepositSummaryDTO>();
+
+            foreach (string location in locationList)
+            {
+                summaryList.Add(new DepositSummaryDTO(location, GetSpecificWeekAsDepositEntryDTOList(selectedDate, location)));
+            }
+
+            return summaryList;
+        }
+
+        public List<DepositSummaryColumnSumDTO> GetWeeklyReportColumnTotals(DateTime selectedDay)
+        {
+            List<DateTime> dates = GetCurrentWeek(selectedDay);
+
+            List<DailyDeposit> theList = db.DailyDeposits.Where(dd => dates.Contains(dd.BusinessDate)).ToList();
+
+            List<DepositSummaryColumnSumDTO> columnSums = new List<DepositSummaryColumnSumDTO>();
+
+            foreach(var day in dates)
+            {
+                columnSums.Add(new DepositSummaryColumnSumDTO(day, theList.Where(tl => tl.BusinessDate == day).ToList()));
+            }
+
+            return columnSums;
         }
     }
 }
