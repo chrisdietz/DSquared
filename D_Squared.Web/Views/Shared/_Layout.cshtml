@@ -22,8 +22,21 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a class="custom-navbar" href="/">Home</a></li>
-                    <li><a class="custom-navbar" href="/Home/DepositReport">Report</a></li>
+                    <li><a class="custom-navbar" href="/">Dashboard</a></li>
+                    <li class="dropdown">
+                        <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
+                            Daily Deposits
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                @Html.ActionLink("Deposits", "Index", "DailyDeposit")
+                            </li>
+                            <li>
+                                @Html.ActionLink("Reports", "DepositReport", "DailyDeposit")
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
                 <p class="nav navbar-text navbar-right">Hello, @User.Identity.Name!</p>
             </div>
