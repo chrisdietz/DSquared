@@ -17,7 +17,7 @@ namespace D_Squared.Web.Controllers
     {
         public ActionResult Index()
         {
-            return View("Index");
+            return RedirectToAction("Index", "DailyDeposit");
         }
     }
 }

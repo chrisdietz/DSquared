@@ -43,7 +43,7 @@ namespace D_Squared.Domain.TransferObjects
         [Display(Name = "Cash Deposit")]
         public decimal CashDeposit { get; set; }
 
-        [Display(Name = "Misc Deposit")]
+        [Display(Name = "Change Order Returns")]
         public decimal MiscDeposit { get; set; }
     }
 }
