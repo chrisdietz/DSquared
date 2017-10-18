@@ -21,99 +21,106 @@
 <hr />
 
 <div class="row">
-    <table class="table table-striped table-bordered table-condensed table-hover table-responsive">
-        <thead>
-            <tr>
-                <th></th>
-                <th colspan="2">Monday</th>
-                <th colspan="2">Tuesday</th>
-                <th colspan="2">Wednesday</th>
-                <th colspan="2">Thursday</th>
-                <th colspan="2">Friday</th>
-                <th colspan="2">Saturday</th>
-                <th colspan="2">Sunday</th>
-                <th colspan="2">Totals</th>
-            </tr>
-            <tr>
-                <th>Restaurant</th>
-                <th>Cash</th>
-                <th>Misc</th>
-                <th>Cash</th>
-                <th>Misc</th>
-                <th>Cash</th>
-                <th>Misc</th>
-                <th>Cash</th>
-                <th>Misc</th>
-                <th>Cash</th>
-                <th>Misc</th>
-                <th>Cash</th>
-                <th>Misc</th>
-                <th>Cash</th>
-                <th>Misc</th>
-                <th>Cash</th>
-                <th>Misc</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var location in Model.SummaryList)
-            {
+    <div class="col-md-12">
+        <table class="table table-striped table-bordered table-condensed table-hover table-responsive">
+            <caption>
+                <h3>
+                    Period: @Model.StartingPeriod.ToShortDateString() - @Model.EndingPeriod.ToShortDateString()
+                </h3>
+            </caption>
+            <thead>
                 <tr>
-                    <td>
-                        @location.LocationNumber
-                    </td>
+                    <th></th>
+                    <th colspan="2">Monday</th>
+                    <th colspan="2">Tuesday</th>
+                    <th colspan="2">Wednesday</th>
+                    <th colspan="2">Thursday</th>
+                    <th colspan="2">Friday</th>
+                    <th colspan="2">Saturday</th>
+                    <th colspan="2">Sunday</th>
+                    <th colspan="2">Totals</th>
+                </tr>
+                <tr>
+                    <th>Restaurant</th>
+                    <th>Cash</th>
+                    <th>Misc</th>
+                    <th>Cash</th>
+                    <th>Misc</th>
+                    <th>Cash</th>
+                    <th>Misc</th>
+                    <th>Cash</th>
+                    <th>Misc</th>
+                    <th>Cash</th>
+                    <th>Misc</th>
+                    <th>Cash</th>
+                    <th>Misc</th>
+                    <th>Cash</th>
+                    <th>Misc</th>
+                    <th>Cash</th>
+                    <th>Misc</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var location in Model.SummaryList)
+            {
+                    <tr>
+                        <td>
+                            @location.LocationNumber
+                        </td>
 
-                    @{
+                        @{
 
-                        decimal cashRowTotal = 0;
-                        decimal miscRowTotal = 0;
-                        foreach (var weekday in location.WeeklyDepositRecords)
-                        {
-                            cashRowTotal += weekday.CashDeposit;
-                            miscRowTotal += weekday.MiscDeposit;
-                            <td>
-                                @weekday.CashDeposit
-                            </td>
+                            decimal cashRowTotal = 0;
+                            decimal miscRowTotal = 0;
+                            foreach (var weekday in location.WeeklyDepositRecords)
+                            {
+                                cashRowTotal += weekday.CashDeposit;
+                                miscRowTotal += weekday.MiscDeposit;
+                                <td>
+                                    @weekday.CashDeposit
+                                </td>
                                 <td>
                                     @weekday.MiscDeposit
                                 </td>
-                        }
-                        <td>
-                            @cashRowTotal
-                        </td>
+                            }
+                            <td>
+                                @cashRowTotal
+                            </td>
                             <td>
                                 @miscRowTotal
                             </td>
+                        }
+                    </tr>
+                            }
+                <tr>
+                    <td>
+                        Totals:
+                    </td>
+                    @{
+                        decimal cashColumnTotal = 0;
+                        decimal miscColumnTotal = 0;
+                        foreach (var day in Model.ColumnTotalList)
+                        {
+                            cashColumnTotal += day.TotalCashDeposit;
+                            miscColumnTotal += day.TotalMiscDeposit;
+                            <td>
+                                @day.TotalCashDeposit
+                            </td>
+                            <td>
+                                @day.TotalMiscDeposit
+                            </td>
+                        }
+
+                        <td>
+                            @cashColumnTotal
+                        </td>
+                        <td>
+                            @miscColumnTotal
+                        </td>
                     }
                 </tr>
-                        }
-            <tr>
-                <td>
-                    Totals:
-                </td>
-                @{
-                    decimal cashColumnTotal = 0;
-                    decimal miscColumnTotal = 0;
-                    foreach (var day in Model.ColumnTotalList)
-                    {
-                        cashColumnTotal += day.TotalCashDeposit;
-                        miscColumnTotal += day.TotalMiscDeposit;
-                        <td>
-                            @day.TotalCashDeposit
-                        </td>
-                        <td>
-                            @day.TotalMiscDeposit
-                        </td>
-                    }
-
-                    <td>
-                        @cashColumnTotal
-                    </td>
-                    <td>
-                        @miscColumnTotal
-                    </td>
-                }              
-            </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>  
 </div>
 

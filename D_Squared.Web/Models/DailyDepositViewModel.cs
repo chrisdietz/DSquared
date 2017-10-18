@@ -12,12 +12,13 @@ namespace D_Squared.Web.Models
             Weekdays = new List<DepositEntryDTO>();
         }
 
-        public DailyDepositViewModel(List<DepositEntryDTO> weekdays, DateTime currentTime, EmployeeDTO employeeDTO)
+        public DailyDepositViewModel(List<DepositEntryDTO> weekdays, DateTime currentTime, EmployeeDTO employeeDTO, bool currentWeekFlag)
         {
             Weekdays = weekdays;
             AccessTime = currentTime;
             EndingPeriod = weekdays.Last().DateOfEntry;
             EmployeeInfo = employeeDTO;
+            CurrentWeekFlag = currentWeekFlag;
         }
 
         public DateTime EndingPeriod { get; set; }
@@ -27,5 +28,7 @@ namespace D_Squared.Web.Models
         public List<DepositEntryDTO> Weekdays { get; set; }
 
         public EmployeeDTO EmployeeInfo { get; set; }
+
+        public bool CurrentWeekFlag { get; set; }
     }
 }

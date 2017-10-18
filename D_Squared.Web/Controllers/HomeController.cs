@@ -8,6 +8,7 @@ using D_Squared.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using System.Linq;
 
 
 namespace D_Squared.Web.Controllers
@@ -47,7 +48,7 @@ namespace D_Squared.Web.Controllers
                 EmployeeDTO employee = eq.GetEmployeeInfo(username);
                 List<DepositEntryDTO> weekdays = ddq.GetSpecificWeekAsDepositEntryDTOList(DateTime.Today.ToLocalTime(), employee.StoreNumber);
 
-                DailyDepositViewModel model = new DailyDepositViewModel(weekdays, today, employee);
+                DailyDepositViewModel model = new DailyDepositViewModel(weekdays, today, employee, true);
 
                 return View(model);
             }
@@ -73,33 +74,72 @@ namespace D_Squared.Web.Controllers
             }
 
             Success("The Daily Deposits for Restaurant: <u>" + model.EmployeeInfo.StoreNumber + "</u> have been saved successfully. You may close this window");
-            return RedirectToAction("Index");
+
+            if (model.CurrentWeekFlag)
+                return RedirectToAction("Index");
+            else
+                return RedirectToAction("PreviousWeek");
+            
+        }
+
+        public ActionResult PreviousWeek()
+        {
+            string username = User.Identity.Name.Substring(User.Identity.Name.IndexOf('\\') + 1);
+
+            DateTime today = DateTime.Now.ToLocalTime();
+            EmployeeDTO employee = eq.GetEmployeeInfo(username);
+            List<DepositEntryDTO> weekdays = ddq.GetSpecificWeekAsDepositEntryDTOList(DateTime.Today.ToLocalTime().AddDays(-7), employee.StoreNumber);
+
+            DailyDepositViewModel model = new DailyDepositViewModel(weekdays, today, employee, false);
+
+            return View("Index", model);
         }
 
         public ActionResult DepositReport()
         {
-            DateTime currentDate = DateTime.Today.ToLocalTime();
+            string username = User.Identity.Name.Substring(User.Identity.Name.IndexOf('\\') + 1);
 
-            DepositReportViewModel model = new DepositReportViewModel()
+            if (!eq.EmployeeExists(username))
             {
-                CurrentDate = DateTime.Now.ToLocalTime(),
-                SearchDTO = new DepositSummarySearchDTO(currentDate),
-                SummaryList = ddq.GetDepositSummaryList(currentDate, eq.GetLocationList()),
-                ColumnTotalList = ddq.GetWeeklyReportColumnTotals(currentDate)
-            };
+                ErrorViewModel error = new ErrorViewModel
+                {
+                    Username = username
+                };
 
-            ddq.GetWeeklyReportColumnTotals(currentDate);
+                return View("EmployeeError", error);
+            }
+            else
+            {
+                DateTime currentDate = DateTime.Today.ToLocalTime();
+                List<DateTime> theWeek = ddq.GetCurrentWeek(currentDate);
 
-            return View("DepositReport", model);
+                DepositReportViewModel model = new DepositReportViewModel()
+                {
+                    CurrentDate = DateTime.Now.ToLocalTime(),
+                    SearchDTO = new DepositSummarySearchDTO(currentDate),
+                    SummaryList = ddq.GetDepositSummaryList(currentDate, eq.GetLocationList()),
+                    ColumnTotalList = ddq.GetWeeklyReportColumnTotals(currentDate),
+                    EndingPeriod = theWeek.LastOrDefault(),
+                    StartingPeriod = theWeek.FirstOrDefault()
+                };
+
+                ddq.GetWeeklyReportColumnTotals(currentDate);
+
+                return View("DepositReport", model);
+            }   
         }
 
         [HttpPost]
         public ActionResult DepositReport(DepositReportViewModel model)
         {
+            List<DateTime> theWeek = ddq.GetCurrentWeek(model.SearchDTO.DesiredDate);
+
             model.CurrentDate = DateTime.Now.ToLocalTime();
             model.SearchDTO = new DepositSummarySearchDTO(model.SearchDTO.DesiredDate);
             model.SummaryList = ddq.GetDepositSummaryList(model.SearchDTO.DesiredDate, eq.GetLocationList());
             model.ColumnTotalList = ddq.GetWeeklyReportColumnTotals(model.SearchDTO.DesiredDate);
+            model.EndingPeriod = theWeek.LastOrDefault();
+            model.StartingPeriod = theWeek.FirstOrDefault();
 
             return View("DepositReport", model);
         }
