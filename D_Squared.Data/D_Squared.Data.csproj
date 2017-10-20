@@ -91,6 +91,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\DailyDepositQueries.cs" />
+    <Compile Include="Queries\SalesForecastQueries.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\D_Squared.Domain\D_Squared.Domain.csproj">

@@ -21,18 +21,12 @@ namespace D_Squared.Data.Queries
 
         public bool CheckForExistingDepositRecordByDate(DateTime date, string storeNumber)
         {
-            if (db.DailyDeposits.Any(dd => dd.BusinessDate == date && dd.StoreNumber == storeNumber))
-                return true;
-            else
-                return false;
+            return db.DailyDeposits.Any(dd => dd.BusinessDate == date && dd.StoreNumber == storeNumber);
         }
 
         public bool CheckForExistingDepositRecordByDateAndType(DateTime date, int GlAccountType, string storeNumber)
         {
-            if (db.DailyDeposits.Any(dd => dd.BusinessDate == date && dd.GlAccount == GlAccountType && dd.StoreNumber == storeNumber))
-                return true;
-            else
-                return false;
+            return db.DailyDeposits.Any(dd => dd.BusinessDate == date && dd.GlAccount == GlAccountType && dd.StoreNumber == storeNumber);
         }
 
         public DailyDeposit GetDepositRecordByDateAndType(DateTime date, int GlAccount, string storeNumber)
@@ -42,7 +36,7 @@ namespace D_Squared.Data.Queries
 
         public List<DailyDeposit> GetDepositRecordsByDate(DateTime date, string storeNumber)
         {
-            if (db.DailyDeposits.Any(dd => dd.BusinessDate == date && dd.StoreNumber == storeNumber))
+            if (CheckForExistingDepositRecordByDate(date, storeNumber))
                 return db.DailyDeposits.Where(dd => dd.BusinessDate == date && dd.StoreNumber == storeNumber).ToList();
             else
                 return new List<DailyDeposit>();
@@ -88,7 +82,6 @@ namespace D_Squared.Data.Queries
                 {
                     DailyDeposit entry = GetDepositRecordByDateAndType(deposit.DateOfEntry, DomainConstants.GL_ACCOUNT_CONSTANTS.CASH_DEPOSIT, storeNumber);
                     entry.Amount = deposit.CashDeposit;
-                    entry.StoreNumber = storeNumber;
                     entry.UpdatedBy = userName;
                     entry.UpdatedDate = DateTime.Now;
                 }
@@ -113,7 +106,6 @@ namespace D_Squared.Data.Queries
                 {
                     DailyDeposit entry = GetDepositRecordByDateAndType(deposit.DateOfEntry, DomainConstants.GL_ACCOUNT_CONSTANTS.MISC_DEPOSIT, storeNumber);
                     entry.Amount = deposit.MiscDeposit;
-                    entry.StoreNumber = storeNumber;
                     entry.UpdatedBy = userName;
                     entry.UpdatedDate = DateTime.Now;
                 }

@@ -90,10 +90,12 @@
     <Compile Include="DomainConstants.cs" />
     <Compile Include="Entities\DailyDeposit.cs" />
     <Compile Include="Entities\Employee.cs" />
+    <Compile Include="Entities\SalesForecast.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TransferObjects\DepositEntryDTO.cs" />
     <Compile Include="TransferObjects\DepositSummaryDTO.cs" />
     <Compile Include="TransferObjects\EmployeeDTO.cs" />
+    <Compile Include="TransferObjects\SalesForecastDTO.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

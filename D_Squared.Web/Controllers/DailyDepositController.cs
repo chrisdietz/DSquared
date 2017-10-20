@@ -65,7 +65,7 @@ namespace D_Squared.Web.Controllers
 
                 ddq.AddOrUpdateDeposits(model.Weekdays, storeNumber, User.Identity.Name);
             }
-            catch (Exception e)
+            catch
             {
                 Warning("Error occurred. If this error persists, please contact an administrator.");
 

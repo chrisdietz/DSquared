@@ -21,6 +21,8 @@ namespace D_Squared.Data.Context
 
         public DbSet<DailyDeposit> DailyDeposits { get; set; }
 
+        public DbSet<SalesForecast> SalesForecasts { get; set; }
+
         public static D_SquaredDbContext Create()
         {
             return new D_SquaredDbContext();

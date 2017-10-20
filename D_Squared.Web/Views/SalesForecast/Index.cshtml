@@ -1,11 +1,11 @@
-﻿@model D_Squared.Web.Models.DailyDepositViewModel
+﻿@model D_Squared.Web.Models.SalesForecastViewModel
 
 <div class="jumbotron" style="background-image: url('/Content/images/lightwood-bg.jpg'); padding-bottom:5px; padding-top:20px; margin-bottom:10px">
     <div style="max-width:500px; display: block; margin: 0 auto;">
         <img src="~/Content/images/millers_d2_logo.png" style="max-width:500px;" />
     </div>
     <div class="text-center" style="display: block; margin: 0 auto; max-width:500px">
-        <h2>Daily Deposits</h2>
+        <h2>Sales Forecasts</h2>
         <p class="lead">
             Employee: @Model.EmployeeInfo.FirstName @Model.EmployeeInfo.LastName
             <br />
@@ -17,27 +17,15 @@
     </div>
 </div>
 
+
 @using (Html.BeginForm())
 {
     @Html.HiddenFor(model => model.EndingPeriod)
     @Html.HiddenFor(model => model.AccessTime)
     @Html.HiddenFor(model => model.EmployeeInfo.StoreNumber)
-    @Html.HiddenFor(model => model.CurrentWeekFlag)
     <div class="row">
         <div class="col-md-12">
             <table class="table table-striped table-bordered table-condensed table-hover table-responsive">
-                <caption>
-                    @if (Model.CurrentWeekFlag)
-                    {
-                        @Html.ActionLink("Previous Week", "PreviousWeek", "DailyDeposit", null, new { @class = "btn btn-primary btn-xs" })
-                    }
-                    else
-                    {
-                        @Html.ActionLink("Current Week", "Index", "DailyDeposit", null, new { @class = "btn btn-primary btn-xs" })
-                    }
-
-                    @Html.ActionLink("Reports", "DepositReport", "DailyDeposit", null, new { @class = "btn btn-primary btn-sm", @style = "float: right" })
-                </caption>
                 <thead>
                     <tr>
                         <th>
@@ -47,10 +35,16 @@
                             @Html.DisplayNameFor(model => model.Weekdays.FirstOrDefault().DateOfEntry)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Weekdays.FirstOrDefault().CashDeposit)
+                            @Html.DisplayNameFor(model => model.Weekdays.FirstOrDefault().PriorYearSales)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Weekdays.FirstOrDefault().MiscDeposit)
+                            @Html.DisplayNameFor(model => model.Weekdays.FirstOrDefault().AverageSalesPerMonth)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Weekdays.FirstOrDefault().ForecastAmount)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Weekdays.FirstOrDefault().LaborForecast)
                         </th>
                     </tr>
                 </thead>
@@ -59,6 +53,9 @@
                     {
                         @Html.HiddenFor(model => model.Weekdays[i].DayOfWeek)
                         @Html.HiddenFor(model => model.Weekdays[i].DateOfEntry)
+                        @Html.HiddenFor(model => model.Weekdays[i].PriorYearSales)
+                        @Html.HiddenFor(model => model.Weekdays[i].AverageSalesPerMonth)
+                        @Html.HiddenFor(model => model.Weekdays[i].LaborForecast)
                         <tr>
                             <td>
                                 @Html.DisplayFor(model => model.Weekdays[i].DayOfWeek)
@@ -67,10 +64,16 @@
                                 @Model.Weekdays[i].DateOfEntry.ToShortDateString()
                             </td>
                             <td>
-                                @Html.EditorFor(model => model.Weekdays[i].CashDeposit, new { htmlAttributes = new { @class = "form-control", @type = "number", @min = "0", @step = "0.01" } })
+                                @Html.DisplayFor(model => model.Weekdays[i].PriorYearSales)
                             </td>
                             <td>
-                                @Html.EditorFor(model => model.Weekdays[i].MiscDeposit, new { htmlAttributes = new { @class = "form-control", @type = "number", @min = "0", @step = "0.01" } })
+                                @Html.DisplayFor(model => model.Weekdays[i].AverageSalesPerMonth)
+                            </td>
+                            <td>
+                                @Html.EditorFor(model => model.Weekdays[i].ForecastAmount, new { htmlAttributes = new { @class = "form-control", @type = "number", @min = "0", @step = "0.01" } })
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => model.Weekdays[i].LaborForecast)
                             </td>
                         </tr>
                     }

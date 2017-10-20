@@ -2,33 +2,31 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 
 namespace D_Squared.Web.Models
 {
-    public class DailyDepositViewModel
+    public class SalesForecastViewModel
     {
-        public DailyDepositViewModel()
+        public SalesForecastViewModel()
         {
-            Weekdays = new List<DepositEntryDTO>();
+            Weekdays = new List<SalesForecastDTO>();
         }
 
-        public DailyDepositViewModel(List<DepositEntryDTO> weekdays, DateTime accessTime, EmployeeDTO employeeDTO, bool currentWeekFlag)
+        public SalesForecastViewModel(List<SalesForecastDTO> weekdays, DateTime accessTime, EmployeeDTO employeeDTO)
         {
             Weekdays = weekdays;
             AccessTime = accessTime;
             EndingPeriod = weekdays.Last().DateOfEntry;
             EmployeeInfo = employeeDTO;
-            CurrentWeekFlag = currentWeekFlag;
         }
 
         public DateTime EndingPeriod { get; set; }
 
         public DateTime AccessTime { get; set; }
 
-        public List<DepositEntryDTO> Weekdays { get; set; }
+        public List<SalesForecastDTO> Weekdays { get; set; }
 
         public EmployeeDTO EmployeeInfo { get; set; }
-
-        public bool CurrentWeekFlag { get; set; }
     }
 }

@@ -23,7 +23,13 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a class="custom-navbar" href="/">Dashboard</a></li>
-                    <li class="dropdown">
+                    <li>
+                        @Html.ActionLink("Daily Deposits", "Index", "DailyDeposit", null, new { @class = "custom-navbar" })
+                    </li>
+                    <li>
+                        @Html.ActionLink("Sales Forecasts", "Index", "SalesForecast", null, new { @class = "custom-navbar" })
+                    </li>
+                    @*<li class="dropdown">
                         <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
                             Daily Deposits
                             <span class="caret"></span>
@@ -36,7 +42,7 @@
                                 @Html.ActionLink("Reports", "DepositReport", "DailyDeposit")
                             </li>
                         </ul>
-                    </li>
+                    </li>*@
                 </ul>
                 <p class="nav navbar-text navbar-right">Hello, @User.Identity.Name!</p>
             </div>
