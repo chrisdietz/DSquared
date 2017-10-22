@@ -1,10 +1,10 @@
-﻿using D_Squared.Data.Employees.Context;
+﻿using D_Squared.Data.Millers.Context;
 using D_Squared.Domain.Entities;
 using D_Squared.Domain.TransferObjects;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace D_Squared.Data.Employees.Queries
+namespace D_Squared.Data.Millers.Queries
 {
     public class EmployeeQueries
     {

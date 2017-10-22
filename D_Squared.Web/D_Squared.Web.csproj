@@ -122,9 +122,9 @@
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
@@ -293,10 +293,10 @@
     <Content Include="Views\Shared\_Alerts.cshtml" />
     <Content Include="Scripts\jquery-3.2.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.2.1.min.map" />
-    <Content Include="Views\Home\EmployeeError.cshtml" />
     <Content Include="Views\DailyDeposit\Index.cshtml" />
     <Content Include="Views\DailyDeposit\DepositReport.cshtml" />
     <Content Include="Views\SalesForecast\Index.cshtml" />
+    <Content Include="Views\Home\EmployeeError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -305,9 +305,9 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\D_Squared.Data.Employee\D_Squared.Data.Employee.csproj">
+    <ProjectReference Include="..\D_Squared.Data.Employee\D_Squared.Data.Millers.csproj">
       <Project>{e59d671b-499e-43cb-b3bf-bb2353aacee8}</Project>
-      <Name>D_Squared.Data.Employee</Name>
+      <Name>D_Squared.Data.Millers</Name>
     </ProjectReference>
     <ProjectReference Include="..\D_Squared.Data\D_Squared.Data.csproj">
       <Project>{ca349c2d-ce4a-4c1f-8894-3119cc0d0679}</Project>

@@ -2,13 +2,12 @@
 using System.Data.Entity.Infrastructure;
 using Microsoft.AspNet.Identity.EntityFramework;
 using D_Squared.Domain.Entities;
-using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace D_Squared.Data.Millers.Context
 {
-    public class EmployeeDbContext : IdentityDbContext
+    public class ForecastDataDbContext : IdentityDbContext
     {
-        public EmployeeDbContext() : base ("EmployeeDb")
+        public ForecastDataDbContext() : base("ForecastDataDb")
         {
             // Get the ObjectContext related to this DbContext
             var objectContext = (this as IObjectContextAdapter).ObjectContext;
@@ -17,17 +16,16 @@ namespace D_Squared.Data.Millers.Context
             objectContext.CommandTimeout = 60 * 30;
         }
 
-        public DbSet<Employee> Employees { get; set; }
+        public DbSet<ForecastDatum> ForecastData { get; set; }
 
-        public static EmployeeDbContext Create()
+        public static ForecastDataDbContext Create()
         {
-            return new EmployeeDbContext();
+            return new ForecastDataDbContext();
         }
-
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Employee>().ToTable("empMAH");
+            modelBuilder.Entity<ForecastDatum>().ToTable("ForecastData");
             base.OnModelCreating(modelBuilder);
         }
     }

@@ -31,8 +31,8 @@ namespace D_Squared.Domain.TransferObjects
                 DayOfWeek = forecast.BusinessDate.DayOfWeek.ToString();
                 DateOfEntry = forecast.BusinessDate;
                 ForecastAmount = forecast.ForecastAmount;
-                PriorYearSales = forecast.PriorYearSales;
-                AverageSalesPerMonth = forecast.AverageSalesPerMonth;
+                PriorYearSales = forecast.ActualPriorYear;
+                AverageSalesPerMonth = forecast.AvgPrior4Weeks;
                 LaborForecast = forecast.LaborForecast;
             }
         }

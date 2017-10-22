@@ -9,12 +9,13 @@
     <ProjectGuid>{E59D671B-499E-43CB-B3BF-BB2353AACEE8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>D_Squared.Data.Employee</RootNamespace>
-    <AssemblyName>D_Squared.Data.Employee</AssemblyName>
+    <RootNamespace>D_Squared.Data.Millers</RootNamespace>
+    <AssemblyName>D_Squared.Data.Millers</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -88,9 +89,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\EmployeeDb.cs" />
-    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Context\ForecastDataDb.cs" />
+    <Compile Include="Migrations\EmployeeDbConfiguration.cs" />
+    <Compile Include="Migrations\ForecastDataDbConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\EmployeeQueries.cs" />
+    <Compile Include="Queries\ForecastDataQueries.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\D_Squared.Domain\D_Squared.Domain.csproj">

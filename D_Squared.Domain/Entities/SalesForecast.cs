@@ -18,9 +18,9 @@ namespace D_Squared.Domain.Entities
 
         public decimal ForecastAmount { get; set; }
 
-        public decimal PriorYearSales { get; set; }
+        public decimal ActualPriorYear { get; set; }
 
-        public decimal AverageSalesPerMonth { get; set; }
+        public decimal AvgPrior4Weeks { get; set; }
 
         public decimal LaborForecast { get; set; }
 

@@ -1,21 +1,27 @@
 ﻿using D_Squared.Data.Context;
+using D_Squared.Data.Millers.Context;
+using D_Squared.Data.Millers.Queries;
 using D_Squared.Domain.Entities;
 using D_Squared.Domain.TransferObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace D_Squared.Data.Queries
 {
     public class SalesForecastQueries
     {
         private readonly D_SquaredDbContext db;
+        private readonly ForecastDataDbContext f_db;
 
-        public SalesForecastQueries(D_SquaredDbContext db)
+        private readonly ForecastDataQueries fdq;
+
+        public SalesForecastQueries(D_SquaredDbContext db, ForecastDataDbContext f_db)
         {
             this.db = db;
+            this.f_db = f_db;
+
+            fdq = new ForecastDataQueries(f_db);
         }
 
         public bool CheckForExistingSalesForecastByDate(DateTime date, string storeNumber)
@@ -60,7 +66,7 @@ namespace D_Squared.Data.Queries
             foreach(var day in dates)
             {
                 if (!CheckForExistingSalesForecastByDate(day, storeNumber))
-                    theList.Add(new SalesForecastDTO(day, GetSalesPriorYear(storeNumber), GetAverageSalesPerMonth(storeNumber), GetLaborForecast(storeNumber)));
+                    theList.Add(new SalesForecastDTO(day, fdq.GetSalesPriorYear(storeNumber), fdq.GetAverageSalesPerMonth(storeNumber), fdq.GetLaborForecast(storeNumber)));
                 else
                     theList.Add(new SalesForecastDTO(GetSalesForecastsByDate(day, storeNumber)));
             }
@@ -86,8 +92,8 @@ namespace D_Squared.Data.Queries
                         BusinessDate = forecast.DateOfEntry,
                         StoreNumber = storeNumber,
                         ForecastAmount = forecast.ForecastAmount,
-                        PriorYearSales = forecast.PriorYearSales,
-                        AverageSalesPerMonth = forecast.AverageSalesPerMonth,
+                        ActualPriorYear = forecast.PriorYearSales,
+                        AvgPrior4Weeks = forecast.AverageSalesPerMonth,
                         LaborForecast = forecast.LaborForecast,
                         CreatedBy = userName,
                         CreatedDate = DateTime.Now,
@@ -100,22 +106,6 @@ namespace D_Squared.Data.Queries
             }
 
             db.SaveChanges();
-        }
-
-        //dummy queries
-        public decimal GetSalesPriorYear(string storeNumber)
-        {
-            return new decimal(123456);
-        }
-
-        public decimal GetAverageSalesPerMonth(string storeNumber)
-        {
-            return new decimal(1234);
-        }
-
-        public decimal GetLaborForecast(string storeNumber)
-        {
-            return new decimal(123);
         }
     }
 }

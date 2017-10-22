@@ -1,6 +1,6 @@
 ﻿using D_Squared.Data.Context;
-using D_Squared.Data.Employees.Context;
-using D_Squared.Data.Employees.Queries;
+using D_Squared.Data.Millers.Context;
+using D_Squared.Data.Millers.Queries;
 using D_Squared.Data.Queries;
 using D_Squared.Domain.TransferObjects;
 using D_Squared.Web.Helpers;

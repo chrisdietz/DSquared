@@ -1,6 +1,6 @@
 ﻿using D_Squared.Data.Context;
-using D_Squared.Data.Employees.Context;
-using D_Squared.Data.Employees.Queries;
+using D_Squared.Data.Millers.Context;
+using D_Squared.Data.Millers.Queries;
 using D_Squared.Data.Queries;
 using D_Squared.Domain.TransferObjects;
 using D_Squared.Web.Helpers;
@@ -17,13 +17,16 @@ namespace D_Squared.Web.Controllers
     {
         private readonly D_SquaredDbContext db;
         private readonly EmployeeDbContext e_db;
+        private readonly ForecastDataDbContext f_db;
+
         private readonly SalesForecastQueries sfq;
         private readonly EmployeeQueries eq;
 
         public SalesForecastController()
         {
             db = new D_SquaredDbContext();
-            sfq = new SalesForecastQueries(db);
+            f_db = new ForecastDataDbContext();
+            sfq = new SalesForecastQueries(db, f_db);
 
             e_db = new EmployeeDbContext();
             eq = new EmployeeQueries(e_db);
@@ -41,7 +44,7 @@ namespace D_Squared.Web.Controllers
                     Username = username
                 };
 
-                return View("EmployeeError", "Home", error);
+                return View("../Home/EmployeeError", error);
             }
             else
             {

@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D_Squared.Domain", "D_Squar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D_Squared.Data", "D_Squared.Data\D_Squared.Data.csproj", "{CA349C2D-CE4A-4C1F-8894-3119CC0D0679}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D_Squared.Data.Employee", "D_Squared.Data.Employee\D_Squared.Data.Employee.csproj", "{E59D671B-499E-43CB-B3BF-BB2353AACEE8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D_Squared.Data.Millers", "D_Squared.Data.Employee\D_Squared.Data.Millers.csproj", "{E59D671B-499E-43CB-B3BF-BB2353AACEE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
