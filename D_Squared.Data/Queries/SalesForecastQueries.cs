@@ -66,7 +66,7 @@ namespace D_Squared.Data.Queries
             foreach(var day in dates)
             {
                 if (!CheckForExistingSalesForecastByDate(day, storeNumber))
-                    theList.Add(new SalesForecastDTO(day, fdq.GetSalesPriorYear(storeNumber), fdq.GetAverageSalesPerMonth(storeNumber), fdq.GetLaborForecast(storeNumber)));
+                    theList.Add(new SalesForecastDTO(day, fdq.GetSalesPriorYear(storeNumber, day), fdq.GetAverageSalesPerMonth(storeNumber, day), fdq.GetLaborForecast(storeNumber, day)));
                 else
                     theList.Add(new SalesForecastDTO(GetSalesForecastsByDate(day, storeNumber)));
             }

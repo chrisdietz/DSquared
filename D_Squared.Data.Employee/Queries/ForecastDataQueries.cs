@@ -17,19 +17,19 @@ namespace D_Squared.Data.Millers.Queries
         }
 
         //dummy queries
-        public decimal GetSalesPriorYear(string storeNumber)
+        public decimal GetSalesPriorYear(string storeNumber, DateTime day)
         {
-            return new decimal(123456);
+            return db.ForecastData.Where(fd => fd.StoreNumber == storeNumber && fd.BusinessDate == day).FirstOrDefault().ActualPriorYear;
         }
 
-        public decimal GetAverageSalesPerMonth(string storeNumber)
+        public decimal GetAverageSalesPerMonth(string storeNumber, DateTime day)
         {
-            return new decimal(1234);
+            return db.ForecastData.Where(fd => fd.StoreNumber == storeNumber && fd.BusinessDate == day).FirstOrDefault().AvgPrior4Weeks;
         }
 
-        public decimal GetLaborForecast(string storeNumber)
+        public decimal GetLaborForecast(string storeNumber, DateTime day)
         {
-            return new decimal(123);
+            return db.ForecastData.Where(fd => fd.StoreNumber == storeNumber && fd.BusinessDate == day).FirstOrDefault().LaborForecast;
         }
     }
 }

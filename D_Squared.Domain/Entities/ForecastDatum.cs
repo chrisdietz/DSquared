@@ -10,11 +10,12 @@ namespace D_Squared.Domain.Entities
 {
     public class ForecastDatum
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ObjectID { get; set; }
-
+        [Column(Order = 1)]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         public DateTime BusinessDate { get; set; }
 
+        [Column(Order = 2)]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         [StringLength(3)]
         public string StoreNumber { get; set; }
 
