@@ -1,0 +1,42 @@
+﻿@model D_Squared.Domain.Entities.HelpDocument
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>HelpDocument</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ControllerName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ControllerName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ActionName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActionName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HelpHtml)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HelpHtml)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

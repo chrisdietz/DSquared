@@ -36,7 +36,8 @@
                         @Html.ActionLink("Current Week", "Index", "DailyDeposit", null, new { @class = "btn btn-primary btn-xs" })
                     }
 
-                    @Html.ActionLink("Reports", "DepositReport", "DailyDeposit", null, new { @class = "btn btn-primary btn-sm", @style = "float: right" })
+                    <a data-toggle="modal" href="#helpModal" class="btn btn-primary btn-sm" style="float:right; margin-left: 10px;"><i class="fa fa-question-circle" aria-hidden="true"></i></a>
+                    @Html.ActionLink("Reports", "DepositReport", "DailyDeposit", null, new { @class = "btn btn-primary btn-sm", @style = "float: right;" })
                 </caption>
                 <thead>
                     <tr>
@@ -108,3 +109,6 @@
         </div>
     </div>
 }
+
+<!--must explicitly define the controller and action-->
+@{Html.RenderAction("ModalDetails", "HelpDocuments", new { @controller = "DailyDeposit", @action = "Index" });}

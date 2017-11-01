@@ -19,17 +19,26 @@ namespace D_Squared.Data.Millers.Queries
         //dummy queries
         public decimal GetSalesPriorYear(string storeNumber, DateTime day)
         {
-            return db.ForecastData.Where(fd => fd.StoreNumber == storeNumber && fd.BusinessDate == day).FirstOrDefault().ActualPriorYear;
+            if (db.ForecastData.Any(fd => fd.StoreNumber == storeNumber && fd.BusinessDate == day))
+                return db.ForecastData.Where(fd => fd.StoreNumber == storeNumber && fd.BusinessDate == day).FirstOrDefault().ActualPriorYear;
+            else
+                return new decimal(0);
         }
 
         public decimal GetAverageSalesPerMonth(string storeNumber, DateTime day)
         {
-            return db.ForecastData.Where(fd => fd.StoreNumber == storeNumber && fd.BusinessDate == day).FirstOrDefault().AvgPrior4Weeks;
+            if (db.ForecastData.Any(fd => fd.StoreNumber == storeNumber && fd.BusinessDate == day))
+                return db.ForecastData.Where(fd => fd.StoreNumber == storeNumber && fd.BusinessDate == day).FirstOrDefault().AvgPrior4Weeks;
+            else
+                return new decimal(0);  
         }
 
         public decimal GetLaborForecast(string storeNumber, DateTime day)
         {
-            return db.ForecastData.Where(fd => fd.StoreNumber == storeNumber && fd.BusinessDate == day).FirstOrDefault().LaborForecast;
+            if (db.ForecastData.Any(fd => fd.StoreNumber == storeNumber && fd.BusinessDate == day))
+                return db.ForecastData.Where(fd => fd.StoreNumber == storeNumber && fd.BusinessDate == day).FirstOrDefault().LaborForecast;
+            else
+                return new decimal(0);       
         }
     }
 }

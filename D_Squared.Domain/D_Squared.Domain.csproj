@@ -92,6 +92,7 @@
     <Compile Include="Entities\DailyDeposit.cs" />
     <Compile Include="Entities\Employee.cs" />
     <Compile Include="Entities\ForecastDatum.cs" />
+    <Compile Include="Entities\HelpDocument.cs" />
     <Compile Include="Entities\SalesForecast.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TransferObjects\DepositEntryDTO.cs" />
