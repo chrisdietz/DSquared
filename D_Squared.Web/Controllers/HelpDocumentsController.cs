@@ -8,12 +8,23 @@ using System.Web;
 using System.Web.Mvc;
 using D_Squared.Data.Context;
 using D_Squared.Domain.Entities;
+using D_Squared.Data.Queries;
+using D_Squared.Web.Models;
 
 namespace D_Squared.Web.Controllers
 {
     public class HelpDocumentsController : BaseController
     {
-        private D_SquaredDbContext db = new D_SquaredDbContext();
+        private readonly D_SquaredDbContext db;
+        private readonly CodeQueries cq;
+        private readonly HelpDocumentQueries hdq;
+
+        public HelpDocumentsController()
+        {
+            db = new D_SquaredDbContext();
+            cq = new CodeQueries(db);
+            hdq = new HelpDocumentQueries(db);
+        }
 
         // GET: HelpDocuments
         public ActionResult Index()
@@ -31,7 +42,7 @@ namespace D_Squared.Web.Controllers
             HelpDocument helpDocument = db.HelpDocuments.Find(id);
             if (helpDocument == null)
             {
-                return HttpNotFound();
+                Error("Error: Unable to locate the information!");
             }
             return View(helpDocument);
         }
@@ -61,7 +72,14 @@ namespace D_Squared.Web.Controllers
         // GET: HelpDocuments/Create
         public ActionResult Create()
         {
-            return View();
+            HelpDocumentCreateViewModel model = new HelpDocumentCreateViewModel()
+            {
+                ControllerList = new SelectList(cq.GetDistrinctListByCodeCategory("Controller")),
+                ActionList = new SelectList(cq.GetDistrinctListByCodeCategory("Action")),
+                HelpDocument = new HelpDocument()
+            };
+
+            return View(model);
         }
 
         // POST: HelpDocuments/Create
@@ -69,17 +87,41 @@ namespace D_Squared.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(HelpDocument helpDocument)
+        public ActionResult Create(HelpDocumentCreateViewModel model)
         {
-            if (ModelState.IsValid)
+            if(hdq.CheckForExisitingHelpDocument(model.SelectedAction, model.SelectedController))
             {
-                helpDocument.HelpHtml = Server.HtmlEncode(helpDocument.HelpHtml);
-                db.HelpDocuments.Add(helpDocument);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                HelpDocument existingDocument = hdq.GetHelpDocument(model.SelectedAction, model.SelectedController);
 
-            return View(helpDocument);
+                Warning("This help document already exists -- you have been redirected to the edit page.");
+                return RedirectToAction("Edit", new { id = existingDocument.Id });
+            }
+            else
+            {
+                model.HelpDocument = new HelpDocument();
+
+                if (ModelState.IsValid)
+                {
+                    model.HelpDocument.ControllerName = model.SelectedController;
+                    model.HelpDocument.ActionName = model.SelectedAction;
+                    model.HelpDocument.HelpHtml = Server.HtmlEncode(model.HelpHtml);
+                    model.HelpDocument.CreatedBy = User.Identity.Name;
+                    model.HelpDocument.CreatedDate = DateTime.Now;
+                    model.HelpDocument.UpdatedBy = User.Identity.Name;
+                    model.HelpDocument.UpdatedDate = DateTime.Now;
+                    db.HelpDocuments.Add(model.HelpDocument);
+                    db.SaveChanges();
+
+                    Success("Success:  Your information was saved!");
+                    return RedirectToAction("Index");
+                }
+
+                model.ActionList = new SelectList(cq.GetDistrinctListByCodeCategory("Action"));
+                model.ControllerList = new SelectList(cq.GetDistrinctListByCodeCategory("Controller"));
+
+                Error("Error: Unable to save the information, please check the values entered!");
+                return View(model);
+            }   
         }
 
         // GET: HelpDocuments/Edit/5
@@ -92,9 +134,21 @@ namespace D_Squared.Web.Controllers
             HelpDocument helpDocument = db.HelpDocuments.Find(id);
             if (helpDocument == null)
             {
-                return HttpNotFound();
+                Error("Error: Unable to locate the information!");
+                return RedirectToAction("Index");
             }
-            return View(helpDocument);
+
+            HelpDocumentCreateViewModel model = new HelpDocumentCreateViewModel()
+            {
+                ControllerList = new SelectList(cq.GetDistrinctListByCodeCategory("Controller")),
+                ActionList = new SelectList(cq.GetDistrinctListByCodeCategory("Action")),
+                HelpDocument = helpDocument,
+                SelectedAction = helpDocument.ActionName,
+                SelectedController = helpDocument.ControllerName,
+                HelpHtml = Server.HtmlDecode(helpDocument.HelpHtml)
+            };
+
+            return View(model);
         }
 
         // POST: HelpDocuments/Edit/5
@@ -102,16 +156,27 @@ namespace D_Squared.Web.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(HelpDocument helpDocument)
+        public ActionResult Edit(HelpDocumentCreateViewModel model)
         {
             if (ModelState.IsValid)
             {
-                helpDocument.HelpHtml = Server.HtmlEncode(helpDocument.HelpHtml);
-                db.Entry(helpDocument).State = EntityState.Modified;
+                model.HelpDocument.ControllerName = model.SelectedController;
+                model.HelpDocument.ActionName = model.SelectedAction;
+                model.HelpDocument.HelpHtml = Server.HtmlEncode(model.HelpHtml);
+                model.HelpDocument.UpdatedBy = User.Identity.Name;
+                model.HelpDocument.UpdatedDate = DateTime.Now;
+                db.Entry(model.HelpDocument).State = EntityState.Modified;
                 db.SaveChanges();
+
+                Success("Success:  Your information was saved!");
                 return RedirectToAction("Index");
             }
-            return View(helpDocument);
+
+            model.ActionList = new SelectList(cq.GetDistrinctListByCodeCategory("Action"));
+            model.ControllerList = new SelectList(cq.GetDistrinctListByCodeCategory("Controller"));
+
+            Error("Error: Unable to save the information, please check the values entered!");
+            return View(model);
         }
 
         // GET: HelpDocuments/Delete/5
@@ -124,7 +189,8 @@ namespace D_Squared.Web.Controllers
             HelpDocument helpDocument = db.HelpDocuments.Find(id);
             if (helpDocument == null)
             {
-                return HttpNotFound();
+                Error("Error: Unable to locate the information!");
+                return RedirectToAction("Index");
             }
             return View(helpDocument);
         }
@@ -137,6 +203,8 @@ namespace D_Squared.Web.Controllers
             HelpDocument helpDocument = db.HelpDocuments.Find(id);
             db.HelpDocuments.Remove(helpDocument);
             db.SaveChanges();
+
+            Warning("The information was successfully deleted.");
             return RedirectToAction("Index");
         }
 

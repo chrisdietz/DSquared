@@ -25,6 +25,8 @@ namespace D_Squared.Data.Context
 
         public DbSet<HelpDocument> HelpDocuments { get; set; }
 
+        public DbSet<Code> Codes { get; set; }
+
         public static D_SquaredDbContext Create()
         {
             return new D_SquaredDbContext();

@@ -16,7 +16,6 @@ namespace D_Squared.Data.Millers.Queries
             this.db = db;
         }
 
-        //dummy queries
         public decimal GetSalesPriorYear(string storeNumber, DateTime day)
         {
             if (db.ForecastData.Any(fd => fd.StoreNumber == storeNumber && fd.BusinessDate == day))

@@ -89,6 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DomainConstants.cs" />
+    <Compile Include="Entities\Code.cs" />
     <Compile Include="Entities\DailyDeposit.cs" />
     <Compile Include="Entities\Employee.cs" />
     <Compile Include="Entities\ForecastDatum.cs" />

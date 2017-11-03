@@ -175,6 +175,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CodesController.cs" />
     <Compile Include="Controllers\DailyDepositController.cs" />
     <Compile Include="Controllers\HelpDocumentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -188,6 +189,7 @@
     <Compile Include="Models\DailyDepositViewModel.cs" />
     <Compile Include="Models\DepositReportViewModel.cs" />
     <Compile Include="Models\ErrorViewModel.cs" />
+    <Compile Include="Models\HelpDocumentViewModel.cs" />
     <Compile Include="Models\SalesForecastViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -314,6 +316,11 @@
     <Content Include="Views\HelpDocuments\Index.cshtml" />
     <Content Include="Views\HelpDocuments\_DetailModal.cshtml" />
     <Content Include="Views\DailyDeposit\_DailyDepositHelp.cshtml" />
+    <Content Include="Views\Codes\Create.cshtml" />
+    <Content Include="Views\Codes\Delete.cshtml" />
+    <Content Include="Views\Codes\Details.cshtml" />
+    <Content Include="Views\Codes\Edit.cshtml" />
+    <Content Include="Views\Codes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

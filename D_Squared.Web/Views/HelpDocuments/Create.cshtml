@@ -1,4 +1,4 @@
-﻿@model D_Squared.Domain.Entities.HelpDocument
+﻿@model D_Squared.Web.Models.HelpDocumentCreateViewModel
 
 @{
     ViewBag.Title = "Create";
@@ -14,19 +14,20 @@
         <h4>HelpDocument</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
         <div class="form-group">
-            @Html.LabelFor(model => model.ControllerName, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.SelectedController, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ControllerName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ControllerName, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(model => model.SelectedController, Model.ControllerList, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SelectedController, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ActionName, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.SelectedAction, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ActionName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ActionName, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(model => model.SelectedAction, Model.ActionList, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SelectedAction, "", new { @class = "text-danger" })
             </div>
         </div>
 
