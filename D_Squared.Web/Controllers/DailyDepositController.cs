@@ -51,7 +51,11 @@ namespace D_Squared.Web.Controllers
 
                 return View(model);
             }
+        }
 
+        public ActionResult DailyDepositHelp()
+        {
+            return PartialView("_DailyDepositHelp");
         }
 
         [HttpPost]

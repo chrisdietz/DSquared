@@ -313,6 +313,7 @@
     <Content Include="Views\HelpDocuments\Edit.cshtml" />
     <Content Include="Views\HelpDocuments\Index.cshtml" />
     <Content Include="Views\HelpDocuments\_DetailModal.cshtml" />
+    <Content Include="Views\DailyDeposit\_DailyDepositHelp.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
