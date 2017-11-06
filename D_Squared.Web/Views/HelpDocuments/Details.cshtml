@@ -31,7 +31,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.HelpHtml)
+            @Html.Raw(Server.HtmlDecode(Model.HelpHtml))
         </dd>
 
     </dl>
