@@ -1,13 +1,13 @@
 ﻿@model D_Squared.Domain.Entities.HelpDocument
 
 <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="helpModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog"  style="width:800px">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h3 class="modal-title">@Model.ControllerName @Model.ActionName Help Document</h3>
             </div>
-            <div class="modal-body text-center" style="font-size:18px">
+            <div class="modal-body" style="font-size:14px">
                  @Html.Raw(Server.HtmlDecode(Model.HelpHtml))
             </div>
             <div class="modal-footer">

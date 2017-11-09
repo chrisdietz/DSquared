@@ -385,7 +385,12 @@
     <Content Include="Content\images\d2_logo.png" />
     <Content Include="Content\images\lightwood-bg.jpg" />
     <Content Include="Content\images\millers_d2_logo.png" />
+    <Content Include="Content\SQL\CodesTableCreateScript.sql" />
+    <Content Include="Content\SQL\CodesTableInsertScript.sql" />
     <Content Include="Content\SQL\DailyDepositsCreateScript.sql" />
+    <Content Include="Content\SQL\HelpDocumentCreateScript.sql" />
+    <Content Include="Content\SQL\HelpDocumentInsertScript.sql" />
+    <Content Include="Content\SQL\SalesForecastsCreateScript.sql" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />

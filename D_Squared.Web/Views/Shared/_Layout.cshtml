@@ -32,20 +32,20 @@
                     <li>
                         @Html.ActionLink("Sales Forecasts", "Index", "SalesForecast", null, new { @class = "custom-navbar" })
                     </li>
-                    @*<li class="dropdown">
+                    <li class="dropdown">
                         <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
-                            Daily Deposits
+                            Administration
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                @Html.ActionLink("Deposits", "Index", "DailyDeposit")
+                                @Html.ActionLink("Codes", "Index", "Codes")
                             </li>
                             <li>
-                                @Html.ActionLink("Reports", "DepositReport", "DailyDeposit")
+                                @Html.ActionLink("Help Documents", "Index", "HelpDocuments")
                             </li>
                         </ul>
-                    </li>*@
+                    </li>
                 </ul>
                 <p class="nav navbar-text navbar-right">Hello, @User.Identity.Name!</p>
             </div>
