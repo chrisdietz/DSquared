@@ -185,6 +185,7 @@
     </Compile>
     <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Helpers\FormActionAttribute.cs" />
+    <Compile Include="Helpers\RoleChecker.cs" />
     <Compile Include="Helpers\WebConstants.cs" />
     <Compile Include="Models\DailyDepositViewModel.cs" />
     <Compile Include="Models\DepositReportViewModel.cs" />
