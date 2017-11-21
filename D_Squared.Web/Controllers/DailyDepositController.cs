@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Linq;
+using System.Security.Principal;
 
 namespace D_Squared.Web.Controllers
 {
@@ -48,6 +49,8 @@ namespace D_Squared.Web.Controllers
                 List<DepositEntryDTO> weekdays = ddq.GetSpecificWeekAsDepositEntryDTOList(DateTime.Today.ToLocalTime(), employee.StoreNumber);
 
                 DailyDepositViewModel model = new DailyDepositViewModel(weekdays, today, employee, true);
+
+                model.IsManagerRole = RoleChecker.IsGeneralManager(User as WindowsPrincipal);
 
                 return View(model);
             }

@@ -25,6 +25,7 @@
         <table class="table table-striped table-bordered table-condensed table-hover table-responsive" style="font-size:12px">
             <caption>
                 <h3>
+                    <a data-toggle="modal" href="#helpModal" class="btn btn-primary btn-sm" style="float:right; margin-left: 10px;"><i class="fa fa-question-circle" aria-hidden="true"></i></a>
                     Period: @Model.StartingPeriod.ToShortDateString() - @Model.EndingPeriod.ToShortDateString()
                 </h3>
             </caption>
@@ -123,4 +124,7 @@
         </table>
     </div>  
 </div>
+
+<!--must explicitly define the controller and action-->
+@{Html.RenderAction("ModalDetails", "HelpDocuments", new { @controller = "DailyDeposit", @action = "DepositReport" });}
 

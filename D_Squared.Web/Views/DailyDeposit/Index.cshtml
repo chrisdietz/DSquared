@@ -13,6 +13,9 @@
             <br />
             Restaurant: <strong><u>@Model.EmployeeInfo.StoreNumber</u></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             Period Ending: @Model.EndingPeriod.ToShortDateString()
+            <br />
+            <br />
+            @Model.IsManagerRole
         </p>
     </div>
 </div>
@@ -37,7 +40,6 @@
                     }
 
                     <a data-toggle="modal" href="#helpModal" class="btn btn-primary btn-sm" style="float:right; margin-left: 10px;"><i class="fa fa-question-circle" aria-hidden="true"></i></a>
-                    <a data-toggle="modal" href="#helpModal2" class="btn btn-primary btn-sm" style="float:right; margin-left: 10px;"><i class="fa fa-question-circle" aria-hidden="true"></i></a>
                     @Html.ActionLink("Reports", "DepositReport", "DailyDeposit", null, new { @class = "btn btn-primary btn-sm", @style = "float: right;" })
                 </caption>
                 <thead>
@@ -113,4 +115,3 @@
 
 <!--must explicitly define the controller and action-->
 @{Html.RenderAction("ModalDetails", "HelpDocuments", new { @controller = "DailyDeposit", @action = "Index" });}
-@{Html.RenderAction("DailyDepositHelp", "DailyDeposit");}

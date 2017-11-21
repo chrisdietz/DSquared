@@ -28,7 +28,6 @@
             <table class="table table-striped table-bordered table-condensed table-hover table-responsive">
                 <caption>
                     <a data-toggle="modal" href="#helpModal" class="btn btn-primary btn-sm" style="float:right; margin-left: 10px;"><i class="fa fa-question-circle" aria-hidden="true"></i></a>
-                    <a data-toggle="modal" href="#helpModal2" class="btn btn-primary btn-sm" style="float:right; margin-left: 10px;"><i class="fa fa-question-circle" aria-hidden="true"></i></a>
                 </caption>
                 <thead>
                     <tr>
@@ -118,4 +117,3 @@
 
 <!--must explicitly define the controller and action-->
 @{Html.RenderAction("ModalDetails", "HelpDocuments", new { @controller = "SalesForecast", @action = "Index" });}
-@{Html.RenderAction("DailyDepositHelp", "DailyDeposit");}

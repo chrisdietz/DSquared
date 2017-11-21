@@ -13,5 +13,10 @@ namespace D_Squared.Domain
             public static int CASH_DEPOSIT = 40000;
             public static int MISC_DEPOSIT = 40200;
         }
+
+        public static class RoleNames
+        {
+            public static string GeneralManagerGroup = "mahGM";
+        }
     }
 }
