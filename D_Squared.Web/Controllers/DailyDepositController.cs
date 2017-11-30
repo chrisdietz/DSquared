@@ -9,7 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Linq;
-using System.Security.Principal;
+using D_Squared.Web.Helpers;
+using ROLES = D_Squared.Domain.DomainConstants.RoleNames;
 
 namespace D_Squared.Web.Controllers
 {
@@ -31,7 +32,7 @@ namespace D_Squared.Web.Controllers
 
         public ActionResult Index()
         {
-            string username = User.Identity.Name.Substring(User.Identity.Name.IndexOf('\\') + 1);
+            string username = User.TruncatedName;
 
             if (!eq.EmployeeExists(username))
             {
@@ -50,8 +51,6 @@ namespace D_Squared.Web.Controllers
 
                 DailyDepositViewModel model = new DailyDepositViewModel(weekdays, today, employee, true);
 
-                model.IsManagerRole = RoleChecker.IsGeneralManager(User as WindowsPrincipal);
-
                 return View(model);
             }
         }
@@ -67,7 +66,7 @@ namespace D_Squared.Web.Controllers
         {
             try
             {
-                string userName = User.Identity.Name.Substring(User.Identity.Name.IndexOf('\\') + 1);
+                string userName = User.TruncatedName;
                 string storeNumber = eq.GetStoreNumber(userName);
 
                 ddq.AddOrUpdateDeposits(model.Weekdays, storeNumber, User.Identity.Name);
@@ -90,7 +89,7 @@ namespace D_Squared.Web.Controllers
 
         public ActionResult PreviousWeek()
         {
-            string username = User.Identity.Name.Substring(User.Identity.Name.IndexOf('\\') + 1);
+            string username = User.TruncatedName;
 
             DateTime today = DateTime.Now.ToLocalTime();
             EmployeeDTO employee = eq.GetEmployeeInfo(username);
@@ -101,9 +100,10 @@ namespace D_Squared.Web.Controllers
             return View("Index", model);
         }
 
+        [AuthorizeGroup(ROLES.GeneralManagerGroup)]
         public ActionResult DepositReport()
         {
-            string username = User.Identity.Name.Substring(User.Identity.Name.IndexOf('\\') + 1);
+            string username = User.TruncatedName;
 
             if (!eq.EmployeeExists(username))
             {
@@ -136,6 +136,7 @@ namespace D_Squared.Web.Controllers
         }
 
         [HttpPost]
+        [AuthorizeGroup(ROLES.GeneralManagerGroup)]
         public ActionResult DepositReport(DepositReportViewModel model)
         {
             List<DateTime> theWeek = ddq.GetCurrentWeek(model.SearchDTO.DesiredDate);

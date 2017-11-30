@@ -10,9 +10,12 @@ using D_Squared.Data.Context;
 using D_Squared.Domain.Entities;
 using D_Squared.Data.Queries;
 using D_Squared.Web.Models;
+using D_Squared.Web.Helpers;
+using ROLES = D_Squared.Domain.DomainConstants.RoleNames;
 
 namespace D_Squared.Web.Controllers
 {
+    [AuthorizeGroup(ROLES.GeneralManagerGroup)]
     public class HelpDocumentsController : BaseController
     {
         private readonly D_SquaredDbContext db;
@@ -45,28 +48,6 @@ namespace D_Squared.Web.Controllers
                 Error("Error: Unable to locate the information!");
             }
             return View(helpDocument);
-        }
-
-        public ActionResult ModalDetails(string controller, string action)
-        {
-            HelpDocument helpDocument = new HelpDocument();
-
-            if (db.HelpDocuments.Any(hd => hd.ControllerName == controller && hd.ActionName == action))
-            {
-                helpDocument = db.HelpDocuments.Where(hd => hd.ControllerName == controller && hd.ActionName == action).FirstOrDefault();
-                return PartialView("_DetailModal", helpDocument);
-            }            
-            else
-            {
-                helpDocument = new HelpDocument
-                {
-                    ControllerName = controller,
-                    ActionName = action,
-                    HelpHtml = "&lt;h4&gt;No Help Document was found for this resource.&lt;/h4&gt;"
-                };
-
-                return PartialView("_DetailModal", helpDocument);
-            }
         }
 
         // GET: HelpDocuments/Create

@@ -183,9 +183,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\CustomAuthorizeAttribute.cs" />
+    <Compile Include="Helpers\CustomClaimsPrincipal.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Helpers\FormActionAttribute.cs" />
-    <Compile Include="Helpers\RoleChecker.cs" />
     <Compile Include="Helpers\WebConstants.cs" />
     <Compile Include="Models\DailyDepositViewModel.cs" />
     <Compile Include="Models\DepositReportViewModel.cs" />
@@ -494,7 +495,9 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -511,13 +514,13 @@
     <Content Include="Views\HelpDocuments\Details.cshtml" />
     <Content Include="Views\HelpDocuments\Edit.cshtml" />
     <Content Include="Views\HelpDocuments\Index.cshtml" />
-    <Content Include="Views\HelpDocuments\_DetailModal.cshtml" />
     <Content Include="Views\DailyDeposit\_DailyDepositHelp.cshtml" />
     <Content Include="Views\Codes\Create.cshtml" />
     <Content Include="Views\Codes\Delete.cshtml" />
     <Content Include="Views\Codes\Details.cshtml" />
     <Content Include="Views\Codes\Edit.cshtml" />
     <Content Include="Views\Codes\Index.cshtml" />
+    <Content Include="Views\Home\_DetailModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

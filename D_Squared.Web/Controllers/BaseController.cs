@@ -5,6 +5,11 @@ namespace D_Squared.Web.Controllers
 {
     public class BaseController : Controller
     {
+        protected virtual new CustomClaimsPrincipal User
+        {
+            get { return HttpContext.User as CustomClaimsPrincipal; }
+        }
+
         #region Alerts
         public void Warning(string message)
         {

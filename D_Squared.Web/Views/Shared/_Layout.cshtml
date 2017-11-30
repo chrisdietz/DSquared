@@ -32,22 +32,25 @@
                     <li>
                         @Html.ActionLink("Sales Forecasts", "Index", "SalesForecast", null, new { @class = "custom-navbar" })
                     </li>
-                    <li class="dropdown">
-                        <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
-                            Administration
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                @Html.ActionLink("Codes", "Index", "Codes")
-                            </li>
-                            <li>
-                                @Html.ActionLink("Help Documents", "Index", "HelpDocuments")
-                            </li>
-                        </ul>
-                    </li>
+                    @if (User.IsGeneralManager())
+                    {
+                        <li class="dropdown">
+                            <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
+                                Administration
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    @Html.ActionLink("Codes", "Index", "Codes")
+                                </li>
+                                <li>
+                                    @Html.ActionLink("Help Documents", "Index", "HelpDocuments")
+                                </li>
+                            </ul>
+                        </li>
+                    }                   
                 </ul>
-                <p class="nav navbar-text navbar-right">Hello, @User.Identity.Name!</p>
+                <p class="nav navbar-text navbar-right">Hello, @User.TruncatedName!</p>
             </div>
         </div>
     </div>

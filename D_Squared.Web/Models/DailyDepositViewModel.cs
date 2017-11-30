@@ -30,7 +30,5 @@ namespace D_Squared.Web.Models
         public EmployeeDTO EmployeeInfo { get; set; }
 
         public bool CurrentWeekFlag { get; set; }
-
-        public bool IsManagerRole { get; set; }
     }
 }

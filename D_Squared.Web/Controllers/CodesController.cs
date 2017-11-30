@@ -8,9 +8,12 @@ using System.Web;
 using System.Web.Mvc;
 using D_Squared.Data.Context;
 using D_Squared.Domain.Entities;
+using D_Squared.Web.Helpers;
+using ROLES = D_Squared.Domain.DomainConstants.RoleNames;
 
 namespace D_Squared.Web.Controllers
 {
+    [AuthorizeGroup(ROLES.GeneralManagerGroup)]
     public class CodesController : BaseController
     {
         private D_SquaredDbContext db = new D_SquaredDbContext();
