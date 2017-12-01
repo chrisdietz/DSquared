@@ -31,9 +31,9 @@ namespace D_Squared.Web.Helpers
         }
 
         /// <summary>
-        /// Check if User has Claims for supplied Role
+        /// Checks if the user belongs to the passed Windows User Group
         /// </summary>
-        /// <param name="role">Role to check if User is in</param>
+        /// <param name="role">Windows User Group to check</param>
         /// <returns>Boolean</returns>
         public new bool IsInRole(string role)
         {
@@ -41,14 +41,14 @@ namespace D_Squared.Web.Helpers
             {
                 return IsInAnyRoles(role.Split(','));
             }
-            return Identity.HasClaim(ClaimTypes.Role, role);
+            return base.IsInRole(role);
         }
 
         public bool IsInAnyRoles(string[] roles)
         {
             foreach (string searchRole in roles)
             {
-                if (Identity.HasClaim(ClaimTypes.Role, searchRole))
+                if (base.IsInRole(searchRole))
                     return true;
             }
             return false;
