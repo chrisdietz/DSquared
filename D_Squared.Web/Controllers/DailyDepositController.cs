@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Linq;
-using D_Squared.Web.Helpers;
 using ROLES = D_Squared.Domain.DomainConstants.RoleNames;
 
 namespace D_Squared.Web.Controllers
@@ -62,6 +61,8 @@ namespace D_Squared.Web.Controllers
 
         [HttpPost]
         [FormAction]
+        [ValidateAntiForgeryToken]
+        [PreventDuplicateRequest]
         public ActionResult Index(DailyDepositViewModel model)
         {
             try
@@ -69,7 +70,16 @@ namespace D_Squared.Web.Controllers
                 string userName = User.TruncatedName;
                 string storeNumber = eq.GetStoreNumber(userName);
 
-                ddq.AddOrUpdateDeposits(model.Weekdays, storeNumber, User.Identity.Name);
+                if (ModelState.IsValid)
+                {
+                    ddq.AddOrUpdateDeposits(model.Weekdays, storeNumber, User.Identity.Name);
+                    Success("The Daily Deposits for Restaurant: <u>" + model.EmployeeInfo.StoreNumber + "</u> have been saved successfully. You may close this window");
+                }
+                else
+                {
+                    Warning("Double Request detected; only the first submission was captured");
+                    RedirectToAction("Index");
+                }
             }
             catch
             {
@@ -77,8 +87,6 @@ namespace D_Squared.Web.Controllers
 
                 return RedirectToAction("Index");
             }
-
-            Success("The Daily Deposits for Restaurant: <u>" + model.EmployeeInfo.StoreNumber + "</u> have been saved successfully. You may close this window");
 
             if (model.CurrentWeekFlag)
                 return RedirectToAction("Index");

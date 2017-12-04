@@ -17,8 +17,10 @@
     </div>
 </div>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Index", "DailyDeposit", FormMethod.Post))
 {
+    @Html.AntiForgeryToken()
+
     @Html.HiddenFor(model => model.EndingPeriod)
     @Html.HiddenFor(model => model.AccessTime)
     @Html.HiddenFor(model => model.EmployeeInfo.StoreNumber)
@@ -115,3 +117,12 @@
 
 <!--must explicitly define the controller and action-->
 @{Html.RenderAction("ModalDetails", "Home", new { @controller = "DailyDeposit", @action = "Index" });}
+
+<script>
+    $(document).on('submit', 'form', function () {
+        var button = $(this).find('input[type="submit"]');
+        setTimeout(function () {
+            button.attr('disabled', 'disabled');
+        }, 0);
+    });
+</script>

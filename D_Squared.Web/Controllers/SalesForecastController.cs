@@ -35,7 +35,7 @@ namespace D_Squared.Web.Controllers
 
         public ActionResult Index()
         {
-            string username = User.Identity.Name.Substring(User.Identity.Name.IndexOf('\\') + 1);
+            string username = User.TruncatedName;
 
             if (!eq.EmployeeExists(username))
             {
@@ -60,14 +60,25 @@ namespace D_Squared.Web.Controllers
 
         [HttpPost]
         [FormAction]
+        [ValidateAntiForgeryToken]
+        [PreventDuplicateRequest]
         public ActionResult Index(SalesForecastViewModel model)
         {
             try
             {
-                string userName = User.Identity.Name.Substring(User.Identity.Name.IndexOf('\\') + 1);
+                string userName = User.TruncatedName;
                 string storeNumber = eq.GetStoreNumber(userName);
 
-                sfq.AddOrUpdateSalesForecasts(model.Weekdays, storeNumber, User.Identity.Name);
+                if (ModelState.IsValid)
+                {
+                    sfq.AddOrUpdateSalesForecasts(model.Weekdays, storeNumber, User.Identity.Name);
+                    Success("The Sales Forecasts for Restaurant: <u>" + model.EmployeeInfo.StoreNumber + "</u> have been saved successfully. You may close this window");
+                }
+                else
+                {
+                    Warning("Double Request detected; only the first submission was captured");
+                    RedirectToAction("Index");
+                }
             }
             catch
             {
@@ -75,8 +86,6 @@ namespace D_Squared.Web.Controllers
 
                 return RedirectToAction("Index");
             }
-
-            Success("The Sales Forecasts for Restaurant: <u>" + model.EmployeeInfo.StoreNumber + "</u> have been saved successfully. You may close this window");
 
             return RedirectToAction("Index");
         }

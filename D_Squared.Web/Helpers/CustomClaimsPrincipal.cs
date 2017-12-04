@@ -37,6 +37,9 @@ namespace D_Squared.Web.Helpers
         /// <returns>Boolean</returns>
         public new bool IsInRole(string role)
         {
+            if (ConfigurationManager.AppSettings["ApplicationRegion"] == "Development")
+                return true;
+
             if (role.Contains(","))
             {
                 return IsInAnyRoles(role.Split(','));
@@ -46,6 +49,9 @@ namespace D_Squared.Web.Helpers
 
         public bool IsInAnyRoles(string[] roles)
         {
+            if (ConfigurationManager.AppSettings["ApplicationRegion"] == "Development")
+                return true;
+
             foreach (string searchRole in roles)
             {
                 if (base.IsInRole(searchRole))
