@@ -192,6 +192,7 @@
     <Compile Include="Models\DepositReportViewModel.cs" />
     <Compile Include="Models\ErrorViewModel.cs" />
     <Compile Include="Models\HelpDocumentViewModel.cs" />
+    <Compile Include="Models\SalesForecastReportViewModel.cs" />
     <Compile Include="Models\SalesForecastViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -521,6 +522,7 @@
     <Content Include="Views\Codes\Edit.cshtml" />
     <Content Include="Views\Codes\Index.cshtml" />
     <Content Include="Views\Home\_DetailModal.cshtml" />
+    <Content Include="Views\SalesForecast\SalesForecastReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

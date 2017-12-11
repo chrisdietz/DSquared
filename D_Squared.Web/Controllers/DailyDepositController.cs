@@ -137,8 +137,6 @@ namespace D_Squared.Web.Controllers
                     StartingPeriod = theWeek.FirstOrDefault()
                 };
 
-                ddq.GetWeeklyReportColumnTotals(currentDate);
-
                 return View("DepositReport", model);
             }
         }

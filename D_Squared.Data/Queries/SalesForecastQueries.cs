@@ -107,5 +107,33 @@ namespace D_Squared.Data.Queries
 
             db.SaveChanges();
         }
+
+        public List<SalesForecastSummaryDTO> GetSalesForecastSummaryList (DateTime selectedDate, List<string> locationList)
+        {
+            List<SalesForecastSummaryDTO> summaryList = new List<SalesForecastSummaryDTO>();
+
+            foreach (string location in locationList)
+            {
+                summaryList.Add(new SalesForecastSummaryDTO(location, GetSpecificWeekAsSalesForecastDTOList(selectedDate, location)));
+            }
+
+            return summaryList;
+        }
+
+        public List<SalesForecastSummaryColumnDTO> GetWeeklyReportColumnTotals(DateTime selectedDay)
+        {
+            List<DateTime> dates = GetCurrentWeek(selectedDay);
+
+            List<SalesForecast> theList = db.SalesForecasts.Where(sf => dates.Contains(sf.BusinessDate)).ToList();
+
+            List<SalesForecastSummaryColumnDTO> columnSums = new List<SalesForecastSummaryColumnDTO>();
+
+            foreach (var day in dates)
+            {
+                columnSums.Add(new SalesForecastSummaryColumnDTO(day, theList.Where(tl => tl.BusinessDate == day).ToList()));
+            }
+
+            return columnSums;
+        }
     }
 }

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ROLES = D_Squared.Domain.DomainConstants.RoleNames;
 
 namespace D_Squared.Web.Controllers
 {
@@ -88,6 +89,66 @@ namespace D_Squared.Web.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        [AuthorizeGroup(ROLES.GeneralManagerGroup)]
+        public ActionResult SalesForecastReport()
+        {
+            string username = User.TruncatedName;
+            if (!eq.EmployeeExists(username))
+            {
+                ErrorViewModel error = new ErrorViewModel
+                {
+                    Username = username
+                };
+
+                return View("EmployeeError", "Home", error);
+            }
+            else
+            {
+                DateTime currentDate = DateTime.Today.ToLocalTime();
+                List<DateTime> theWeek = sfq.GetCurrentWeek(currentDate);
+
+                SalesForecastReportViewModel model = new SalesForecastReportViewModel()
+                {
+                    CurrentDate = DateTime.Now.ToLocalTime(),
+                    SearchDTO = new SalesForecastSummarySearchDTO(currentDate),
+                    SummaryList = sfq.GetSalesForecastSummaryList(currentDate, eq.GetLocationList()),
+                    ColumnTotalList = sfq.GetWeeklyReportColumnTotals(currentDate),
+                    EndingPeriod = theWeek.LastOrDefault(),
+                    StartingPeriod = theWeek.FirstOrDefault()
+                };
+
+                return View("SalesForecastReport", model);
+            }
+
+        }
+
+        [HttpPost]
+        [AuthorizeGroup(ROLES.GeneralManagerGroup)]
+        public ActionResult SalesForecastReport(SalesForecastReportViewModel model)
+        {
+            List<DateTime> theWeek = sfq.GetCurrentWeek(model.SearchDTO.DesiredDate);
+
+            model.CurrentDate = DateTime.Now.ToLocalTime();
+            model.SearchDTO = new SalesForecastSummarySearchDTO(model.SearchDTO.DesiredDate);
+            model.SummaryList = sfq.GetSalesForecastSummaryList(model.SearchDTO.DesiredDate, eq.GetLocationList());
+            model.ColumnTotalList = sfq.GetWeeklyReportColumnTotals(model.SearchDTO.DesiredDate);
+            model.EndingPeriod = theWeek.LastOrDefault();
+            model.StartingPeriod = theWeek.FirstOrDefault();
+
+            return View("SalesForecastReport", model);
+
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+                e_db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }
