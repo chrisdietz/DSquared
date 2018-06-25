@@ -44,6 +44,7 @@ namespace D_Squared.Domain.TransferObjects
         public DateTime DateOfEntry { get; set; }
 
         [Display(Name = "Sales Forecast")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
         public decimal ForecastAmount { get; set; }
 
         [Display(Name = "Last Year's Sales")]

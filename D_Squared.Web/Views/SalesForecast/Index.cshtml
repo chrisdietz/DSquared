@@ -74,16 +74,16 @@
                                 @Model.Weekdays[i].DateOfEntry.ToShortDateString()
                             </td>
                             <td>
-                                @Model.Weekdays[i].PriorYearSales.ToString("#,##0")
+                                @Model.Weekdays[i].PriorYearSales.ToString("C0")
                             </td>
                             <td>
-                                @Model.Weekdays[i].AverageSalesPerMonth.ToString("#,##0")
+                                @Model.Weekdays[i].AverageSalesPerMonth.ToString("C0")
                             </td>
                             <td>
                                 @Html.EditorFor(model => model.Weekdays[i].ForecastAmount, new { htmlAttributes = new { @class = "form-control", @type = "number", @min = "0", @step = "0.01" } })
                             </td>
                             <td>
-                                @Model.Weekdays[i].LaborForecast.ToString("#,##0")
+                                @Model.Weekdays[i].LaborForecast.ToString("C0")
                             </td>
                         </tr>
                     }
