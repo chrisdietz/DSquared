@@ -60,9 +60,9 @@ namespace D_Squared.Web.Controllers
         }
 
         [HttpPost]
-        [FormAction]
         [ValidateAntiForgeryToken]
         [PreventDuplicateRequest]
+        [MultipleButton(Name = "action", Argument = "Index")]
         public ActionResult Index(SalesForecastViewModel model)
         {
             try
@@ -74,6 +74,38 @@ namespace D_Squared.Web.Controllers
                 {
                     sfq.AddOrUpdateSalesForecasts(model.Weekdays, storeNumber, User.Identity.Name);
                     Success("The Sales Forecasts for Restaurant: <u>" + model.EmployeeInfo.StoreNumber + "</u> have been saved successfully. You may close this window");
+                }
+                else
+                {
+                    Warning("Double Request detected; only the first submission was captured");
+                    RedirectToAction("Index");
+                }
+            }
+            catch
+            {
+                Warning("Error occurred. If this error persists, please contact an administrator.");
+
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [PreventDuplicateRequest]
+        [MultipleButton(Name = "action", Argument = "Refresh")]
+        public ActionResult Refresh(SalesForecastViewModel model)
+        {
+            try
+            {
+                string userName = User.TruncatedName;
+                string storeNumber = eq.GetStoreNumber(userName);
+
+                if (ModelState.IsValid)
+                {
+                    sfq.RefreshSalesForecastData(model.Weekdays, storeNumber, User.Identity.Name);
+                    Success("The Sales Forecasts for Restaurant: <u>" + model.EmployeeInfo.StoreNumber + "</u> have been refreshed and saved successfully. You may close this window");
                 }
                 else
                 {

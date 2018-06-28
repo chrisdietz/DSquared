@@ -15,6 +15,16 @@ namespace D_Squared.Domain.TransferObjects
 
         }
 
+        public SalesForecastDTO(SalesForecast salesForecast)
+        {
+            DayOfWeek = salesForecast.BusinessDate.DayOfWeek.ToString();
+            DateOfEntry = salesForecast.BusinessDate;
+            ForecastAmount = salesForecast.ForecastAmount;
+            PriorYearSales = salesForecast.ActualPriorYear;
+            AverageSalesPerMonth = salesForecast.AvgPrior4Weeks;
+            LaborForecast = salesForecast.LaborForecast;
+        }
+
         public SalesForecastDTO(DateTime newSalesForecastDate, decimal priorSales, decimal averageSales, decimal laborForecast)
         {
             DayOfWeek = newSalesForecastDate.DayOfWeek.ToString();

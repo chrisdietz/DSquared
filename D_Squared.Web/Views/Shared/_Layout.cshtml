@@ -7,6 +7,8 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
+    <link href="~/Content/css/select2.min.css" rel="stylesheet" />
+    <link href="~/Content/select2-bootstrap.css" rel="stylesheet" />
     <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
     <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
 
@@ -15,6 +17,7 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
 
+    <script src="~/Scripts/select2.min.js" type="text/javascript"></script>
     <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
 
     <script type="text/javascript">
@@ -48,6 +51,9 @@
                     </li>
                     <li>
                         @Html.ActionLink("Sales Forecasts", "Index", "SalesForecast", null, new { @class = "custom-navbar" })
+                    </li>
+                    <li>
+                        @Html.ActionLink("Redbook", "Entry", "Redbook", null, new { @class = "custom-navbar" })
                     </li>
                     @if (User.IsGeneralManager())
                     {

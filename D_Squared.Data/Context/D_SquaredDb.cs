@@ -23,6 +23,8 @@ namespace D_Squared.Data.Context
 
         public DbSet<SalesForecast> SalesForecasts { get; set; }
 
+        public DbSet<RedbookEntry> RedbookEntries { get; set; }
+
         public DbSet<HelpDocument> HelpDocuments { get; set; }
 
         public DbSet<Code> Codes { get; set; }

@@ -29,6 +29,20 @@ namespace D_Squared.Data.Queries
             return db.SalesForecasts.Any(sf => sf.BusinessDate == date && sf.StoreNumber == storeNumber);
         }
 
+        public SalesForecastDTO GetLiveSalesForecastDTO(DateTime date, string storeNumber)
+        {
+            SalesForecastDTO dto = new SalesForecastDTO();
+
+            if (CheckForExistingSalesForecastByDate(date, storeNumber))
+            {
+                dto = LiveUpdateSalesForecastDTO(new SalesForecastDTO(GetSalesForecastRecordsByDate(date, storeNumber)), storeNumber);
+            } 
+            else
+                dto = new SalesForecastDTO(date, fdq.GetSalesPriorYear(storeNumber, date), fdq.GetAverageSalesPerMonth(storeNumber, date), fdq.GetLaborForecast(storeNumber, date));
+
+            return dto;
+        }
+
         public SalesForecast GetSalesForecastRecordsByDate(DateTime date, string storeNumber)
         {
             return db.SalesForecasts.Where(sf => sf.BusinessDate == date && sf.StoreNumber == storeNumber).FirstOrDefault();
@@ -82,6 +96,66 @@ namespace D_Squared.Data.Queries
                 {
                     SalesForecast entry = GetSalesForecastRecordsByDate(forecast.DateOfEntry, storeNumber);
                     entry.ForecastAmount = forecast.ForecastAmount;
+                    entry.UpdatedBy = userName;
+                    entry.UpdatedDate = DateTime.Now;
+                }
+                else
+                {
+                    SalesForecast entry = new SalesForecast()
+                    {
+                        BusinessDate = forecast.DateOfEntry,
+                        StoreNumber = storeNumber,
+                        ForecastAmount = forecast.ForecastAmount,
+                        ActualPriorYear = forecast.PriorYearSales,
+                        AvgPrior4Weeks = forecast.AverageSalesPerMonth,
+                        LaborForecast = forecast.LaborForecast,
+                        CreatedBy = userName,
+                        CreatedDate = DateTime.Now,
+                        UpdatedBy = userName,
+                        UpdatedDate = DateTime.Now
+                    };
+
+                    db.SalesForecasts.Add(entry);
+                }
+            }
+
+            db.SaveChanges();
+        }
+
+        public List<SalesForecastDTO> LiveUpdateSalesForecastDTOs(List<SalesForecastDTO> list, string storeNumber)
+        {
+            foreach (var record in list)
+            {
+                record.AverageSalesPerMonth = fdq.GetAverageSalesPerMonth(storeNumber, record.DateOfEntry);
+                record.PriorYearSales = fdq.GetSalesPriorYear(storeNumber, record.DateOfEntry);
+                record.LaborForecast = fdq.GetLaborForecast(storeNumber, record.DateOfEntry);
+            }
+
+            return list;
+        }
+
+        public SalesForecastDTO LiveUpdateSalesForecastDTO(SalesForecastDTO dto, string storeNumber)
+        {
+            dto.AverageSalesPerMonth = fdq.GetAverageSalesPerMonth(storeNumber, dto.DateOfEntry);
+            dto.PriorYearSales = fdq.GetSalesPriorYear(storeNumber, dto.DateOfEntry);
+            dto.LaborForecast = fdq.GetLaborForecast(storeNumber, dto.DateOfEntry);
+
+            return dto;
+        }
+
+        public void RefreshSalesForecastData(List<SalesForecastDTO> forecasts, string storeNumber, string userName)
+        {
+            forecasts = LiveUpdateSalesForecastDTOs(forecasts, storeNumber);
+
+            foreach (var forecast in forecasts)
+            {
+                if (CheckForExistingSalesForecastByDate(forecast.DateOfEntry, storeNumber))
+                {
+                    SalesForecast entry = GetSalesForecastRecordsByDate(forecast.DateOfEntry, storeNumber);
+                    entry.ForecastAmount = forecast.ForecastAmount;
+                    entry.ActualPriorYear = forecast.PriorYearSales;
+                    entry.AvgPrior4Weeks = forecast.AverageSalesPerMonth;
+                    entry.LaborForecast = forecast.LaborForecast;
                     entry.UpdatedBy = userName;
                     entry.UpdatedDate = DateTime.Now;
                 }

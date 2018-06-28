@@ -94,6 +94,7 @@
     <Compile Include="Queries\CodeQueries.cs" />
     <Compile Include="Queries\DailyDepositQueries.cs" />
     <Compile Include="Queries\HelpDocumentQueries.cs" />
+    <Compile Include="Queries\RedbookEntryQueries.cs" />
     <Compile Include="Queries\SalesForecastQueries.cs" />
   </ItemGroup>
   <ItemGroup>

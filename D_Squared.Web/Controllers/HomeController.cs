@@ -27,6 +27,7 @@ namespace D_Squared.Web.Controllers
             return RedirectToAction("Index", "DailyDeposit");
         }
 
+        //refactor to use a helpdocuments query class function instead of direct db call
         public ActionResult ModalDetails(string controller, string action)
         {
             HelpDocument helpDocument = new HelpDocument();

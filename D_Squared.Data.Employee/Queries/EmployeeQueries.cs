@@ -44,5 +44,10 @@ namespace D_Squared.Data.Millers.Queries
         {
             return db.Employees.Select(e => e.Location).Distinct().ToList();
         }
+
+        public List<Employee> GetManagersForLocation(string storeNumber)
+        {
+            return db.Employees.Where(e => e.Location == storeNumber).ToList();
+        }
     }
 }

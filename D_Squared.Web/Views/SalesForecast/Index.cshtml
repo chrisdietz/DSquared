@@ -18,7 +18,7 @@
 </div>
 
 
-@using (Html.BeginForm("Index", "SalesForecast", FormMethod.Post))
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
@@ -34,7 +34,7 @@
                     {
                         @Html.ActionLink("Reports", "SalesForecastReport", "SalesForecast", null, new { @class = "btn btn-primary btn-sm", @style = "float: right;" })
                     }
-                    
+                    <input type="submit" value="Refresh" name="action:Refresh" class="btn btn-primary" />
                 </caption>
                 <thead>
                     <tr>
@@ -115,7 +115,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <input type="submit" value="Save" name="Index" class="btn btn-primary" />
+                    <input type="submit" value="Save" name="action:Index" class="btn btn-primary" />
                 </div>
             </div>
         </div>

@@ -56,3 +56,11 @@ a.custom-navbar:hover {
         color: #fff;
         background-color: #501617;
     }
+
+.text-area-wrap {
+    width: 100%;
+    height: 100%;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
