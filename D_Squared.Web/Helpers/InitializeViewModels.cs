@@ -32,6 +32,21 @@ namespace D_Squared.Web.Helpers
             return Enumerable.Range(0, 7).Select(i => DateTime.Now.ToLocalTime().Date.AddDays(-i).ToShortDateString()).ToList();
         }
 
+        public List<string> GetCurrentWeek(DateTime selectedDay)
+        {
+            int currentDayOfWeek = (int)selectedDay.DayOfWeek;
+            DateTime sunday = selectedDay.AddDays(-currentDayOfWeek);
+            DateTime monday = sunday.AddDays(1);
+
+            if (currentDayOfWeek == 0)
+            {
+                monday = monday.AddDays(-7);
+            }
+            var dates = Enumerable.Range(0, 7).Select(days => monday.AddDays(days).ToShortDateString()).ToList();
+
+            return dates;
+        }
+
         public List<EventDTO> CreateEventDtos(List<string> eventCodeList, List<string> selectedEvents)
         {
             List<EventDTO> eventPairs = new List<EventDTO>();
@@ -83,7 +98,8 @@ namespace D_Squared.Web.Helpers
             RedbookEntryBaseViewModel model = new RedbookEntryBaseViewModel()
             {
                 SelectedDateString = selectedDate,
-                DateSelectList = GetPastWeek().ToSelectList(currentDate.ToShortDateString()),
+                DateSelectList = GetCurrentWeek(currentDate).ToSelectList(currentDate.ToShortDateString()),
+                EndingPeriod = GetCurrentWeek(currentDate).Last(),
                 SelectedLocation = storeNumber,
                 LocationSelectList = eq.GetLocationList().ToSelectList(storeNumber),
                 EmployeeInfo = eq.GetEmployeeInfo(userName),

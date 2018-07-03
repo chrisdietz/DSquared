@@ -8,11 +8,11 @@
         });
 
         $(".weatherSelect").select2({
-            width: '40%'
+            width: '100%'
         });
 
         $(".managerSelect").select2({
-            width: '40%'
+            width: '100%'
         });
 
         $(".locationSelect").select2({

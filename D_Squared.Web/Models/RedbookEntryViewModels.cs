@@ -40,10 +40,10 @@ namespace D_Squared.Web.Models
         [Display(Name = "PM Weather")]
         public SelectList WeatherSelectListPM { get; set; }
 
-        [Display(Name = "Manager on Duty")]
+        [Display(Name = "AM Manager")]
         public List<SelectListItem> ManagerSelectListAM { get; set; }
 
-        [Display(Name = "Manager on Duty")]
+        [Display(Name = "PM Manager")]
         public List<SelectListItem> ManagerSelectListPM { get; set; }
 
         public RedbookEntry RedbookEntry { get; set; }
@@ -53,6 +53,8 @@ namespace D_Squared.Web.Models
         public EmployeeDTO EmployeeInfo { get; set; }
 
         public List<EventDTO> EventDTOs { get; set; }
+
+        public string EndingPeriod { get; set; }
     }
 
     public class RedbookEntryDetailPartialViewModel
