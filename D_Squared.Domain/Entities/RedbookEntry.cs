@@ -37,6 +37,7 @@ namespace D_Squared.Domain.Entities
         [Display(Name = "Review of the shift")]
         public string ManagerNotePM { get; set; }
 
+        //public bool IsEditable { get; set; }
 
         #region AuditFields
         [ScaffoldColumn(false)]
@@ -59,5 +60,9 @@ namespace D_Squared.Domain.Entities
         [StringLength(50)]
         public string CreatedBy { get; set; }
         #endregion
+
+        //public virtual ICollection<CompetitiveEvent> CompetitiveEvents { get; set; }
+
+        //public virtual ICollection<RedbookSalesEvent> SalesEvents { get; set; }
     }
 }

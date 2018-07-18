@@ -1,6 +1,7 @@
 ﻿using D_Squared.Domain.TransferObjects;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 
@@ -19,6 +20,7 @@ namespace D_Squared.Web.Models
             AccessTime = accessTime;
             EndingPeriod = weekdays.Last().DateOfEntry;
             EmployeeInfo = employeeDTO;
+            TicketURL = ConfigurationManager.AppSettings["SalesForecastTicketURL"];
         }
 
         public DateTime EndingPeriod { get; set; }
@@ -28,5 +30,7 @@ namespace D_Squared.Web.Models
         public List<SalesForecastDTO> Weekdays { get; set; }
 
         public EmployeeDTO EmployeeInfo { get; set; }
+
+        public string TicketURL { get; set; }
     }
 }

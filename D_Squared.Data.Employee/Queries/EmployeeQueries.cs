@@ -47,7 +47,7 @@ namespace D_Squared.Data.Millers.Queries
 
         public List<Employee> GetManagersForLocation(string storeNumber)
         {
-            return db.Employees.Where(e => e.Location == storeNumber).ToList();
+            return db.Employees.Where(e => e.Location == storeNumber && e.EmployeeId != "9999").ToList();
         }
     }
 }

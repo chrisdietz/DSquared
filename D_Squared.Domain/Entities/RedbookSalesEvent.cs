@@ -1,31 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace D_Squared.Domain.Entities
 {
-    public class SalesForecast
+    public class RedbookSalesEvent
     {
         public int Id { get; set; }
 
-        public DateTime BusinessDate { get; set; }
+        [Required]
+        [ForeignKey("RedbookEntry")]
+        public int RedbookEntryId { get; set; }
 
-        [StringLength(3)]
-        public string StoreNumber { get; set; }
-
-        public decimal ForecastAmount { get; set; }
-
-        public decimal ActualPriorYear { get; set; }
-
-        public decimal ActualPrior2Years { get; set; }
-
-        public decimal AvgPrior4Weeks { get; set; }
-
-        public decimal LaborForecast { get; set; }
-
+        [Required]
+        [StringLength(100)]
+        public string Event { get; set; }
 
         #region AuditFields
         [ScaffoldColumn(false)]

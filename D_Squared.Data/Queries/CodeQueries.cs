@@ -21,7 +21,7 @@ namespace D_Squared.Data.Queries
             return db.Codes.OrderBy(c => c.CodeCategory).Select(c => c.CodeCategory).Distinct().ToList();
         }
 
-        public List<string> GetDistrinctListByCodeCategory(string category)
+        public List<string> GetDistinctListByCodeCategory(string category)
         {
             return db.Codes.Where(c => c.CodeCategory == category).OrderBy(c => c.CodeValue).Select(c => c.CodeValue).Distinct().ToList();
         }

@@ -57,10 +57,13 @@
                     <li>
                         @Html.ActionLink("Sales Forecasts", "Index", "SalesForecast", null, new { @class = "custom-navbar" })
                     </li>
-                    <li>
-                        @Html.ActionLink("Redbook", "Entry", "Redbook", null, new { @class = "custom-navbar" })
-                    </li>
-                    @if (User.IsGeneralManager())
+                    @if (User.IsRedbookManager())
+                    {
+                        <li>
+                            @Html.ActionLink("Redbook", "Entry", "Redbook", null, new { @class = "custom-navbar" })
+                        </li>
+                    }
+                    @if (User.IsDSquaredAdmin())
                     {
                         <li class="dropdown">
                             <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">

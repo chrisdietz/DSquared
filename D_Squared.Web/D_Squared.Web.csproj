@@ -192,16 +192,18 @@
     <Compile Include="Helpers\MultipleSubmitExtension.cs" />
     <Compile Include="Helpers\QueryExtensions.cs" />
     <Compile Include="Helpers\WebConstants.cs" />
+    <Compile Include="Models\CompetitiveEventViewModels.cs" />
     <Compile Include="Models\DailyDepositViewModel.cs" />
     <Compile Include="Models\DepositReportViewModel.cs" />
     <Compile Include="Models\ErrorViewModel.cs" />
     <Compile Include="Models\HelpDocumentViewModel.cs" />
-    <Compile Include="Models\RedbookEntryViewModels.cs" />
+    <Compile Include="Models\RedbookViewModels.cs" />
     <Compile Include="Models\SalesForecastReportViewModel.cs" />
     <Compile Include="Models\SalesForecastViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Scripts\Redbook\CreateInit.js" />
     <Content Include="App_Scripts\Redbook\EntryInit.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -593,6 +595,7 @@
     <Content Include="Views\Home\_DetailModal.cshtml" />
     <Content Include="Views\SalesForecast\SalesForecastReport.cshtml" />
     <Content Include="Views\Redbook\Entry.cshtml" />
+    <Content Include="Views\Redbook\_CompetitiveEventCreate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -38,7 +38,7 @@ namespace D_Squared.Data.Queries
                 dto = LiveUpdateSalesForecastDTO(new SalesForecastDTO(GetSalesForecastRecordsByDate(date, storeNumber)), storeNumber);
             } 
             else
-                dto = new SalesForecastDTO(date, fdq.GetSalesPriorYear(storeNumber, date), fdq.GetAverageSalesPerMonth(storeNumber, date), fdq.GetLaborForecast(storeNumber, date));
+                dto = new SalesForecastDTO(date, fdq.GetSalesPriorYear(storeNumber, date), fdq.GetSalesPriorTwoYears(storeNumber, date), fdq.GetAverageSalesPerMonth(storeNumber, date), fdq.GetLaborForecast(storeNumber, date));
 
             return dto;
         }
@@ -80,7 +80,7 @@ namespace D_Squared.Data.Queries
             foreach(var day in dates)
             {
                 if (!CheckForExistingSalesForecastByDate(day, storeNumber))
-                    theList.Add(new SalesForecastDTO(day, fdq.GetSalesPriorYear(storeNumber, day), fdq.GetAverageSalesPerMonth(storeNumber, day), fdq.GetLaborForecast(storeNumber, day)));
+                    theList.Add(new SalesForecastDTO(day, fdq.GetSalesPriorYear(storeNumber, day), fdq.GetSalesPriorTwoYears(storeNumber, day), fdq.GetAverageSalesPerMonth(storeNumber, day), fdq.GetLaborForecast(storeNumber, day)));
                 else
                     theList.Add(new SalesForecastDTO(GetSalesForecastsByDate(day, storeNumber)));
             }
@@ -107,6 +107,7 @@ namespace D_Squared.Data.Queries
                         StoreNumber = storeNumber,
                         ForecastAmount = forecast.ForecastAmount,
                         ActualPriorYear = forecast.PriorYearSales,
+                        ActualPrior2Years = forecast.Prior2YearSales,
                         AvgPrior4Weeks = forecast.AverageSalesPerMonth,
                         LaborForecast = forecast.LaborForecast,
                         CreatedBy = userName,
@@ -128,6 +129,7 @@ namespace D_Squared.Data.Queries
             {
                 record.AverageSalesPerMonth = fdq.GetAverageSalesPerMonth(storeNumber, record.DateOfEntry);
                 record.PriorYearSales = fdq.GetSalesPriorYear(storeNumber, record.DateOfEntry);
+                record.Prior2YearSales = fdq.GetSalesPriorTwoYears(storeNumber, record.DateOfEntry);
                 record.LaborForecast = fdq.GetLaborForecast(storeNumber, record.DateOfEntry);
             }
 
@@ -138,6 +140,7 @@ namespace D_Squared.Data.Queries
         {
             dto.AverageSalesPerMonth = fdq.GetAverageSalesPerMonth(storeNumber, dto.DateOfEntry);
             dto.PriorYearSales = fdq.GetSalesPriorYear(storeNumber, dto.DateOfEntry);
+            dto.Prior2YearSales = fdq.GetSalesPriorTwoYears(storeNumber, dto.DateOfEntry);
             dto.LaborForecast = fdq.GetLaborForecast(storeNumber, dto.DateOfEntry);
 
             return dto;
@@ -154,6 +157,7 @@ namespace D_Squared.Data.Queries
                     SalesForecast entry = GetSalesForecastRecordsByDate(forecast.DateOfEntry, storeNumber);
                     entry.ForecastAmount = forecast.ForecastAmount;
                     entry.ActualPriorYear = forecast.PriorYearSales;
+                    entry.ActualPrior2Years = forecast.Prior2YearSales;
                     entry.AvgPrior4Weeks = forecast.AverageSalesPerMonth;
                     entry.LaborForecast = forecast.LaborForecast;
                     entry.UpdatedBy = userName;
@@ -167,6 +171,7 @@ namespace D_Squared.Data.Queries
                         StoreNumber = storeNumber,
                         ForecastAmount = forecast.ForecastAmount,
                         ActualPriorYear = forecast.PriorYearSales,
+                        ActualPrior2Years = forecast.Prior2YearSales,
                         AvgPrior4Weeks = forecast.AverageSalesPerMonth,
                         LaborForecast = forecast.LaborForecast,
                         CreatedBy = userName,

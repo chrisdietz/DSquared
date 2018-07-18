@@ -21,15 +21,17 @@ namespace D_Squared.Domain.TransferObjects
             DateOfEntry = salesForecast.BusinessDate;
             ForecastAmount = salesForecast.ForecastAmount;
             PriorYearSales = salesForecast.ActualPriorYear;
+            Prior2YearSales = salesForecast.ActualPrior2Years;
             AverageSalesPerMonth = salesForecast.AvgPrior4Weeks;
             LaborForecast = salesForecast.LaborForecast;
         }
 
-        public SalesForecastDTO(DateTime newSalesForecastDate, decimal priorSales, decimal averageSales, decimal laborForecast)
+        public SalesForecastDTO(DateTime newSalesForecastDate, decimal priorSales, decimal prior2Sales, decimal averageSales, decimal laborForecast)
         {
             DayOfWeek = newSalesForecastDate.DayOfWeek.ToString();
             DateOfEntry = newSalesForecastDate;
             PriorYearSales = priorSales;
+            Prior2YearSales = prior2Sales;
             AverageSalesPerMonth = averageSales;
             LaborForecast = laborForecast;
         }
@@ -42,6 +44,7 @@ namespace D_Squared.Domain.TransferObjects
                 DateOfEntry = forecast.BusinessDate;
                 ForecastAmount = forecast.ForecastAmount;
                 PriorYearSales = forecast.ActualPriorYear;
+                Prior2YearSales = forecast.ActualPrior2Years;
                 AverageSalesPerMonth = forecast.AvgPrior4Weeks;
                 LaborForecast = forecast.LaborForecast;
             }
@@ -57,10 +60,13 @@ namespace D_Squared.Domain.TransferObjects
         //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
         public decimal ForecastAmount { get; set; }
 
-        [Display(Name = "Last Year's Sales")]
+        [Display(Name = "FY17 Sales")]
         public decimal PriorYearSales { get; set; }
 
-        [Display(Name = "Monthly Sales Average")]
+        [Display(Name = "FY16 Sales")]
+        public decimal Prior2YearSales { get; set; }
+
+        [Display(Name = "4 Week Average")]
         public decimal AverageSalesPerMonth { get; set; }
 
         [Display(Name = "Labor Forecast")]

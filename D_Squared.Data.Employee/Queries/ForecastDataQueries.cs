@@ -18,24 +18,32 @@ namespace D_Squared.Data.Millers.Queries
 
         public decimal GetSalesPriorYear(string storeNumber, DateTime day)
         {
-            if (db.ForecastData.Any(fd => fd.StoreNumber == storeNumber && fd.BusinessDate == day))
-                return db.ForecastData.Where(fd => fd.StoreNumber == storeNumber && fd.BusinessDate == day).FirstOrDefault().ActualPriorYear;
+            if (db.SalesForecasts.Any(fd => fd.StoreNumber == storeNumber && fd.BusinessDate == day))
+                return db.SalesForecasts.Where(fd => fd.StoreNumber == storeNumber && fd.BusinessDate == day).FirstOrDefault().ActualPriorYear;
+            else
+                return new decimal(0);
+        }
+
+        public decimal GetSalesPriorTwoYears(string storeNumber, DateTime day)
+        {
+            if (db.SalesForecasts.Any(fd => fd.StoreNumber == storeNumber && fd.BusinessDate == day))
+                return db.SalesForecasts.Where(fd => fd.StoreNumber == storeNumber && fd.BusinessDate == day).FirstOrDefault().ActualPrior2Years;
             else
                 return new decimal(0);
         }
 
         public decimal GetAverageSalesPerMonth(string storeNumber, DateTime day)
         {
-            if (db.ForecastData.Any(fd => fd.StoreNumber == storeNumber && fd.BusinessDate == day))
-                return db.ForecastData.Where(fd => fd.StoreNumber == storeNumber && fd.BusinessDate == day).FirstOrDefault().AvgPrior4Weeks;
+            if (db.SalesForecasts.Any(fd => fd.StoreNumber == storeNumber && fd.BusinessDate == day))
+                return db.SalesForecasts.Where(fd => fd.StoreNumber == storeNumber && fd.BusinessDate == day).FirstOrDefault().AvgPrior4Weeks;
             else
                 return new decimal(0);  
         }
 
         public decimal GetLaborForecast(string storeNumber, DateTime day)
         {
-            if (db.ForecastData.Any(fd => fd.StoreNumber == storeNumber && fd.BusinessDate == day))
-                return db.ForecastData.Where(fd => fd.StoreNumber == storeNumber && fd.BusinessDate == day).FirstOrDefault().LaborForecast;
+            if (db.SalesForecasts.Any(fd => fd.StoreNumber == storeNumber && fd.BusinessDate == day))
+                return db.SalesForecasts.Where(fd => fd.StoreNumber == storeNumber && fd.BusinessDate == day).FirstOrDefault().LaborForecast;
             else
                 return new decimal(0);       
         }

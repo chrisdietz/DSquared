@@ -1,6 +1,7 @@
 ﻿using D_Squared.Domain.TransferObjects;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 
 namespace D_Squared.Web.Models
@@ -19,6 +20,7 @@ namespace D_Squared.Web.Models
             EndingPeriod = weekdays.Last().DateOfEntry;
             EmployeeInfo = employeeDTO;
             CurrentWeekFlag = currentWeekFlag;
+            TicketURL = ConfigurationManager.AppSettings["DailyDepositTicketURL"];
         }
 
         public DateTime EndingPeriod { get; set; }
@@ -30,5 +32,7 @@ namespace D_Squared.Web.Models
         public EmployeeDTO EmployeeInfo { get; set; }
 
         public bool CurrentWeekFlag { get; set; }
+
+        public string TicketURL { get; set; }
     }
 }

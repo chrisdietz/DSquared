@@ -18,6 +18,8 @@ namespace D_Squared.Data.Millers.Context
 
         public DbSet<ForecastDatum> ForecastData { get; set; }
 
+        public DbSet<SalesForecast> SalesForecasts { get; set; }
+
         public static ForecastDataDbContext Create()
         {
             return new ForecastDataDbContext();
@@ -26,6 +28,8 @@ namespace D_Squared.Data.Millers.Context
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ForecastDatum>().ToTable("ForecastData");
+            modelBuilder.Entity<SalesForecast>().ToTable("SalesForecasts");
+
             base.OnModelCreating(modelBuilder);
         }
     }

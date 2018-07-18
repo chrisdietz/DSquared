@@ -26,8 +26,17 @@
 @using (Html.BeginForm("Entry", "Redbook", FormMethod.Post, htmlAttributes: new { @id = "entryForm" }))
 {
     @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.SelectedLocation)
     <input id="hiddenRefresh" type="hidden">
 
+    <div class="row">
+        <div class="col-md-12">
+            <a data-toggle="modal" href="#helpModal" class="btn btn-primary btn-sm" style="float:right; margin-left: 10px;"><i class="fa fa-question-circle" aria-hidden="true"></i></a>
+        </div>
+        <br />
+        <br />
+    </div>
+    
     <div class="row">
         <div class="col-md-4">
             <div class="panel panel-default firstRowPanel">
@@ -40,7 +49,7 @@
                         @Html.DropDownListFor(model => model.SelectedDateString, Model.DateSelectList, htmlAttributes: new { @class = "refreshOnChange dateSelect form-control select2-single select2-hidden-accessible" })
                         @Html.ValidationMessageFor(model => model.DateSelectList, string.Empty, new { @class = "text-danger" })
                     </div>
-                    @if (User.IsGeneralManager())
+                    @*@if (User.IsGeneralManager())
                     {
                         <div class="form-group">
                             @Html.LabelFor(model => model.LocationSelectList, htmlAttributes: new { @class = "control-label" })
@@ -50,15 +59,14 @@
                     }
                     else
                     {
-                        @Html.HiddenFor(model => model.SelectedLocation)
+                        
                         <div class="form-group">
                             @Html.LabelFor(model => model.LocationSelectList, htmlAttributes: new { @class = "control-label" })
                             @Html.DropDownListFor(model => model.SelectedLocation, Model.LocationSelectList, htmlAttributes: new { @class = "refreshOnChange locationSelect form-control select2-single select2-hidden-accessible", @disabled = "disabled" })
                             @Html.ValidationMessageFor(model => model.LocationSelectList, string.Empty, new { @class = "text-danger" })
                         </div>
-                    }
+                    }*@
                     
-
                     <div class="form-group">
                         <input value="View Last Year Redbook" class="btn btn-primary" disabled="disabled" />
                     </div>
@@ -77,28 +85,35 @@
                             @Html.DisplayNameFor(model => model.SalesForecastDTO.ForecastAmount)
                         </dt>
                         <dd>
-                            @Html.DisplayFor(model => model.SalesForecastDTO.ForecastAmount)
+                            @Model.SalesForecastDTO.ForecastAmount.ToString("C0")
                         </dd>
 
                         <dt>
                             @Html.DisplayNameFor(model => model.SalesForecastDTO.PriorYearSales)
                         </dt>
                         <dd>
-                            @Html.DisplayFor(model => model.SalesForecastDTO.PriorYearSales)
+                            @Model.SalesForecastDTO.PriorYearSales.ToString("C0")
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.SalesForecastDTO.Prior2YearSales)
+                        </dt>
+                        <dd>
+                            @Model.SalesForecastDTO.Prior2YearSales.ToString("C0")
                         </dd>
 
                         <dt>
                             @Html.DisplayNameFor(model => model.SalesForecastDTO.AverageSalesPerMonth)
                         </dt>
                         <dd>
-                            @Html.DisplayFor(model => model.SalesForecastDTO.AverageSalesPerMonth)
+                            @Model.SalesForecastDTO.AverageSalesPerMonth.ToString("C0")
                         </dd>
 
                         <dt>
                             @Html.DisplayNameFor(model => model.SalesForecastDTO.LaborForecast)
                         </dt>
                         <dd>
-                            @Html.DisplayFor(model => model.SalesForecastDTO.LaborForecast)
+                            @Model.SalesForecastDTO.LaborForecast.ToString("C0")
                         </dd>
                     </dl>
                 </div>
@@ -176,10 +191,26 @@
             </div>
         </div>    
     </div>
-
-    <div class="row text-center">
+    <div class="row">
         <div class="col-md-12">
-            <a data-toggle="modal" href="#myModal" class="btn btn-primary btn-lg">Save Changes</a>
+            <div class="panel panel-default">
+                <div class="panel-heading lead" style="margin-bottom:0px;">
+                    Competitive Events
+                </div>
+                <div class="panel-body" style="overflow-y: scroll; height: 225px">
+                    <table class="table table-striped table-bordered table-condensed table-hover table-responsive">
+                        <caption>
+                            <strong>Total Competitive Events: </strong>
+                        </caption>
+                        <thead>
+
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>     
         </div>
     </div>
 
@@ -197,7 +228,7 @@
                     <br />
                     <br />
                     <br />
-                    If this is not accurate, please contact the IT Service Desk at <br /> 407-581-3366 or by clicking on this link: <a href="https://itservice.millersalehouse.com/Home/Makeform?BMEID=22097932-F546-3F0D-FD28-BF8A178E873C">Submit an IT Support Request</a>
+                    If this is not accurate, please contact the IT Service Desk at <br /> 407-581-3366 or by clicking on this link: <a href="@Model.TicketURL">Submit an IT Support Request</a>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -206,4 +237,16 @@
             </div>
         </div>
     </div>
+
+    <div class="row text-center">
+        <div class="col-md-12">
+            <a data-toggle="modal" href="#myModal" class="btn btn-primary btn-lg">Save Changes</a>
+        </div>
+    </div>
 }
+
+<div id="createPartial">
+</div>
+
+<!--must explicitly define the controller and action-->
+@{Html.RenderAction("ModalDetails", "Home", new { @controller = "Redbook", @action = "Entry" });}

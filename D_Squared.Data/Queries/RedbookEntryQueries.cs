@@ -1,5 +1,6 @@
 ﻿using D_Squared.Data.Context;
 using D_Squared.Domain.Entities;
+using D_Squared.Domain.TransferObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,16 +34,18 @@ namespace D_Squared.Data.Queries
             {
                 RedbookEntry exisitingRecord = GetRedbookEntry(redbookEntry.BusinessDate, redbookEntry.LocationId);
 
-                exisitingRecord.SelectedEvents = redbookEntry.SelectedEvents;
                 exisitingRecord.SelectedWeatherAM = redbookEntry.SelectedWeatherAM;
                 exisitingRecord.SelectedWeatherPM = redbookEntry.SelectedWeatherPM;
                 exisitingRecord.DailyNotes = redbookEntry.DailyNotes;
-                exisitingRecord.ManagerOnDutyAM = redbookEntry.ManagerOnDutyAM;
-                exisitingRecord.ManagerNoteAM = redbookEntry.ManagerNoteAM;
+                exisitingRecord.ManagerOnDutyAM = redbookEntry.ManagerOnDutyAM;         
                 exisitingRecord.ManagerOnDutyPM = redbookEntry.ManagerOnDutyPM;
-                exisitingRecord.ManagerNotePM = redbookEntry.ManagerNotePM;
                 exisitingRecord.UpdatedDate = DateTime.Now;
                 exisitingRecord.UpdatedBy = currentUser;
+                exisitingRecord.SelectedEvents = redbookEntry.SelectedEvents;
+
+
+                //exisitingRecord.ManagerNotePM = redbookEntry.ManagerNotePM;
+                //exisitingRecord.ManagerNoteAM = redbookEntry.ManagerNoteAM;
             }
             else
             {

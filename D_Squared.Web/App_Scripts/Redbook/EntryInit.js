@@ -15,9 +15,9 @@
             width: '100%'
         });
 
-        $(".locationSelect").select2({
-            width: '40%'
-        });
+        //$(".locationSelect").select2({
+        //    width: '40%'
+        //});
 
         //function to prevent page sliding when scrolling inside event check list
         $.fn.scrollGuard2 = function () {
@@ -50,7 +50,7 @@
         });
     };
 
-    //events out panel heights for passed row based on largest height in row
+    //evens out panel heights for passed row based on largest height in row
     var heightAdjust = function (x) {
         var heights = $(x).map(function () {
             return $(this).height();

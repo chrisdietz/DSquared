@@ -54,12 +54,18 @@ namespace D_Squared.Web.Models
 
         public List<EventDTO> EventDTOs { get; set; }
 
+        public List<CompetitiveEvent> CompetitiveEvents { get; set; }
+
+        public CompetitiveEventCreateEditViewModel CompetitiveEventCreateEditViewModel { get; set; }
+
         public string EndingPeriod { get; set; }
+
+        public string TicketURL { get; set; }
     }
 
     public class RedbookEntryDetailPartialViewModel
     {
-        //for previous year pop up
+        //for previous year pop up and search page
     }
 
     public class RedbookEntrySearchViewModel

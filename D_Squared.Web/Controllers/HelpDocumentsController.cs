@@ -55,8 +55,8 @@ namespace D_Squared.Web.Controllers
         {
             HelpDocumentCreateViewModel model = new HelpDocumentCreateViewModel()
             {
-                ControllerList = new SelectList(cq.GetDistrinctListByCodeCategory("Controller")),
-                ActionList = new SelectList(cq.GetDistrinctListByCodeCategory("Action")),
+                ControllerList = new SelectList(cq.GetDistinctListByCodeCategory("Controller")),
+                ActionList = new SelectList(cq.GetDistinctListByCodeCategory("Action")),
                 HelpDocument = new HelpDocument()
             };
 
@@ -97,8 +97,8 @@ namespace D_Squared.Web.Controllers
                     return RedirectToAction("Index");
                 }
 
-                model.ActionList = new SelectList(cq.GetDistrinctListByCodeCategory("Action"));
-                model.ControllerList = new SelectList(cq.GetDistrinctListByCodeCategory("Controller"));
+                model.ActionList = new SelectList(cq.GetDistinctListByCodeCategory("Action"));
+                model.ControllerList = new SelectList(cq.GetDistinctListByCodeCategory("Controller"));
 
                 Error("Error: Unable to save the information, please check the values entered!");
                 return View(model);
@@ -121,8 +121,8 @@ namespace D_Squared.Web.Controllers
 
             HelpDocumentCreateViewModel model = new HelpDocumentCreateViewModel()
             {
-                ControllerList = new SelectList(cq.GetDistrinctListByCodeCategory("Controller")),
-                ActionList = new SelectList(cq.GetDistrinctListByCodeCategory("Action")),
+                ControllerList = new SelectList(cq.GetDistinctListByCodeCategory("Controller")),
+                ActionList = new SelectList(cq.GetDistinctListByCodeCategory("Action")),
                 HelpDocument = helpDocument,
                 SelectedAction = helpDocument.ActionName,
                 SelectedController = helpDocument.ControllerName,
@@ -153,8 +153,8 @@ namespace D_Squared.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            model.ActionList = new SelectList(cq.GetDistrinctListByCodeCategory("Action"));
-            model.ControllerList = new SelectList(cq.GetDistrinctListByCodeCategory("Controller"));
+            model.ActionList = new SelectList(cq.GetDistinctListByCodeCategory("Action"));
+            model.ControllerList = new SelectList(cq.GetDistinctListByCodeCategory("Controller"));
 
             Error("Error: Unable to save the information, please check the values entered!");
             return View(model);

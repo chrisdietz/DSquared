@@ -70,6 +70,38 @@ namespace D_Squared.Web.Helpers
             else //quick check for general manager role
                 return IsInRole(DomainConstants.RoleNames.GeneralManagerGroup);
         }
+
+        public bool IsRedbookManager()
+        {
+            if (ConfigurationManager.AppSettings["ApplicationRegion"] == "Development")
+                return true;
+            else //quick check for general manager role
+                return IsInRole(DomainConstants.RoleNames.RedbookManagerGroup);
+        }
+
+        public bool IsRegionalManager()
+        {
+            if (ConfigurationManager.AppSettings["ApplicationRegion"] == "Development")
+                return true;
+            else //quick check for general manager role
+                return IsInRole(DomainConstants.RoleNames.RedbookRegionalGroup);
+        }
+
+        public bool IsDivisionalVP()
+        {
+            if (ConfigurationManager.AppSettings["ApplicationRegion"] == "Development")
+                return true;
+            else //quick check for general manager role
+                return IsInRole(DomainConstants.RoleNames.RedbookDivisionalVPGroup);
+        }
+
+        public bool IsDSquaredAdmin()
+        {
+            if (ConfigurationManager.AppSettings["ApplicationRegion"] == "Development")
+                return true;
+            else //quick check for general manager role
+                return IsInRole(DomainConstants.RoleNames.DSquaredAdminGroup);
+        }
     }
 
     public interface ICustomClaimsPrincipal : IPrincipal
