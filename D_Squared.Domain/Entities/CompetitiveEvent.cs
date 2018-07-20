@@ -33,6 +33,10 @@ namespace D_Squared.Domain.Entities
 
         #region AuditFields
         [ScaffoldColumn(false)]
+        [Display(Name = "Is Active")]
+        public bool IsActive { get; set; }
+
+        [ScaffoldColumn(false)]
         [DataType(DataType.DateTime)]
         [Display(Name = "Updated Date")]
         public DateTime? UpdatedDate { get; set; }

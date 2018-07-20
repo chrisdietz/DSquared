@@ -114,7 +114,7 @@ namespace D_Squared.Web.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    rbeq.SaveRedbookEntry(model.RedbookEntry, User.Identity.Name);
+                    rbeq.SaveRedbookEntry(model.RedbookEntry, username);
                     Success("The Redbook for Restaurant: <u>" + model.RedbookEntry.LocationId + "</u> and Date: <u>" + model.RedbookEntry.BusinessDate.ToShortDateString() + "</u> has been saved successfully. You may close this window");
                 }
                 else
@@ -126,6 +126,52 @@ namespace D_Squared.Web.Controllers
             catch
             {
                 Warning("Internal Error occurred. If this error persists, please contact an administrator.");
+
+                return RedirectToAction("Entry");
+            }
+
+            //only success reaches this far
+            //reinit model
+            model = init.InitializeBaseViewModel(model, username);
+
+            return View("Entry", model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [PreventDuplicateRequest]
+        [MultipleButton(Name = "action", Argument = "EntrySubmit")]
+        public ActionResult EntrySubmit(RedbookEntryBaseViewModel model)
+        {
+            string username = User.TruncatedName;
+
+            try
+            {
+                //bind 
+                model.RedbookEntry = init.BindPostValuesToEntity(model.RedbookEntry, model.EventDTOs, model.SelectedDateString, model.SelectedLocation);
+
+                //manually verify model state
+                if (model.RedbookEntry.BusinessDate != default(DateTime))
+                    ModelState.Remove("RedbookEntry.BusinessDate");
+
+                if (!string.IsNullOrEmpty(model.RedbookEntry.LocationId) && eq.GetLocationList().Contains(model.RedbookEntry.LocationId))
+                    ModelState.Remove("RedbookEntry.LocationId");
+
+                if (ModelState.IsValid)
+                {
+                    rbeq.SubmitRedbookEntry(model.RedbookEntry, username);
+                    Success("The Redbook for Restaurant: <u>" + model.RedbookEntry.LocationId + "</u> and Date: <u>" + model.RedbookEntry.BusinessDate.ToShortDateString() + "</u> has been submitted successfully. You may close this window");
+                }
+                else
+                {
+                    Warning("Error Occured: Invalid Model State. If this error persists, please contact an administrator.");
+                    return RedirectToAction("Entry");
+                }
+            }
+            catch (Exception e)
+            {
+                Warning("Internal Error occurred. If this error persists, please contact an administrator.\n"
+                            + "Error Details: " + e.Message + e.InnerException.Message);
 
                 return RedirectToAction("Entry");
             }

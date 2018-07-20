@@ -64,7 +64,6 @@
         init: function () {
             e(),
             heightAdjust(".firstRowPanel"),
-            heightAdjust(".secondRowPanel"),
             heightAdjust(".thirdRowPanel");
         }
     };

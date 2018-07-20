@@ -95,7 +95,7 @@ namespace D_Squared.Web.Helpers
             DateTime currentDate = DateTime.Today.ToLocalTime();
             DateTime convertedSelectedDate = TryParseDateTimeString(selectedDate);
 
-            RedbookEntry redbookEntry = rbeq.RedbookEntryExists(convertedSelectedDate, storeNumber) ? rbeq.GetRedbookEntry(convertedSelectedDate, storeNumber) : new RedbookEntry();
+            RedbookEntry redbookEntry = rbeq.GetExistingOrSeedEmpty(selectedDate, storeNumber, userName);
 
             RedbookEntryBaseViewModel model = new RedbookEntryBaseViewModel()
             {
@@ -133,6 +133,9 @@ namespace D_Squared.Web.Helpers
 
             model.EmployeeInfo = eq.GetEmployeeInfo(userName);
             model.SalesForecastDTO = sfq.GetLiveSalesForecastDTO(model.RedbookEntry.BusinessDate, model.RedbookEntry.LocationId);
+
+            model.TicketURL = ConfigurationManager.AppSettings["RedbookTicketURL"];
+            model.EndingPeriod = GetCurrentWeek(currentDate).Last();
 
             return model;
         }

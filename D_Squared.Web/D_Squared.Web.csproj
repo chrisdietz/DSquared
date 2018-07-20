@@ -188,6 +188,7 @@
     <Compile Include="Helpers\CustomClaimsPrincipal.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Helpers\FormActionAttribute.cs" />
+    <Compile Include="Helpers\HtmlExtensions.cs" />
     <Compile Include="Helpers\InitializeViewModels.cs" />
     <Compile Include="Helpers\MultipleSubmitExtension.cs" />
     <Compile Include="Helpers\QueryExtensions.cs" />

@@ -24,7 +24,7 @@ namespace D_Squared.Domain.Entities
 
         public string SelectedWeatherPM { get; set; }
 
-        [Display(Name = "Review of daily procedures and observations")]
+        [Display(Name = "Daily procedures and observations")]
         public string DailyNotes { get; set; }
 
         public string ManagerOnDutyAM { get; set; }
@@ -37,7 +37,22 @@ namespace D_Squared.Domain.Entities
         [Display(Name = "Review of the shift")]
         public string ManagerNotePM { get; set; }
 
-        //public bool IsEditable { get; set; }
+        [Display(Name = "To Do Today")]
+        public string ToDoToday { get; set; }
+
+        [Display(Name = "R&M Issues")]
+        public string RMIssues { get; set; }
+
+        [Display(Name = "Employee Notes")]
+        public string EmployeeNotes { get; set; }
+
+        [Display(Name = "Food and Beverage")]
+        public string FoodAndBeverage { get; set; }
+
+        [Display(Name = "M Power")]
+        public string MPower { get; set; }
+
+        public bool IsReadOnly { get; set; }
 
         #region AuditFields
         [ScaffoldColumn(false)]
