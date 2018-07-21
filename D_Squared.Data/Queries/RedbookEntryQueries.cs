@@ -22,6 +22,11 @@ namespace D_Squared.Data.Queries
             ec = new EmailCommands();
         }
 
+        public RedbookEntry FindById(int id)
+        {
+            return db.RedbookEntries.Find(id);
+        }
+
         public RedbookEntry GetRedbookEntry(DateTime recordDate, string storeNumber)
         {
             return db.RedbookEntries.FirstOrDefault(rbe => rbe.BusinessDate == recordDate && rbe.LocationId == storeNumber);
@@ -46,7 +51,7 @@ namespace D_Squared.Data.Queries
             }
         }
 
-        public RedbookEntry UpdateRedbookEntryRecord(RedbookEntry model, string currentUser)
+        public RedbookEntry UpdateRedbookEntryRecord(RedbookEntry model, string currentUser, bool wasSubmitted = false)
         {
             RedbookEntry exisitingRecord = GetRedbookEntry(model.BusinessDate, model.LocationId);
 
@@ -61,6 +66,7 @@ namespace D_Squared.Data.Queries
             exisitingRecord.EmployeeNotes = model.EmployeeNotes;
             exisitingRecord.FoodAndBeverage = model.FoodAndBeverage;
             exisitingRecord.MPower = model.MPower;
+            exisitingRecord.IsReadOnly = wasSubmitted;
 
             exisitingRecord.UpdatedDate = DateTime.Now;
             exisitingRecord.UpdatedBy = currentUser;
@@ -94,10 +100,30 @@ namespace D_Squared.Data.Queries
         {
             if (RedbookEntryExists(redbookEntry.BusinessDate, redbookEntry.LocationId))
             {
-                RedbookEntry updatedRecord = UpdateRedbookEntryRecord(redbookEntry, currentUser);
+                RedbookEntry updatedRecord = UpdateRedbookEntryRecord(redbookEntry, currentUser, true);
 
                 ec.SendRedbookSubmitEmail(updatedRecord);
             }
+        }
+
+        public List<CompetitiveEvent> GetCompetitiveEvents(int redbookId, string storeNumber, DateTime date)
+        {
+            return db.CompetitiveEvents.Where(ce => ce.RedbookEntryId == redbookId 
+                                                        && ce.StoreNumber == storeNumber
+                                                        && ce.Date == date)
+                                       .ToList();
+        }
+
+        public void SaveCompetitiveEvent(CompetitiveEvent model, string currentUser)
+        {
+            model.CreatedBy = currentUser;
+            model.UpdatedBy = currentUser;
+            model.CreatedDate = DateTime.Now;
+            model.UpdatedDate = DateTime.Now;
+
+            db.CompetitiveEvents.Add(model);
+
+            db.SaveChanges();
         }
     }
 }

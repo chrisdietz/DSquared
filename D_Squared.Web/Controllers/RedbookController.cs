@@ -42,7 +42,7 @@ namespace D_Squared.Web.Controllers
         }
 
         // GET: RedbookEntry
-        public ActionResult Entry()
+        public ActionResult Entry(string selectedDate)
         {
             string username = User.TruncatedName;
 
@@ -59,9 +59,18 @@ namespace D_Squared.Web.Controllers
             {
                 EmployeeDTO employee = eq.GetEmployeeInfo(username);
 
-                RedbookEntryBaseViewModel model = init.InitializeBaseViewModel(DateTime.Today.ToLocalTime().ToShortDateString(), employee.StoreNumber, username);
+                if(selectedDate == null)
+                {
+                    RedbookEntryBaseViewModel model = init.InitializeBaseViewModel(DateTime.Today.ToLocalTime().ToShortDateString(), employee.StoreNumber, username);
 
-                return View(model);
+                    return View(model);
+                }
+                else
+                {
+                    RedbookEntryBaseViewModel model = init.InitializeBaseViewModel(selectedDate, employee.StoreNumber, username);
+
+                    return View(model);
+                }
             }
         }
 
@@ -171,7 +180,7 @@ namespace D_Squared.Web.Controllers
             catch (Exception e)
             {
                 Warning("Internal Error occurred. If this error persists, please contact an administrator.\n"
-                            + "Error Details: " + e.Message + e.InnerException.Message);
+                            + "Error Details: " + e.Message + "---" + e.InnerException.Message);
 
                 return RedirectToAction("Entry");
             }
@@ -182,6 +191,34 @@ namespace D_Squared.Web.Controllers
 
             return View("Entry", model);
         }
+
+        public ActionResult CreateCompetitiveEvent(int redbookId)
+        {
+            CompetitiveEventCreateEditViewModel partial = init.InitializeCompetitiveEventCreateEditViewModel(redbookId);
+
+            return PartialView("~/Views/Redbook/_CompetitiveEventCreate.cshtml", partial);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CompetitiveEventCreate(CompetitiveEventCreateEditViewModel model)
+        {
+            string username = User.TruncatedName;
+
+            if (ModelState.IsValid)
+            {
+                rbeq.SaveCompetitiveEvent(model.CompetitiveEvent, username);
+                Success("Successfully added Competitive Event!");
+            }
+            else
+            {
+                Warning("Error Occured: Invalid Model State. If this error persists, please contact an administrator.");
+            }
+
+            return RedirectToAction("Entry", "Redbook", model.RedbookDate.ToShortDateString());
+        }
+
 
         protected override void Dispose(bool disposing)
         {

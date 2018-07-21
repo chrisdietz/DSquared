@@ -54,7 +54,7 @@ namespace D_Squared.Web.Models
 
         public List<EventDTO> EventDTOs { get; set; }
 
-        public List<CompetitiveEvent> CompetitiveEvents { get; set; }
+        public CompetitiveEventListViewModel CompetitiveEventListViewModel { get; set; }
 
         public CompetitiveEventCreateEditViewModel CompetitiveEventCreateEditViewModel { get; set; }
 

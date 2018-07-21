@@ -16,7 +16,7 @@ namespace D_Squared.Data.Commands
         #region Email Settings
         private const string HOST = "172.18.100.60";
 
-        private const int PORT = 587;
+        private const int PORT = 25;
         #endregion
 
         SmtpClient EmailClient { get; set; }
@@ -26,6 +26,7 @@ namespace D_Squared.Data.Commands
             EmailClient = new SmtpClient(HOST, PORT)
             {
                 DeliveryMethod = SmtpDeliveryMethod.Network,
+                //Credentials = CredentialCache.DefaultNetworkCredentials,
                 UseDefaultCredentials = false
             };
         }
@@ -85,13 +86,16 @@ namespace D_Squared.Data.Commands
 
         public void SendRedbookSubmitEmail(RedbookEntry entry)
         {
-            MailMessage msg = new MailMessage(new MailAddress("redbook@millersalehouse.com"), new MailAddress(entry.LocationId + "redbook@millersalehouse.com"))
+            MailMessage msg = new MailMessage(new MailAddress("MAH" + entry.LocationId + "@millersalehouse.com"), new MailAddress("MAH" + entry.LocationId + "@millersalehouse.com"))
             {
                 Subject = BuildSubject(entry.LocationId),
-                Body = BuildBody(entry)
+                Body = BuildBody(entry),
+                IsBodyHtml = true
             };
 
             EmailClient.Send(msg);
+
+            msg.Dispose();
         }
     }
 }

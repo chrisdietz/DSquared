@@ -1,0 +1,48 @@
+﻿@model D_Squared.Web.Models.CompetitiveEventListViewModel
+
+<table class="table table-striped table-bordered table-condensed table-hover table-responsive">
+    <caption>
+        <span style="float: left; margin-left: 5px;">Total Items: @Model.CompetitiveEvents.Count()</span>
+    </caption>
+    <thead>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.CompetitiveEvents.FirstOrDefault().StoreNumber)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.CompetitiveEvents.FirstOrDefault().Date)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.CompetitiveEvents.FirstOrDefault().EventType)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.CompetitiveEvents.FirstOrDefault().EventName)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.CompetitiveEvents.FirstOrDefault().Distance)
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var e in Model.CompetitiveEvents)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => e.StoreNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => e.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => e.EventType)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => e.EventName)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => e.Distance)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -9,6 +9,7 @@ using D_Squared.Domain.Entities;
 using D_Squared.Domain.TransferObjects;
 using Newtonsoft.Json;
 using System.Configuration;
+using D_Squared.Domain;
 
 namespace D_Squared.Web.Helpers
 {
@@ -114,7 +115,8 @@ namespace D_Squared.Web.Helpers
                 ManagerSelectListAM = eq.GetManagersForLocation(storeNumber).ToSelectList("sAMAccountName", "FullName", null, true, "--Select--", string.Empty),
                 ManagerSelectListPM = eq.GetManagersForLocation(storeNumber).ToSelectList("sAMAccountName", "FullName", null, true, "--Select--", string.Empty),
                 RedbookEntry = redbookEntry,
-                TicketURL = ConfigurationManager.AppSettings["RedbookTicketURL"]
+                TicketURL = ConfigurationManager.AppSettings["RedbookTicketURL"],
+                CompetitiveEventListViewModel = new CompetitiveEventListViewModel(rbeq.GetCompetitiveEvents(redbookEntry.Id, redbookEntry.LocationId, convertedSelectedDate))
             };
 
             return model;
@@ -136,6 +138,26 @@ namespace D_Squared.Web.Helpers
 
             model.TicketURL = ConfigurationManager.AppSettings["RedbookTicketURL"];
             model.EndingPeriod = GetCurrentWeek(currentDate).Last();
+
+            model.CompetitiveEventListViewModel = new CompetitiveEventListViewModel(rbeq.GetCompetitiveEvents(model.RedbookEntry.Id, model.RedbookEntry.LocationId, model.RedbookEntry.BusinessDate));
+
+            return model;
+        }
+
+
+        public CompetitiveEventCreateEditViewModel InitializeCompetitiveEventCreateEditViewModel(int redbookId)
+        {
+            RedbookEntry parentEntry = rbeq.FindById(redbookId);
+
+            return new CompetitiveEventCreateEditViewModel(parentEntry.BusinessDate, parentEntry.LocationId, redbookId)
+            {
+                DistanceRanges = DomainConstants.CompetitiveEventConstants.DistanceRanges().ToSelectList(null)
+            };
+        }
+
+        public CompetitiveEventCreateEditViewModel InitializeCompetitiveEventCreateEditSelectLists(CompetitiveEventCreateEditViewModel model)
+        {
+            model.DistanceRanges = DomainConstants.CompetitiveEventConstants.DistanceRanges().ToSelectList(model.CompetitiveEvent.Distance);
 
             return model;
         }

@@ -25,7 +25,7 @@ namespace D_Squared.Data.Context
 
         public DbSet<RedbookEntry> RedbookEntries { get; set; }
 
-        //public DbSet<CompetitiveEvent> CompetitiveEvents { get; set; }
+        public DbSet<CompetitiveEvent> CompetitiveEvents { get; set; }
 
         public DbSet<HelpDocument> HelpDocuments { get; set; }
 

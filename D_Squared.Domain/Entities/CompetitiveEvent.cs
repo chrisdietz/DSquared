@@ -26,6 +26,7 @@ namespace D_Squared.Domain.Entities
         public string EventName { get; set; }
 
         [Required]
+        [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime Date { get; set; }
 
         [Required]
@@ -56,5 +57,7 @@ namespace D_Squared.Domain.Entities
         [StringLength(50)]
         public string CreatedBy { get; set; }
         #endregion
+
+        public virtual RedbookEntry RedbookEntry { get; set; }
     }
 }
