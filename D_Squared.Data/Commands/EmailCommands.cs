@@ -86,12 +86,15 @@ namespace D_Squared.Data.Commands
 
         public void SendRedbookSubmitEmail(RedbookEntry entry)
         {
-            MailMessage msg = new MailMessage(new MailAddress("MAH" + entry.LocationId + "@millersalehouse.com"), new MailAddress("MAH" + entry.LocationId + "@millersalehouse.com"))
+            MailMessage msg = new MailMessage(new MailAddress("redbook@millersalehouse.com"), new MailAddress(entry.LocationId + "redbook@millersalehouse.com"))
             {
                 Subject = BuildSubject(entry.LocationId),
                 Body = BuildBody(entry),
                 IsBodyHtml = true
             };
+
+            msg.CC.Add(new MailAddress("MAH" + entry.LocationId + "@millersalehouse.com"));
+            msg.ReplyToList.Add(new MailAddress("MAH" + entry.LocationId + "@millersalehouse.com"));
 
             EmailClient.Send(msg);
 

@@ -185,11 +185,7 @@ namespace D_Squared.Web.Controllers
                 return RedirectToAction("Entry");
             }
 
-            //only success reaches this far
-            //reinit model
-            model = init.InitializeBaseViewModel(model, username);
-
-            return View("Entry", model);
+            return RedirectToAction("Entry", "Redbook", model.RedbookEntry.BusinessDate.ToShortDateString());
         }
 
         public ActionResult CreateCompetitiveEvent(int redbookId)

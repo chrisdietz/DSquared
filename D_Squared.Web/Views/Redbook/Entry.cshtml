@@ -209,7 +209,15 @@
         <div class="col-md-8">
             <div class="panel panel-default thirdRowPanel">
                 <div class="panel-heading lead" style="margin-bottom:0px;">
-                    <a class="btn btn-success btn-xs" style="float:right" data-toggle="modal" onclick="CreateCompetitiveEventModal(@Model.RedbookEntry.Id)">Create</a>
+                    @if (Model.RedbookEntry.IsReadOnly)
+                    {
+                        <a class="btn btn-success btn-xs" style="float:right" data-toggle="modal" disabled="disabled">Create</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-success btn-xs" style="float:right" data-toggle="modal" onclick="CreateCompetitiveEventModal(@Model.RedbookEntry.Id)">Create</a>
+                    }
+                    
                     Competitive Events
                 </div>
                 <div class="panel-body" style="overflow-y: scroll; height: 225px">
@@ -245,7 +253,7 @@
             //only show submit/save buttons if IsReadOnly == false
             <div class="col-md-12">
                 <a data-toggle="modal" href="#myModal" class="btn btn-primary btn-lg">Save Changes</a>
-                <a data-toggle="modal" href="#submitModal" class="btn btn-primary btn-lg">Save and Submit Entry</a>
+                <a data-toggle="modal" href="#submitModal" class="btn btn-primary btn-lg">Save and Email RM</a>
             </div>
         }
     </div>
@@ -270,7 +278,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <input type="submit" value="Save" name="action:EntrySave" class="btn btn-primary btn-lg" />
+                    <input type="submit" value="Save" name="action:EntrySave" class="btn btn-primary" />
                 </div>
             </div>
         </div>
@@ -300,7 +308,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <input type="submit" value="Submit" name="action:EntrySubmit" class="btn btn-primary btn-lg" />
+                    <input type="submit" value="Save and Email RM" name="action:EntrySubmit" class="btn btn-primary" />
                 </div>
             </div>
         </div>
