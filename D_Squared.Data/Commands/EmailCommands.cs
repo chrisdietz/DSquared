@@ -46,21 +46,20 @@ namespace D_Squared.Data.Commands
             StringBuilder sb = new StringBuilder();
 
             //content header
-            sb.AppendLine("Submission Summary for location <u>" + entry.LocationId + "</u> and date <u>" + entry.BusinessDate.ToShortDateString() + "</u>");
-            sb.AppendLine();
+            sb.AppendLine("Submission Summary for location <u>" + entry.LocationId + "</u> and date <u>" + entry.BusinessDate.ToShortDateString() + "</u><br><br>");
 
             //data fields
-            sb.AppendLine("<b>AM Manager: </b>" + entry.ManagerOnDutyAM);
-            sb.AppendLine("<b>PM Manager: </b>" + entry.ManagerOnDutyPM);
-            sb.AppendLine("<b>AM Weather: </b>" + entry.SelectedWeatherAM);
-            sb.AppendLine("<b>PM Weather: </b>" + entry.SelectedWeatherPM);
-            sb.AppendLine("<b>Daily Notes: </b>" + entry.DailyNotes);
-            sb.AppendLine("<b>To Do Today: </b>" + entry.ToDoToday);
-            sb.AppendLine("<b>R&M Issues: </b>" + entry.RMIssues);
-            sb.AppendLine("<b>Employee Notes: </b>" + entry.EmployeeNotes);
-            sb.AppendLine("<b>Food and Beverage: </b>" + entry.FoodAndBeverage);
-            sb.AppendLine("<b>M Power: </b>" + entry.MPower);
-            sb.Append("<b>Events Affecting Sales: </b>" );
+            sb.AppendLine("<b>AM Manager: </b>" + entry.ManagerOnDutyAM + "<br>");
+            sb.AppendLine("<b>PM Manager: </b>" + entry.ManagerOnDutyPM + "<br>");
+            sb.AppendLine("<b>AM Weather: </b>" + entry.SelectedWeatherAM + "<br>");
+            sb.AppendLine("<b>PM Weather: </b>" + entry.SelectedWeatherPM + "<br>");
+            sb.AppendLine("<b>Daily Notes: </b>" + entry.DailyNotes + "<br>");
+            sb.AppendLine("<b>To Do Today: </b>" + entry.ToDoToday + "<br>");
+            sb.AppendLine("<b>R&M Issues: </b>" + entry.RMIssues + "<br>");
+            sb.AppendLine("<b>Employee Notes: </b>" + entry.EmployeeNotes + "<br>");
+            sb.AppendLine("<b>Food and Beverage: </b>" + entry.FoodAndBeverage + "<br>");
+            sb.AppendLine("<b>M Power: </b>" + entry.MPower + "<br>");
+            sb.Append("<b>Events Affecting Sales: </b>");
 
             List<EventDTO> eventList = DeserializeSelectedEvents(entry.SelectedEvents).Where(e => e.IsChecked).ToList();
             EventDTO lastEvent = eventList.Last();
@@ -69,17 +68,13 @@ namespace D_Squared.Data.Commands
             {
                 if (e.Equals(lastEvent))
                 {
-                    sb.AppendLine(e.Event);
+                    sb.AppendLine(e.Event + "<br>");
                 }
                 else
                 {
                     sb.Append(e.Event + ", ");
                 }
             }
-            
-            sb.AppendLine();
-            sb.AppendLine();
-            sb.AppendLine("If you have any questions, please contact administration.");
 
             return sb.ToString();
         }
