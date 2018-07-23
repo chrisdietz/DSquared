@@ -106,11 +106,17 @@ namespace D_Squared.Data.Queries
             }
         }
 
-        public List<CompetitiveEvent> GetCompetitiveEvents(int redbookId, string storeNumber, DateTime date)
+        public List<CompetitiveEvent> GetCompetitiveEvents(int redbookId, string storeNumber)
         {
             return db.CompetitiveEvents.Where(ce => ce.RedbookEntryId == redbookId 
-                                                        && ce.StoreNumber == storeNumber
-                                                        && ce.Date == date)
+                                                        && ce.StoreNumber == storeNumber)
+                                       .ToList();
+        }
+
+        public List<CompetitiveEvent> GetCompetitiveEvents(RedbookEntry redbookEntry)
+        {
+            return db.CompetitiveEvents.Where(ce => ce.RedbookEntryId == redbookEntry.Id
+                                                        && ce.StoreNumber == redbookEntry.LocationId)
                                        .ToList();
         }
 

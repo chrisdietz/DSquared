@@ -185,7 +185,7 @@ namespace D_Squared.Web.Controllers
                 return RedirectToAction("Entry");
             }
 
-            return RedirectToAction("Entry", "Redbook", model.RedbookEntry.BusinessDate.ToShortDateString());
+            return RedirectToAction("Entry", "Redbook", new { selectedDate = model.RedbookEntry.BusinessDate.ToShortDateString() });
         }
 
         public ActionResult CreateCompetitiveEvent(int redbookId)
@@ -212,7 +212,7 @@ namespace D_Squared.Web.Controllers
                 Warning("Error Occured: Invalid Model State. If this error persists, please contact an administrator.");
             }
 
-            return RedirectToAction("Entry", "Redbook", model.RedbookDate.ToShortDateString());
+            return RedirectToAction("Entry", "Redbook", new { selectedDate = model.RedbookDate.ToShortDateString() });
         }
 
 

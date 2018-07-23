@@ -101,7 +101,7 @@ namespace D_Squared.Web.Helpers
             RedbookEntryBaseViewModel model = new RedbookEntryBaseViewModel()
             {
                 SelectedDateString = selectedDate,
-                DateSelectList = GetCurrentWeek(currentDate).ToSelectList(currentDate.ToShortDateString()),
+                DateSelectList = GetCurrentWeek(currentDate).ToSelectList(selectedDate),
                 EndingPeriod = GetCurrentWeek(currentDate).Last(),
                 SelectedLocation = storeNumber,
                 LocationSelectList = eq.GetLocationList().ToSelectList(storeNumber),
@@ -116,7 +116,7 @@ namespace D_Squared.Web.Helpers
                 ManagerSelectListPM = eq.GetManagersForLocation(storeNumber).ToSelectList("sAMAccountName", "FullName", null, true, "--Select--", string.Empty),
                 RedbookEntry = redbookEntry,
                 TicketURL = ConfigurationManager.AppSettings["RedbookTicketURL"],
-                CompetitiveEventListViewModel = new CompetitiveEventListViewModel(rbeq.GetCompetitiveEvents(redbookEntry.Id, redbookEntry.LocationId, convertedSelectedDate))
+                CompetitiveEventListViewModel = new CompetitiveEventListViewModel(rbeq.GetCompetitiveEvents(redbookEntry.Id, redbookEntry.LocationId))
             };
 
             return model;
@@ -139,7 +139,7 @@ namespace D_Squared.Web.Helpers
             model.TicketURL = ConfigurationManager.AppSettings["RedbookTicketURL"];
             model.EndingPeriod = GetCurrentWeek(currentDate).Last();
 
-            model.CompetitiveEventListViewModel = new CompetitiveEventListViewModel(rbeq.GetCompetitiveEvents(model.RedbookEntry.Id, model.RedbookEntry.LocationId, model.RedbookEntry.BusinessDate));
+            model.CompetitiveEventListViewModel = new CompetitiveEventListViewModel(rbeq.GetCompetitiveEvents(model.RedbookEntry.Id, model.RedbookEntry.LocationId));
 
             return model;
         }
