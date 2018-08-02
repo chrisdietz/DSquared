@@ -53,7 +53,7 @@ namespace D_Squared.Web.Controllers
                 EmployeeDTO employee = eq.GetEmployeeInfo(username);
                 List<SalesForecastDTO> weekdays = sfq.GetSpecificWeekAsSalesForecastDTOList(DateTime.Today.ToLocalTime(), employee.StoreNumber);
 
-                SalesForecastViewModel model = new SalesForecastViewModel(weekdays, today, employee);
+                SalesForecastViewModel model = new SalesForecastViewModel(weekdays, today, employee, today.ToShortDateString());
 
                 return View(model);
             }
@@ -121,6 +121,36 @@ namespace D_Squared.Web.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MultipleButton(Name = "action", Argument = "SearchDate")]
+        public ActionResult SearchDate(SalesForecastViewModel model)
+        {
+            string username = User.TruncatedName;
+
+            if (!eq.EmployeeExists(username))
+            {
+                ErrorViewModel error = new ErrorViewModel
+                {
+                    Username = username
+                };
+
+                return View("../Home/EmployeeError", error);
+            }
+            else
+            {
+                DateTime.TryParse(model.SelectedDateString, out DateTime convertedSelectedDate);
+
+                EmployeeDTO employee = eq.GetEmployeeInfo(username);
+                List<SalesForecastDTO> weekdays = sfq.GetSpecificWeekAsSalesForecastDTOList(convertedSelectedDate, employee.StoreNumber);
+
+                model = new SalesForecastViewModel(weekdays, DateTime.Today.ToLocalTime(), employee, model.SelectedDateString);
+                ModelState.Clear();
+
+                return View("Index", model);
+            }
         }
 
         [AuthorizeGroup(ROLES.GeneralManagerGroup)]

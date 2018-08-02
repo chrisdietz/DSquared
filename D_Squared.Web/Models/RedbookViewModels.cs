@@ -27,6 +27,8 @@ namespace D_Squared.Web.Models
         [Display(Name = "Record Date")]
         public SelectList DateSelectList { get; set; }
 
+        [Display(Name = "Record Date")]
+        [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
         public string SelectedDateString { get; set; }
 
         [Display(Name = "Restaurant")]

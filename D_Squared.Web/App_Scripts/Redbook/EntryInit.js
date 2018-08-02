@@ -3,9 +3,9 @@
 
         $.fn.select2.defaults.set("theme", "bootstrap");
 
-        $(".dateSelect").select2({
-            width: '40%'
-        });
+        //$(".dateSelect").select2({
+        //    width: '40%'
+        //});
 
         $(".weatherSelect").select2({
             width: '100%'

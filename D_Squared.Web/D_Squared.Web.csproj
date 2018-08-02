@@ -206,6 +206,7 @@
   <ItemGroup>
     <Content Include="App_Scripts\Redbook\CreateInit.js" />
     <Content Include="App_Scripts\Redbook\EntryInit.js" />
+    <Content Include="App_Scripts\SalesForecast\IndexInit.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
