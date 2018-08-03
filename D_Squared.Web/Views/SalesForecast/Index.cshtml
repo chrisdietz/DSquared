@@ -38,7 +38,7 @@
                 <caption>
                     <div class="form-group">
                         @Html.LabelFor(model => model.SelectedDateString, htmlAttributes: new { @class = "control-label" })
-                        @Html.EditorFor(model => model.SelectedDateString, new { htmlAttributes = new { @class = "refreshOnChange form-control date-picker", onkeydown = "return false", onpaste = "return false", @style = "width: 50%"} })
+                        @Html.EditorFor(model => model.SelectedDateString, new { htmlAttributes = new { @class = "refreshOnChange form-control date-picker", onkeydown = "return false", onpaste = "return false", @style = "width: 125px"} })
                     </div>
                     <a data-toggle="modal" href="#helpModal" class="btn btn-primary btn-sm" style="float:right; margin-left: 10px;"><i class="fa fa-question-circle" aria-hidden="true"></i></a>
                     @if (User.IsGeneralManager())
@@ -146,12 +146,9 @@
 <script type="text/javascript">
     $(function () {
         $(".date-picker").datepicker({
-            changeMonth: true,
-            changeYear: true,
-            yearRange: "-1:+0",
-            dateFormat: 'mm-dd-yy',
-            minDate: new Date(@Model.StartDate.Year, @Model.StartDate.Month, @Model.StartDate.Day),
-            maxDate: new Date(@Model.EndDate.Year, @Model.EndDate.Month, @Model.EndDate.Day)
+            dateFormat: 'mm/dd/yy',
+            minDate: new Date(@Model.StartDate.Year, @Model.StartDate.Month - 1, @Model.StartDate.Day),
+            maxDate: new Date(@Model.EndDate.Year, @Model.EndDate.Month - 1, @Model.EndDate.Day)
         });
     });
 </script>

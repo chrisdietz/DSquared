@@ -304,3 +304,14 @@
 
 <!--must explicitly define the controller and action-->
 @{Html.RenderAction("ModalDetails", "Home", new { @controller = "Redbook", @action = "Entry" });}
+
+<script type="text/javascript">
+    $(function () {
+        $(".date-picker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-1:+0",
+            dateFormat: 'mm/dd/yy'
+        });
+    });
+</script>
