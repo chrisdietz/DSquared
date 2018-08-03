@@ -144,7 +144,6 @@ namespace D_Squared.Web.Helpers
             return model;
         }
 
-
         public CompetitiveEventCreateEditViewModel InitializeCompetitiveEventCreateEditViewModel(int redbookId)
         {
             RedbookEntry parentEntry = rbeq.FindById(redbookId);
@@ -155,9 +154,30 @@ namespace D_Squared.Web.Helpers
             };
         }
 
+        public CompetitiveEventListViewModel InitializeCompetitiveEventListViewModel(int redbookId, string storeNumber)
+        {
+            return new CompetitiveEventListViewModel(rbeq.GetCompetitiveEvents(redbookId, storeNumber));
+        }
+
         public CompetitiveEventCreateEditViewModel InitializeCompetitiveEventCreateEditSelectLists(CompetitiveEventCreateEditViewModel model)
         {
             model.DistanceRanges = DomainConstants.CompetitiveEventConstants.DistanceRanges().ToSelectList(model.CompetitiveEvent.Distance);
+
+            return model;
+        }
+
+        public RedbookEntryDetailPartialViewModel InitializeRedbookEntryDetailPartialViewModel(int redbookId, string userName)
+        {
+            RedbookEntry redbookEntry = rbeq.FindById(redbookId);
+            RedbookEntry lastYearRedbook = rbeq.GetExistingOrSeedEmpty(redbookEntry.BusinessDate.AddYears(-1).ToShortDateString(), redbookEntry.LocationId, userName);
+
+            RedbookEntryDetailPartialViewModel model = new RedbookEntryDetailPartialViewModel()
+            {
+                RedbookEntry = lastYearRedbook,
+                SalesForecastDTO = sfq.GetLiveSalesForecastDTO(lastYearRedbook.BusinessDate, lastYearRedbook.LocationId),
+                EventDTOs = !string.IsNullOrEmpty(lastYearRedbook.SelectedEvents) ? DeserializeSelectedEvents(lastYearRedbook.SelectedEvents).Where(e => e.IsChecked).ToList() : new List<EventDTO>(),
+                CompetitiveEventListViewModel = new CompetitiveEventListViewModel(rbeq.GetCompetitiveEvents(lastYearRedbook.Id, lastYearRedbook.LocationId))
+            };
 
             return model;
         }

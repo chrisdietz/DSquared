@@ -599,6 +599,7 @@
     <Content Include="Views\Redbook\Entry.cshtml" />
     <Content Include="Views\Redbook\_CompetitiveEventCreate.cshtml" />
     <Content Include="Views\Redbook\_CompetitiveEventList.cshtml" />
+    <Content Include="Views\Redbook\_RedbookEntryDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

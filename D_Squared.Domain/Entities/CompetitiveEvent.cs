@@ -26,7 +26,7 @@ namespace D_Squared.Domain.Entities
         public string EventName { get; set; }
 
         [Required]
-        [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime Date { get; set; }
 
         [Required]

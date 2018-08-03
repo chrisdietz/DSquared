@@ -13,7 +13,7 @@
             changeMonth: true,
             changeYear: true,
             yearRange: "-1:+0",
-            dateFormat: 'mm-dd-yy'
+            dateFormat: 'mm/dd/yy'
         });
     };
     return {

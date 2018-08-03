@@ -67,7 +67,13 @@ namespace D_Squared.Web.Models
 
     public class RedbookEntryDetailPartialViewModel
     {
-        //for previous year pop up and search page
+        public RedbookEntry RedbookEntry { get; set; }
+
+        public SalesForecastDTO SalesForecastDTO { get; set; }
+
+        public List<EventDTO> EventDTOs { get; set; }
+
+        public CompetitiveEventListViewModel CompetitiveEventListViewModel { get; set; }
     }
 
     public class RedbookEntrySearchViewModel

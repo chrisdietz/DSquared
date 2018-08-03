@@ -12,26 +12,32 @@ namespace D_Squared.Domain.Entities
         public int Id { get; set; }
 
         [Required]
+        [Display(Name = "Store Number")]
         public string LocationId { get; set; }
 
         [Required]
+        [Display(Name = "Business Date")]
         public DateTime BusinessDate { get; set; }
 
         //json string of selectedEvents
         public string SelectedEvents { get; set; }
 
+        [Display(Name = "AM Weather")]
         public string SelectedWeatherAM { get; set; }
 
+        [Display(Name = "PM Weather")]
         public string SelectedWeatherPM { get; set; }
 
         [Display(Name = "Daily procedures and observations")]
         public string DailyNotes { get; set; }
 
+        [Display(Name = "AM Manager")]
         public string ManagerOnDutyAM { get; set; }
 
         [Display(Name = "Review of the shift")]
         public string ManagerNoteAM { get; set; }
 
+        [Display(Name = "PM Manager")]
         public string ManagerOnDutyPM { get; set; }
 
         [Display(Name = "Review of the shift")]

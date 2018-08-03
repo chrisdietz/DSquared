@@ -62,17 +62,21 @@ namespace D_Squared.Data.Commands
             sb.Append("<b>Events Affecting Sales: </b>");
 
             List<EventDTO> eventList = DeserializeSelectedEvents(entry.SelectedEvents).Where(e => e.IsChecked).ToList();
-            EventDTO lastEvent = eventList.Last();
 
-            foreach (EventDTO e in eventList)
+            if (eventList.Count != 0)
             {
-                if (e.Equals(lastEvent))
+                EventDTO lastEvent = eventList.Last();
+
+                foreach (EventDTO e in eventList)
                 {
-                    sb.AppendLine(e.Event + "<br>");
-                }
-                else
-                {
-                    sb.Append(e.Event + ", ");
+                    if (e.Equals(lastEvent))
+                    {
+                        sb.AppendLine(e.Event + "<br>");
+                    }
+                    else
+                    {
+                        sb.Append(e.Event + ", ");
+                    }
                 }
             }
 

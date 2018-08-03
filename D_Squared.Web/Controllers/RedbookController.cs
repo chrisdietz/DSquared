@@ -59,7 +59,7 @@ namespace D_Squared.Web.Controllers
             {
                 EmployeeDTO employee = eq.GetEmployeeInfo(username);
 
-                if(selectedDate == null)
+                if (selectedDate == null)
                 {
                     RedbookEntryBaseViewModel model = init.InitializeBaseViewModel(DateTime.Today.ToLocalTime().ToShortDateString(), employee.StoreNumber, username);
 
@@ -195,7 +195,6 @@ namespace D_Squared.Web.Controllers
             return PartialView("~/Views/Redbook/_CompetitiveEventCreate.cshtml", partial);
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CompetitiveEventCreate(CompetitiveEventCreateEditViewModel model)
@@ -213,6 +212,15 @@ namespace D_Squared.Web.Controllers
             }
 
             return RedirectToAction("Entry", "Redbook", new { selectedDate = model.RedbookDate.ToShortDateString() });
+        }
+
+        public ActionResult Details(int redbookId)
+        {
+            string username = User.TruncatedName;
+
+            RedbookEntryDetailPartialViewModel partial = init.InitializeRedbookEntryDetailPartialViewModel(redbookId, username);
+
+            return PartialView("~/Views/Redbook/_RedbookEntryDetail.cshtml", partial);
         }
 
 
