@@ -166,10 +166,10 @@ namespace D_Squared.Web.Helpers
             return model;
         }
 
-        public RedbookEntryDetailPartialViewModel InitializeRedbookEntryDetailPartialViewModel(int redbookId, string userName)
+        public RedbookEntryDetailPartialViewModel InitializeRedbookEntryDetailPartialViewModel(int redbookId, string userName, bool isLastYear)
         {
             RedbookEntry redbookEntry = rbeq.FindById(redbookId);
-            RedbookEntry lastYearRedbook = rbeq.GetExistingOrSeedEmpty(redbookEntry.BusinessDate.AddYears(-1).ToShortDateString(), redbookEntry.LocationId, userName);
+            RedbookEntry lastYearRedbook = rbeq.GetExistingOrSeedEmpty(isLastYear ? redbookEntry.BusinessDate.AddYears(-1).ToShortDateString() : redbookEntry.BusinessDate.ToShortDateString(), redbookEntry.LocationId, userName);
 
             RedbookEntryDetailPartialViewModel model = new RedbookEntryDetailPartialViewModel()
             {
@@ -178,6 +178,39 @@ namespace D_Squared.Web.Helpers
                 EventDTOs = !string.IsNullOrEmpty(lastYearRedbook.SelectedEvents) ? DeserializeSelectedEvents(lastYearRedbook.SelectedEvents).Where(e => e.IsChecked).ToList() : new List<EventDTO>(),
                 CompetitiveEventListViewModel = new CompetitiveEventListViewModel(rbeq.GetCompetitiveEvents(lastYearRedbook.Id, lastYearRedbook.LocationId))
             };
+
+            return model;
+        }
+
+        public RedbookEntrySearchViewModel InitializeRedbookEntrySearchViewModel(EmployeeDTO employee, bool isRegional, bool isDivisional, bool isAdmin)
+        {
+            RedbookEntrySearchViewModel model = new RedbookEntrySearchViewModel()
+            {
+                LocationSelectList = isRegional ? eq.GetStoreLocationListByRegion(employee).ToSelectList(null, true, "Any") 
+                                    : isDivisional ? eq.GetStoreLocationListByDivision(employee).ToSelectList(null, true, "Any") 
+                                    : isAdmin ? eq.GetStoreLocationListForAdmin().ToSelectList(null, true, "Any")
+                                    : new List<string>().ToSelectList(null, true, "Any"),
+                WeatherSelectListAM = cq.GetDistinctListByCodeCategory("Weather").ToSelectList(null, true, "Any"),
+                WeatherSelectListPM = cq.GetDistinctListByCodeCategory("Weather").ToSelectList(null, true, "Any"),
+                ManagerSelectListAM = eq.GetAllManagers().ToSelectList("sAMAccountName", "FullName", null, true, "Any", string.Empty),
+                ManagerSelectListPM = eq.GetAllManagers().ToSelectList("sAMAccountName", "FullName", null, true, "Any", string.Empty),
+                EmployeeInfo = employee
+            };
+
+            return model;
+        }
+
+        public RedbookEntrySearchViewModel InitializeRedbookEntrySearchViewModel(RedbookEntrySearchViewModel model, bool isRegional, bool isDivisional, bool isAdmin)
+        {
+            model.LocationSelectList = isRegional ? eq.GetStoreLocationListByRegion(model.EmployeeInfo).ToSelectList(model.SearchDTO.LocationId, true, "Any")
+                                        : isDivisional ? eq.GetStoreLocationListByDivision(model.EmployeeInfo).ToSelectList(model.SearchDTO.LocationId, true, "Any")
+                                        : isAdmin ? eq.GetStoreLocationListForAdmin().ToSelectList(model.SearchDTO.LocationId, true, "Any")
+                                        : new List<string>().ToSelectList(null, true, "Any");
+
+            model.WeatherSelectListAM = cq.GetDistinctListByCodeCategory("Weather").ToSelectList(model.SearchDTO.SelectedWeatherAM, true, "Any");
+            model.WeatherSelectListPM = cq.GetDistinctListByCodeCategory("Weather").ToSelectList(model.SearchDTO.SelectedWeatherPM, true, "Any");
+            model.ManagerSelectListAM = eq.GetAllManagers().ToSelectList("sAMAccountName", "FullName", model.SearchDTO.ManagerOnDutyAM, true, "Any", string.Empty);
+            model.ManagerSelectListPM = eq.GetAllManagers().ToSelectList("sAMAccountName", "FullName", model.SearchDTO.ManagerOnDutyPM, true, "Any", string.Empty);
 
             return model;
         }

@@ -78,6 +78,31 @@ namespace D_Squared.Web.Models
 
     public class RedbookEntrySearchViewModel
     {
-        //for admin search function
+        public RedbookEntrySearchViewModel()
+        {
+            SearchDTO = new RedbookSearchDTO();
+            SearchResults = new List<RedbookEntry>();
+        }
+
+        public RedbookSearchDTO SearchDTO { get; set; }
+
+        public List<RedbookEntry> SearchResults { get; set; }
+
+        [Display(Name = "Location")]
+        public SelectList LocationSelectList { get; set; }
+
+        [Display(Name = "AM Weather")]
+        public SelectList WeatherSelectListAM { get; set; }
+
+        [Display(Name = "PM Weather")]
+        public SelectList WeatherSelectListPM { get; set; }
+
+        [Display(Name = "AM Manager")]
+        public List<SelectListItem> ManagerSelectListAM { get; set; }
+
+        [Display(Name = "PM Manager")]
+        public List<SelectListItem> ManagerSelectListPM { get; set; }
+
+        public EmployeeDTO EmployeeInfo { get; set; }
     }
 }

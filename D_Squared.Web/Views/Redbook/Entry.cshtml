@@ -52,7 +52,7 @@
                             @Html.EditorFor(model => model.SelectedDateString, new { htmlAttributes = new { @class = "refreshOnChange form-control date-picker", onkeydown = "return false", onpaste = "return false" } })
                         </div>
                         <div class="form-group">
-                            <span onclick="GetRedbookEntryDetail(@Model.RedbookEntry.Id)">
+                            <span onclick="GetLastYearRedbookEntryDetail(@Model.RedbookEntry.Id)">
                                 <a class="btn btn-primary" style="margin-top: 4px">View Last Year Redbook</a>
                             </span>
                         </div>

@@ -131,5 +131,24 @@ namespace D_Squared.Data.Queries
 
             db.SaveChanges();
         }
+
+        public List<RedbookEntry> GetRedbookEntries(RedbookSearchDTO searchDTO)
+        {
+            decimal zero = new decimal(0);
+            string cleanLocation = searchDTO.LocationId == "Any" ? "Any" : searchDTO.LocationId.Substring(0, 3);
+
+            DateTime realSearchEndDate = searchDTO.EndDate.AddDays(1);
+            bool modifiedDateRange = searchDTO.StartDate == searchDTO.EndDate ? false : true;
+
+            return db.RedbookEntries.Where(r => (cleanLocation == "Any" || r.LocationId == cleanLocation)
+                                                    && (searchDTO.SelectedWeatherAM == "Any" || r.SelectedWeatherAM == searchDTO.SelectedWeatherAM)
+                                                    && (searchDTO.SelectedWeatherPM == "Any" || r.SelectedWeatherPM == searchDTO.SelectedWeatherPM)
+                                                    && (string.IsNullOrEmpty(searchDTO.ManagerOnDutyAM) || r.ManagerOnDutyAM == searchDTO.ManagerOnDutyAM)
+                                                    && (string.IsNullOrEmpty(searchDTO.ManagerOnDutyPM) || r.ManagerOnDutyPM == searchDTO.ManagerOnDutyAM)
+                                                    && (!modifiedDateRange || (r.BusinessDate >= searchDTO.StartDate && r.BusinessDate < realSearchEndDate)))
+                                    .OrderBy(r => r.LocationId)
+                                    .ThenBy(r => r.BusinessDate)
+                                    .ToList();
+        }
     }
 }

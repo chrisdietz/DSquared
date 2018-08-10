@@ -53,6 +53,29 @@
                             @Html.ActionLink("Redbook", "Entry", "Redbook", null, new { @class = "custom-navbar" })
                         </li>
                     }
+                    else if (User.IsDivisionalVP() || User.IsRegionalManager())
+                    {
+                        <li>
+                            @Html.ActionLink("Redbook", "Index", "Redbook", null, new { @class = "custom-navbar" })
+                        </li>
+                    }
+                    else if (User.IsDSquaredAdmin())
+                    {
+                        <li class="dropdown">
+                            <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
+                                Redbook
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    @Html.ActionLink("Redbook", "Entry", "Entry", null, new { @class = "custom-navbar" })
+                                </li>
+                                <li>
+                                    @Html.ActionLink("Redbook", "Index", "Search", null, new { @class = "custom-navbar" })
+                                </li>
+                            </ul>
+                        </li>
+                    }
                     @if (User.IsDSquaredAdmin())
                     {
                         <li class="dropdown">

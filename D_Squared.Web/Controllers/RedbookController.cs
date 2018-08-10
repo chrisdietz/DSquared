@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ROLES = D_Squared.Domain.DomainConstants.RoleNames;
 
 namespace D_Squared.Web.Controllers
 {
@@ -214,13 +215,47 @@ namespace D_Squared.Web.Controllers
             return RedirectToAction("Entry", "Redbook", new { selectedDate = model.RedbookDate.ToShortDateString() });
         }
 
-        public ActionResult Details(int redbookId)
+        public ActionResult Details(int redbookId, bool isLastYear)
         {
             string username = User.TruncatedName;
 
-            RedbookEntryDetailPartialViewModel partial = init.InitializeRedbookEntryDetailPartialViewModel(redbookId, username);
+            RedbookEntryDetailPartialViewModel partial = init.InitializeRedbookEntryDetailPartialViewModel(redbookId, username, isLastYear);
 
             return PartialView("~/Views/Redbook/_RedbookEntryDetail.cshtml", partial);
+        }
+
+        public ActionResult Index()
+        {
+            string username = User.TruncatedName;
+
+            if (!eq.EmployeeExists(username))
+            {
+                ErrorViewModel error = new ErrorViewModel
+                {
+                    Username = username
+                };
+
+                return View("../Home/EmployeeError", error);
+            }
+            else
+            {
+                RedbookEntrySearchViewModel model = init.InitializeRedbookEntrySearchViewModel(eq.GetEmployeeInfo(username), User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin());
+
+                return View(model);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Index(RedbookEntrySearchViewModel model)
+        {
+            string username = User.TruncatedName;
+
+            model.EmployeeInfo = eq.GetEmployeeInfo(username);
+            model = init.InitializeRedbookEntrySearchViewModel(model, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin());
+            model.SearchResults = rbeq.GetRedbookEntries(model.SearchDTO);
+
+            return View(model);
         }
 
 

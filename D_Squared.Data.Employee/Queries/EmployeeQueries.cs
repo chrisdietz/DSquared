@@ -49,5 +49,25 @@ namespace D_Squared.Data.Millers.Queries
         {
             return db.Employees.Where(e => e.Location == storeNumber && e.EmployeeId != "9999").ToList();
         }
+
+        public List<Employee> GetAllManagers()
+        {
+            return db.Employees.Where(e => e.EmployeeId != "9999").ToList();
+        }
+
+        public List<string> GetStoreLocationListForAdmin()
+        {
+            return db.StoreLocations.Select(sl => sl.LocationName).ToList();
+        }
+
+        public List<string> GetStoreLocationListByRegion(EmployeeDTO employee)
+        {
+            return db.StoreLocations.Where(sl => sl.Region == employee.LastName).Select(sl => sl.LocationName).ToList();
+        }
+
+        public List<string> GetStoreLocationListByDivision(EmployeeDTO employee)
+        {
+            return db.StoreLocations.Where(sl => sl.Division == employee.LastName).Select(sl => sl.LocationName).ToList();
+        }
     }
 }

@@ -74,11 +74,11 @@ jQuery(document).ready(function () {
 });
 
 
-function GetRedbookEntryDetail(r) {
+function GetLastYearRedbookEntryDetail(r) {
     $.when($.ajax({
         url: '/Redbook/Details',
         type: "GET",
-        data: { redbookId: r },
+        data: { redbookId: r, isLastYear: true },
         success: function (data) {
             $('#detailPartial').html(data);
             $('#detailModal').modal('show');

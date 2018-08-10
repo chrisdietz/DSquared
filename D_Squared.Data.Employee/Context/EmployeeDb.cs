@@ -19,6 +19,8 @@ namespace D_Squared.Data.Millers.Context
 
         public DbSet<Employee> Employees { get; set; }
 
+        public DbSet<StoreLocation> StoreLocations { get; set; }
+
         public static EmployeeDbContext Create()
         {
             return new EmployeeDbContext();
@@ -28,6 +30,7 @@ namespace D_Squared.Data.Millers.Context
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Employee>().ToTable("empMAH");
+            modelBuilder.Entity<StoreLocation>().ToTable("StoreLocations");
             base.OnModelCreating(modelBuilder);
         }
     }
