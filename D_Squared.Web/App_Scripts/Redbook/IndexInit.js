@@ -23,6 +23,8 @@
                 dateFormat: 'mm-dd-yy'
             });
         });
+
+        $("#searchSubmit").prop("disabled", false);
     };
 
     return {

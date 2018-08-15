@@ -1,0 +1,34 @@
+﻿@model D_Squared.Web.Models.RedbookEntrySearchPartialViewModel
+
+<div class="form-group">
+    @Html.LabelFor(model => model.LocationSelectList, htmlAttributes: new { @class = "control-label col-md-4" })
+    <div class="col-md-8">
+        @Html.DropDownListFor(model => model.SearchDTO.LocationId, Model.LocationSelectList, htmlAttributes: new { @name = "SearchViewModel.SearchDTO.LocationId", @class = "dtoSelect locationSelect form-control select2-single select2-hidden-accessible" })
+        @Html.ValidationMessageFor(model => model.SearchDTO.LocationId, string.Empty, new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ManagerSelectListAM, htmlAttributes: new { @class = "control-label col-md-4" })
+    <div class="col-md-8">
+        @Html.DropDownListFor(model => model.SearchDTO.ManagerOnDutyAM, Model.ManagerSelectListAM, htmlAttributes: new { @name = "SearchViewModel.SearchDTO.ManagerOnDutyAM", @class = "dtoSelect managerSelect managerAM form-control select2-single select2-hidden-accessible" })
+        @Html.ValidationMessageFor(model => model.SearchDTO.ManagerOnDutyAM, string.Empty, new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.ManagerSelectListPM, htmlAttributes: new { @class = "control-label col-md-4" })
+    <div class="col-md-8">
+        @Html.DropDownListFor(model => model.SearchDTO.ManagerOnDutyPM, Model.ManagerSelectListPM, htmlAttributes: new { @name = "SearchViewModel.SearchDTO.ManagerOnDutyPM", @class = "dtoSelect managerSelect managerPM form-control select2-single select2-hidden-accessible" })
+        @Html.ValidationMessageFor(model => model.SearchDTO.ManagerOnDutyPM, string.Empty, new { @class = "text-danger" })
+    </div>
+</div>
+
+<script>
+    $('.dtoSelect').on('change', function () {
+        var lId = $('.locationSelect option:selected').val();
+        var mAM = $('.managerAM option:selected').val();
+        var mPM = $('.managerPM option:selected').val();
+
+        UpdateSearchPartial(lId, mAM, mPM);
+    })
+</script>

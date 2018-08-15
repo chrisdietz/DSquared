@@ -80,16 +80,26 @@ namespace D_Squared.Web.Models
     {
         public RedbookEntrySearchViewModel()
         {
-            SearchDTO = new RedbookSearchDTO();
+            SearchViewModel = new RedbookEntrySearchPartialViewModel();
             SearchResults = new List<RedbookEntry>();
         }
 
-        public RedbookSearchDTO SearchDTO { get; set; }
-
         public List<RedbookEntry> SearchResults { get; set; }
 
+        public RedbookEntrySearchPartialViewModel SearchViewModel { get; set; }
+
+        public EmployeeDTO EmployeeInfo { get; set; }
+    }
+
+    public class RedbookEntrySearchPartialViewModel
+    {
+        public RedbookEntrySearchPartialViewModel()
+        {
+            SearchDTO = new RedbookSearchDTO();
+        }
+
         [Display(Name = "Location")]
-        public SelectList LocationSelectList { get; set; }
+        public List<SelectListItem> LocationSelectList { get; set; }
 
         [Display(Name = "AM Weather")]
         public SelectList WeatherSelectListAM { get; set; }
@@ -103,6 +113,6 @@ namespace D_Squared.Web.Models
         [Display(Name = "PM Manager")]
         public List<SelectListItem> ManagerSelectListPM { get; set; }
 
-        public EmployeeDTO EmployeeInfo { get; set; }
+        public RedbookSearchDTO SearchDTO { get; set; }
     }
 }

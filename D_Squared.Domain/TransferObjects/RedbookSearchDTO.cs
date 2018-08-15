@@ -20,6 +20,13 @@ namespace D_Squared.Domain.TransferObjects
             StartDate = DateTime.Today.ToLocalTime();
         }
 
+        public RedbookSearchDTO(string lId, string mAM, string mPM)
+        {
+            LocationId = lId;
+            ManagerOnDutyAM = mAM;
+            ManagerOnDutyPM = mPM;
+        }
+
         [Display(Name = "Location")]
         public string LocationId { get; set; }
 

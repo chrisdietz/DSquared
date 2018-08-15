@@ -251,11 +251,30 @@ namespace D_Squared.Web.Controllers
         {
             string username = User.TruncatedName;
 
-            model.EmployeeInfo = eq.GetEmployeeInfo(username);
-            model = init.InitializeRedbookEntrySearchViewModel(model, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin());
-            model.SearchResults = rbeq.GetRedbookEntries(model.SearchDTO);
+            if (!eq.EmployeeExists(username))
+            {
+                ErrorViewModel error = new ErrorViewModel
+                {
+                    Username = username
+                };
 
-            return View(model);
+                return View("../Home/EmployeeError", error);
+            }
+            else
+            {
+                model.EmployeeInfo = eq.GetEmployeeInfo(username);
+                model = init.InitializeRedbookEntrySearchViewModel(model, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin());
+                model.SearchResults = rbeq.GetRedbookEntries(model.SearchViewModel.SearchDTO);
+
+                return View(model);
+            }
+        }
+
+        public ActionResult UpdateSearchPartialDropdowns(string lId, string mAM, string mPM)
+        {
+            RedbookEntrySearchPartialViewModel partialModel = init.FilterDropdownLists(eq.GetEmployeeInfo(User.TruncatedName), lId, mAM, mPM, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin());
+
+            return PartialView("~/Views/Redbook/_SearchPartial.cshtml", partialModel);
         }
 
 

@@ -209,6 +209,7 @@ namespace D_Squared.Web.Controllers
             {
                 db.Dispose();
                 e_db.Dispose();
+                f_db.Dispose();
             }
             base.Dispose(disposing);
         }

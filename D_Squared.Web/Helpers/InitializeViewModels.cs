@@ -80,6 +80,14 @@ namespace D_Squared.Web.Helpers
         {
             return JsonConvert.DeserializeObject<List<EventDTO>>(selectedEvents);
         }
+
+        protected List<string> GetLocationList(EmployeeDTO employee, bool isRegional, bool isDivisional, bool isAdmin)
+        {
+            return isRegional ? eq.GetStoreLocationListByRegion(employee)
+                                        : isDivisional ? eq.GetStoreLocationListByDivision(employee)
+                                        : isAdmin ? eq.GetStoreLocationListForAdmin()
+                                        : new List<string>();
+        }
         #endregion
 
         public RedbookEntry BindPostValuesToEntity(RedbookEntry redbookEntry, List<EventDTO> eventDTOs, string selectedDateString, string selectedStoreNumber)
@@ -184,16 +192,19 @@ namespace D_Squared.Web.Helpers
 
         public RedbookEntrySearchViewModel InitializeRedbookEntrySearchViewModel(EmployeeDTO employee, bool isRegional, bool isDivisional, bool isAdmin)
         {
+            List<string> locationList = GetLocationList(employee, isRegional, isDivisional, isAdmin);
+
             RedbookEntrySearchViewModel model = new RedbookEntrySearchViewModel()
             {
-                LocationSelectList = isRegional ? eq.GetStoreLocationListByRegion(employee).ToSelectList(null, true, "Any") 
-                                    : isDivisional ? eq.GetStoreLocationListByDivision(employee).ToSelectList(null, true, "Any") 
-                                    : isAdmin ? eq.GetStoreLocationListForAdmin().ToSelectList(null, true, "Any")
-                                    : new List<string>().ToSelectList(null, true, "Any"),
-                WeatherSelectListAM = cq.GetDistinctListByCodeCategory("Weather").ToSelectList(null, true, "Any"),
-                WeatherSelectListPM = cq.GetDistinctListByCodeCategory("Weather").ToSelectList(null, true, "Any"),
-                ManagerSelectListAM = eq.GetAllManagers().ToSelectList("sAMAccountName", "FullName", null, true, "Any", string.Empty),
-                ManagerSelectListPM = eq.GetAllManagers().ToSelectList("sAMAccountName", "FullName", null, true, "Any", string.Empty),
+                SearchViewModel = new RedbookEntrySearchPartialViewModel()
+                {
+                    LocationSelectList = locationList.ToSelectList(null, null, null, true, "Any", "Any"),
+                    WeatherSelectListAM = cq.GetDistinctListByCodeCategory("Weather").ToSelectList(null, true, "Any"),
+                    WeatherSelectListPM = cq.GetDistinctListByCodeCategory("Weather").ToSelectList(null, true, "Any"),
+                    ManagerSelectListAM = eq.GetManagersForLocation(locationList).ToSelectList("sAMAccountName", "FullName", null, true, "Any", string.Empty),
+                    ManagerSelectListPM = eq.GetManagersForLocation(locationList).ToSelectList("sAMAccountName", "FullName", null, true, "Any", string.Empty),
+                },
+
                 EmployeeInfo = employee
             };
 
@@ -202,15 +213,33 @@ namespace D_Squared.Web.Helpers
 
         public RedbookEntrySearchViewModel InitializeRedbookEntrySearchViewModel(RedbookEntrySearchViewModel model, bool isRegional, bool isDivisional, bool isAdmin)
         {
-            model.LocationSelectList = isRegional ? eq.GetStoreLocationListByRegion(model.EmployeeInfo).ToSelectList(model.SearchDTO.LocationId, true, "Any")
-                                        : isDivisional ? eq.GetStoreLocationListByDivision(model.EmployeeInfo).ToSelectList(model.SearchDTO.LocationId, true, "Any")
-                                        : isAdmin ? eq.GetStoreLocationListForAdmin().ToSelectList(model.SearchDTO.LocationId, true, "Any")
-                                        : new List<string>().ToSelectList(null, true, "Any");
+            List<string> locationList = GetLocationList(model.EmployeeInfo, isRegional, isDivisional, isAdmin);
 
-            model.WeatherSelectListAM = cq.GetDistinctListByCodeCategory("Weather").ToSelectList(model.SearchDTO.SelectedWeatherAM, true, "Any");
-            model.WeatherSelectListPM = cq.GetDistinctListByCodeCategory("Weather").ToSelectList(model.SearchDTO.SelectedWeatherPM, true, "Any");
-            model.ManagerSelectListAM = eq.GetAllManagers().ToSelectList("sAMAccountName", "FullName", model.SearchDTO.ManagerOnDutyAM, true, "Any", string.Empty);
-            model.ManagerSelectListPM = eq.GetAllManagers().ToSelectList("sAMAccountName", "FullName", model.SearchDTO.ManagerOnDutyPM, true, "Any", string.Empty);
+            model.SearchViewModel.LocationSelectList = locationList.ToSelectList(null, null, model.SearchViewModel.SearchDTO.LocationId, true, "Any", "Any");
+
+            model.SearchViewModel.WeatherSelectListAM = cq.GetDistinctListByCodeCategory("Weather").ToSelectList(model.SearchViewModel.SearchDTO.SelectedWeatherAM, true, "Any");
+            model.SearchViewModel.WeatherSelectListPM = cq.GetDistinctListByCodeCategory("Weather").ToSelectList(model.SearchViewModel.SearchDTO.SelectedWeatherPM, true, "Any");
+            model.SearchViewModel.ManagerSelectListAM = model.SearchViewModel.SearchDTO.LocationId == "Any" ? eq.GetManagersForLocation(locationList).ToSelectList("sAMAccountName", "FullName", model.SearchViewModel.SearchDTO.ManagerOnDutyAM, true, "Any", string.Empty)
+                                                                                                                    : eq.GetManagersForLocation(model.SearchViewModel.SearchDTO.LocationId).ToSelectList("sAMAccountName", "FullName", model.SearchViewModel.SearchDTO.ManagerOnDutyAM, true, "Any", string.Empty);
+            model.SearchViewModel.ManagerSelectListPM = model.SearchViewModel.SearchDTO.LocationId == "Any" ? eq.GetManagersForLocation(locationList).ToSelectList("sAMAccountName", "FullName", model.SearchViewModel.SearchDTO.ManagerOnDutyPM, true, "Any", string.Empty)
+                                                                                                                    : eq.GetManagersForLocation(model.SearchViewModel.SearchDTO.LocationId).ToSelectList("sAMAccountName", "FullName", model.SearchViewModel.SearchDTO.ManagerOnDutyPM, true, "Any", string.Empty);
+
+            return model;
+        }
+
+        public RedbookEntrySearchPartialViewModel FilterDropdownLists(EmployeeDTO employee, string lId, string mAM, string mPM, bool isRegional, bool isDivisional, bool isAdmin)
+        {
+            List<string> locationList = GetLocationList(employee, isRegional, isDivisional, isAdmin);
+
+            RedbookEntrySearchPartialViewModel model = new RedbookEntrySearchPartialViewModel()
+            {
+                SearchDTO = new RedbookSearchDTO(lId, mAM, mPM),
+                LocationSelectList = locationList.ToSelectList(null, null, lId, true, "Any", "Any"),
+                ManagerSelectListAM = lId == "Any" ? eq.GetManagersForLocation(locationList).ToSelectList("sAMAccountName", "FullName", mAM, true, "Any", string.Empty)
+                                                    : eq.GetManagersForLocation(lId).ToSelectList("sAMAccountName", "FullName", mAM, true, "Any", string.Empty),
+                ManagerSelectListPM = lId == "Any" ? eq.GetManagersForLocation(locationList).ToSelectList("sAMAccountName", "FullName", mPM, true, "Any", string.Empty)
+                                                    : eq.GetManagersForLocation(lId).ToSelectList("sAMAccountName", "FullName", mPM, true, "Any", string.Empty)
+            };
 
             return model;
         }
