@@ -174,10 +174,10 @@ namespace D_Squared.Web.Helpers
             return model;
         }
 
-        public RedbookEntryDetailPartialViewModel InitializeRedbookEntryDetailPartialViewModel(int redbookId, string userName, bool isLastYear)
+        public RedbookEntryDetailPartialViewModel InitializeRedbookEntryDetailPartialViewModel(int redbookId, string userName, bool isLastYear, string date = "")
         {
-            RedbookEntry redbookEntry = rbeq.FindById(redbookId);
-            RedbookEntry lastYearRedbook = rbeq.GetExistingOrSeedEmpty(isLastYear ? redbookEntry.BusinessDate.AddYears(-1).ToShortDateString() : redbookEntry.BusinessDate.ToShortDateString(), redbookEntry.LocationId, userName);
+            RedbookEntry redbookEntry = redbookId > 0 ? rbeq.FindById(redbookId) : rbeq.GetExistingOrSeedEmpty(date, eq.GetEmployeeInfo(userName).StoreNumber, userName);
+            RedbookEntry lastYearRedbook = rbeq.GetExistingOrSeedEmpty(isLastYear ? redbookEntry.BusinessDate.AddDays(-364).ToShortDateString() : redbookEntry.BusinessDate.ToShortDateString(), redbookEntry.LocationId, userName);
 
             RedbookEntryDetailPartialViewModel model = new RedbookEntryDetailPartialViewModel()
             {

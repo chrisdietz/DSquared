@@ -25,3 +25,43 @@
 jQuery(document).ready(function () {
     initIndex.init();
 });
+
+function GetLastYearRedbookEntryDetail(d) {
+    $.when($.ajax({
+        url: '/Redbook/Details',
+        type: "GET",
+        data: { redbookId: 0, isLastYear: true, date: d },
+        success: function (data) {
+            $('#detailPartial').html(data);
+            $('#detailModal').modal('show');
+        }
+    })).then(function () {
+        initDetail.init();
+    });
+}
+
+var initDetail = function () {
+    var e = function () {
+
+        //function to prevent page sliding when scrolling inside event check list
+        $.fn.scrollGuard2 = function () {
+            return this
+                .on('wheel', function (e) {
+                    var $this = $(this);
+                    if (e.originalEvent.deltaY < 0) {
+                        /* scrolling up */
+                        return ($this.scrollTop() > 0);
+                    } else {
+                        /* scrolling down */
+                        return ($this.scrollTop() + $this.innerHeight() < $this[0].scrollHeight);
+                    }
+                });
+        };
+    };
+
+    return {
+        init: function () {
+            e();
+        }
+    };
+}();

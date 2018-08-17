@@ -50,6 +50,9 @@
                 <thead>
                     <tr>
                         <th>
+                            Redbook Details
+                        </th>
+                        <th>
                             @Html.DisplayNameFor(model => model.Weekdays.FirstOrDefault().DayOfWeek)
                         </th>
                         <th>
@@ -82,6 +85,11 @@
                         @Html.HiddenFor(model => model.Weekdays[i].AverageSalesPerMonth)
                         @Html.HiddenFor(model => model.Weekdays[i].LaborForecast)
                         <tr>
+                            <td>
+                                <span onclick="GetLastYearRedbookEntryDetail('@Model.Weekdays[i].DateOfEntry.ToShortDateString()')">
+                                    <a class="btn btn-primary btn-xs" style="margin-top: 4px">Last Year's Details</a>
+                                </span>
+                            </td>
                             <td>
                                 @Html.DisplayFor(model => model.Weekdays[i].DayOfWeek)
                             </td>
@@ -139,6 +147,10 @@
         </div>
     </div>
 }
+
+<!--redbook detail holder-->
+<div id="detailPartial">
+</div>
 
 <!--must explicitly define the controller and action-->
 @{Html.RenderAction("ModalDetails", "Home", new { @controller = "SalesForecast", @action = "Index" });}

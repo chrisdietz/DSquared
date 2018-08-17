@@ -215,11 +215,11 @@ namespace D_Squared.Web.Controllers
             return RedirectToAction("Entry", "Redbook", new { selectedDate = model.RedbookDate.ToShortDateString() });
         }
 
-        public ActionResult Details(int redbookId, bool isLastYear)
+        public ActionResult Details(int redbookId, bool isLastYear, string date)
         {
             string username = User.TruncatedName;
 
-            RedbookEntryDetailPartialViewModel partial = init.InitializeRedbookEntryDetailPartialViewModel(redbookId, username, isLastYear);
+            RedbookEntryDetailPartialViewModel partial = init.InitializeRedbookEntryDetailPartialViewModel(redbookId, username, isLastYear, date);
 
             return PartialView("~/Views/Redbook/_RedbookEntryDetail.cshtml", partial);
         }
