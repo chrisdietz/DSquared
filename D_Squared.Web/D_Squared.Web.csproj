@@ -174,6 +174,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CodesController.cs" />
     <Compile Include="Controllers\DailyDepositController.cs" />
@@ -193,11 +194,13 @@
     <Compile Include="Helpers\MultipleSubmitExtension.cs" />
     <Compile Include="Helpers\QueryExtensions.cs" />
     <Compile Include="Helpers\WebConstants.cs" />
+    <Compile Include="Models\AdminViewModel.cs" />
     <Compile Include="Models\CompetitiveEventViewModels.cs" />
     <Compile Include="Models\DailyDepositViewModel.cs" />
     <Compile Include="Models\DepositReportViewModel.cs" />
     <Compile Include="Models\ErrorViewModel.cs" />
     <Compile Include="Models\HelpDocumentViewModel.cs" />
+    <Compile Include="Models\HomeViewModel.cs" />
     <Compile Include="Models\RedbookViewModels.cs" />
     <Compile Include="Models\SalesForecastReportViewModel.cs" />
     <Compile Include="Models\SalesForecastViewModel.cs" />
@@ -604,6 +607,7 @@
     <Content Include="Views\Redbook\_RedbookEntryDetail.cshtml" />
     <Content Include="Views\Redbook\Index.cshtml" />
     <Content Include="Views\Redbook\_SearchPartial.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

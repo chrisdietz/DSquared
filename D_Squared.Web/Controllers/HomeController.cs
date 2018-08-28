@@ -16,15 +16,36 @@ namespace D_Squared.Web.Controllers
     public class HomeController : BaseController
     {
         private readonly D_SquaredDbContext db;
+        private readonly EmployeeDbContext e_db;
+
+        private readonly EmployeeQueries eq;
 
         public HomeController()
         {
             db = new D_SquaredDbContext();
+            e_db = new EmployeeDbContext();
+
+            eq = new EmployeeQueries(e_db);
         }
 
         public ActionResult Index()
         {
-            return RedirectToAction("Index", "DailyDeposit");
+            string username = User.TruncatedName;
+
+            if (!eq.EmployeeExists(username))
+            {
+                ErrorViewModel error = new ErrorViewModel
+                {
+                    Username = username
+                };
+
+                return View("../Home/EmployeeError", error);
+            }
+            else
+            {
+                HomeViewModel model = new HomeViewModel(eq.GetEmployeeInfo(username));
+                return View(model);
+            }
         }
 
         //refactor to use a helpdocuments query class function instead of direct db call

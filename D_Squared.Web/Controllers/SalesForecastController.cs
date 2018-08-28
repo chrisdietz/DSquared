@@ -31,8 +31,6 @@ namespace D_Squared.Web.Controllers
 
             e_db = new EmployeeDbContext();
             eq = new EmployeeQueries(e_db);
-
-            
         }
 
 

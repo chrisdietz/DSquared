@@ -20,6 +20,7 @@ namespace D_Squared.Domain.Entities
         public DateTime BusinessDate { get; set; }
 
         //json string of selectedEvents
+        //outdated, child table 'SalesEvents' stores this data instead
         public string SelectedEvents { get; set; }
 
         [Display(Name = "AM Weather")]
@@ -84,6 +85,6 @@ namespace D_Squared.Domain.Entities
 
         public virtual ICollection<CompetitiveEvent> CompetitiveEvents { get; set; }
 
-        //public virtual ICollection<RedbookSalesEvent> SalesEvents { get; set; }
+        public virtual ICollection<RedbookSalesEvent> SalesEvents { get; set; }
     }
 }

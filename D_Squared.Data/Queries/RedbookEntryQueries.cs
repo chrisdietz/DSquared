@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using D_Squared.Data.Commands;
+using Newtonsoft.Json;
 
 namespace D_Squared.Data.Queries
 {
@@ -37,6 +38,46 @@ namespace D_Squared.Data.Queries
             return db.RedbookEntries.Any(rbe => rbe.BusinessDate == recordDate && rbe.LocationId == storeNumber);
         }
 
+        public bool RedbookSalesEventExists(int redbookId, string eventName)
+        {
+            return db.RedbookSalesEvents.Any(rbse => rbse.RedbookEntryId == redbookId && rbse.Event == eventName);
+        }
+
+        public RedbookSalesEvent GetRedbookSalesEvent(int redbookId, string eventName)
+        {
+            return db.RedbookSalesEvents.Where(rbse => rbse.RedbookEntryId == redbookId && rbse.Event == eventName).FirstOrDefault();
+        }
+
+        public List<RedbookSalesEvent> GetRedbookSalesEvents(int redbookId)
+        {
+            return db.RedbookSalesEvents.Where(rbse => rbse.RedbookEntryId == redbookId).ToList();
+        }
+
+        public void AddRedbookSalesEvent(int redbookId, string salesEvent, string username)
+        {
+            if(!RedbookSalesEventExists(redbookId, salesEvent))
+                db.RedbookSalesEvents.Add(new RedbookSalesEvent(redbookId, salesEvent, username));
+        }
+
+        public void RemoveRedbookSalesEvent(int redbookId, string salesEvent)
+        {
+            if (RedbookSalesEventExists(redbookId, salesEvent))
+                db.RedbookSalesEvents.Remove(GetRedbookSalesEvent(redbookId, salesEvent));
+        }
+
+        public void CompareAndUpdateRedbookSalesEvents(string username, int redbookId, List<EventDTO> salesEvents)
+        {
+            foreach (EventDTO dtoEvent in salesEvents)
+            {
+                if(dtoEvent.IsChecked)
+                    AddRedbookSalesEvent(redbookId, dtoEvent.Event, username);
+                else
+                    RemoveRedbookSalesEvent(redbookId, dtoEvent.Event);
+            }
+
+            db.SaveChanges();
+        }
+
         public RedbookEntry GetExistingOrSeedEmpty(string selectedDateString, string storeNumber, string currentUser)
         {
             DateTime convertedDate;
@@ -46,12 +87,12 @@ namespace D_Squared.Data.Queries
                 return GetRedbookEntry(convertedDate, storeNumber);
             else
             {
-                SaveRedbookEntry(new RedbookEntry() { BusinessDate = convertedDate, LocationId = storeNumber }, currentUser);
+                SaveRedbookEntry(new RedbookEntry() { BusinessDate = convertedDate, LocationId = storeNumber }, new List<EventDTO>(), currentUser);
                 return GetRedbookEntry(convertedDate, storeNumber);
             }
         }
 
-        public RedbookEntry UpdateRedbookEntryRecord(RedbookEntry model, string currentUser, bool wasSubmitted = false)
+        public RedbookEntry UpdateRedbookEntryRecord(RedbookEntry model, List<EventDTO> salesEvents, string currentUser, bool wasSubmitted = false)
         {
             RedbookEntry exisitingRecord = GetRedbookEntry(model.BusinessDate, model.LocationId);
 
@@ -60,7 +101,6 @@ namespace D_Squared.Data.Queries
             exisitingRecord.DailyNotes = model.DailyNotes;
             exisitingRecord.ManagerOnDutyAM = model.ManagerOnDutyAM;
             exisitingRecord.ManagerOnDutyPM = model.ManagerOnDutyPM;
-            exisitingRecord.SelectedEvents = model.SelectedEvents;
             exisitingRecord.ToDoToday = model.ToDoToday;
             exisitingRecord.RMIssues = model.RMIssues;
             exisitingRecord.EmployeeNotes = model.EmployeeNotes;
@@ -73,34 +113,38 @@ namespace D_Squared.Data.Queries
 
             db.SaveChanges();
 
+            CompareAndUpdateRedbookSalesEvents(currentUser, exisitingRecord.Id, salesEvents);
+
             return exisitingRecord;
         }
 
-        public void InsertRedbookEntryRecord(RedbookEntry model, string currentUser)
+        public void InsertRedbookEntryRecord(RedbookEntry model, List<EventDTO> salesEvents, string currentUser)
         {
             model.CreatedBy = currentUser;
             model.UpdatedBy = currentUser;
             model.CreatedDate = DateTime.Now;
             model.UpdatedDate = DateTime.Now;
 
-            db.RedbookEntries.Add(model);
+            RedbookEntry savedEntry = db.RedbookEntries.Add(model);
 
             db.SaveChanges();
+
+            CompareAndUpdateRedbookSalesEvents(currentUser, savedEntry.Id, salesEvents);
         }
 
-        public void SaveRedbookEntry(RedbookEntry redbookEntry, string currentUser)
+        public void SaveRedbookEntry(RedbookEntry redbookEntry, List<EventDTO> salesEvents, string currentUser)
         {
             if (RedbookEntryExists(redbookEntry.BusinessDate, redbookEntry.LocationId))
-                UpdateRedbookEntryRecord(redbookEntry, currentUser);
+                UpdateRedbookEntryRecord(redbookEntry, salesEvents, currentUser);
             else
-                InsertRedbookEntryRecord(redbookEntry, currentUser);
+                InsertRedbookEntryRecord(redbookEntry, salesEvents, currentUser);
         }
 
-        public void SubmitRedbookEntry(RedbookEntry redbookEntry, string currentUser)
+        public void SubmitRedbookEntry(RedbookEntry redbookEntry, List<EventDTO> salesEvents, string currentUser)
         {
             if (RedbookEntryExists(redbookEntry.BusinessDate, redbookEntry.LocationId))
             {
-                RedbookEntry updatedRecord = UpdateRedbookEntryRecord(redbookEntry, currentUser, true);
+                RedbookEntry updatedRecord = UpdateRedbookEntryRecord(redbookEntry, salesEvents, currentUser, true);
 
                 ec.SendRedbookSubmitEmail(updatedRecord);
             }
@@ -149,6 +193,23 @@ namespace D_Squared.Data.Queries
                                     .OrderBy(r => r.LocationId)
                                     .ThenBy(r => r.BusinessDate)
                                     .ToList();
+        }
+
+        public void AdminConvertRedbookEventsToChildTable(string username)
+        {
+            //get all Redbook records where SelectedEvents != null
+            List<RedbookEntry> redbookRecordsWithEvents = db.RedbookEntries.Where(rbe => rbe.SelectedEvents != null).ToList();
+
+            foreach (var entry in redbookRecordsWithEvents)
+            {
+                List<EventDTO> events = JsonConvert.DeserializeObject<List<EventDTO>>(entry.SelectedEvents);
+
+                CompareAndUpdateRedbookSalesEvents(username, entry.Id, events);
+
+                entry.SelectedEvents = null;
+
+                db.SaveChanges();
+            }
         }
     }
 }

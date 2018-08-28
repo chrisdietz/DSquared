@@ -1,4 +1,5 @@
-﻿using System;
+﻿using D_Squared.Domain.TransferObjects;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,6 +11,21 @@ namespace D_Squared.Domain.Entities
 {
     public class RedbookSalesEvent
     {
+        public RedbookSalesEvent()
+        {
+
+        }
+
+        public RedbookSalesEvent(int redbookId, string salesEvent, string username)
+        {
+            RedbookEntryId = redbookId;
+            Event = salesEvent;
+            UpdatedBy = username;
+            CreatedBy = username;
+            UpdatedDate = DateTime.Now;
+            CreatedDate = DateTime.Now;
+        }
+
         public int Id { get; set; }
 
         [Required]
@@ -41,5 +57,7 @@ namespace D_Squared.Domain.Entities
         [StringLength(50)]
         public string CreatedBy { get; set; }
         #endregion
+
+        public virtual RedbookEntry RedbookEntry { get; set; }
     }
 }

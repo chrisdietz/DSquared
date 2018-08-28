@@ -1,3 +1,79 @@
-﻿<h2>
-    Dashboard Coming Soon
-</h2>
+﻿@model D_Squared.Web.Models.HomeViewModel
+
+<div class="jumbotron" style="background-image: url('/Content/images/lightwood-bg.jpg'); padding-bottom:5px; padding-top:20px; margin-bottom:10px">
+    <div style="max-width:500px; display: block; margin: 0 auto;">
+        <img src="~/Content/images/millers_d2_logo.png" style="max-width:500px;" />
+    </div>
+    <div class="text-center" style="display: block; margin: 0 auto; max-width:500px">
+        <h2>Redbook Dashboard</h2>
+        <p class="lead">
+            Employee: @Model.EmployeeInfo.FirstName @Model.EmployeeInfo.LastName
+            <br />
+            Access Time: @Model.AccessTime.ToLocalTime().ToString()
+            <br />
+            Restaurant: <strong><u>@Model.EmployeeInfo.StoreNumber</u></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </p>
+    </div>
+</div>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <a class="dashboard-stat dashboard-stat-v2 red" href="/DailyDeposit">
+            <div class="visual">
+                <i class="fa fa-usd"></i>
+            </div>
+            <div class="details">
+                <div class="number">
+                    Daily Deposits
+                </div>
+                <div class="desc">Record Daily Deposits</div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a class="dashboard-stat dashboard-stat-v2 red" href="/SalesForecast">
+            <div class="visual">
+                <i class="fa fa-search"></i>
+            </div>
+            <div class="details">
+                <div class="number">
+                    Sales Forecasts
+                </div>
+                <div class="desc">Record Sales Forecasts</div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-4">
+        @if (User.IsRedbookManager())
+        {
+            <a class="dashboard-stat dashboard-stat-v2 red" href="/Redbook/Entry">
+                <div class="visual">
+                    <i class="fa fa-book"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        Redbook
+                    </div>
+                    <div class="desc">Record Redbook Entries</div>
+                </div>
+            </a>
+        }
+        else if (User.IsDivisionalVP() || User.IsRegionalManager())
+        {
+            <a class="dashboard-stat dashboard-stat-v2 red" href="/Redbook/Index">
+                <div class="visual">
+                    <i class="fa fa-book"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        Redbook
+                    </div>
+                    <div class="desc">Search Redbook Entries</div>
+                </div>
+            </a>
+        }
+
+    </div>
+</div>

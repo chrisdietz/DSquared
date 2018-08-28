@@ -61,13 +61,13 @@ namespace D_Squared.Data.Commands
             sb.AppendLine("<b>M Power: </b>" + entry.MPower + "<br>");
             sb.Append("<b>Events Affecting Sales: </b>");
 
-            List<EventDTO> eventList = DeserializeSelectedEvents(entry.SelectedEvents).Where(e => e.IsChecked).ToList();
+            List<RedbookSalesEvent> eventList = entry.SalesEvents.ToList();
 
-            if (eventList.Count != 0)
+            if (eventList != null && eventList.Count > 0)
             {
-                EventDTO lastEvent = eventList.Last();
+                RedbookSalesEvent lastEvent = eventList.Last();
 
-                foreach (EventDTO e in eventList)
+                foreach (RedbookSalesEvent e in eventList)
                 {
                     if (e.Equals(lastEvent))
                     {
@@ -78,6 +78,10 @@ namespace D_Squared.Data.Commands
                         sb.Append(e.Event + ", ");
                     }
                 }
+            }
+            else
+            {
+                sb.AppendLine("<i>N/A</i>");
             }
 
             return sb.ToString();

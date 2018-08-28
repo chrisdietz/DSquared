@@ -20,6 +20,8 @@ namespace D_Squared.Domain.TransferObjects
             DayOfWeek = salesForecast.BusinessDate.DayOfWeek.ToString();
             DateOfEntry = salesForecast.BusinessDate;
             ForecastAmount = salesForecast.ForecastAmount;
+            ForecastAM = salesForecast.ForecastAM;
+            ForecastPM = salesForecast.ForecastPM;
             PriorYearSales = salesForecast.ActualPriorYear;
             Prior2YearSales = salesForecast.ActualPrior2Years;
             AverageSalesPerMonth = salesForecast.AvgPrior4Weeks;
@@ -43,6 +45,8 @@ namespace D_Squared.Domain.TransferObjects
                 DayOfWeek = forecast.BusinessDate.DayOfWeek.ToString();
                 DateOfEntry = forecast.BusinessDate;
                 ForecastAmount = forecast.ForecastAmount;
+                ForecastAM = forecast.ForecastAM;
+                ForecastPM = forecast.ForecastPM;
                 PriorYearSales = forecast.ActualPriorYear;
                 Prior2YearSales = forecast.ActualPrior2Years;
                 AverageSalesPerMonth = forecast.AvgPrior4Weeks;
@@ -56,9 +60,15 @@ namespace D_Squared.Domain.TransferObjects
         [Display(Name = "Date")]
         public DateTime DateOfEntry { get; set; }
 
-        [Display(Name = "Sales Forecast")]
+        [Display(Name = "Total Sales Forecast")]
         //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
         public decimal ForecastAmount { get; set; }
+
+        [Display(Name = "AM Forecast")]
+        public decimal ForecastAM { get; set; }
+
+        [Display(Name = "PM Forecast")]
+        public decimal ForecastPM { get; set; }
 
         [Display(Name = "FY17 Sales")]
         public decimal PriorYearSales { get; set; }

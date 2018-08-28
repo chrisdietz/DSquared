@@ -32,8 +32,7 @@
                         /* scrolling down */
                         return ($this.scrollTop() + $this.innerHeight() < $this[0].scrollHeight);
                     }
-                })
-                ;
+                });
         };
 
         //hides button after submit in an attempt to prevent a double post via client side disable

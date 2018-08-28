@@ -40,12 +40,12 @@
                         @Html.LabelFor(model => model.SelectedDateString, htmlAttributes: new { @class = "control-label" })
                         @Html.EditorFor(model => model.SelectedDateString, new { htmlAttributes = new { @class = "refreshOnChange form-control date-picker", onkeydown = "return false", onpaste = "return false", @style = "width: 125px"} })
                     </div>
-                    <a data-toggle="modal" href="#helpModal" class="btn btn-primary btn-sm" style="float:right; margin-left: 10px;"><i class="fa fa-question-circle" aria-hidden="true"></i></a>
+                    <a data-toggle="modal" href="#helpModal" class="btn btn-dsquared btn-sm" style="float:right; margin-left: 10px;"><i class="fa fa-question-circle" aria-hidden="true"></i></a>
                     @if (User.IsGeneralManager())
                     {
-                        @Html.ActionLink("Reports", "SalesForecastReport", "SalesForecast", null, new { @class = "btn btn-primary btn-sm", @style = "float: right; margin-left: 10px;" })
+                        @Html.ActionLink("Reports", "SalesForecastReport", "SalesForecast", null, new { @class = "btn btn-dsquared btn-sm", @style = "float: right; margin-left: 10px;" })
                     }
-                    <input type="submit" value="Refresh" name="action:Refresh" class="btn btn-primary btn-sm" style="float: right" />
+                    <input type="submit" value="Load Sales Data" name="action:Refresh" class="btn btn-dsquared btn-sm" style="float: right" />
                 </caption>
                 <thead>
                     <tr>
@@ -68,6 +68,12 @@
                             @Html.DisplayNameFor(model => model.Weekdays.FirstOrDefault().AverageSalesPerMonth)
                         </th>
                         <th>
+                            @Html.DisplayNameFor(model => model.Weekdays.FirstOrDefault().ForecastAM)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Weekdays.FirstOrDefault().ForecastPM)
+                        </th>
+                        <th>
                             @Html.DisplayNameFor(model => model.Weekdays.FirstOrDefault().ForecastAmount)
                         </th>
                         <th>
@@ -84,10 +90,11 @@
                         @Html.HiddenFor(model => model.Weekdays[i].Prior2YearSales)
                         @Html.HiddenFor(model => model.Weekdays[i].AverageSalesPerMonth)
                         @Html.HiddenFor(model => model.Weekdays[i].LaborForecast)
+                        @Html.HiddenFor(model => model.Weekdays[i].ForecastAmount)
                         <tr>
                             <td>
                                 <span onclick="GetLastYearRedbookEntryDetail('@Model.Weekdays[i].DateOfEntry.ToShortDateString()')">
-                                    <a class="btn btn-primary btn-xs" style="margin-top: 4px">Last Year's Details</a>
+                                    <a class="btn btn-dsquared btn-xs" style="margin-top: 4px">Last Year's Details</a>
                                 </span>
                             </td>
                             <td>
@@ -106,7 +113,13 @@
                                 @Model.Weekdays[i].AverageSalesPerMonth.ToString("C0")
                             </td>
                             <td>
-                                @Html.EditorFor(model => model.Weekdays[i].ForecastAmount, new { htmlAttributes = new { @class = "form-control", @type = "number", @min = "0", @step = "0.01" } })
+                                @Html.EditorFor(model => model.Weekdays[i].ForecastAM, new { htmlAttributes = new { @class = "form-control", @type = "number", @min = "0", @step = "0.01", @style = "max-width: 120px" } })
+                            </td>
+                            <td>
+                                @Html.EditorFor(model => model.Weekdays[i].ForecastPM, new { htmlAttributes = new { @class = "form-control", @type = "number", @min = "0", @step = "0.01", @style = "max-width: 120px" } })
+                            </td>
+                            <td>
+                                @Model.Weekdays[i].ForecastAmount.ToString("C0")
                             </td>
                             <td>
                                 @Model.Weekdays[i].LaborForecast.ToString("C0")
@@ -119,7 +132,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <a data-toggle="modal" href="#myModal" class="btn btn-primary btn-lg">Save Changes</a>
+            <a data-toggle="modal" href="#myModal" class="btn btn-dsquared btn-lg">Save Changes</a>
         </div>
     </div>
 
@@ -141,7 +154,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <input type="submit" value="Save" name="action:Index" class="btn btn-primary" />
+                    <input type="submit" value="Save" name="action:Index" class="btn btn-dsquared" />
                 </div>
             </div>
         </div>

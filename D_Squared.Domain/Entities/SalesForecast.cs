@@ -16,6 +16,10 @@ namespace D_Squared.Domain.Entities
         [StringLength(3)]
         public string StoreNumber { get; set; }
 
+        public decimal ForecastAM { get; set; }
+
+        public decimal ForecastPM { get; set; }
+
         public decimal ForecastAmount { get; set; }
 
         public decimal ActualPriorYear { get; set; }

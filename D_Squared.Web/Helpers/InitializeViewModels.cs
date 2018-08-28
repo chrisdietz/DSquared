@@ -64,6 +64,21 @@ namespace D_Squared.Web.Helpers
             return eventPairs;
         }
 
+        protected List<EventDTO> CreateEventDtos(List<string> eventCodeList, List<RedbookSalesEvent> selectedEvents)
+        {
+            List<EventDTO> eventPairs = new List<EventDTO>();
+
+            foreach (var eventCode in eventCodeList)
+            {
+                if (selectedEvents.Select(se => se.Event).Contains(eventCode))
+                    eventPairs.Add(new EventDTO() { Event = eventCode, IsChecked = true });
+                else
+                    eventPairs.Add(new EventDTO() { Event = eventCode, IsChecked = false });
+            }
+
+            return eventPairs;
+        }
+
         protected DateTime TryParseDateTimeString(string date)
         {
             DateTime.TryParse(date, out DateTime convertedDate);
@@ -90,9 +105,8 @@ namespace D_Squared.Web.Helpers
         }
         #endregion
 
-        public RedbookEntry BindPostValuesToEntity(RedbookEntry redbookEntry, List<EventDTO> eventDTOs, string selectedDateString, string selectedStoreNumber)
+        public RedbookEntry BindPostValuesToEntity(RedbookEntry redbookEntry, string selectedDateString, string selectedStoreNumber)
         {
-            redbookEntry.SelectedEvents = SerializeSelectedEventDTOs(eventDTOs);
             redbookEntry.BusinessDate = TryParseDateTimeString(selectedDateString);
             redbookEntry.LocationId = selectedStoreNumber;
 
@@ -115,9 +129,7 @@ namespace D_Squared.Web.Helpers
                 LocationSelectList = eq.GetLocationList().ToSelectList(storeNumber),
                 EmployeeInfo = eq.GetEmployeeInfo(userName),
                 SalesForecastDTO = sfq.GetLiveSalesForecastDTO(convertedSelectedDate, storeNumber),
-                EventDTOs = !string.IsNullOrEmpty(redbookEntry.SelectedEvents) ? DeserializeSelectedEvents(redbookEntry.SelectedEvents) : CreateEventDtos(cq.GetDistinctListByCodeCategory("Event"), new List<string>()),
-                //EventDTOs = redbookEntry.SalesEvents.Count > 0 ? CreateEventDtos(cq.GetDistinctListByCodeCategory("Event"), redbookEntry.SalesEvents.Select(e => e.Event).ToList()) : CreateEventDtos(cq.GetDistinctListByCodeCategory("Event"), new List<string>()),
-                //EventDTOs = CreateEventDtos(cq.GetDistinctListByCodeCategory("Event"), redbookEntry.SalesEvents.Select(e => e.Event).ToList()),
+                EventDTOs = CreateEventDtos(cq.GetDistinctListByCodeCategory("Event"), redbookEntry.SalesEvents == null ? new List<RedbookSalesEvent>() : redbookEntry.SalesEvents.ToList()),
                 WeatherSelectListAM = cq.GetDistinctListByCodeCategory("Weather").ToSelectList(null, true, "N/A"),
                 WeatherSelectListPM = cq.GetDistinctListByCodeCategory("Weather").ToSelectList(null, true, "N/A"),
                 ManagerSelectListAM = eq.GetManagersForLocation(storeNumber).ToSelectList("sAMAccountName", "FullName", null, true, "--Select--", string.Empty),
@@ -183,7 +195,7 @@ namespace D_Squared.Web.Helpers
             {
                 RedbookEntry = lastYearRedbook,
                 SalesForecastDTO = sfq.GetLiveSalesForecastDTO(lastYearRedbook.BusinessDate, lastYearRedbook.LocationId),
-                EventDTOs = !string.IsNullOrEmpty(lastYearRedbook.SelectedEvents) ? DeserializeSelectedEvents(lastYearRedbook.SelectedEvents).Where(e => e.IsChecked).ToList() : new List<EventDTO>(),
+                EventDTOs = CreateEventDtos(cq.GetDistinctListByCodeCategory("Event"), lastYearRedbook.SalesEvents == null ? new List<RedbookSalesEvent>() : lastYearRedbook.SalesEvents.ToList()).Where(e => e.IsChecked).ToList(),
                 CompetitiveEventListViewModel = new CompetitiveEventListViewModel(rbeq.GetCompetitiveEvents(lastYearRedbook.Id, lastYearRedbook.LocationId))
             };
 

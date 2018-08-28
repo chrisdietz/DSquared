@@ -95,7 +95,9 @@ namespace D_Squared.Data.Queries
                 if(CheckForExistingSalesForecastByDate(forecast.DateOfEntry, storeNumber))
                 {
                     SalesForecast entry = GetSalesForecastRecordsByDate(forecast.DateOfEntry, storeNumber);
-                    entry.ForecastAmount = forecast.ForecastAmount;
+                    entry.ForecastAM = forecast.ForecastAM;
+                    entry.ForecastPM = forecast.ForecastPM;
+                    entry.ForecastAmount = forecast.ForecastAM + forecast.ForecastPM;
                     entry.UpdatedBy = userName;
                     entry.UpdatedDate = DateTime.Now;
                 }
@@ -105,7 +107,9 @@ namespace D_Squared.Data.Queries
                     {
                         BusinessDate = forecast.DateOfEntry,
                         StoreNumber = storeNumber,
-                        ForecastAmount = forecast.ForecastAmount,
+                        ForecastAM = forecast.ForecastAM,
+                        ForecastPM = forecast.ForecastPM,
+                        ForecastAmount = forecast.ForecastAM + forecast.ForecastPM,
                         ActualPriorYear = forecast.PriorYearSales,
                         ActualPrior2Years = forecast.Prior2YearSales,
                         AvgPrior4Weeks = forecast.AverageSalesPerMonth,

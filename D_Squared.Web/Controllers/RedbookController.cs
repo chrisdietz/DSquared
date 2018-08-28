@@ -113,7 +113,7 @@ namespace D_Squared.Web.Controllers
             try
             {
                 //bind 
-                model.RedbookEntry = init.BindPostValuesToEntity(model.RedbookEntry, model.EventDTOs, model.SelectedDateString, model.SelectedLocation);
+                model.RedbookEntry = init.BindPostValuesToEntity(model.RedbookEntry, model.SelectedDateString, model.SelectedLocation);
 
                 //manually verify model state
                 if (model.RedbookEntry.BusinessDate != default(DateTime))
@@ -124,7 +124,7 @@ namespace D_Squared.Web.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    rbeq.SaveRedbookEntry(model.RedbookEntry, username);
+                    rbeq.SaveRedbookEntry(model.RedbookEntry, model.EventDTOs, username);
                     Success("The Redbook for Restaurant: <u>" + model.RedbookEntry.LocationId + "</u> and Date: <u>" + model.RedbookEntry.BusinessDate.ToShortDateString() + "</u> has been saved successfully. You may close this window");
                 }
                 else
@@ -158,7 +158,7 @@ namespace D_Squared.Web.Controllers
             try
             {
                 //bind 
-                model.RedbookEntry = init.BindPostValuesToEntity(model.RedbookEntry, model.EventDTOs, model.SelectedDateString, model.SelectedLocation);
+                model.RedbookEntry = init.BindPostValuesToEntity(model.RedbookEntry, model.SelectedDateString, model.SelectedLocation);
 
                 //manually verify model state
                 if (model.RedbookEntry.BusinessDate != default(DateTime))
@@ -169,7 +169,7 @@ namespace D_Squared.Web.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    rbeq.SubmitRedbookEntry(model.RedbookEntry, username);
+                    rbeq.SubmitRedbookEntry(model.RedbookEntry, model.EventDTOs, username);
                     Success("The Redbook for Restaurant: <u>" + model.RedbookEntry.LocationId + "</u> and Date: <u>" + model.RedbookEntry.BusinessDate.ToShortDateString() + "</u> has been submitted successfully. You may close this window");
                 }
                 else
