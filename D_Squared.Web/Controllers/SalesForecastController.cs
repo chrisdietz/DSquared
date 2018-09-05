@@ -22,12 +22,14 @@ namespace D_Squared.Web.Controllers
 
         private readonly SalesForecastQueries sfq;
         private readonly EmployeeQueries eq;
+        private readonly BudgetQueries bq;
 
         public SalesForecastController()
         {
             db = new D_SquaredDbContext();
             f_db = new ForecastDataDbContext();
             sfq = new SalesForecastQueries(db, f_db);
+            bq = new BudgetQueries(db);
 
             e_db = new EmployeeDbContext();
             eq = new EmployeeQueries(e_db);
@@ -52,8 +54,12 @@ namespace D_Squared.Web.Controllers
                 DateTime today = DateTime.Now.ToLocalTime();
                 EmployeeDTO employee = eq.GetEmployeeInfo(username);
                 List<SalesForecastDTO> weekdays = sfq.GetSpecificWeekAsSalesForecastDTOList(DateTime.Today.ToLocalTime(), employee.StoreNumber);
+                DateTime thursday = weekdays.Where(w => w.DayOfWeek == "Thursday").FirstOrDefault().DateOfEntry;
 
-                SalesForecastViewModel model = new SalesForecastViewModel(weekdays, today, employee, today.ToShortDateString());
+                SalesForecastViewModel model = new SalesForecastViewModel(weekdays, today, employee, today.ToShortDateString())
+                {
+                    BudgetDTO = bq.GetBudgetByDate(thursday, employee.StoreNumber)
+                };
 
                 return View(model);
             }

@@ -91,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DomainConstants.cs" />
+    <Compile Include="Entities\Budget.cs" />
     <Compile Include="Entities\Code.cs" />
     <Compile Include="Entities\CompetitiveEvent.cs" />
     <Compile Include="Entities\DailyDeposit.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Entities\SalesForecast.cs" />
     <Compile Include="Entities\StoreLocation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TransferObjects\BudgetDTO.cs" />
     <Compile Include="TransferObjects\DepositEntryDTO.cs" />
     <Compile Include="TransferObjects\DepositSummaryDTO.cs" />
     <Compile Include="TransferObjects\EmployeeDTO.cs" />
@@ -114,7 +116,9 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

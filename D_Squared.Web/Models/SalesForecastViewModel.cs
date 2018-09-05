@@ -1,4 +1,5 @@
-﻿using D_Squared.Domain.TransferObjects;
+﻿using D_Squared.Domain.Entities;
+using D_Squared.Domain.TransferObjects;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -47,6 +48,8 @@ namespace D_Squared.Web.Models
         public DateTime AccessTime { get; set; }
 
         public List<SalesForecastDTO> Weekdays { get; set; }
+
+        public BudgetDTO BudgetDTO { get; set; }
 
         public EmployeeDTO EmployeeInfo { get; set; }
 
