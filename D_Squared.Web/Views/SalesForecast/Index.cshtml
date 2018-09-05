@@ -146,28 +146,42 @@
                         }
                         <tr>
                             <td colspan="3">
-                                <strong style="float:right">Column Totals:</strong>
+                                <strong style="float:right"><u>Column Totals:</u></strong>
                             </td>
                             <td>
-                                @PriorYearSalesTotal.ToString("C0")
+                                <strong>
+                                    @PriorYearSalesTotal.ToString("C0")
+                                </strong>
                             </td>
                             <td>
-                                @Prior2YearSalesTotal.ToString("C0")
+                                <strong>
+                                    @Prior2YearSalesTotal.ToString("C0")
+                                </strong>
                             </td>
                             <td>
-                                @AverageSalesPerMonthTotal.ToString("C0")
+                                <strong>
+                                    @AverageSalesPerMonthTotal.ToString("C0")
+                                </strong>
                             </td>
                             <td>
-                                @ForecastAMTotal.ToString("C0")
+                                <strong>
+                                    @ForecastAMTotal.ToString("C0")
+                                </strong>
                             </td>
                             <td>
-                                @ForecastPMTotal.ToString("C0")
+                                <strong>
+                                    @ForecastPMTotal.ToString("C0")
+                                </strong>
                             </td>
                             <td>
-                                @ForecastAmountTotal.ToString("C0")
+                                <strong>
+                                    @ForecastAmountTotal.ToString("C0")
+                                </strong>
                             </td>
                             <td>
-                                @LaborForecastTotal.ToString("C0")
+                                <strong>
+                                    @LaborForecastTotal.ToString("C0")
+                                </strong>
                             </td>
                         </tr>
 
@@ -182,40 +196,33 @@
                         <tr>
                             <td colspan="9">
                                 <strong style="float:right">
-                                    50/50 Recommended Labor
+                                    <u>50/50 Recommended Labor:</u>
                                 </strong>
                             </td>
                             <td>
-                                @recLabor.ToString("C0")
+                                <strong>@recLabor.ToString("C0")</strong>
                             </td>
                         </tr>
 
-                        if (variance > 0)
-                        {
-                            <tr>
-                                <td colspan="9">
-                                    <strong style="float:right">
-                                        Variance
-                                    </strong>
-                                </td>
+                        <tr>
+                            <td colspan="9">
+                                <strong style="float:right">
+                                    <u>Variance</u>
+                                </strong>
+                            </td>
+                            @if (variance > 0)
+                            {
                                 <td>
-                                    <span style="color:red">@variance.ToString("C0")</span>
+                                    <span style="color:red"><strong>@variance.ToString("C0")</strong></span>
                                 </td>
-                            </tr>
-                        }
-                        else
-                        {
-                            <tr>
-                                <td colspan="9">
-                                    <strong style="float:right">
-                                        Variance
-                                    </strong>
-                                </td>
+                            }
+                            else
+                            {
                                 <td>
-                                    <span>@variance.ToString("C0")</span>
+                                    <span><strong>@variance.ToString("C0")</strong></span>
                                 </td>
-                            </tr>
-                        }
+                            }
+                        </tr>
                     }
                 </tbody>
             </table>
