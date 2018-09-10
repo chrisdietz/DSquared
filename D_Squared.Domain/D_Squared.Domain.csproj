@@ -111,6 +111,7 @@
     <Compile Include="TransferObjects\RedbookSearchDTO.cs" />
     <Compile Include="TransferObjects\SalesForecastDTO.cs" />
     <Compile Include="TransferObjects\SalesForecastSummaryDTO.cs" />
+    <Compile Include="TransferObjects\SalesForecastTotalsDTO.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

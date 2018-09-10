@@ -16,7 +16,7 @@ namespace D_Squared.Web.Models
             Weekdays = new List<SalesForecastDTO>();
         }
 
-        public SalesForecastViewModel(List<SalesForecastDTO> weekdays, DateTime accessTime, EmployeeDTO employeeDTO, string selectedDate)
+        public SalesForecastViewModel(List<SalesForecastDTO> weekdays, DateTime accessTime, EmployeeDTO employeeDTO, string selectedDate, BudgetDTO budgetDTO, List<string> validLocations)
         {
             Weekdays = weekdays;
             AccessTime = accessTime;
@@ -26,6 +26,12 @@ namespace D_Squared.Web.Models
             SelectedDateString = selectedDate;
             StartDate = GetCurrentWeek(accessTime).First();
             EndDate = StartDate.AddDays(42);
+
+            BudgetDTO = budgetDTO;
+            Totals = new SalesForecastColumnTotalsDTO(weekdays);
+
+            RecommendedLabor = CalculateRecommendedLabor(validLocations);
+            Variance = Totals.LaborForecastTotal - RecommendedLabor;
         }
 
         public List<DateTime> GetCurrentWeek(DateTime selectedDay)
@@ -43,11 +49,33 @@ namespace D_Squared.Web.Models
             return dates;
         }
 
+        //assign in controller
+        private decimal CalculateRecommendedLabor(List<string> validLocations)
+        {
+            if (validLocations.Contains(EmployeeInfo.StoreNumber))
+            {
+                return ((decimal)BudgetDTO.Budget.LaborBudgetAmount / BudgetDTO.NumberOfWeeks) +
+                                                ((Totals.ForecastAmountTotal - ((decimal)BudgetDTO.Budget.SalesBudgetAmount / BudgetDTO.NumberOfWeeks))
+                                                *
+                                                (((decimal)BudgetDTO.Budget.LaborBudgetAmount / (decimal)BudgetDTO.Budget.SalesBudgetAmount) / 2));
+            }
+            else
+            {
+                return new decimal(-1);
+            }
+        }
+
+        public decimal RecommendedLabor { get; set; }
+
+        public decimal Variance { get; set; }
+
         public DateTime EndingPeriod { get; set; }
 
         public DateTime AccessTime { get; set; }
 
         public List<SalesForecastDTO> Weekdays { get; set; }
+
+        public SalesForecastColumnTotalsDTO Totals { get; set; }
 
         public BudgetDTO BudgetDTO { get; set; }
 

@@ -52,14 +52,12 @@ namespace D_Squared.Web.Controllers
             else
             {
                 DateTime today = DateTime.Now.ToLocalTime();
+
                 EmployeeDTO employee = eq.GetEmployeeInfo(username);
                 List<SalesForecastDTO> weekdays = sfq.GetSpecificWeekAsSalesForecastDTOList(DateTime.Today.ToLocalTime(), employee.StoreNumber);
                 DateTime thursday = weekdays.Where(w => w.DayOfWeek == "Thursday").FirstOrDefault().DateOfEntry;
 
-                SalesForecastViewModel model = new SalesForecastViewModel(weekdays, today, employee, today.ToShortDateString())
-                {
-                    BudgetDTO = bq.GetBudgetByDate(thursday, employee.StoreNumber)
-                };
+                SalesForecastViewModel model = new SalesForecastViewModel(weekdays, today, employee, today.ToShortDateString(), bq.GetBudgetByDate(thursday, employee.StoreNumber), eq.GetAllValidStoreLocations());
 
                 return View(model);
             }
@@ -151,8 +149,10 @@ namespace D_Squared.Web.Controllers
 
                 EmployeeDTO employee = eq.GetEmployeeInfo(username);
                 List<SalesForecastDTO> weekdays = sfq.GetSpecificWeekAsSalesForecastDTOList(convertedSelectedDate, employee.StoreNumber);
+                DateTime thursday = weekdays.Where(w => w.DayOfWeek == "Thursday").FirstOrDefault().DateOfEntry;
 
-                model = new SalesForecastViewModel(weekdays, DateTime.Today.ToLocalTime(), employee, model.SelectedDateString);
+                model = new SalesForecastViewModel(weekdays, DateTime.Today.ToLocalTime(), employee, model.SelectedDateString, bq.GetBudgetByDate(thursday, employee.StoreNumber), eq.GetAllValidStoreLocations());
+
                 ModelState.Clear();
 
                 return View("Index", model);

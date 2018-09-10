@@ -65,6 +65,11 @@ namespace D_Squared.Data.Millers.Queries
             return db.Employees.Where(e => e.EmployeeId != "9999").ToList();
         }
 
+        public List<string> GetAllValidStoreLocations()
+        {
+            return db.StoreLocations.Select(sl => sl.LocationName.Substring(0, 3)).ToList();
+        }
+
         public List<string> GetStoreLocationListForAdmin()
         {
             return db.StoreLocations.Select(sl => sl.LocationName).ToList();

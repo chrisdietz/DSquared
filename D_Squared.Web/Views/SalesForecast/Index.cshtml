@@ -82,148 +82,136 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @{
-                        decimal PriorYearSalesTotal = 0;
-                        decimal Prior2YearSalesTotal = 0;
-                        decimal AverageSalesPerMonthTotal = 0;
-                        decimal ForecastAMTotal = 0;
-                        decimal ForecastPMTotal = 0;
-                        decimal ForecastAmountTotal = 0;
-                        decimal LaborForecastTotal = 0;
-
-                        for (int i = 0; i < Model.Weekdays.Count(); i++)
-                        {
-                            PriorYearSalesTotal += Model.Weekdays[i].PriorYearSales;
-                            Prior2YearSalesTotal += Model.Weekdays[i].Prior2YearSales;
-                            AverageSalesPerMonthTotal += Model.Weekdays[i].AverageSalesPerMonth;
-                            ForecastAMTotal += Model.Weekdays[i].ForecastAM;
-                            ForecastPMTotal += Model.Weekdays[i].ForecastPM;
-                            ForecastAmountTotal += Model.Weekdays[i].ForecastAmount;
-                            LaborForecastTotal += Model.Weekdays[i].LaborForecast;
-
-                            <tr>
-                                @Html.HiddenFor(model => model.Weekdays[i].DayOfWeek)
-                                @Html.HiddenFor(model => model.Weekdays[i].DateOfEntry)
-                                @Html.HiddenFor(model => model.Weekdays[i].PriorYearSales)
-                                @Html.HiddenFor(model => model.Weekdays[i].Prior2YearSales)
-                                @Html.HiddenFor(model => model.Weekdays[i].AverageSalesPerMonth)
-                                @Html.HiddenFor(model => model.Weekdays[i].LaborForecast)
-                                @Html.HiddenFor(model => model.Weekdays[i].ForecastAmount)
-
-                                <td>
-                                    <span onclick="GetLastYearRedbookEntryDetail('@Model.Weekdays[i].DateOfEntry.ToShortDateString()')">
-                                        <a class="btn btn-dsquared btn-xs" style="margin-top: 4px">Last Year's Details</a>
-                                    </span>
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(model => model.Weekdays[i].DayOfWeek)
-                                </td>
-                                <td>
-                                    @Model.Weekdays[i].DateOfEntry.ToShortDateString()
-                                </td>
-                                <td>
-                                    @Model.Weekdays[i].PriorYearSales.ToString("C0")
-                                </td>
-                                <td>
-                                    @Model.Weekdays[i].Prior2YearSales.ToString("C0")
-                                </td>
-                                <td>
-                                    @Model.Weekdays[i].AverageSalesPerMonth.ToString("C0")
-                                </td>
-                                <td>
-                                    @Html.EditorFor(model => model.Weekdays[i].ForecastAM, new { htmlAttributes = new { @class = "form-control", @type = "number", @min = "0", @step = "0.01", @style = "max-width: 120px" } })
-                                </td>
-                                <td>
-                                    @Html.EditorFor(model => model.Weekdays[i].ForecastPM, new { htmlAttributes = new { @class = "form-control", @type = "number", @min = "0", @step = "0.01", @style = "max-width: 120px" } })
-                                </td>
-                                <td>
-                                    @Model.Weekdays[i].ForecastAmount.ToString("C0")
-                                </td>
-                                <td>
-                                    @Model.Weekdays[i].LaborForecast.ToString("C0")
-                                </td>
-                            </tr>
-                        }
+                    @for (int i = 0; i < Model.Weekdays.Count(); i++)
+                    {
                         <tr>
-                            <td colspan="3">
-                                <strong style="float:right"><u>Column Totals:</u></strong>
+                            @Html.HiddenFor(model => model.Weekdays[i].DayOfWeek)
+                            @Html.HiddenFor(model => model.Weekdays[i].DateOfEntry)
+                            @Html.HiddenFor(model => model.Weekdays[i].PriorYearSales)
+                            @Html.HiddenFor(model => model.Weekdays[i].Prior2YearSales)
+                            @Html.HiddenFor(model => model.Weekdays[i].AverageSalesPerMonth)
+                            @Html.HiddenFor(model => model.Weekdays[i].LaborForecast)
+                            @Html.HiddenFor(model => model.Weekdays[i].ForecastAmount)
+
+                            <td>
+                                <span onclick="GetLastYearRedbookEntryDetail('@Model.Weekdays[i].DateOfEntry.ToShortDateString()')">
+                                    <a class="btn btn-dsquared btn-xs" style="margin-top: 4px">Last Year's Details</a>
+                                </span>
                             </td>
                             <td>
-                                <strong>
-                                    @PriorYearSalesTotal.ToString("C0")
-                                </strong>
+                                @Html.DisplayFor(model => model.Weekdays[i].DayOfWeek)
                             </td>
                             <td>
-                                <strong>
-                                    @Prior2YearSalesTotal.ToString("C0")
-                                </strong>
+                                @Model.Weekdays[i].DateOfEntry.ToShortDateString()
                             </td>
                             <td>
-                                <strong>
-                                    @AverageSalesPerMonthTotal.ToString("C0")
-                                </strong>
+                                @Model.Weekdays[i].PriorYearSales.ToString("C0")
                             </td>
                             <td>
-                                <strong>
-                                    @ForecastAMTotal.ToString("C0")
-                                </strong>
+                                @Model.Weekdays[i].Prior2YearSales.ToString("C0")
                             </td>
                             <td>
-                                <strong>
-                                    @ForecastPMTotal.ToString("C0")
-                                </strong>
+                                @Model.Weekdays[i].AverageSalesPerMonth.ToString("C0")
                             </td>
                             <td>
-                                <strong>
-                                    @ForecastAmountTotal.ToString("C0")
-                                </strong>
+                                @Html.EditorFor(model => model.Weekdays[i].ForecastAM, new { htmlAttributes = new { @class = "form-control", @type = "number", @min = "0", @step = "0.01", @style = "max-width: 120px" } })
                             </td>
                             <td>
-                                <strong>
-                                    @LaborForecastTotal.ToString("C0")
-                                </strong>
+                                @Html.EditorFor(model => model.Weekdays[i].ForecastPM, new { htmlAttributes = new { @class = "form-control", @type = "number", @min = "0", @step = "0.01", @style = "max-width: 120px" } })
+                            </td>
+                            <td>
+                                @Model.Weekdays[i].ForecastAmount.ToString("C0")
+                            </td>
+                            <td>
+                                @Model.Weekdays[i].LaborForecast.ToString("C0")
                             </td>
                         </tr>
+                    }
 
-                        decimal recLabor = ((decimal)Model.BudgetDTO.Budget.LaborBudgetAmount / (decimal)Model.BudgetDTO.NumberOfWeeks) +
-                                                ((ForecastAmountTotal - ((decimal)Model.BudgetDTO.Budget.SalesBudgetAmount / (decimal)Model.BudgetDTO.NumberOfWeeks))
-                                                *
-                                                (((decimal)Model.BudgetDTO.Budget.LaborBudgetAmount / (decimal)Model.BudgetDTO.Budget.SalesBudgetAmount) / 2));
+                    <tr>
+                        <td colspan="3">
+                            <strong style="float:right"><u>Column Totals:</u></strong>
+                        </td>
+                        <td>
+                            <strong>
+                                @Model.Totals.PriorYearSalesTotal.ToString("C0")
+                            </strong>
+                        </td>
+                        <td>
+                            <strong>
+                                @Model.Totals.Prior2YearSalesTotal.ToString("C0")
+                            </strong>
+                        </td>
+                        <td>
+                            <strong>
+                                @Model.Totals.AverageSalesPerMonthTotal.ToString("C0")
+                            </strong>
+                        </td>
+                        <td>
+                            <strong>
+                                @Model.Totals.ForecastAMTotal.ToString("C0")
+                            </strong>
+                        </td>
+                        <td>
+                            <strong>
+                                @Model.Totals.ForecastPMTotal.ToString("C0")
+                            </strong>
+                        </td>
+                        <td>
+                            <strong>
+                                @Model.Totals.ForecastAmountTotal.ToString("C0")
+                            </strong>
+                        </td>
+                        <td>
+                            <strong>
+                                @Model.Totals.LaborForecastTotal.ToString("C0")
+                            </strong>
+                        </td>
+                    </tr>
 
-                        decimal variance = LaborForecastTotal - recLabor;
-
-
-                        <tr>
-                            <td colspan="9">
-                                <strong style="float:right">
-                                    <u>50/50 Recommended Labor:</u>
-                                </strong>
-                            </td>
-                            <td>
-                                <strong>@recLabor.ToString("C0")</strong>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td colspan="9">
-                                <strong style="float:right">
-                                    <u>Variance</u>
-                                </strong>
-                            </td>
-                            @if (variance > 0)
+                    <tr>
+                        <td colspan="9">
+                            <strong style="float:right">
+                                <u>50/50 Recommended Labor:</u>
+                            </strong>
+                        </td>
+                        <td>
+                            @if (Model.RecommendedLabor != -1)
                             {
-                                <td>
-                                    <span style="color:red"><strong>@variance.ToString("C0")</strong></span>
-                                </td>
+                                <strong>@Model.RecommendedLabor.ToString("C0")</strong>
                             }
                             else
                             {
-                                <td>
-                                    <span><strong>@variance.ToString("C0")</strong></span>
-                                </td>
+                                <strong>N/A</strong>
                             }
-                        </tr>
-                    }
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="9">
+                            <strong style="float:right">
+                                <u>Variance</u>
+                            </strong>
+                        </td>
+                        @if (Model.Variance > 0 && Model.RecommendedLabor != -1)
+                        {
+                            <td>
+                                <span style="color:red"><strong>@Model.Variance.ToString("C0")</strong></span>
+                            </td>
+                        }
+                        else if (Model.Variance <= 0 && Model.RecommendedLabor != -1)
+                        {
+                            <td>
+                                <span><strong>@Model.Variance.ToString("C0")</strong></span>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <span><strong>N/A</strong></span>
+                            </td>
+                        }
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -257,7 +245,7 @@
             </div>
         </div>
     </div>
-                        }
+}
 
 <!--redbook detail holder-->
 <div id="detailPartial">
