@@ -101,9 +101,10 @@ namespace D_Squared.Web.Controllers
         [MultipleButton(Name = "action", Argument = "Refresh")]
         public ActionResult Refresh(SalesForecastViewModel model)
         {
+            string userName = User.TruncatedName;
+
             try
             {
-                string userName = User.TruncatedName;
                 string storeNumber = eq.GetStoreNumber(userName);
 
                 if (ModelState.IsValid)
@@ -124,7 +125,17 @@ namespace D_Squared.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            return RedirectToAction("Index");
+            DateTime.TryParse(model.SelectedDateString, out DateTime convertedSelectedDate);
+
+            EmployeeDTO employee = eq.GetEmployeeInfo(userName);
+            List<SalesForecastDTO> weekdays = sfq.GetSpecificWeekAsSalesForecastDTOList(convertedSelectedDate, employee.StoreNumber);
+            DateTime thursday = weekdays.Where(w => w.DayOfWeek == "Thursday").FirstOrDefault().DateOfEntry;
+
+            model = new SalesForecastViewModel(weekdays, DateTime.Today.ToLocalTime(), employee, model.SelectedDateString, bq.GetBudgetByDate(thursday, employee.StoreNumber), eq.GetAllValidStoreLocations());
+
+            ModelState.Clear();
+
+            return View("Index", model);
         }
 
         [HttpPost]
