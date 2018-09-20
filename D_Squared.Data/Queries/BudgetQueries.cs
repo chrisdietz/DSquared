@@ -67,5 +67,18 @@ namespace D_Squared.Data.Queries
 
             return dtoList.Where(d => d.BudgetDateRange.Contains(thursdayOfFiscalWeek)).FirstOrDefault();
         }
+
+        public List<FY18Budget> GetFY18Budgets(string storeLocation)
+        {
+            if(storeLocation != "OSRC")
+            {
+                int location;
+                Int32.TryParse(storeLocation, out location);
+
+                return db.FY18Budgets.Where(b => b.AX_CC == location).ToList();
+            }
+            else
+                return new List<FY18Budget>();
+        }
     }
 }

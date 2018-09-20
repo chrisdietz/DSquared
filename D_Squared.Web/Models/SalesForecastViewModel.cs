@@ -16,7 +16,7 @@ namespace D_Squared.Web.Models
             Weekdays = new List<SalesForecastDTO>();
         }
 
-        public SalesForecastViewModel(List<SalesForecastDTO> weekdays, DateTime accessTime, EmployeeDTO employeeDTO, string selectedDate, BudgetDTO budgetDTO, List<string> validLocations)
+        public SalesForecastViewModel(List<SalesForecastDTO> weekdays, DateTime accessTime, EmployeeDTO employeeDTO, string selectedDate, BudgetDTO budgetDTO, List<FY18Budget> fy18budgets, List<string> validLocations)
         {
             Weekdays = weekdays;
             AccessTime = accessTime;
@@ -32,6 +32,11 @@ namespace D_Squared.Web.Models
 
             RecommendedLabor = CalculateRecommendedLabor(validLocations);
             Variance = Totals.LaborForecastTotal - RecommendedLabor;
+
+            FY18BudgetDTO = new FY18BudgetDTO(fy18budgets, DateTime.Now);
+
+            RecommendedFOHLabor = CalculateRecommendedFOHLabor(validLocations);
+            RecommendedBOHLabor = CalculateRecommendedBOHLabor(validLocations);
         }
 
         public List<DateTime> GetCurrentWeek(DateTime selectedDay)
@@ -65,7 +70,51 @@ namespace D_Squared.Web.Models
             }
         }
 
+        private decimal CalculateRecommendedFOHLabor(List<string> validLocations)
+        {
+            if (validLocations.Contains(EmployeeInfo.StoreNumber) && RecommendedLabor != -1)
+            {
+                decimal numerator = FY18BudgetDTO.Account60205 + FY18BudgetDTO.Account60206;
+                decimal denominator = FY18BudgetDTO.Account60205 + FY18BudgetDTO.Account60206 + FY18BudgetDTO.Account60210 + FY18BudgetDTO.Account60211;
+
+                if (numerator == 0)
+                    return new decimal(-1);
+                else
+                {
+                    return RecommendedLabor * (numerator / denominator);
+                }
+            }
+            else
+            {
+                return new decimal(-1);
+            }
+        }
+
+        private decimal CalculateRecommendedBOHLabor(List<string> validLocations)
+        {
+            if (validLocations.Contains(EmployeeInfo.StoreNumber) && RecommendedLabor != -1)
+            {
+                decimal numerator = FY18BudgetDTO.Account60210 + FY18BudgetDTO.Account60211;
+                decimal denominator = FY18BudgetDTO.Account60205 + FY18BudgetDTO.Account60206 + FY18BudgetDTO.Account60210 + FY18BudgetDTO.Account60211;
+
+                if (numerator == 0)
+                    return new decimal(-1);
+                else
+                {
+                    return RecommendedLabor * (numerator / denominator);
+                }
+            }
+            else
+            {
+                return new decimal(-1);
+            }
+        }
+
         public decimal RecommendedLabor { get; set; }
+
+        public decimal RecommendedFOHLabor { get; set; }
+
+        public decimal RecommendedBOHLabor { get; set; }
 
         public decimal Variance { get; set; }
 
@@ -78,6 +127,8 @@ namespace D_Squared.Web.Models
         public SalesForecastColumnTotalsDTO Totals { get; set; }
 
         public BudgetDTO BudgetDTO { get; set; }
+
+        public FY18BudgetDTO FY18BudgetDTO { get; set; }
 
         public EmployeeDTO EmployeeInfo { get; set; }
 

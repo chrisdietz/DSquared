@@ -31,6 +31,8 @@ namespace D_Squared.Data.Context
 
         public DbSet<HelpDocument> HelpDocuments { get; set; }
 
+        public DbSet<FY18Budget> FY18Budgets { get; set; }
+
         public DbSet<Budget> Budgets { get; set; }
 
         public DbSet<Code> Codes { get; set; }
@@ -38,6 +40,12 @@ namespace D_Squared.Data.Context
         public static D_SquaredDbContext Create()
         {
             return new D_SquaredDbContext();
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<FY18Budget>().ToTable("FY18Budgets");
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

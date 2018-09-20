@@ -190,6 +190,42 @@
                     <tr>
                         <td colspan="9">
                             <strong style="float:right">
+                                <u>50/50 Recommended FOH Labor:</u>
+                            </strong>
+                        </td>
+                        <td>
+                            @if (Model.RecommendedFOHLabor != -1)
+                            {
+                                <strong>@Model.RecommendedFOHLabor.ToString("C0")</strong>
+                            }
+                            else
+                            {
+                                <strong>N/A</strong>
+                            }
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="9">
+                            <strong style="float:right">
+                                <u>50/50 Recommended BOH Labor:</u>
+                            </strong>
+                        </td>
+                        <td>
+                            @if (Model.RecommendedBOHLabor != -1)
+                            {
+                                <strong>@Model.RecommendedBOHLabor.ToString("C0")</strong>
+                            }
+                            else
+                            {
+                                <strong>N/A</strong>
+                            }
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="9">
+                            <strong style="float:right">
                                 <u>Variance</u>
                             </strong>
                         </td>

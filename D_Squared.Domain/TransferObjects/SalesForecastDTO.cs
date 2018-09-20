@@ -76,7 +76,7 @@ namespace D_Squared.Domain.TransferObjects
         [Display(Name = "FY16 Sales")]
         public decimal Prior2YearSales { get; set; }
 
-        [Display(Name = "4 Week Average")]
+        [Display(Name = "6 Week Average")]
         public decimal AverageSalesPerMonth { get; set; }
 
         [Display(Name = "Labor Forecast")]

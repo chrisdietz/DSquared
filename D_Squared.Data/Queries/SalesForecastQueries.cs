@@ -167,7 +167,7 @@ namespace D_Squared.Data.Queries
                     entry.UpdatedBy = userName;
                     entry.UpdatedDate = DateTime.Now;
                 }
-                else
+                else if (storeNumber != "OSRC")
                 {
                     SalesForecast entry = new SalesForecast()
                     {
