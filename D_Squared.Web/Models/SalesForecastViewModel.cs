@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Configuration;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace D_Squared.Web.Models
 {
@@ -37,6 +38,9 @@ namespace D_Squared.Web.Models
 
             RecommendedFOHLabor = CalculateRecommendedFOHLabor(validLocations);
             RecommendedBOHLabor = CalculateRecommendedBOHLabor(validLocations);
+
+            VarianceFOH = weekdays.Sum(w => w.LaborFOH) - RecommendedFOHLabor;
+            VarianceBOH = weekdays.Sum(w => w.LaborBOH) - RecommendedBOHLabor;
         }
 
         public List<DateTime> GetCurrentWeek(DateTime selectedDay)
@@ -118,6 +122,10 @@ namespace D_Squared.Web.Models
 
         public decimal Variance { get; set; }
 
+        public decimal VarianceFOH { get; set; }
+
+        public decimal VarianceBOH { get; set; }
+
         public DateTime EndingPeriod { get; set; }
 
         public DateTime AccessTime { get; set; }
@@ -141,5 +149,36 @@ namespace D_Squared.Web.Models
         public DateTime StartDate { get; set; }
 
         public DateTime EndDate { get; set; }
+    }
+
+    public class SalesForecastSearchViewModel
+    {
+        public SalesForecastSearchViewModel()
+        {
+            SearchViewModel = new SalesForecastSearchPartialViewModel();
+            SearchResults = new List<SalesForecast>();
+        }
+
+        public List<SalesForecast> SearchResults { get; set; }
+
+        public SalesForecastSearchPartialViewModel SearchViewModel { get; set; }
+
+        public EmployeeDTO EmployeeInfo { get; set; }
+    }
+
+    public class SalesForecastSearchPartialViewModel
+    {
+        public SalesForecastSearchPartialViewModel()
+        {
+            SearchDTO = new SalesForecastSearchDTO();
+        }
+
+        [Display(Name = "Location")]
+        public List<SelectListItem> LocationSelectList { get; set; }
+
+        [Display(Name = "Day of Week")]
+        public List<SelectListItem> WeekdaySelectList { get; set; }
+
+        public SalesForecastSearchDTO SearchDTO { get; set; }
     }
 }

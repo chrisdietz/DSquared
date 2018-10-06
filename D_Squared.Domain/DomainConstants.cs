@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace D_Squared.Domain
 {
@@ -42,5 +43,30 @@ namespace D_Squared.Domain
             public const string Opening = "Opening";
             public const string Closing = "Closing";
         }
+
+        //public static class WeekdayConstants
+        //{
+        //    public static List<string> WeekdayList()
+        //    {
+        //        return new List<string>()
+        //        {
+        //            Monday,
+        //            Tuesday,
+        //            Wednesday,
+        //            Thursday,
+        //            Friday,
+        //            Saturday,
+        //            Sunday
+        //        };
+        //    }
+
+        //    public const string Monday = "Monday";
+        //    public const string Tuesday = "Tuesday";
+        //    public const string Wednesday = "Wednesday";
+        //    public const string Thursday = "Thursday";
+        //    public const string Friday = "Friday";
+        //    public const string Saturday = "Saturday";
+        //    public const string Sunday = "Sunday";
+        //}
     }
 }

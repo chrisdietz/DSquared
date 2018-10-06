@@ -114,10 +114,10 @@
                                 @Model.Weekdays[i].AverageSalesPerMonth.ToString("C0")
                             </td>
                             <td>
-                                @Html.EditorFor(model => model.Weekdays[i].ForecastAM, new { htmlAttributes = new { @class = "form-control", @type = "number", @min = "0", @step = "0.01", @style = "max-width: 120px" } })
+                                @Html.EditorFor(model => model.Weekdays[i].ForecastAM, new { htmlAttributes = new { @class = "form-control", @type = "number", @min = "0", @step = "1", @style = "max-width: 120px" } })
                             </td>
                             <td>
-                                @Html.EditorFor(model => model.Weekdays[i].ForecastPM, new { htmlAttributes = new { @class = "form-control", @type = "number", @min = "0", @step = "0.01", @style = "max-width: 120px" } })
+                                @Html.EditorFor(model => model.Weekdays[i].ForecastPM, new { htmlAttributes = new { @class = "form-control", @type = "number", @min = "0", @step = "1", @style = "max-width: 120px" } })
                             </td>
                             <td>
                                 @Model.Weekdays[i].ForecastAmount.ToString("C0")
@@ -172,24 +172,6 @@
                     <tr>
                         <td colspan="9">
                             <strong style="float:right">
-                                <u>50/50 Recommended Labor:</u>
-                            </strong>
-                        </td>
-                        <td>
-                            @if (Model.RecommendedLabor != -1)
-                            {
-                                <strong>@Model.RecommendedLabor.ToString("C0")</strong>
-                            }
-                            else
-                            {
-                                <strong>N/A</strong>
-                            }
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td colspan="9">
-                            <strong style="float:right">
                                 <u>50/50 Recommended FOH Labor:</u>
                             </strong>
                         </td>
@@ -203,6 +185,31 @@
                                 <strong>N/A</strong>
                             }
                         </td>
+                    </tr>
+                    <tr>
+                        <td colspan="9">
+                            <strong style="float:right">
+                                <u>FOH Variance</u>
+                            </strong>
+                        </td>
+                        @if (Model.VarianceFOH > 0 && Model.RecommendedFOHLabor != -1)
+                        {
+                            <td>
+                                <span style="color:red"><strong>@Model.VarianceFOH.ToString("C0")</strong></span>
+                            </td>
+                        }
+                        else if (Model.VarianceFOH <= 0 && Model.RecommendedFOHLabor != -1)
+                        {
+                            <td>
+                                <span><strong>@Model.VarianceFOH.ToString("C0")</strong></span>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <span><strong>N/A</strong></span>
+                            </td>
+                        }
                     </tr>
 
                     <tr>
@@ -222,7 +229,49 @@
                             }
                         </td>
                     </tr>
+                    <tr>
+                        <td colspan="9">
+                            <strong style="float:right">
+                                <u>BOH Variance</u>
+                            </strong>
+                        </td>
+                        @if (Model.VarianceBOH > 0 && Model.RecommendedBOHLabor != -1)
+                        {
+                            <td>
+                                <span style="color:red"><strong>@Model.VarianceBOH.ToString("C0")</strong></span>
+                            </td>
+                        }
+                        else if (Model.VarianceBOH <= 0 && Model.RecommendedBOHLabor != -1)
+                        {
+                            <td>
+                                <span><strong>@Model.VarianceBOH.ToString("C0")</strong></span>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <span><strong>N/A</strong></span>
+                            </td>
+                        }
+                    </tr>
 
+                    <tr>
+                        <td colspan="9">
+                            <strong style="float:right">
+                                <u>50/50 Recommended Labor:</u>
+                            </strong>
+                        </td>
+                        <td>
+                            @if (Model.RecommendedLabor != -1)
+                            {
+                                <strong>@Model.RecommendedLabor.ToString("C0")</strong>
+                            }
+                            else
+                            {
+                                <strong>N/A</strong>
+                            }
+                        </td>
+                    </tr>
                     <tr>
                         <td colspan="9">
                             <strong style="float:right">

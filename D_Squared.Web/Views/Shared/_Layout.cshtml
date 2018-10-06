@@ -41,26 +41,28 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a class="custom-navbar" href="/">Dashboard</a></li>
-                    <li>
-                        @Html.ActionLink("Daily Deposits", "Index", "DailyDeposit", null, new { @class = "custom-navbar" })
-                    </li>
-                    <li>
-                        @Html.ActionLink("Sales Forecasts", "Index", "SalesForecast", null, new { @class = "custom-navbar" })
-                    </li>
-                    @if (User.IsRedbookManager())
+
+                    @if (User.IsDSquaredAdmin())
                     {
                         <li>
-                            @Html.ActionLink("Redbook", "Entry", "Redbook", null, new { @class = "custom-navbar" })
+                            @Html.ActionLink("Daily Deposits", "Index", "DailyDeposit", null, new { @class = "custom-navbar" })
                         </li>
-                    }
-                    else if (User.IsDivisionalVP() || User.IsRegionalManager())
-                    {
-                        <li>
-                            @Html.ActionLink("Redbook", "Index", "Redbook", null, new { @class = "custom-navbar" })
+
+                        <li class="dropdown">
+                            <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
+                                Sales Forecasts
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    @Html.ActionLink("Entry", "Index", "SalesForecast", null, new { @class = "custom-navbar" })
+                                </li>
+                                <li>
+                                    @Html.ActionLink("Search", "Search", "SalesForecast", null, new { @class = "custom-navbar" })
+                                </li>
+                            </ul>
                         </li>
-                    }
-                    else if (User.IsDSquaredAdmin())
-                    {
+
                         <li class="dropdown">
                             <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
                                 Redbook
@@ -75,12 +77,6 @@
                                 </li>
                             </ul>
                         </li>
-                    }
-                    @if (User.IsDSquaredAdmin())
-                    {
-                        @*<li>
-                            @Html.ActionLink("Administration", "Index", "Admin", null, new { @class = "custom-navbar" })
-                        </li>*@
 
                         <li class="dropdown">
                             <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
@@ -99,7 +95,37 @@
                                 </li>
                             </ul>
                         </li>
-                    }                   
+                    }
+                    else if (User.IsRedbookManager())
+                    {
+                        <li>
+                            @Html.ActionLink("Daily Deposits", "Index", "DailyDeposit", null, new { @class = "custom-navbar" })
+                        </li>
+                        <li>
+                            @Html.ActionLink("Sales Forecasts", "Index", "SalesForecast", null, new { @class = "custom-navbar" })
+                        </li>
+                        <li>
+                            @Html.ActionLink("Redbook", "Entry", "Redbook", null, new { @class = "custom-navbar" })
+                        </li>
+                    }
+                    else if (User.IsDivisionalVP() || User.IsRegionalManager())
+                    {
+                        <li>
+                            @Html.ActionLink("Sales Forecasts", "Search", "SalesForecast", null, new { @class = "custom-navbar" })
+                        </li>
+                        <li>
+                            @Html.ActionLink("Redbook", "Index", "Redbook", null, new { @class = "custom-navbar" })
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            @Html.ActionLink("Daily Deposits", "Index", "DailyDeposit", null, new { @class = "custom-navbar" })
+                        </li>
+                        <li>
+                            @Html.ActionLink("Sales Forecasts", "Index", "SalesForecast", null, new { @class = "custom-navbar" })
+                        </li>
+                    }
                 </ul>
                 <p class="nav navbar-text navbar-right">Hello, @User.TruncatedName!</p>
             </div>

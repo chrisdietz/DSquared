@@ -23,6 +23,9 @@ namespace D_Squared.Web.Controllers
         private readonly SalesForecastQueries sfq;
         private readonly EmployeeQueries eq;
         private readonly BudgetQueries bq;
+        private readonly CodeQueries cq;
+
+        private readonly SalesForecastInitializer init;
 
         public SalesForecastController()
         {
@@ -30,9 +33,12 @@ namespace D_Squared.Web.Controllers
             f_db = new ForecastDataDbContext();
             sfq = new SalesForecastQueries(db, f_db);
             bq = new BudgetQueries(db);
+            cq = new CodeQueries(db);
 
             e_db = new EmployeeDbContext();
             eq = new EmployeeQueries(e_db);
+
+            init = new SalesForecastInitializer(sfq, bq, eq, cq);
         }
 
 
@@ -105,6 +111,52 @@ namespace D_Squared.Web.Controllers
             ModelState.Clear();
 
             return View("Index", model);
+        }
+
+        public ActionResult Search()
+        {
+            string username = User.TruncatedName;
+
+            if (!eq.EmployeeExists(username))
+            {
+                ErrorViewModel error = new ErrorViewModel
+                {
+                    Username = username
+                };
+
+                return View("../Home/EmployeeError", error);
+            }
+            else
+            {
+                SalesForecastSearchViewModel model = init.InitializeSalesForecastSearchViewModel(username, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin());
+
+                return View(model);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Search(SalesForecastSearchViewModel model)
+        {
+            string username = User.TruncatedName;
+
+            if (!eq.EmployeeExists(username))
+            {
+                ErrorViewModel error = new ErrorViewModel
+                {
+                    Username = username
+                };
+
+                return View("../Home/EmployeeError", error);
+            }
+            else
+            {
+                model.EmployeeInfo = eq.GetEmployeeInfo(username);
+                model = init.InitializeSalesForecastSearchViewModel(model, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin());
+                model.SearchResults = sfq.GetSalesForecastEntries(model.SearchViewModel.SearchDTO, model.SearchViewModel.LocationSelectList.Select(l => l.Text.Substring(0, 3)).ToList());
+
+                return View(model);
+            }
         }
 
         [HttpPost]

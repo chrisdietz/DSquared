@@ -256,4 +256,57 @@ namespace D_Squared.Web.Helpers
             return model;
         }
     }
+
+    public class SalesForecastInitializer
+    {
+        private readonly EmployeeQueries eq;
+        private readonly BudgetQueries bq;
+        private readonly SalesForecastQueries sfq;
+        private readonly CodeQueries cq;
+
+        public SalesForecastInitializer(SalesForecastQueries sfq, BudgetQueries bq, EmployeeQueries eq, CodeQueries cq)
+        {
+            this.sfq = sfq;
+            this.bq = bq;
+            this.eq = eq;
+            this.cq = cq;
+        }
+
+        protected List<string> GetLocationList(EmployeeDTO employee, bool isRegional, bool isDivisional, bool isAdmin)
+        {
+            return isRegional ? eq.GetStoreLocationListByRegion(employee)
+                                        : isDivisional ? eq.GetStoreLocationListByDivision(employee)
+                                        : isAdmin ? eq.GetStoreLocationListForAdmin()
+                                        : new List<string>();
+        }
+
+        public SalesForecastSearchViewModel InitializeSalesForecastSearchViewModel(string username, bool isRegional, bool isDivisional, bool isAdmin)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(username);
+            List<string> locationList = GetLocationList(employee, isRegional, isDivisional, isAdmin);
+
+            SalesForecastSearchViewModel model = new SalesForecastSearchViewModel()
+            {
+                SearchViewModel = new SalesForecastSearchPartialViewModel()
+                {
+                    LocationSelectList = locationList.ToSelectList(null, null, null, true, "Any", "Any"),
+                    //WeekdaySelectList = DomainConstants.WeekdayConstants.WeekdayList().ToSelectList(null, null, null, true, "Any", "Any")
+                },
+
+                EmployeeInfo = employee
+            };
+
+            return model;
+        }
+
+        public SalesForecastSearchViewModel InitializeSalesForecastSearchViewModel(SalesForecastSearchViewModel model, bool isRegional, bool isDivisional, bool isAdmin)
+        {
+            List<string> locationList = GetLocationList(model.EmployeeInfo, isRegional, isDivisional, isAdmin);
+
+            model.SearchViewModel.LocationSelectList = locationList.ToSelectList(null, null, model.SearchViewModel.SearchDTO.LocationId, true, "Any", "Any");
+            //model.SearchViewModel.WeekdaySelectList = DomainConstants.WeekdayConstants.WeekdayList().ToSelectList(null, null, model.SearchViewModel.SearchDTO.DayOfWeek, true, "Any", "Any");
+
+            return model;
+        }
+    }
 }

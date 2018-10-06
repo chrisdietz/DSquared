@@ -26,6 +26,8 @@ namespace D_Squared.Domain.TransferObjects
             Prior2YearSales = salesForecast.ActualPrior2Years;
             AverageSalesPerMonth = salesForecast.AvgPrior4Weeks;
             LaborForecast = salesForecast.LaborForecast;
+            LaborFOH = salesForecast.LaborFOH;
+            LaborBOH = salesForecast.LaborBOH;
         }
 
         public SalesForecastDTO(DateTime newSalesForecastDate, decimal priorSales, decimal prior2Sales, decimal averageSales, decimal laborForecast)
@@ -51,6 +53,8 @@ namespace D_Squared.Domain.TransferObjects
                 Prior2YearSales = forecast.ActualPrior2Years;
                 AverageSalesPerMonth = forecast.AvgPrior4Weeks;
                 LaborForecast = forecast.LaborForecast;
+                LaborFOH = forecast.LaborFOH;
+                LaborBOH = forecast.LaborBOH;
             }
         }
 
@@ -65,9 +69,11 @@ namespace D_Squared.Domain.TransferObjects
         public decimal ForecastAmount { get; set; }
 
         [Display(Name = "AM Forecast")]
+        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
         public decimal ForecastAM { get; set; }
 
         [Display(Name = "PM Forecast")]
+        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
         public decimal ForecastPM { get; set; }
 
         [Display(Name = "FY17 Sales")]
@@ -81,5 +87,9 @@ namespace D_Squared.Domain.TransferObjects
 
         [Display(Name = "Labor Forecast")]
         public decimal LaborForecast { get; set; }
+
+        public decimal LaborFOH { get; set; }
+
+        public decimal LaborBOH { get; set; }
     }
 }

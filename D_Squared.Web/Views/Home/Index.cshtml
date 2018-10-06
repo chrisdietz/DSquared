@@ -32,19 +32,39 @@
             </div>
         </a>
     </div>
-    <div class="col-md-4">
-        <a class="dashboard-stat dashboard-stat-v2 red" href="/SalesForecast">
-            <div class="visual">
-                <i class="fa fa-search"></i>
-            </div>
-            <div class="details">
-                <div class="number">
-                    Sales Forecasts
+    @if (User.IsDivisionalVP() || User.IsRegionalManager())
+    {
+        <div class="col-md-4">
+            <a class="dashboard-stat dashboard-stat-v2 red" href="/SalesForecast/Search">
+                <div class="visual">
+                    <i class="fa fa-search"></i>
                 </div>
-                <div class="desc">Record Sales Forecasts</div>
-            </div>
-        </a>
-    </div>
+                <div class="details">
+                    <div class="number">
+                        Sales Forecasts
+                    </div>
+                    <div class="desc">Search Sales Forecasts</div>
+                </div>
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="col-md-4">
+            <a class="dashboard-stat dashboard-stat-v2 red" href="/SalesForecast">
+                <div class="visual">
+                    <i class="fa fa-search"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        Sales Forecasts
+                    </div>
+                    <div class="desc">Record Sales Forecasts</div>
+                </div>
+            </a>
+        </div>
+    }
+    
     <div class="col-md-4">
         @if (User.IsRedbookManager())
         {

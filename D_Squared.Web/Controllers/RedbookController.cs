@@ -264,7 +264,7 @@ namespace D_Squared.Web.Controllers
             {
                 model.EmployeeInfo = eq.GetEmployeeInfo(username);
                 model = init.InitializeRedbookEntrySearchViewModel(model, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin());
-                model.SearchResults = rbeq.GetRedbookEntries(model.SearchViewModel.SearchDTO);
+                model.SearchResults = rbeq.GetRedbookEntries(model.SearchViewModel.SearchDTO, model.SearchViewModel.LocationSelectList.Select(l => l.Text.Substring(0, 3)).ToList());
 
                 return View(model);
             }

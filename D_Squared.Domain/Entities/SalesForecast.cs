@@ -30,6 +30,9 @@ namespace D_Squared.Domain.Entities
 
         public decimal LaborForecast { get; set; }
 
+        public decimal LaborFOH { get; set; }
+
+        public decimal LaborBOH { get; set; }
 
         #region AuditFields
         [ScaffoldColumn(false)]

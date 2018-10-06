@@ -212,6 +212,7 @@
     <Content Include="App_Scripts\Redbook\IndexDropdownUpdates.js" />
     <Content Include="App_Scripts\Redbook\IndexInit.js" />
     <Content Include="App_Scripts\SalesForecast\IndexInit.js" />
+    <Content Include="App_Scripts\SalesForecast\SearchInit.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -608,6 +609,8 @@
     <Content Include="Views\Redbook\Index.cshtml" />
     <Content Include="Views\Redbook\_SearchPartial.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\SalesForecast\Search.cshtml" />
+    <Content Include="Views\SalesForecast\_SearchPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
