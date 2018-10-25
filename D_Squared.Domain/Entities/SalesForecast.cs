@@ -11,23 +11,33 @@ namespace D_Squared.Domain.Entities
     {
         public int Id { get; set; }
 
+        [Display(Name = "Date")]
         public DateTime BusinessDate { get; set; }
 
         [StringLength(3)]
         public string StoreNumber { get; set; }
 
+        [Display(Name = "AM Forecast")]
+        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
         public decimal ForecastAM { get; set; }
 
+        [Display(Name = "PM Forecast")]
+        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
         public decimal ForecastPM { get; set; }
 
+        [Display(Name = "Total Sales Forecast")]
         public decimal ForecastAmount { get; set; }
 
+        [Display(Name = "FY17 Sales")]
         public decimal ActualPriorYear { get; set; }
 
+        [Display(Name = "FY16 Sales")]
         public decimal ActualPrior2Years { get; set; }
 
+        [Display(Name = "6 Week Average")]
         public decimal AvgPrior4Weeks { get; set; }
 
+        [Display(Name = "Labor Forecast")]
         public decimal LaborForecast { get; set; }
 
         public decimal LaborFOH { get; set; }

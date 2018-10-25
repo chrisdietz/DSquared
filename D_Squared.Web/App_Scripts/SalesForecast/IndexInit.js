@@ -40,6 +40,20 @@ function GetLastYearRedbookEntryDetail(d) {
     });
 }
 
+function GetSalesForecastDetail(d) {
+    $.when($.ajax({
+        url: '/SalesForecast/Details',
+        type: "GET",
+        data: { date: d },
+        success: function (data) {
+            $('#salesForecastDetailPartial').html(data);
+            $('#salesForecastDetailModal').modal('show');
+        }
+    })).then(function () {
+        initDetail.init();
+    });
+}
+
 var initDetail = function () {
     var e = function () {
 

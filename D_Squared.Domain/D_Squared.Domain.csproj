@@ -99,10 +99,12 @@
     <Compile Include="Entities\ForecastDatum.cs" />
     <Compile Include="Entities\FY18Budget.cs" />
     <Compile Include="Entities\HelpDocument.cs" />
+    <Compile Include="Entities\MakeUpPay.cs" />
     <Compile Include="Entities\RedbookEntry.cs" />
     <Compile Include="Entities\RedbookSalesEvent.cs" />
     <Compile Include="Entities\SalesForecast.cs" />
     <Compile Include="Entities\StoreLocation.cs" />
+    <Compile Include="Entities\TipCredit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TransferObjects\BudgetDTO.cs" />
     <Compile Include="TransferObjects\DepositEntryDTO.cs" />
@@ -112,9 +114,6 @@
     <Compile Include="TransferObjects\FY18BudgetDTO.cs" />
     <Compile Include="TransferObjects\RedbookSearchDTO.cs" />
     <Compile Include="TransferObjects\SalesForecastDTO.cs" />
-    <Compile Include="TransferObjects\SalesForecastSearchDTO.cs" />
-    <Compile Include="TransferObjects\SalesForecastSummaryDTO.cs" />
-    <Compile Include="TransferObjects\SalesForecastTotalsDTO.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

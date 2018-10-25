@@ -47,7 +47,7 @@
                         <li>
                             @Html.ActionLink("Daily Deposits", "Index", "DailyDeposit", null, new { @class = "custom-navbar" })
                         </li>
-
+                        
                         <li class="dropdown">
                             <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
                                 Sales Forecasts
@@ -74,6 +74,21 @@
                                 </li>
                                 <li>
                                     @Html.ActionLink("Search", "Index", "Redbook", null, new { @class = "custom-navbar" })
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
+                                Tip Reporting
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    @Html.ActionLink("View", "Index", "TipReporting", null, new { @class = "custom-navbar" })
+                                </li>
+                                <li>
+                                    @Html.ActionLink("Search", "Search", "TipReporting", null, new { @class = "custom-navbar" })
                                 </li>
                             </ul>
                         </li>
@@ -107,6 +122,9 @@
                         <li>
                             @Html.ActionLink("Redbook", "Entry", "Redbook", null, new { @class = "custom-navbar" })
                         </li>
+                        <li>
+                            @Html.ActionLink("Tip Reporting", "Index", "TipReporting", null, new { @class = "custom-navbar" })
+                        </li>
                     }
                     else if (User.IsDivisionalVP() || User.IsRegionalManager())
                     {
@@ -116,6 +134,9 @@
                         <li>
                             @Html.ActionLink("Redbook", "Index", "Redbook", null, new { @class = "custom-navbar" })
                         </li>
+                        <li>
+                            @Html.ActionLink("Tip Reporting", "Search", "TipReporting", null, new { @class = "custom-navbar" })
+                        </li>
                     }
                     else
                     {
@@ -124,6 +145,9 @@
                         </li>
                         <li>
                             @Html.ActionLink("Sales Forecasts", "Index", "SalesForecast", null, new { @class = "custom-navbar" })
+                        </li>
+                        <li>
+                            @Html.ActionLink("Tip Reporting", "Index", "TipReporting", null, new { @class = "custom-navbar" })
                         </li>
                     }
                 </ul>

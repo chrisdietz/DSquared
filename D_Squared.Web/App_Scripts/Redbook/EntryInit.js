@@ -75,12 +75,26 @@ jQuery(document).ready(function () {
 
 function GetLastYearRedbookEntryDetail(r) {
     $.when($.ajax({
-        url: '/Redbook/Details',
+        url: '/SalesForecast/Details',
         type: "GET",
         data: { redbookId: r, isLastYear: true },
         success: function (data) {
             $('#detailPartial').html(data);
             $('#detailModal').modal('show');
+        }
+    })).then(function () {
+        initDetail.init();
+    });
+}
+
+function GetSalesForecastDetail(d) {
+    $.when($.ajax({
+        url: '/SalesForecast/Details',
+        type: "GET",
+        data: { date: d },
+        success: function (data) {
+            $('#salesForecastDetailPartial').html(data);
+            $('#salesForecastDetailModal').modal('show');
         }
     })).then(function () {
         initDetail.init();

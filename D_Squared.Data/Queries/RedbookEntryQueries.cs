@@ -140,13 +140,13 @@ namespace D_Squared.Data.Queries
                 InsertRedbookEntryRecord(redbookEntry, salesEvents, currentUser);
         }
 
-        public void SubmitRedbookEntry(RedbookEntry redbookEntry, List<EventDTO> salesEvents, string currentUser)
+        public void SubmitRedbookEntry(RedbookEntry redbookEntry, List<EventDTO> salesEvents, SalesForecastExportDTO salesForecast, string currentUser)
         {
             if (RedbookEntryExists(redbookEntry.BusinessDate, redbookEntry.LocationId))
             {
                 RedbookEntry updatedRecord = UpdateRedbookEntryRecord(redbookEntry, salesEvents, currentUser, true);
 
-                ec.SendRedbookSubmitEmail(updatedRecord);
+                ec.SendRedbookSubmitEmail(updatedRecord, salesForecast);
             }
         }
 

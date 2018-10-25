@@ -63,11 +63,11 @@
 
         <div class="col-md-4">
             <div class="panel panel-default firstRowPanel">
-                <div class="panel-heading lead">
+                <div class="panel-heading lead" style="margin-bottom: 0px">
                     Sales Forecast Data
                 </div>
                 <div class="panel-body">
-                    <dl class="dl-horizontal">
+                    <dl class="dl-horizontal" style="margin-bottom: 0">
                         <dt>
                             @Html.DisplayNameFor(model => model.SalesForecastDTO.ForecastAmount)
                         </dt>
@@ -103,6 +103,12 @@
                             @Model.SalesForecastDTO.LaborForecast.ToString("C0")
                         </dd>
                     </dl>
+
+                    <div class="form-group">
+                        <span onclick="GetSalesForecastDetail('@Model.SelectedDateString')" style="float:right">
+                            <a class="btn btn-xs btn-dsquared">More Details</a>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -307,6 +313,10 @@
 
 <!--last year redbook detail holder-->
 <div id="detailPartial">
+</div>
+
+<!--sales forecast detail holder-->
+<div id="salesForecastDetailPartial">
 </div>
 
 <!--must explicitly define the controller and action-->

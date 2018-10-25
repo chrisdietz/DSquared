@@ -1,0 +1,232 @@
+﻿@model D_Squared.Web.Models.SalesForecastCreateEditPartialViewModel
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.SalesForecast.Id)
+    @Html.HiddenFor(model => model.SalesForecast.StoreNumber)
+    @Html.HiddenFor(model => model.SalesForecast.BusinessDate)
+    @Html.HiddenFor(model => model.SalesForecast.ActualPriorYear)
+    @Html.HiddenFor(model => model.SalesForecast.ActualPrior2Years)
+    @Html.HiddenFor(model => model.SalesForecast.AvgPrior4Weeks)
+    @Html.HiddenFor(model => model.SalesForecast.LaborForecast)
+    @Html.HiddenFor(model => model.SalesForecast.ForecastAmount)
+
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="SalesForecastEditModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width:800px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3 class="modal-title">Sales Forecast Edit</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading lead" style="margin-bottom: 0px">
+                                    Record Details
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <dl class="dl-horizontal">
+                                                <dt>
+                                                    @Html.DisplayNameFor(model => model.SalesForecast.BusinessDate)
+                                                </dt>
+                                                <dd style="margin-bottom:5px">
+                                                    @Model.SalesForecast.BusinessDate.ToShortDateString()
+                                                </dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <dl class="dl-horizontal">
+                                                <dt>
+                                                    Day Of Week
+                                                </dt>
+                                                <dd style="margin-bottom:5px">
+                                                    @Html.DisplayFor(model => model.SalesForecast.BusinessDate.DayOfWeek)
+                                                </dd>
+
+                                                <dt>
+                                                    @Html.DisplayNameFor(model => model.SalesForecast.ForecastAmount)
+                                                </dt>
+                                                <dd style="margin-bottom:5px">
+                                                    @Model.SalesForecast.ForecastAmount.ToString("C0")
+                                                </dd>
+
+                                                <dt>
+                                                    @Html.DisplayNameFor(model => model.SalesForecast.ActualPriorYear)
+                                                </dt>
+                                                <dd style="margin-bottom:5px">
+                                                    @Model.SalesForecast.ActualPriorYear.ToString("C0")
+                                                </dd>
+
+                                                <dt>
+                                                    @Html.DisplayNameFor(model => model.SalesForecast.ActualPrior2Years)
+                                                </dt>
+                                                <dd style="margin-bottom:5px">
+                                                    @Model.SalesForecast.ActualPrior2Years.ToString("C0")
+                                                </dd>
+
+                                                <dt>
+                                                    @Html.DisplayNameFor(model => model.SalesForecast.AvgPrior4Weeks)
+                                                </dt>
+                                                <dd style="margin-bottom:5px">
+                                                    @Model.SalesForecast.AvgPrior4Weeks.ToString("C0")
+                                                </dd>
+
+                                                <dt>
+                                                    @Html.DisplayNameFor(model => model.SalesForecast.LaborForecast)
+                                                </dt>
+                                                <dd style="margin-bottom:5px">
+                                                    @Model.SalesForecast.LaborForecast.ToString("C0")
+                                                </dd>
+                                            </dl>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <dl class="dl-horizontal">
+                                                <dt>
+                                                    @Html.DisplayNameFor(model => model.Calculations.RecommendedFOHLabor)
+                                                </dt>
+                                                <dd style="margin-bottom:5px">
+                                                    @if (Model.Calculations.RecommendedFOHLabor != -1)
+                                                    {
+                                                        @Model.Calculations.RecommendedFOHLabor.ToString("C0")
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>N/A</span>
+                                                    }
+                                                </dd>
+
+                                                <dt>
+                                                    @Html.DisplayNameFor(model => model.Calculations.VarianceFOH)
+                                                </dt>
+                                                <dd style="margin-bottom:5px">
+                                                    @if (Model.Calculations.VarianceFOH > 0 && Model.Calculations.RecommendedFOHLabor != -1)
+                                                    {
+                                                        <span style="color:red"><strong>@Model.Calculations.VarianceFOH.ToString("C0")</strong></span>
+                                                    }
+                                                    else if (Model.Calculations.VarianceFOH <= 0 && Model.Calculations.RecommendedFOHLabor != -1)
+                                                    {
+                                                        <span>@Model.Calculations.VarianceFOH.ToString("C0")</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>N/A</span>
+                                                    }
+                                                </dd>
+
+                                                <dt>
+                                                    @Html.DisplayNameFor(model => model.Calculations.RecommendedBOHLabor)
+                                                </dt>
+                                                <dd style="margin-bottom:5px">
+                                                    @if (Model.Calculations.RecommendedBOHLabor != -1)
+                                                    {
+                                                        @Model.Calculations.RecommendedBOHLabor.ToString("C0")
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>N/A</span>
+                                                    }
+                                                </dd>
+
+                                                <dt>
+                                                    @Html.DisplayNameFor(model => model.Calculations.VarianceBOH)
+                                                </dt>
+                                                <dd style="margin-bottom:5px">
+                                                    @if (Model.Calculations.VarianceBOH > 0 && Model.Calculations.RecommendedBOHLabor != -1)
+                                                    {
+                                                        <span style="color:red"><strong>@Model.Calculations.VarianceBOH.ToString("C0")</strong></span>
+                                                    }
+                                                    else if (Model.Calculations.VarianceBOH <= 0 && Model.Calculations.RecommendedBOHLabor != -1)
+                                                    {
+                                                        <span>@Model.Calculations.VarianceBOH.ToString("C0")</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>N/A</span>
+                                                    }
+                                                </dd>
+
+                                                <dt>
+                                                    @Html.DisplayNameFor(model => model.Calculations.RecommendedLabor)
+                                                </dt>
+                                                <dd style="margin-bottom:5px">
+                                                    @if (Model.Calculations.RecommendedLabor != -1)
+                                                    {
+                                                        @Model.Calculations.RecommendedLabor.ToString("C0")
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>N/A</span>
+                                                    }
+                                                </dd>
+
+                                                <dt>
+                                                    @Html.DisplayNameFor(model => model.Calculations.Variance)
+                                                </dt>
+                                                <dd style="margin-bottom:5px">
+                                                    @if (Model.Calculations.Variance > 0 && Model.Calculations.RecommendedLabor != -1)
+                                                    {
+                                                        <span style="color:red"><strong>@Model.Calculations.Variance.ToString("C0")</strong></span>
+                                                    }
+                                                    else if (Model.Calculations.Variance <= 0 && Model.Calculations.RecommendedLabor != -1)
+                                                    {
+                                                        <span>@Model.Calculations.Variance.ToString("C0")</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>N/A</span>
+                                                    }
+                                                </dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading lead" style="margin-bottom: 0px">
+                                    Edit Info
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="form-group form-horizontal">
+                                                    @Html.LabelFor(model => model.SalesForecast.ForecastAM, htmlAttributes: new { @class = "control-label col-md-4" })
+                                                    <div class="col-md-8">
+                                                        @Html.EditorFor(model => model.SalesForecast.ForecastAM, new { htmlAttributes = new { @class = "form-control" } })
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group form-horizontal">
+                                                    @Html.LabelFor(model => model.SalesForecast.ForecastPM, htmlAttributes: new { @class = "control-label col-md-4" })
+                                                    <div class="col-md-8">
+                                                        @Html.EditorFor(model => model.SalesForecast.ForecastPM, new { htmlAttributes = new { @class = "form-control" } })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" value="Save Changes" class="btn btn-dsquared" />
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+

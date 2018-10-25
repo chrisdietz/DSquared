@@ -98,6 +98,7 @@
     <Compile Include="Queries\HelpDocumentQueries.cs" />
     <Compile Include="Queries\RedbookEntryQueries.cs" />
     <Compile Include="Queries\SalesForecastQueries.cs" />
+    <Compile Include="Queries\TipQueries.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\D_Squared.Data.Employee\D_Squared.Data.Millers.csproj">

@@ -25,8 +25,10 @@ namespace D_Squared.Web.Controllers
         private readonly CodeQueries cq;
         private readonly SalesForecastQueries sfq;
         private readonly EmployeeQueries eq;
+        private readonly BudgetQueries bq;
 
         private readonly RedbookEntryInitializer init;
+        private readonly SalesForecastInitializer s_init;
 
         public RedbookController()
         {
@@ -38,8 +40,10 @@ namespace D_Squared.Web.Controllers
             cq = new CodeQueries(db);
             sfq = new SalesForecastQueries(db, f_db);
             eq = new EmployeeQueries(e_db);
+            bq = new BudgetQueries(db);
 
             init = new RedbookEntryInitializer(rbeq, cq, sfq, eq);
+            s_init = new SalesForecastInitializer(sfq, bq, eq, cq);
         }
 
         // GET: RedbookEntry
@@ -169,7 +173,8 @@ namespace D_Squared.Web.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    rbeq.SubmitRedbookEntry(model.RedbookEntry, model.EventDTOs, username);
+                    SalesForecastExportDTO dto = s_init.GetSalesForecastExportDTO(username, model.SelectedDateString);
+                    rbeq.SubmitRedbookEntry(model.RedbookEntry, model.EventDTOs, dto, username);
                     Success("The Redbook for Restaurant: <u>" + model.RedbookEntry.LocationId + "</u> and Date: <u>" + model.RedbookEntry.BusinessDate.ToShortDateString() + "</u> has been submitted successfully. You may close this window");
                 }
                 else

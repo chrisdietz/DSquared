@@ -2,6 +2,7 @@
 
 @section Scripts{
     <script src="~/App_Scripts/SalesForecast/SearchInit.js" type="text/javascript"></script>
+    <script src="~/App_Scripts/SalesForecast/EditInit.js" type="text/javascript"></script>
 }
 
 <div class="jumbotron" style="background-image: url('/Content/images/lightwood-bg.jpg'); padding-bottom:5px; padding-top:20px; margin-bottom:10px">
@@ -9,7 +10,7 @@
         <img src="~/Content/images/millers_d2_logo.png" style="max-width:500px;" />
     </div>
     <div class="text-center" style="display: block; margin: 0 auto; max-width:500px">
-        <h2>Redbook Search</h2>
+        <h2>Sales Forecast Search</h2>
         <p class="lead">
             Employee: @Model.EmployeeInfo.FirstName @Model.EmployeeInfo.LastName
             <br />
@@ -60,7 +61,7 @@
                 </div>
             </div>
             <div class="col-md-6">
-                
+
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.SearchViewModel.SearchDTO.ActualPriorYearMin, htmlAttributes: new { @class = "control-label col-md-4" })
@@ -138,11 +139,11 @@
                 @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().ForecastAmount)
             </th>
             <th>
-                FY 17
+                FY17 Sales
                 @*@Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().ActualPriorYear)*@
             </th>
             <th>
-                FY 18
+                FY16 Sales
                 @*@Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().ActualPrior2Years)*@
             </th>
             <th>
@@ -152,7 +153,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().LaborForecast)
             </th>
-            <th></th>
+            <th style="width:100px">
+                Actions
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -166,24 +169,23 @@
                     @result.BusinessDate.ToShortDateString()
                 </td>
                 <td>
-                    @Html.DisplayFor(model => result.ForecastAmount)
+                    @result.ForecastAmount.ToString("C0")
                 </td>
                 <td>
-                    @Html.DisplayFor(model => result.ActualPriorYear)
+                    @result.ActualPriorYear.ToString("C0")
                 </td>
                 <td>
-                    @Html.DisplayFor(model => result.ActualPrior2Years)
+                    @result.ActualPrior2Years.ToString("C0")
                 </td>
                 <td>
-                    @Html.DisplayFor(model => result.AvgPrior4Weeks)
+                    @result.AvgPrior4Weeks.ToString("C0")
                 </td>
                 <td>
-                    @Html.DisplayFor(model => result.LaborForecast)
+                    @result.LaborForecast.ToString("C0")
                 </td>
-                <td>
-                    <span onclick="">
-                        <a class="btn btn-dsquared btn-xs" style="margin-top: 4px">Details</a>
-                    </span>
+                <td style="width:110px">
+                    <a class="btn btn-xs btn-dsquared" onclick="GetSalesForecastDetail('@result.BusinessDate.ToShortDateString()')">Details</a>
+                    <a class="btn btn-dsquared btn-xs" onclick="GetSalesForecastEditModal(@result.Id)">Edit</a>
                 </td>
             </tr>
         }
@@ -191,7 +193,10 @@
 </table>
 
 
-<!--SalesForecast detail holder-->
-<div id="detailPartial">
+<!--sales forecast detail holder-->
+<div id="salesForecastDetailPartial">
+</div>
+
+<div id="editPartial">
 </div>
 

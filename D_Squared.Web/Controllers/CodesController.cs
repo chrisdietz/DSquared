@@ -13,7 +13,7 @@ using ROLES = D_Squared.Domain.DomainConstants.RoleNames;
 
 namespace D_Squared.Web.Controllers
 {
-    [AuthorizeGroup(ROLES.GeneralManagerGroup)]
+    [AuthorizeGroup(ROLES.DSquaredAdminGroup)]
     public class CodesController : BaseController
     {
         private D_SquaredDbContext db = new D_SquaredDbContext();

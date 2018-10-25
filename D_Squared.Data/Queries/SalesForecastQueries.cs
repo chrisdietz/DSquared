@@ -14,7 +14,7 @@ namespace D_Squared.Data.Queries
         private readonly D_SquaredDbContext db;
         private readonly ForecastDataDbContext f_db;
 
-        private readonly ForecastDataQueries fdq;
+        public readonly ForecastDataQueries fdq;
 
         public SalesForecastQueries(D_SquaredDbContext db, ForecastDataDbContext f_db)
         {
@@ -22,6 +22,16 @@ namespace D_Squared.Data.Queries
             this.f_db = f_db;
 
             fdq = new ForecastDataQueries(f_db);
+        }
+
+        public bool CheckById(int id)
+        {
+            return db.SalesForecasts.Any(sf => sf.Id == id);
+        }
+
+        public SalesForecast FindById(int id)
+        {
+            return db.SalesForecasts.Where(sf => sf.Id == id).FirstOrDefault();
         }
 
         public bool CheckForExistingSalesForecastByDate(DateTime date, string storeNumber)
@@ -56,36 +66,17 @@ namespace D_Squared.Data.Queries
                 return new List<SalesForecast>();
         }
 
-        public List<DateTime> GetCurrentWeek(DateTime selectedDay)
+        public void UpdateSalesForecast(SalesForecast forecast, string username)
         {
-            int currentDayOfWeek = (int)selectedDay.DayOfWeek;
-            DateTime sunday = selectedDay.AddDays(-currentDayOfWeek);
-            DateTime monday = sunday.AddDays(1);
+            SalesForecast entry = FindById(forecast.Id);
 
-            if (currentDayOfWeek == 0)
-            {
-                monday = monday.AddDays(-7);
-            }
-            var dates = Enumerable.Range(0, 7).Select(days => monday.AddDays(days)).ToList();
+            entry.ForecastAM = forecast.ForecastAM;
+            entry.ForecastPM = forecast.ForecastPM;
+            entry.ForecastAmount = forecast.ForecastAM + forecast.ForecastPM;
+            entry.UpdatedBy = username;
+            entry.UpdatedDate = DateTime.Now;
 
-            return dates;
-        }
-
-        public List<SalesForecastDTO> GetSpecificWeekAsSalesForecastDTOList(DateTime selectedDay, string storeNumber)
-        {
-            List<SalesForecastDTO> theList = new List<SalesForecastDTO>();
-
-            var dates = GetCurrentWeek(selectedDay);
-
-            foreach(var day in dates)
-            {
-                if (!CheckForExistingSalesForecastByDate(day, storeNumber))
-                    theList.Add(new SalesForecastDTO(day, fdq.GetSalesPriorYear(storeNumber, day), fdq.GetSalesPriorTwoYears(storeNumber, day), fdq.GetAverageSalesPerMonth(storeNumber, day), fdq.GetLaborForecast(storeNumber, day)));
-                else
-                    theList.Add(new SalesForecastDTO(GetSalesForecastsByDate(day, storeNumber)));
-            }
-
-            return theList;
+            db.SaveChanges();
         }
 
         public void AddOrUpdateSalesForecasts(List<SalesForecastDTO> forecasts, string storeNumber, string userName)
@@ -191,34 +182,6 @@ namespace D_Squared.Data.Queries
             db.SaveChanges();
         }
 
-        public List<SalesForecastSummaryDTO> GetSalesForecastSummaryList (DateTime selectedDate, List<string> locationList)
-        {
-            List<SalesForecastSummaryDTO> summaryList = new List<SalesForecastSummaryDTO>();
-
-            foreach (string location in locationList)
-            {
-                summaryList.Add(new SalesForecastSummaryDTO(location, GetSpecificWeekAsSalesForecastDTOList(selectedDate, location)));
-            }
-
-            return summaryList;
-        }
-
-        public List<SalesForecastSummaryColumnDTO> GetWeeklyReportColumnTotals(DateTime selectedDay)
-        {
-            List<DateTime> dates = GetCurrentWeek(selectedDay);
-
-            List<SalesForecast> theList = db.SalesForecasts.Where(sf => dates.Contains(sf.BusinessDate)).ToList();
-
-            List<SalesForecastSummaryColumnDTO> columnSums = new List<SalesForecastSummaryColumnDTO>();
-
-            foreach (var day in dates)
-            {
-                columnSums.Add(new SalesForecastSummaryColumnDTO(day, theList.Where(tl => tl.BusinessDate == day).ToList()));
-            }
-
-            return columnSums;
-        }
-
         public List<SalesForecast> GetSalesForecastEntries(SalesForecastSearchDTO searchDTO, List<string> accessibleLocations)
         {
             decimal zero = new decimal(0);
@@ -237,6 +200,11 @@ namespace D_Squared.Data.Queries
                                     .OrderBy(sf => sf.StoreNumber)
                                     .ThenBy(sf => sf.BusinessDate)
                                     .ToList();
+        }
+
+        public List<SalesForecast> GetSalesForecastByDates(List<DateTime> dates)
+        {
+            return db.SalesForecasts.Where(sf => dates.Contains(sf.BusinessDate)).ToList();
         }
     }
 }

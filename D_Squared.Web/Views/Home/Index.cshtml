@@ -64,10 +64,10 @@
             </a>
         </div>
     }
-    
-    <div class="col-md-4">
-        @if (User.IsRedbookManager())
-        {
+
+    @if (User.IsRedbookManager())
+    {
+        <div class="col-md-4">
             <a class="dashboard-stat dashboard-stat-v2 red" href="/Redbook/Entry">
                 <div class="visual">
                     <i class="fa fa-book"></i>
@@ -79,9 +79,11 @@
                     <div class="desc">Record Redbook Entries</div>
                 </div>
             </a>
-        }
-        else if (User.IsDivisionalVP() || User.IsRegionalManager())
-        {
+        </div>
+    }
+    else if (User.IsDivisionalVP() || User.IsRegionalManager())
+    {
+        <div class="col-md-4">
             <a class="dashboard-stat dashboard-stat-v2 red" href="/Redbook/Index">
                 <div class="visual">
                     <i class="fa fa-book"></i>
@@ -93,7 +95,41 @@
                     <div class="desc">Search Redbook Entries</div>
                 </div>
             </a>
-        }
+        </div>
+    }
 
-    </div>
+
+
+    @if (User.IsDivisionalVP() || User.IsRegionalManager())
+    {
+        <div class="col-md-4">
+            <a class="dashboard-stat dashboard-stat-v2 red" href="/TipReporting/Search">
+                <div class="visual">
+                    <i class="fa fa-file"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        Tip Reporting
+                    </div>
+                    <div class="desc">Search for Make Up Pay</div>
+                </div>
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="col-md-4">
+            <a class="dashboard-stat dashboard-stat-v2 red" href="/TipReporting">
+                <div class="visual">
+                    <i class="fa fa-file"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        Tip Reporting
+                    </div>
+                    <div class="desc">View Make Up Pay</div>
+                </div>
+            </a>
+        </div>
+    }
 </div>

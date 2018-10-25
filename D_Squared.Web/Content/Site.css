@@ -133,7 +133,7 @@ Dashboard Stats
 }
 
     .dashboard-stat .visual > i {
-        margin-left: -35px;
+        margin-left: 0px;
         font-size: 110px;
         line-height: 110px;
     }
@@ -185,7 +185,7 @@ Dashboard Stats
     }
 
 .dashboard-stat.dashboard-stat-v2 .visual {
-    padding-top: 35px;
+    padding-top: 5px;
     margin-bottom: 40px;
 }
 

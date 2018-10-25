@@ -37,6 +37,10 @@ namespace D_Squared.Data.Context
 
         public DbSet<Code> Codes { get; set; }
 
+        public DbSet<TipCredit> TipCredits { get; set; }
+
+        public DbSet<MakeUpPay> MakeUpPay { get; set; }
+
         public static D_SquaredDbContext Create()
         {
             return new D_SquaredDbContext();

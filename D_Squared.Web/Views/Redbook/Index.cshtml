@@ -72,7 +72,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <div class="col-md-offset-4 col-md-8">
-                        <input id="searchSubmit" name="Index" type="submit" value="Search" class="btn btn-dsquared" disabled="disabled"/>
+                        <input id="searchSubmit" name="Index" type="submit" value="Search" class="btn btn-dsquared" disabled="disabled" />
                     </div>
                 </div>
             </div>
@@ -106,7 +106,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().ManagerOnDutyPM)
             </th>
-            <th></th>
+            <th style="width:160px">
+                Record Details
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -131,10 +133,9 @@
                 <td>
                     @Html.DisplayFor(model => result.ManagerOnDutyPM)
                 </td>
-                <td>
-                    <span onclick="GetRedbookEntryDetail(@result.Id)">
-                        <a class="btn btn-dsquared btn-xs" style="margin-top: 4px">Details</a>
-                    </span>
+                <td style="width:175px">
+                    <a class="btn btn-dsquared btn-xs" onclick="GetRedbookEntryDetail(@result.Id)">Redbook</a>
+                    <a class="btn btn-xs btn-dsquared" onclick="GetSalesForecastDetail('@result.BusinessDate.ToShortDateString()')">Sales Forecast</a>
                 </td>
             </tr>
         }
@@ -144,4 +145,8 @@
 
 <!--redbook detail holder-->
 <div id="detailPartial">
+</div>
+
+<!--sales forecast detail holder-->
+<div id="salesForecastDetailPartial">
 </div>
