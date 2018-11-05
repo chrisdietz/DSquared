@@ -35,8 +35,10 @@ namespace D_Squared.Data.Queries
 
                 if (budgetList[i].FiscalPeriod == 1)
                     startDate = new DateTime(budgetList[i].BudgetDate.Year, budgetList[i].BudgetDate.Month, 1);
-                else
+                else if (i > 0)
                     startDate = budgetList[i - 1].BudgetDate.AddDays(1);
+                else
+                    startDate = budgetList[i].BudgetDate.AddDays(-28);
 
                 List<DateTime> dateRange = Enumerable.Range(0, 1 + endDate.Subtract(startDate).Days)
                                                         .Select(offset => startDate.AddDays(offset))
