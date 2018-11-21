@@ -35,8 +35,26 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.LocationSelectList, htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
-                        @Html.DropDownListFor(model => model.SelectedLocation, Model.LocationSelectList, htmlAttributes: new { @class = "locationSelect form-control select2-single select2-hidden-accessible" })
-                        @Html.ValidationMessageFor(model => model.SelectedLocation, string.Empty, new { @class = "text-danger" })
+                        @Html.DropDownListFor(model => model.SearchDTO.SelectedLocation, Model.LocationSelectList, htmlAttributes: new { @class = "locationSelect form-control select2-single select2-hidden-accessible" })
+                        @Html.ValidationMessageFor(model => model.SearchDTO.SelectedLocation, string.Empty, new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SearchDTO.StartDate, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        <div class="input-group col-md-8">
+                            @Html.EditorFor(model => model.SearchDTO.StartDate, new { htmlAttributes = new { @class = "form-control date-picker", onkeydown = "return false", onpaste = "return false" } })
+                            <span class="input-group-addon"> to </span>
+                            @Html.EditorFor(model => model.SearchDTO.EndDate, new { htmlAttributes = new { @class = "form-control date-picker", onkeydown = "return false", onpaste = "return false" } })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SearchDTO.MinimumMakeUpPay, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.SearchDTO.MinimumMakeUpPay, new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>
             </div>
@@ -63,6 +81,9 @@
         </caption>
         <thead>
             <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().StoreNumber)
+                </th>
                 <th>
                     @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().FiscalWeekEnding)
                 </th>
@@ -93,38 +114,83 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var result in Model.SearchResults)
-            {
+
+            @{
+                decimal totalRegHours = 0;
+                decimal totalOverHours = 0;
+                decimal totalStateTip = 0;
+                decimal totalTipCredit = 0;
+                decimal totalTipsEarned = 0;
+                decimal totalMakeupPay = 0;
+
+                foreach (var result in Model.SearchResults)
+                {
+                    totalRegHours += (decimal)result.RegularHours;
+                    totalOverHours += (decimal)result.OvertimeHours;
+                    totalStateTip += (decimal)result.StateTipCredit;
+                    totalTipCredit += (decimal)result.TotalTipCredit;
+                    totalTipsEarned += (decimal)result.TipsEarned;
+                    totalMakeupPay += (decimal)result.MakeUpPay1;
+
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(model => result.StoreNumber)
+                        </td>
+                        <td>
+                            @result.FiscalWeekEnding.ToShortDateString()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => result.EmployeeName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => result.JobName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => result.RegularHours)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => result.OvertimeHours)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => result.StateTipCredit)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => result.TotalTipCredit)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => result.TipsEarned)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => result.MakeUpPay1)
+                        </td>
+                    </tr>
+                }
+
                 <tr>
-                    <td>
-                        @result.FiscalWeekEnding.ToShortDateString()
+                    <td colspan="4">
+                        <span style="float:right"><strong><u>Totals:</u></strong></span>
                     </td>
                     <td>
-                        @Html.DisplayFor(model => result.EmployeeName)
+                        <strong>@totalRegHours</strong>
                     </td>
                     <td>
-                        @Html.DisplayFor(model => result.JobName)
+                        <strong>@totalOverHours</strong>
                     </td>
                     <td>
-                        @Html.DisplayFor(model => result.RegularHours)
+                        <strong>@totalStateTip</strong>
                     </td>
                     <td>
-                        @Html.DisplayFor(model => result.OvertimeHours)
+                        <strong>@totalTipCredit</strong>
                     </td>
                     <td>
-                        @Html.DisplayFor(model => result.StateTipCredit)
+                        <strong>@totalTipsEarned</strong>
                     </td>
                     <td>
-                        @Html.DisplayFor(model => result.TotalTipCredit)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => result.TipsEarned)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => result.MakeUpPay1)
+                        <strong>@totalMakeupPay</strong>
                     </td>
                 </tr>
             }
+            
         </tbody>
     </table>
 }

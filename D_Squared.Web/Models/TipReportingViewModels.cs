@@ -18,17 +18,19 @@ namespace D_Squared.Web.Models
         public DateTime AccessTime { get; set; }
 
         public DateTime EndingPeriod { get; set; }
+
+        public bool CurrentWeekFlag { get; set; }
     }
 
     public class TipReportingSearchViewModel
     {
+        public TipReportingSearchDTO SearchDTO { get; set; }
+
         public List<MakeUpPay> SearchResults { get; set; }
 
         public EmployeeDTO EmployeeInfo { get; set; }
 
         [Display(Name = "Location")]
         public List<SelectListItem> LocationSelectList { get; set; }
-
-        public string SelectedLocation { get; set; }
     }
 }

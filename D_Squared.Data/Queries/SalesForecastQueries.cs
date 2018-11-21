@@ -182,21 +182,20 @@ namespace D_Squared.Data.Queries
             db.SaveChanges();
         }
 
-        public List<SalesForecast> GetSalesForecastEntries(SalesForecastSearchDTO searchDTO, List<string> accessibleLocations)
+        public List<SalesForecast> GetSalesForecastEntries(SalesForecastSearchDTO searchDTO, List<string> accessibleLocations, DateTime fiscStart, DateTime fiscEnd)
         {
             decimal zero = new decimal(0);
             string cleanLocation = searchDTO.LocationId == "Any" ? "Any" : searchDTO.LocationId.Substring(0, 3);
 
-            DateTime realSearchEndDate = searchDTO.EndDate.AddDays(1);
-            bool modifiedDateRange = searchDTO.StartDate == searchDTO.EndDate ? false : true;
+            DateTime realFiscEnd = fiscEnd.AddDays(1);
 
             return db.SalesForecasts.Where(sf => (cleanLocation == "Any" ? accessibleLocations.Any(al => al == sf.StoreNumber): sf.StoreNumber == cleanLocation)
-                                                    && ((searchDTO.ForecastAmountMin == zero && searchDTO.ForecastAmountMax == zero) || (sf.ForecastAmount >= searchDTO.ForecastAmountMin && sf.ForecastAmount <= searchDTO.ForecastAmountMax))
-                                                    && ((searchDTO.ActualPriorYearMin == zero && searchDTO.ActualPriorYearMax == zero) || (sf.ActualPriorYear >= searchDTO.ActualPriorYearMin && sf.ActualPriorYear <= searchDTO.ActualPriorYearMax))
-                                                    && ((searchDTO.ActualPrior2YearsMin == zero && searchDTO.ActualPrior2YearsMax == zero) || (sf.ActualPrior2Years >= searchDTO.ActualPrior2YearsMin && sf.ActualPrior2Years <= searchDTO.ActualPrior2YearsMax))
-                                                    && ((searchDTO.AvgPrior4WeeksMin == zero && searchDTO.AvgPrior4WeeksMax == zero) || (sf.AvgPrior4Weeks >= searchDTO.AvgPrior4WeeksMin && sf.AvgPrior4Weeks <= searchDTO.AvgPrior4WeeksMax))
-                                                    && ((searchDTO.LaborForecastMin == zero && searchDTO.LaborForecastMax == zero) || (sf.LaborForecast >= searchDTO.LaborForecastMin && sf.LaborForecast <= searchDTO.LaborForecastMax))
-                                                    && (!modifiedDateRange ? sf.BusinessDate == searchDTO.StartDate : (sf.BusinessDate >= searchDTO.StartDate && sf.BusinessDate < realSearchEndDate)))
+                                                    //&& ((searchDTO.ForecastAmountMin == zero && searchDTO.ForecastAmountMax == zero) || (sf.ForecastAmount >= searchDTO.ForecastAmountMin && sf.ForecastAmount <= searchDTO.ForecastAmountMax))
+                                                    //&& ((searchDTO.ActualPriorYearMin == zero && searchDTO.ActualPriorYearMax == zero) || (sf.ActualPriorYear >= searchDTO.ActualPriorYearMin && sf.ActualPriorYear <= searchDTO.ActualPriorYearMax))
+                                                    //&& ((searchDTO.ActualPrior2YearsMin == zero && searchDTO.ActualPrior2YearsMax == zero) || (sf.ActualPrior2Years >= searchDTO.ActualPrior2YearsMin && sf.ActualPrior2Years <= searchDTO.ActualPrior2YearsMax))
+                                                    //&& ((searchDTO.AvgPrior4WeeksMin == zero && searchDTO.AvgPrior4WeeksMax == zero) || (sf.AvgPrior4Weeks >= searchDTO.AvgPrior4WeeksMin && sf.AvgPrior4Weeks <= searchDTO.AvgPrior4WeeksMax))
+                                                    //&& ((searchDTO.LaborForecastMin == zero && searchDTO.LaborForecastMax == zero) || (sf.LaborForecast >= searchDTO.LaborForecastMin && sf.LaborForecast <= searchDTO.LaborForecastMax))
+                                                    && (sf.BusinessDate >= fiscStart && sf.BusinessDate < realFiscEnd))
                                     .OrderBy(sf => sf.StoreNumber)
                                     .ThenBy(sf => sf.BusinessDate)
                                     .ToList();

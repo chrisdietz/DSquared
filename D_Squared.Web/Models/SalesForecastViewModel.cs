@@ -47,6 +47,15 @@ namespace D_Squared.Web.Models
         public List<SalesForecastDTO> Weekdays { get; set; }
     }
 
+    public class SalesForecastEditDetailPartialViewModel
+    {
+        public SalesForecastCalculationDTO Calculations { get; set; }
+
+        public List<SalesForecastDTO> Weekdays { get; set; }
+
+        public string StoreNumber { get; set; }
+    }
+
     public class SalesForecastCreateEditPartialViewModel
     {
         public SalesForecastCalculationDTO Calculations { get; set; }
@@ -59,16 +68,16 @@ namespace D_Squared.Web.Models
         public SalesForecastSearchViewModel()
         {
             SearchViewModel = new SalesForecastSearchPartialViewModel();
-            SearchResults = new List<SalesForecast>();
+            SearchResults = new List<SalesForecastSearchResultDTO>();
         }
 
         public SalesForecastSearchViewModel(SalesForecast salesForecast)
         {
             SearchViewModel = new SalesForecastSearchPartialViewModel(salesForecast);
-            SearchResults = new List<SalesForecast>();
+            SearchResults = new List<SalesForecastSearchResultDTO>();
         }
 
-        public List<SalesForecast> SearchResults { get; set; }
+        public List<SalesForecastSearchResultDTO> SearchResults { get; set; }
 
         public SalesForecastSearchPartialViewModel SearchViewModel { get; set; }
 
@@ -85,6 +94,11 @@ namespace D_Squared.Web.Models
         public SalesForecastSearchPartialViewModel(SalesForecast salesForecast)
         {
             SearchDTO = new SalesForecastSearchDTO(salesForecast);
+        }
+
+        public SalesForecastSearchPartialViewModel(SalesForecast salesForecast, DateTime start, DateTime end)
+        {
+            SearchDTO = new SalesForecastSearchDTO(salesForecast, start, end);
         }
 
         [Display(Name = "Location")]

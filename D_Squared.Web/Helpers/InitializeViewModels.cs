@@ -10,6 +10,7 @@ using D_Squared.Domain.TransferObjects;
 using Newtonsoft.Json;
 using System.Configuration;
 using D_Squared.Domain;
+using System.Globalization;
 
 namespace D_Squared.Web.Helpers
 {
@@ -314,7 +315,7 @@ namespace D_Squared.Web.Helpers
 
         protected decimal CalculateRecommendedLabor(BudgetDTO dto, decimal forecastAmountTotal, List<string> validLocations, string employeeStore)
         {
-            if (validLocations.Contains(employeeStore))
+            if (validLocations.Contains(employeeStore) && dto.Budget.SalesBudgetAmount != 0 && dto.NumberOfWeeks != 0)
             {
                 return ((decimal)dto.Budget.LaborBudgetAmount / dto.NumberOfWeeks) +
                                                 ((forecastAmountTotal - ((decimal)dto.Budget.SalesBudgetAmount / dto.NumberOfWeeks))
@@ -367,19 +368,19 @@ namespace D_Squared.Web.Helpers
             }
         }
 
-        protected SalesForecastCalculationDTO GetSalesForecastCalculationDTO(List<SalesForecastDTO> weekdays, EmployeeDTO employee)
+        protected SalesForecastCalculationDTO GetSalesForecastCalculationDTO(List<SalesForecastDTO> weekdays, string storeNumber)
         {
             List<string> validLocations = eq.GetAllValidStoreLocations();
             DateTime now = DateTime.Now.ToLocalTime();
             DateTime thursday = weekdays.Where(w => w.DayOfWeek == "Thursday").FirstOrDefault().DateOfEntry;
 
             SalesForecastColumnTotalsDTO columnTotalsDTO = new SalesForecastColumnTotalsDTO(weekdays);
-            BudgetDTO budgetDTO = bq.GetBudgetByDate(thursday, employee.StoreNumber);
-            FY18BudgetDTO fy18dto = new FY18BudgetDTO(bq.GetFY18Budgets(employee.StoreNumber), now);
+            BudgetDTO budgetDTO = bq.GetBudgetByDate(thursday, storeNumber);
+            FY18BudgetDTO fy18dto = new FY18BudgetDTO(bq.GetFY18Budgets(storeNumber), now);
 
-            decimal recommendedLabor = CalculateRecommendedLabor(budgetDTO, columnTotalsDTO.ForecastAmountTotal, validLocations, employee.StoreNumber);
-            decimal recommendedFOH = CalculateRecommendedFOHLabor(fy18dto, recommendedLabor, validLocations, employee.StoreNumber);
-            decimal recommendedBOH = CalculateRecommendedBOHLabor(fy18dto, recommendedLabor, validLocations, employee.StoreNumber);
+            decimal recommendedLabor = CalculateRecommendedLabor(budgetDTO, columnTotalsDTO.ForecastAmountTotal, validLocations, storeNumber);
+            decimal recommendedFOH = CalculateRecommendedFOHLabor(fy18dto, recommendedLabor, validLocations, storeNumber);
+            decimal recommendedBOH = CalculateRecommendedBOHLabor(fy18dto, recommendedLabor, validLocations, storeNumber);
 
             SalesForecastCalculationDTO dto = new SalesForecastCalculationDTO(weekdays)
             {
@@ -420,25 +421,25 @@ namespace D_Squared.Web.Helpers
                 EmployeeInfo = employee,
                 TicketURL = ConfigurationManager.AppSettings["SalesForecastTicketURL"],
 
-                Calculations = GetSalesForecastCalculationDTO(weekdays, employee)
+                Calculations = GetSalesForecastCalculationDTO(weekdays, employee.StoreNumber)
             };
 
             return model;
         }
 
-        public SalesForecastDetailPartialViewModel InitializeSalesForecastDetailPartialViewModel(string username, string selectedDate)
+        public SalesForecastDetailPartialViewModel InitializeSalesForecastDetailPartialViewModel(string username, string selectedDate, string storeNumber)
         {
             DateTime now = DateTime.Now.ToLocalTime();
             EmployeeDTO employee = eq.GetEmployeeInfo(username);
             DateTime.TryParse(selectedDate, out DateTime convertedSelectedDate);
 
-            List<SalesForecastDTO> weekdays = GetSpecificWeekAsSalesForecastDTOList(convertedSelectedDate, employee.StoreNumber);
+            List<SalesForecastDTO> weekdays = GetSpecificWeekAsSalesForecastDTOList(convertedSelectedDate, storeNumber);
 
             SalesForecastDetailPartialViewModel model = new SalesForecastDetailPartialViewModel()
             {
                 SalesForecastDTO = weekdays.Where(w => w.DateOfEntry == convertedSelectedDate).FirstOrDefault(),
                 Weekdays = weekdays,
-                Calculations = GetSalesForecastCalculationDTO(weekdays, employee)
+                Calculations = GetSalesForecastCalculationDTO(weekdays, storeNumber)
             };
 
             return model;
@@ -456,7 +457,7 @@ namespace D_Squared.Web.Helpers
             {
                 Record = weekdays.Where(w => w.DateOfEntry == convertedSelectedDate).FirstOrDefault(),
                 Weekdays = weekdays,
-                Calculations = GetSalesForecastCalculationDTO(weekdays, employee)
+                Calculations = GetSalesForecastCalculationDTO(weekdays, employee.StoreNumber)
             };
 
             return dto;
@@ -543,48 +544,105 @@ namespace D_Squared.Web.Helpers
             return model;
         }
 
-        public SalesForecastSearchViewModel InitializeSalesForecastSearchViewModel(string username, int salesForecastId, bool isRegional, bool isDivisional, bool isAdmin)
+        public SalesForecastSearchViewModel InitializeSalesForecastSearchViewModel(SalesForecastSearchDTO searchDTO, string username, bool isRegional, bool isDivisional, bool isAdmin)
         {
             EmployeeDTO employee = eq.GetEmployeeInfo(username);
-            List<string> locationList = GetLocationList(employee, isRegional, isDivisional, isAdmin);
-            SalesForecast salesForecast = sfq.FindById(salesForecastId);
+            List<string> locationList = GetLocationList(employee, isRegional, isDivisional, isAdmin).Select(l => l.Substring(0, 3)).ToList();
+            SalesForecast salesForecast = sfq.GetSalesForecastRecordsByDate(searchDTO.EndDate, searchDTO.LocationId);
 
             SalesForecastSearchViewModel model = new SalesForecastSearchViewModel()
             {
-                SearchViewModel = new SalesForecastSearchPartialViewModel(salesForecast)
+                SearchViewModel = new SalesForecastSearchPartialViewModel(salesForecast, searchDTO.StartDate, searchDTO.EndDate)
                 {
-                    LocationSelectList = locationList.ToSelectList(null, null, null, true, "Any", "Any"),
-                    //WeekdaySelectList = DomainConstants.WeekdayConstants.WeekdayList().ToSelectList(null, null, null, true, "Any", "Any")
+                    LocationSelectList = locationList.ToSelectList(null, null, searchDTO.LocationId, true, "Any", "Any"),
                 },
 
-                EmployeeInfo = employee,
-                SearchResults = new List<SalesForecast> { salesForecast }
+                EmployeeInfo = employee
             };
 
+            model.SearchResults = CreateSearchResultDTOs(sfq.GetSalesForecastEntries(model.SearchViewModel.SearchDTO, locationList, searchDTO.StartDate, searchDTO.EndDate));
+
             return model;
+        }
+
+        protected List<SalesForecastSearchResultDTO> CreateSearchResultDTOs(List<SalesForecast> searchResults)
+        {
+            List<SalesForecastSearchResultDTO> results = new List<SalesForecastSearchResultDTO>();
+            var test1 = searchResults.GroupBy(x => x.StoreNumber);
+
+            foreach (var store in searchResults.GroupBy(x => x.StoreNumber))
+            {
+                var storeByWeeks = store.GroupBy(x => CultureInfo.CurrentCulture.DateTimeFormat.Calendar
+                                                    .GetWeekOfYear(x.BusinessDate, CalendarWeekRule.FirstDay, DayOfWeek.Monday)).ToList();
+
+                foreach(var storeByWeek in storeByWeeks)
+                {
+                    List<SalesForecast> salesForecasts = storeByWeek.ToList();
+                    List<SalesForecastDTO> salesForecastDTOs = new List<SalesForecastDTO>();
+
+                    foreach (var sf in salesForecasts)
+                    {
+                        salesForecastDTOs.Add(new SalesForecastDTO(sf));                        
+                    }
+
+                    var resultDTO = new SalesForecastSearchResultDTO(salesForecasts)
+                    {
+                        Calculations = GetSalesForecastCalculationDTO(salesForecastDTOs, salesForecasts.FirstOrDefault().StoreNumber)
+                    };
+
+                    results.Add(resultDTO);
+                }
+            }
+
+            return results;
         }
 
         public SalesForecastSearchViewModel InitializeSalesForecastSearchViewModel(SalesForecastSearchViewModel model, bool isRegional, bool isDivisional, bool isAdmin)
         {
-            List<string> locationList = GetLocationList(model.EmployeeInfo, isRegional, isDivisional, isAdmin);
+            List<string> locationList = GetLocationList(model.EmployeeInfo, false, false, isAdmin).Select(l => l.Substring(0, 3)).ToList();
+
+            DateTime fiscStart = model.SearchViewModel.SearchDTO.StartDate = GetCurrentWeek(model.SearchViewModel.SearchDTO.StartDate).FirstOrDefault();
+            DateTime fiscEnd = model.SearchViewModel.SearchDTO.EndDate = GetCurrentWeek(model.SearchViewModel.SearchDTO.EndDate).LastOrDefault();
 
             model.SearchViewModel.LocationSelectList = locationList.ToSelectList(null, null, model.SearchViewModel.SearchDTO.LocationId, true, "Any", "Any");
             //model.SearchViewModel.WeekdaySelectList = DomainConstants.WeekdayConstants.WeekdayList().ToSelectList(null, null, model.SearchViewModel.SearchDTO.DayOfWeek, true, "Any", "Any");
+
+            List<SalesForecast> queryResults = sfq.GetSalesForecastEntries(model.SearchViewModel.SearchDTO, locationList, fiscStart, fiscEnd);
+
+            model.SearchResults = CreateSearchResultDTOs(queryResults);
+            //model.SearchResults = sfq.GetSalesForecastEntries(model.SearchViewModel.SearchDTO, locationList.Select(l => l.Substring(0, 3)).ToList(), fiscStart, fiscEnd);
 
             return model;
         }
 
 
-        public SalesForecastCreateEditPartialViewModel InitializeSalesForecastEditViewModel(int id, string username)
-        {
-            SalesForecast salesForecast = sfq.FindById(id);
-            EmployeeDTO employee = eq.GetEmployeeInfo(username);
-            List<SalesForecastDTO> weekdays = GetSpecificWeekAsSalesForecastDTOList(salesForecast.BusinessDate, employee.StoreNumber);
+        //public SalesForecastCreateEditPartialViewModel InitializeSalesForecastEditViewModel(int id, string username)
+        //{
+        //    SalesForecast salesForecast = sfq.FindById(id);
+        //    EmployeeDTO employee = eq.GetEmployeeInfo(username);
+        //    List<SalesForecastDTO> weekdays = GetSpecificWeekAsSalesForecastDTOList(salesForecast.BusinessDate, employee.StoreNumber);
 
-            SalesForecastCreateEditPartialViewModel model = new SalesForecastCreateEditPartialViewModel()
+        //    SalesForecastCreateEditPartialViewModel model = new SalesForecastCreateEditPartialViewModel()
+        //    {
+        //        SalesForecast = salesForecast,
+        //        Calculations = GetSalesForecastCalculationDTO(weekdays, employee)
+        //    };
+
+        //    return model;
+        //}
+
+        public SalesForecastEditDetailPartialViewModel InitializeSalesForecastEditDetailPartialViewModel(string weekEnding, string storeNumber, string username)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(username);
+            DateTime.TryParse(weekEnding, out DateTime convertedWeekEnding);
+
+            List<SalesForecastDTO> weekdays = GetSpecificWeekAsSalesForecastDTOList(convertedWeekEnding, storeNumber);
+
+            SalesForecastEditDetailPartialViewModel model = new SalesForecastEditDetailPartialViewModel()
             {
-                SalesForecast = salesForecast,
-                Calculations = GetSalesForecastCalculationDTO(weekdays, employee)
+                Weekdays = weekdays,
+                Calculations = GetSalesForecastCalculationDTO(weekdays, storeNumber),
+                StoreNumber = storeNumber
             };
 
             return model;
@@ -625,18 +683,19 @@ namespace D_Squared.Web.Helpers
             return dates;
         }
 
-        public TipReportingViewModel InitializeTipReportingViewModel(string username, bool isRegional, bool isDivisional, bool isAdmin)
+        public TipReportingViewModel InitializeTipReportingViewModel(string username, bool isRegional, bool isDivisional, bool isAdmin, bool isLastWeek = false)
         {
             EmployeeDTO employee = eq.GetEmployeeInfo(username);
             List<string> locationList = GetLocationList(employee, isRegional, isDivisional, isAdmin);
-            List<DateTime> daysInWeek = GetCurrentWeek(DateTime.Today);
+            List<DateTime> daysInWeek = GetCurrentWeek(!isLastWeek ? DateTime.Today : DateTime.Today.AddDays(-7));
 
             TipReportingViewModel model = new TipReportingViewModel()
             {
                 EmployeeInfo = employee,
-                MakeUpPayList = tq.GetOutstandingMakeUps(employee.StoreNumber, username, daysInWeek.LastOrDefault()),
+                MakeUpPayList = tq.GetOutstandingMakeUps(employee.StoreNumber, daysInWeek.LastOrDefault()),
                 AccessTime = DateTime.Now,
-                EndingPeriod = daysInWeek.LastOrDefault()
+                EndingPeriod = daysInWeek.LastOrDefault(),
+                CurrentWeekFlag = !isLastWeek
             };
 
             return model;
@@ -652,22 +711,27 @@ namespace D_Squared.Web.Helpers
                 EmployeeInfo = employee,
                 SearchResults = new List<MakeUpPay>(),
                 LocationSelectList = locationList.ToSelectList(null, null, null, true, "Any", "Any"),
+                SearchDTO = new TipReportingSearchDTO()
             };
 
             return model;
         }
 
-        public TipReportingSearchViewModel InitializeTipReportingSearchViewModel(string username, string selectedLocation, bool isRegional, bool isDivisional, bool isAdmin)
+        public TipReportingSearchViewModel InitializeTipReportingSearchViewModel(TipReportingSearchDTO searchDTO, string username, bool isRegional, bool isDivisional, bool isAdmin)
         {
             EmployeeDTO employee = eq.GetEmployeeInfo(username);
             List<string> locationList = GetLocationList(employee, isRegional, isDivisional, isAdmin);
             List<DateTime> daysInWeek = GetCurrentWeek(DateTime.Today);
 
+            DateTime fiscStart = searchDTO.StartDate = GetCurrentWeek(searchDTO.StartDate).LastOrDefault();
+            DateTime fiscEnd = searchDTO.EndDate = GetCurrentWeek(searchDTO.EndDate).LastOrDefault();
+
             TipReportingSearchViewModel model = new TipReportingSearchViewModel()
             {
                 EmployeeInfo = employee,
-                SearchResults = tq.GetOutstandingMakeUps(selectedLocation, username, daysInWeek.LastOrDefault()),
-                LocationSelectList = locationList.ToSelectList(null, null, selectedLocation, true, "Any", "Any"),
+                SearchResults = tq.GetOutstandingMakeUps(searchDTO, locationList.Select(l => l.Substring(0, 3)).ToList(), fiscStart, fiscEnd),
+                LocationSelectList = locationList.ToSelectList(null, null, searchDTO.SelectedLocation, true, "Any", "Any"),
+                SearchDTO = searchDTO
             };
 
             return model;

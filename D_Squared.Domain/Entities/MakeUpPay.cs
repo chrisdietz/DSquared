@@ -56,7 +56,7 @@ namespace D_Squared.Domain.Entities
 
         public decimal? OvertimePayAmount { get; set; }
 
-        [Display(Name = "Tips Earned")]
+        [Display(Name = "Net Tips Reported")]
         public decimal? TipsEarned { get; set; }
 
         [Display(Name = "Tip Credit")]

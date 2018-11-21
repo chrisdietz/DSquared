@@ -75,7 +75,7 @@ jQuery(document).ready(function () {
 
 function GetLastYearRedbookEntryDetail(r) {
     $.when($.ajax({
-        url: '/SalesForecast/Details',
+        url: '/Redbook/Details',
         type: "GET",
         data: { redbookId: r, isLastYear: true },
         success: function (data) {
@@ -87,11 +87,11 @@ function GetLastYearRedbookEntryDetail(r) {
     });
 }
 
-function GetSalesForecastDetail(d) {
+function GetSalesForecastDetail(d, sn) {
     $.when($.ajax({
         url: '/SalesForecast/Details',
         type: "GET",
-        data: { date: d },
+        data: { date: d, storeNumber: sn },
         success: function (data) {
             $('#salesForecastDetailPartial').html(data);
             $('#salesForecastDetailModal').modal('show');

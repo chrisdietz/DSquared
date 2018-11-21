@@ -33,7 +33,7 @@ namespace D_Squared.Web.Controllers
             init = new TipReportingInitializer(eq, tq);
         }
 
-        public ActionResult Index()
+        public ActionResult Index(bool isLastWeek = false)
         {
             string username = User.TruncatedName;
 
@@ -48,10 +48,15 @@ namespace D_Squared.Web.Controllers
             }
             else
             {
-                TipReportingViewModel model = init.InitializeTipReportingViewModel(username, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin());
+                TipReportingViewModel model = init.InitializeTipReportingViewModel(username, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin(), isLastWeek);
 
                 return View(model);
             }
+        }
+
+        public ActionResult PreviousWeek()
+        {
+            return RedirectToAction("Index", new { isLastWeek = true });
         }
 
         public ActionResult Search()
@@ -92,7 +97,7 @@ namespace D_Squared.Web.Controllers
             }
             else
             {
-                model = init.InitializeTipReportingSearchViewModel(username, model.SelectedLocation, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin());
+                model = init.InitializeTipReportingSearchViewModel(model.SearchDTO, username,  User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin());
 
                 return View(model);
             }

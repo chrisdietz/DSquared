@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using ROLES = D_Squared.Domain.DomainConstants.RoleNames;
 
 namespace D_Squared.Web.Controllers
@@ -101,7 +102,7 @@ namespace D_Squared.Web.Controllers
             return View("Index", model);
         }
 
-        public ActionResult Search(SalesForecast salesForecast)
+        public ActionResult Search(SalesForecastSearchDTO searchDTO)
         {
             string username = User.TruncatedName;
 
@@ -118,12 +119,12 @@ namespace D_Squared.Web.Controllers
             {
                 SalesForecastSearchViewModel model = new SalesForecastSearchViewModel();
 
-                if (salesForecast.Id != 0)
-                    model = init.InitializeSalesForecastSearchViewModel(username, salesForecast.Id, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin());
+                if (TempData["SearchDTO"] != null)
+                    model = init.InitializeSalesForecastSearchViewModel((SalesForecastSearchDTO)TempData["SearchDTO"], username, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin());
                 else
                     model = init.InitializeSalesForecastSearchViewModel(username, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin());
 
-                return View(model);
+                return View("Search", model);
             }
         }
 
@@ -146,7 +147,6 @@ namespace D_Squared.Web.Controllers
             {
                 model.EmployeeInfo = eq.GetEmployeeInfo(username);
                 model = init.InitializeSalesForecastSearchViewModel(model, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin());
-                model.SearchResults = sfq.GetSalesForecastEntries(model.SearchViewModel.SearchDTO, model.SearchViewModel.LocationSelectList.Select(l => l.Text.Substring(0, 3)).ToList());
 
                 return View(model);
             }
@@ -246,23 +246,70 @@ namespace D_Squared.Web.Controllers
             return View("SalesForecastReport", model);
         }
 
-        public ActionResult Details(string date)
+        public ActionResult Details(string date, string storeNumber)
         {
             string username = User.TruncatedName;
 
-            SalesForecastDetailPartialViewModel partial = init.InitializeSalesForecastDetailPartialViewModel(username, date);
+            SalesForecastDetailPartialViewModel partial = init.InitializeSalesForecastDetailPartialViewModel(username, date, storeNumber);
 
             return PartialView("~/Views/SalesForecast/_SalesForecastEntryDetail.cshtml", partial);
         }
 
-        public ActionResult Edit(int id = 0)
+        public ActionResult EditDetail(string date, string storeNumber)
         {
             string username = User.TruncatedName;
 
-            SalesForecastCreateEditPartialViewModel partial = init.InitializeSalesForecastEditViewModel(id, username);
+            SalesForecastEditDetailPartialViewModel partial = init.InitializeSalesForecastEditDetailPartialViewModel(date, storeNumber, username);
 
-            return PartialView("~/Views/SalesForecast/_Edit.cshtml", partial);
+            return PartialView("~/Views/SalesForecast/_SalesForecastEditDetail.cshtml", partial);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditDetail(SalesForecastEditDetailPartialViewModel model)
+        {
+            string username = User.TruncatedName;
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    sfq.AddOrUpdateSalesForecasts(model.Weekdays, model.StoreNumber, username);
+                    Success("Sales Forecast records saved successfully. You may close this window");
+                }
+                else
+                {
+                    Warning("Double Request detected; only the first submission was captured");
+                    RedirectToAction("Index");
+                }
+            }
+            catch
+            {
+                Warning("Error occurred. If this error persists, please contact an administrator.");
+
+                return RedirectToAction("Search");
+            }
+
+            SalesForecastSearchDTO searchDTO = new SalesForecastSearchDTO()
+            {
+                LocationId = model.StoreNumber,
+                StartDate = model.Weekdays.FirstOrDefault().DateOfEntry,
+                EndDate = model.Weekdays.LastOrDefault().DateOfEntry
+            };
+
+            TempData["SearchDTO"] = searchDTO;
+            return RedirectToAction("Search");
+            //return Search(searchDTO);
+        }
+
+        //public ActionResult Edit(int id = 0)
+        //{
+        //    string username = User.TruncatedName;
+
+        //    SalesForecastCreateEditPartialViewModel partial = init.InitializeSalesForecastEditViewModel(id, username);
+
+        //    return PartialView("~/Views/SalesForecast/_Edit.cshtml", partial);
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -290,7 +337,7 @@ namespace D_Squared.Web.Controllers
                 return RedirectToAction("Search");
             }
 
-            return RedirectToAction("Search", model.SalesForecast);
+            return RedirectToAction("Search");
         }
 
         protected override void Dispose(bool disposing)

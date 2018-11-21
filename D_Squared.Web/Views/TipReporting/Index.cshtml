@@ -18,6 +18,20 @@
 </div>
 
 <hr />
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            @if (Model.CurrentWeekFlag)
+            {
+                @Html.ActionLink("Previous Week", "PreviousWeek", "TipReporting", null, new { @class = "btn btn-dsquared btn-xs" })
+            }
+            else
+            {
+                @Html.ActionLink("Current Week", "Index", "TipReporting", null, new { @class = "btn btn-dsquared btn-xs" })
+            }
+        </div>
+    </div>
+</div>
 
 @if (Model.MakeUpPayList.Count > 0)
 {
@@ -57,38 +71,79 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var result in Model.MakeUpPayList)
-            {
+            @{
+                decimal totalRegHours = 0;
+                decimal totalOverHours = 0;
+                decimal totalStateTip = 0;
+                decimal totalTipCredit = 0;
+                decimal totalTipsEarned = 0;
+                decimal totalMakeupPay = 0;
+
+                foreach (var result in Model.MakeUpPayList)
+                {
+                    totalRegHours += (decimal)result.RegularHours;
+                    totalOverHours += (decimal)result.OvertimeHours;
+                    totalStateTip += (decimal)result.StateTipCredit;
+                    totalTipCredit += (decimal)result.TotalTipCredit;
+                    totalTipsEarned += (decimal)result.TipsEarned;
+                    totalMakeupPay += (decimal)result.MakeUpPay1;
+
+                    <tr>
+                        <td>
+                            @result.FiscalWeekEnding.ToShortDateString()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => result.EmployeeName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => result.JobName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => result.RegularHours)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => result.OvertimeHours)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => result.StateTipCredit)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => result.TotalTipCredit)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => result.TipsEarned)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => result.MakeUpPay1)
+                        </td>
+                    </tr>
+                }
+
                 <tr>
-                    <td>
-                        @result.FiscalWeekEnding.ToShortDateString()
+                    <td colspan="3">
+                        <span style="float:right"><strong><u>Totals:</u></strong></span>
                     </td>
                     <td>
-                        @Html.DisplayFor(model => result.EmployeeName)
+                        <strong>@totalRegHours</strong>             
                     </td>
                     <td>
-                        @Html.DisplayFor(model => result.JobName)
+                        <strong>@totalOverHours</strong>      
                     </td>
                     <td>
-                        @Html.DisplayFor(model => result.RegularHours)
+                        <strong>@totalStateTip</strong>     
                     </td>
                     <td>
-                        @Html.DisplayFor(model => result.OvertimeHours)
+                        <strong>@totalTipCredit</strong>     
                     </td>
                     <td>
-                        @Html.DisplayFor(model => result.StateTipCredit)
+                        <strong>@totalTipsEarned</strong>    
                     </td>
                     <td>
-                        @Html.DisplayFor(model => result.TotalTipCredit)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => result.TipsEarned)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(model => result.MakeUpPay1)
+                        <strong>@totalMakeupPay</strong>
                     </td>
                 </tr>
             }
+            
         </tbody>
     </table>
 }

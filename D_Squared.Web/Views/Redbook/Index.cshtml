@@ -135,7 +135,7 @@
                 </td>
                 <td style="width:175px">
                     <a class="btn btn-dsquared btn-xs" onclick="GetRedbookEntryDetail(@result.Id)">Redbook</a>
-                    <a class="btn btn-xs btn-dsquared" onclick="GetSalesForecastDetail('@result.BusinessDate.ToShortDateString()')">Sales Forecast</a>
+                    <a class="btn btn-xs btn-dsquared" onclick="GetSalesForecastDetail('@result.BusinessDate.ToShortDateString()', '@result.LocationId')">Sales Forecast</a>
                 </td>
             </tr>
         }

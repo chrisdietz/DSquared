@@ -51,14 +51,17 @@ function GetRedbookEntryDetail(r) {
     });
 }
 
-function GetSalesForecastDetail(d) {
+function GetSalesForecastDetail(d, sn) {
     $.when($.ajax({
         url: '/SalesForecast/Details',
         type: "GET",
-        data: { date: d },
+        data: { date: d, storeNumber: sn },
         success: function (data) {
-            $('#salesForecastDetailPartial').html(data);
-            $('#salesForecastDetailModal').modal('show');
+            $.when($('#salesForecastDetailPartial').empty())
+                .then(function () {
+                    $('#salesForecastDetailPartial').html(data);
+                    $('#salesForecastDetailModal').modal('show');
+            });
         }
     })).then(function () {
         initDetail.init();

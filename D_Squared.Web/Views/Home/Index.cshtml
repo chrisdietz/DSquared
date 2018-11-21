@@ -32,7 +32,7 @@
             </div>
         </a>
     </div>
-    @if (User.IsDivisionalVP() || User.IsRegionalManager())
+    @if (User.IsDivisionalVP() || User.IsRegionalManager() || User.IsDSquaredAdmin())
     {
         <div class="col-md-4">
             <a class="dashboard-stat dashboard-stat-v2 red" href="/SalesForecast/Search">
@@ -81,7 +81,7 @@
             </a>
         </div>
     }
-    else if (User.IsDivisionalVP() || User.IsRegionalManager())
+    else if (User.IsDivisionalVP() || User.IsRegionalManager() || User.IsDSquaredAdmin())
     {
         <div class="col-md-4">
             <a class="dashboard-stat dashboard-stat-v2 red" href="/Redbook/Index">
@@ -100,7 +100,7 @@
 
 
 
-    @if (User.IsDivisionalVP() || User.IsRegionalManager())
+    @if (User.IsDivisionalVP() || User.IsRegionalManager() || User.IsDSquaredAdmin())
     {
         <div class="col-md-4">
             <a class="dashboard-stat dashboard-stat-v2 red" href="/TipReporting/Search">

@@ -69,11 +69,11 @@ namespace D_Squared.Domain.TransferObjects
         public decimal ForecastAmount { get; set; }
 
         [Display(Name = "AM Forecast")]
-        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:F0}", ApplyFormatInEditMode = true)]
         public decimal ForecastAM { get; set; }
 
         [Display(Name = "PM Forecast")]
-        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:F0}", ApplyFormatInEditMode = true)]
         public decimal ForecastPM { get; set; }
 
         [Display(Name = "FY17 Sales")]
@@ -97,10 +97,15 @@ namespace D_Squared.Domain.TransferObjects
     {
         public SalesForecastCalculationDTO()
         {
-
+            SalesForecastColumnTotalsDTO = new SalesForecastColumnTotalsDTO();
         }
 
         public SalesForecastCalculationDTO(List<SalesForecastDTO> weekdays)
+        {
+            SalesForecastColumnTotalsDTO = new SalesForecastColumnTotalsDTO(weekdays);
+        }
+
+        public SalesForecastCalculationDTO(List<SalesForecast> weekdays)
         {
             SalesForecastColumnTotalsDTO = new SalesForecastColumnTotalsDTO(weekdays);
         }
@@ -148,21 +153,28 @@ namespace D_Squared.Domain.TransferObjects
             LocationId = salesForecast.StoreNumber;
             EndDate = salesForecast.BusinessDate;
             StartDate = salesForecast.BusinessDate;
+        }
 
-            ForecastAmountMin = salesForecast.ForecastAmount;
-            ForecastAmountMax = salesForecast.ForecastAmount;
+        public SalesForecastSearchDTO(SalesForecast salesForecast, DateTime start, DateTime end)
+        {
+            LocationId = salesForecast.StoreNumber;
+            EndDate = end;
+            StartDate = start;
 
-            ActualPriorYearMin = salesForecast.ActualPriorYear;
-            ActualPriorYearMax = salesForecast.ActualPriorYear;
+            //ForecastAmountMin = salesForecast.ForecastAmount;
+            //ForecastAmountMax = salesForecast.ForecastAmount;
 
-            ActualPrior2YearsMin = salesForecast.ActualPrior2Years;
-            ActualPrior2YearsMax = salesForecast.ActualPrior2Years;
+            //ActualPriorYearMin = salesForecast.ActualPriorYear;
+            //ActualPriorYearMax = salesForecast.ActualPriorYear;
 
-            AvgPrior4WeeksMin = salesForecast.AvgPrior4Weeks;
-            AvgPrior4WeeksMax = salesForecast.AvgPrior4Weeks;
+            //ActualPrior2YearsMin = salesForecast.ActualPrior2Years;
+            //ActualPrior2YearsMax = salesForecast.ActualPrior2Years;
 
-            LaborForecastMin = salesForecast.LaborForecast;
-            LaborForecastMax = salesForecast.LaborForecast;
+            //AvgPrior4WeeksMin = salesForecast.AvgPrior4Weeks;
+            //AvgPrior4WeeksMax = salesForecast.AvgPrior4Weeks;
+
+            //LaborForecastMin = salesForecast.LaborForecast;
+            //LaborForecastMax = salesForecast.LaborForecast;
         }
 
         [Display(Name = "Location")]
@@ -171,40 +183,40 @@ namespace D_Squared.Domain.TransferObjects
         //[Display(Name = "Day of Week")]
         //public string DayOfWeek { get; set; }
 
-        [Display(Name = "Forecast Amount")]
-        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
-        public decimal ForecastAmountMin { get; set; }
+        //[Display(Name = "Forecast Amount")]
+        //[DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
+        //public decimal ForecastAmountMin { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
-        public decimal ForecastAmountMax { get; set; }
+        //[DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
+        //public decimal ForecastAmountMax { get; set; }
 
-        [Display(Name = "FY 2017 Amount")]
-        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
-        public decimal ActualPriorYearMin { get; set; }
+        //[Display(Name = "FY 2017 Amount")]
+        //[DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
+        //public decimal ActualPriorYearMin { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
-        public decimal ActualPriorYearMax { get; set; }
+        //[DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
+        //public decimal ActualPriorYearMax { get; set; }
 
-        [Display(Name = "FY 2016 Amount")]
-        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
-        public decimal ActualPrior2YearsMin { get; set; }
+        //[Display(Name = "FY 2016 Amount")]
+        //[DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
+        //public decimal ActualPrior2YearsMin { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
-        public decimal ActualPrior2YearsMax { get; set; }
+        //[DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
+        //public decimal ActualPrior2YearsMax { get; set; }
 
-        [Display(Name = "6 Week Average Amount")]
-        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
-        public decimal AvgPrior4WeeksMin { get; set; }
+        //[Display(Name = "6 Week Average Amount")]
+        //[DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
+        //public decimal AvgPrior4WeeksMin { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
-        public decimal AvgPrior4WeeksMax { get; set; }
+        //[DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
+        //public decimal AvgPrior4WeeksMax { get; set; }
 
-        [Display(Name = "Labor Forecast Amount")]
-        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
-        public decimal LaborForecastMin { get; set; }
+        //[Display(Name = "Labor Forecast Amount")]
+        //[DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
+        //public decimal LaborForecastMin { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
-        public decimal LaborForecastMax { get; set; }
+        //[DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
+        //public decimal LaborForecastMax { get; set; }
 
         [Display(Name = "Business Date Range")]
         [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
@@ -216,11 +228,27 @@ namespace D_Squared.Domain.TransferObjects
 
     public class SalesForecastColumnTotalsDTO
     {
+        public SalesForecastColumnTotalsDTO()
+        {
+
+        }
+
         public SalesForecastColumnTotalsDTO(List<SalesForecastDTO> weekdays)
         {
             PriorYearSalesTotal = weekdays.Sum(w => w.PriorYearSales);
             Prior2YearSalesTotal = weekdays.Sum(w => w.Prior2YearSales);
             AverageSalesPerMonthTotal = weekdays.Sum(w => w.AverageSalesPerMonth);
+            ForecastAMTotal = weekdays.Sum(w => w.ForecastAM);
+            ForecastPMTotal = weekdays.Sum(w => w.ForecastPM);
+            ForecastAmountTotal = weekdays.Sum(w => w.ForecastAmount);
+            LaborForecastTotal = weekdays.Sum(w => w.LaborForecast);
+        }
+
+        public SalesForecastColumnTotalsDTO(List<SalesForecast> weekdays)
+        {
+            PriorYearSalesTotal = weekdays.Sum(w => w.ActualPriorYear);
+            Prior2YearSalesTotal = weekdays.Sum(w => w.ActualPrior2Years);
+            AverageSalesPerMonthTotal = weekdays.Sum(w => w.AvgPrior4Weeks);
             ForecastAMTotal = weekdays.Sum(w => w.ForecastAM);
             ForecastPMTotal = weekdays.Sum(w => w.ForecastPM);
             ForecastAmountTotal = weekdays.Sum(w => w.ForecastAmount);
@@ -283,5 +311,26 @@ namespace D_Squared.Domain.TransferObjects
         public DateTime DayOfWeek { get; set; }
 
         public decimal TotalSalesForecast { get; set; }
+    }
+
+    public class SalesForecastSearchResultDTO
+    {
+        public SalesForecastSearchResultDTO()
+        {
+            Calculations = new SalesForecastCalculationDTO();
+        }
+
+        public SalesForecastSearchResultDTO(List<SalesForecast> salesForecasts)
+        {
+            FiscalWeekEnding = salesForecasts.LastOrDefault().BusinessDate;
+            StoreNumber = salesForecasts.FirstOrDefault().StoreNumber;
+            Calculations = new SalesForecastCalculationDTO(salesForecasts);
+        }
+
+        public SalesForecastCalculationDTO Calculations { get; set; }
+        
+        public DateTime FiscalWeekEnding { get; set; }
+
+        public string StoreNumber { get; set; }
     }
 }

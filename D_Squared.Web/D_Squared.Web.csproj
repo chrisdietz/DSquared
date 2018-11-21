@@ -619,6 +619,7 @@
     <Content Include="Views\SalesForecast\_Edit.cshtml" />
     <Content Include="Views\TipReporting\Index.cshtml" />
     <Content Include="Views\TipReporting\Search.cshtml" />
+    <Content Include="Views\SalesForecast\_SalesForecastEditDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
