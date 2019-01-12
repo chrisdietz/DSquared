@@ -686,7 +686,7 @@ namespace D_Squared.Web.Helpers
         public TipReportingViewModel InitializeTipReportingViewModel(string username, bool isRegional, bool isDivisional, bool isAdmin, bool isLastWeek = false)
         {
             EmployeeDTO employee = eq.GetEmployeeInfo(username);
-            List<string> locationList = GetLocationList(employee, isRegional, isDivisional, isAdmin);
+
             List<DateTime> daysInWeek = GetCurrentWeek(!isLastWeek ? DateTime.Today : DateTime.Today.AddDays(-7));
 
             TipReportingViewModel model = new TipReportingViewModel()
@@ -721,7 +721,6 @@ namespace D_Squared.Web.Helpers
         {
             EmployeeDTO employee = eq.GetEmployeeInfo(username);
             List<string> locationList = GetLocationList(employee, isRegional, isDivisional, isAdmin);
-            List<DateTime> daysInWeek = GetCurrentWeek(DateTime.Today);
 
             DateTime fiscStart = searchDTO.StartDate = GetCurrentWeek(searchDTO.StartDate).LastOrDefault();
             DateTime fiscEnd = searchDTO.EndDate = GetCurrentWeek(searchDTO.EndDate).LastOrDefault();
@@ -730,6 +729,113 @@ namespace D_Squared.Web.Helpers
             {
                 EmployeeInfo = employee,
                 SearchResults = tq.GetOutstandingMakeUps(searchDTO, locationList.Select(l => l.Substring(0, 3)).ToList(), fiscStart, fiscEnd),
+                LocationSelectList = locationList.ToSelectList(null, null, searchDTO.SelectedLocation, true, "Any", "Any"),
+                SearchDTO = searchDTO
+            };
+
+            return model;
+        }
+    }
+
+    public class SpreadHoursInitializer
+    {
+        private readonly EmployeeQueries eq;
+        private readonly SpreadHourQueries shq;
+
+        public SpreadHoursInitializer(EmployeeQueries eq, SpreadHourQueries shq)
+        {
+            this.eq = eq;
+            this.shq = shq;
+        }
+
+        protected List<string> GetLocationList(EmployeeDTO employee, bool isRegional, bool isDivisional, bool isAdmin)
+        {
+            return isRegional ? eq.GetStoreLocationListByRegion(employee)
+                                        : isDivisional ? eq.GetStoreLocationListByDivision(employee)
+                                        : isAdmin ? eq.GetStoreLocationListForAdmin()
+                                        : new List<string>();
+        }
+
+        protected List<DateTime> GetCurrentWeek(DateTime selectedDay)
+        {
+            int currentDayOfWeek = (int)selectedDay.DayOfWeek;
+            DateTime sunday = selectedDay.AddDays(-currentDayOfWeek);
+            DateTime monday = sunday.AddDays(1);
+
+            if (currentDayOfWeek == 0)
+            {
+                monday = monday.AddDays(-7);
+            }
+            var dates = Enumerable.Range(0, 7).Select(days => monday.AddDays(days)).ToList();
+
+            return dates;
+        }
+
+        protected List<SpreadHourDTO> GetSpreadHourDTOs(List<SpreadHour> spreadHours)
+        {
+            List<SpreadHourDTO> dtoList = new List<SpreadHourDTO>();
+            List<MinimumWage> minimumWages = shq.GetMinimumWages();
+
+            foreach (SpreadHour sp in spreadHours)
+            {
+                MinimumWage minWage = new MinimumWage();
+
+                if (minimumWages.Any(mw => mw.StoreNumber == sp.StoreNumber))
+                    minWage = minimumWages.Where(mw => mw.StoreNumber == sp.StoreNumber).FirstOrDefault();
+
+                dtoList.Add(new SpreadHourDTO(sp, minWage));
+            }
+
+            return dtoList;
+        }
+
+        public SpreadHourViewModel InitializeSpreadHourViewModel(string username, bool isLastWeek = false)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(username);
+
+            List<DateTime> daysInWeek = GetCurrentWeek(!isLastWeek ? DateTime.Today : DateTime.Today.AddDays(-7));
+
+            SpreadHourViewModel model = new SpreadHourViewModel()
+            {
+                EmployeeInfo = employee,
+                SpreadHours = GetSpreadHourDTOs(shq.GetSpreadHoursByWeek(employee.StoreNumber, daysInWeek.FirstOrDefault(), daysInWeek.LastOrDefault())),
+                AccessTime = DateTime.Now,
+                EndingPeriod = daysInWeek.LastOrDefault(),
+                CurrentWeekFlag = !isLastWeek
+            };
+
+            return model;
+        }
+
+        public SpreadHourSearchViewModel InitializeSpreadHourSearchViewModel(string username, bool isRegional, bool isDivisional, bool isAdmin)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(username);
+            List<string> locationList = GetLocationList(employee, isRegional, isDivisional, isAdmin);
+
+            SpreadHourSearchViewModel model = new SpreadHourSearchViewModel()
+            {
+                LocationSelectList = locationList.ToSelectList(null, null, null, true, "Any", "Any"),
+                SearchDTO = new SpreadHourSearchDTO(),
+                SearchResults = new List<SpreadHourDTO>(),
+                EmployeeInfo = employee
+            };
+
+            return model;
+        }
+
+
+        public SpreadHourSearchViewModel InitializeSpreadHourSearchViewModel(SpreadHourSearchDTO searchDTO, string username, bool isRegional, bool isDivisional, bool isAdmin)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(username);
+            List<string> locationList = GetLocationList(employee, isRegional, isDivisional, isAdmin);
+
+            DateTime fiscStart = searchDTO.StartDate = GetCurrentWeek(searchDTO.StartDate).FirstOrDefault();
+            DateTime fiscEnd = searchDTO.EndDate = GetCurrentWeek(searchDTO.EndDate).LastOrDefault();
+
+            SpreadHourSearchViewModel model = new SpreadHourSearchViewModel()
+            {
+                EmployeeInfo = employee,
+                SearchResults = GetSpreadHourDTOs(shq.GetSpreadHours(searchDTO, locationList.Select(l => l.Substring(0, 3)).ToList(), fiscStart, fiscEnd)),
                 LocationSelectList = locationList.ToSelectList(null, null, searchDTO.SelectedLocation, true, "Any", "Any"),
                 SearchDTO = searchDTO
             };

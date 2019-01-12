@@ -19,6 +19,9 @@ namespace D_Squared.Domain
             public const string RedbookRegionalGroup = "redbookReg";
             public const string RedbookDivisionalVPGroup = "redbookDvp";
 
+            public const string DSquaredTipsGroup = "D2Tips";
+            public const string DSquaredSpreadGroup = "D2Spread";
+
             public const string DSquaredAdminGroup = "d2Admins";
         }
 

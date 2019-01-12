@@ -95,6 +95,22 @@ namespace D_Squared.Web.Helpers
                 return IsInRole(DomainConstants.RoleNames.RedbookDivisionalVPGroup);
         }
 
+        public bool IsDSquaredTips()
+        {
+            if (ConfigurationManager.AppSettings["ApplicationRegion"] == "Development")
+                return true;
+            else //quick check for general manager role
+                return IsInRole(DomainConstants.RoleNames.DSquaredTipsGroup);
+        }
+
+        public bool IsDSquaredSpread()
+        {
+            if (ConfigurationManager.AppSettings["ApplicationRegion"] == "Development")
+                return true;
+            else //quick check for general manager role
+                return IsInRole(DomainConstants.RoleNames.DSquaredSpreadGroup);
+        }
+
         public bool IsDSquaredAdmin()
         {
             if (ConfigurationManager.AppSettings["ApplicationRegion"] == "Development")

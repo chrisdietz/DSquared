@@ -98,6 +98,7 @@
     <Compile Include="Queries\HelpDocumentQueries.cs" />
     <Compile Include="Queries\RedbookEntryQueries.cs" />
     <Compile Include="Queries\SalesForecastQueries.cs" />
+    <Compile Include="Queries\SpreadHourQueries.cs" />
     <Compile Include="Queries\TipQueries.cs" />
   </ItemGroup>
   <ItemGroup>

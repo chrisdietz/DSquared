@@ -95,6 +95,21 @@
 
                         <li class="dropdown">
                             <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
+                                Spread Hours
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    @Html.ActionLink("Entry", "Index", "SpreadHours", null, new { @class = "custom-navbar" })
+                                </li>
+                                <li>
+                                    @Html.ActionLink("Search", "Search", "SpreadHours", null, new { @class = "custom-navbar" })
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
                                 Administration
                                 <span class="caret"></span>
                             </a>
@@ -134,6 +149,21 @@
                         <li>
                             @Html.ActionLink("Redbook", "Index", "Redbook", null, new { @class = "custom-navbar" })
                         </li>
+                        <li>
+                            @Html.ActionLink("Tip Reporting", "Search", "TipReporting", null, new { @class = "custom-navbar" })
+                        </li>
+                        <li>
+                            @Html.ActionLink("Spread Hours", "Search", "SpreadHours", null, new { @class = "custom-navbar" })
+                        </li>
+                    }
+                    else if (User.IsDSquaredSpread())
+                    {
+                        <li>
+                            @Html.ActionLink("Spread Hours", "Index", "SpreadHours", null, new { @class = "custom-navbar" })
+                        </li>
+                    }
+                    else if (User.IsDSquaredTips())
+                    {
                         <li>
                             @Html.ActionLink("Tip Reporting", "Search", "TipReporting", null, new { @class = "custom-navbar" })
                         </li>

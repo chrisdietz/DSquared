@@ -182,6 +182,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RedbookController.cs" />
     <Compile Include="Controllers\SalesForecastController.cs" />
+    <Compile Include="Controllers\SpreadHoursController.cs" />
     <Compile Include="Controllers\TipReportingController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -189,6 +190,7 @@
     <Compile Include="Helpers\CustomAuthorizeAttribute.cs" />
     <Compile Include="Helpers\CustomClaimsPrincipal.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />
+    <Compile Include="Helpers\ExportHelpers.cs" />
     <Compile Include="Helpers\FormActionAttribute.cs" />
     <Compile Include="Helpers\HtmlExtensions.cs" />
     <Compile Include="Helpers\InitializeViewModels.cs" />
@@ -200,11 +202,13 @@
     <Compile Include="Models\DailyDepositViewModel.cs" />
     <Compile Include="Models\DepositReportViewModel.cs" />
     <Compile Include="Models\ErrorViewModel.cs" />
+    <Compile Include="Models\Export.cs" />
     <Compile Include="Models\HelpDocumentViewModel.cs" />
     <Compile Include="Models\HomeViewModel.cs" />
     <Compile Include="Models\RedbookViewModels.cs" />
     <Compile Include="Models\SalesForecastReportViewModel.cs" />
     <Compile Include="Models\SalesForecastViewModel.cs" />
+    <Compile Include="Models\SpreadHourViewModels.cs" />
     <Compile Include="Models\TipReportingViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -216,6 +220,7 @@
     <Content Include="App_Scripts\SalesForecast\EditInit.js" />
     <Content Include="App_Scripts\SalesForecast\IndexInit.js" />
     <Content Include="App_Scripts\SalesForecast\SearchInit.js" />
+    <Content Include="App_Scripts\SpreadHour\SearchInit.js" />
     <Content Include="App_Scripts\TipReporting\SearchInit.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -620,6 +625,8 @@
     <Content Include="Views\TipReporting\Index.cshtml" />
     <Content Include="Views\TipReporting\Search.cshtml" />
     <Content Include="Views\SalesForecast\_SalesForecastEditDetail.cshtml" />
+    <Content Include="Views\SpreadHours\Index.cshtml" />
+    <Content Include="Views\SpreadHours\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

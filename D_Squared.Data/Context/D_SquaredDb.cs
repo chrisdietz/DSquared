@@ -41,6 +41,10 @@ namespace D_Squared.Data.Context
 
         public DbSet<MakeUpPay> MakeUpPay { get; set; }
 
+        public DbSet<SpreadHour> SpreadHours { get; set; }
+
+        public DbSet<MinimumWage> MimumumWages { get; set; }
+
         public static D_SquaredDbContext Create()
         {
             return new D_SquaredDbContext();
@@ -49,6 +53,9 @@ namespace D_Squared.Data.Context
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<FY18Budget>().ToTable("FY18Budgets");
+            modelBuilder.Entity<SpreadHour>().ToTable("SpreadHours");
+            modelBuilder.Entity<MinimumWage>().ToTable("MinimumWages");
+
             base.OnModelCreating(modelBuilder);
         }
     }

@@ -50,7 +50,7 @@ namespace D_Squared.Web.Controllers
 
             if (!eq.EmployeeExists(username))
             {
-                ErrorViewModel error = new ErrorViewModel
+                EmployeeErrorViewModel error = new EmployeeErrorViewModel
                 {
                     Username = username
                 };
@@ -108,7 +108,7 @@ namespace D_Squared.Web.Controllers
 
             if (!eq.EmployeeExists(username))
             {
-                ErrorViewModel error = new ErrorViewModel
+                EmployeeErrorViewModel error = new EmployeeErrorViewModel
                 {
                     Username = username
                 };
@@ -136,7 +136,7 @@ namespace D_Squared.Web.Controllers
 
             if (!eq.EmployeeExists(username))
             {
-                ErrorViewModel error = new ErrorViewModel
+                EmployeeErrorViewModel error = new EmployeeErrorViewModel
                 {
                     Username = username
                 };
@@ -198,7 +198,7 @@ namespace D_Squared.Web.Controllers
 
             if (!eq.EmployeeExists(username))
             {
-                ErrorViewModel error = new ErrorViewModel
+                EmployeeErrorViewModel error = new EmployeeErrorViewModel
                 {
                     Username = username
                 };
@@ -221,7 +221,7 @@ namespace D_Squared.Web.Controllers
             string username = User.TruncatedName;
             if (!eq.EmployeeExists(username))
             {
-                ErrorViewModel error = new ErrorViewModel
+                EmployeeErrorViewModel error = new EmployeeErrorViewModel
                 {
                     Username = username
                 };

@@ -5,7 +5,7 @@ using System.Web;
 
 namespace D_Squared.Web.Models
 {
-    public class ErrorViewModel
+    public class EmployeeErrorViewModel
     {
         public string Username { get; set; }
     }

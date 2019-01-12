@@ -19,88 +19,7 @@
 <hr />
 
 <div class="row">
-    <div class="col-md-4">
-        <a class="dashboard-stat dashboard-stat-v2 red" href="/DailyDeposit">
-            <div class="visual">
-                <i class="fa fa-usd"></i>
-            </div>
-            <div class="details">
-                <div class="number">
-                    Daily Deposits
-                </div>
-                <div class="desc">Record Daily Deposits</div>
-            </div>
-        </a>
-    </div>
-    @if (User.IsDivisionalVP() || User.IsRegionalManager() || User.IsDSquaredAdmin())
-    {
-        <div class="col-md-4">
-            <a class="dashboard-stat dashboard-stat-v2 red" href="/SalesForecast/Search">
-                <div class="visual">
-                    <i class="fa fa-search"></i>
-                </div>
-                <div class="details">
-                    <div class="number">
-                        Sales Forecasts
-                    </div>
-                    <div class="desc">Search Sales Forecasts</div>
-                </div>
-            </a>
-        </div>
-    }
-    else
-    {
-        <div class="col-md-4">
-            <a class="dashboard-stat dashboard-stat-v2 red" href="/SalesForecast">
-                <div class="visual">
-                    <i class="fa fa-search"></i>
-                </div>
-                <div class="details">
-                    <div class="number">
-                        Sales Forecasts
-                    </div>
-                    <div class="desc">Record Sales Forecasts</div>
-                </div>
-            </a>
-        </div>
-    }
-
-    @if (User.IsRedbookManager())
-    {
-        <div class="col-md-4">
-            <a class="dashboard-stat dashboard-stat-v2 red" href="/Redbook/Entry">
-                <div class="visual">
-                    <i class="fa fa-book"></i>
-                </div>
-                <div class="details">
-                    <div class="number">
-                        Redbook
-                    </div>
-                    <div class="desc">Record Redbook Entries</div>
-                </div>
-            </a>
-        </div>
-    }
-    else if (User.IsDivisionalVP() || User.IsRegionalManager() || User.IsDSquaredAdmin())
-    {
-        <div class="col-md-4">
-            <a class="dashboard-stat dashboard-stat-v2 red" href="/Redbook/Index">
-                <div class="visual">
-                    <i class="fa fa-book"></i>
-                </div>
-                <div class="details">
-                    <div class="number">
-                        Redbook
-                    </div>
-                    <div class="desc">Search Redbook Entries</div>
-                </div>
-            </a>
-        </div>
-    }
-
-
-
-    @if (User.IsDivisionalVP() || User.IsRegionalManager() || User.IsDSquaredAdmin())
+    @if (User.IsDSquaredTips() && !User.IsDSquaredAdmin())
     {
         <div class="col-md-4">
             <a class="dashboard-stat dashboard-stat-v2 red" href="/TipReporting/Search">
@@ -119,17 +38,148 @@
     else
     {
         <div class="col-md-4">
-            <a class="dashboard-stat dashboard-stat-v2 red" href="/TipReporting">
+            <a class="dashboard-stat dashboard-stat-v2 red" href="/DailyDeposit">
                 <div class="visual">
-                    <i class="fa fa-file"></i>
+                    <i class="fa fa-usd"></i>
                 </div>
                 <div class="details">
                     <div class="number">
-                        Tip Reporting
+                        Daily Deposits
                     </div>
-                    <div class="desc">View Make Up Pay</div>
+                    <div class="desc">Record Daily Deposits</div>
                 </div>
             </a>
         </div>
+        if (User.IsDivisionalVP() || User.IsRegionalManager() || User.IsDSquaredAdmin())
+        {
+            <div class="col-md-4">
+                <a class="dashboard-stat dashboard-stat-v2 red" href="/SalesForecast/Search">
+                    <div class="visual">
+                        <i class="fa fa-search"></i>
+                    </div>
+                    <div class="details">
+                        <div class="number">
+                            Sales Forecasts
+                        </div>
+                        <div class="desc">Search Sales Forecasts</div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-4">
+                <a class="dashboard-stat dashboard-stat-v2 red" href="/SpreadHours/Search">
+                    <div class="visual">
+                        <i class="fa fa-user-circle"></i>
+                    </div>
+                    <div class="details">
+                        <div class="number">
+                            Spread Hours
+                        </div>
+                        <div class="desc">Search Spread Hours</div>
+                    </div>
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="col-md-4">
+                <a class="dashboard-stat dashboard-stat-v2 red" href="/SalesForecast">
+                    <div class="visual">
+                        <i class="fa fa-search"></i>
+                    </div>
+                    <div class="details">
+                        <div class="number">
+                            Sales Forecasts
+                        </div>
+                        <div class="desc">Record Sales Forecasts</div>
+                    </div>
+                </a>
+            </div>
+
+            if (User.IsDSquaredSpread())
+            {
+                <div class="col-md-4">
+                    <a class="dashboard-stat dashboard-stat-v2 red" href="/SpreadHours/Index">
+                        <div class="visual">
+                            <i class="fa fa-user-circle"></i>
+                        </div>
+                        <div class="details">
+                            <div class="number">
+                                Spread Hours
+                            </div>
+                            <div class="desc">View Spread Hours</div>
+                        </div>
+                    </a>
+                </div>
+            }
+        }
+
+        if (User.IsRedbookManager())
+        {
+            <div class="col-md-4">
+                <a class="dashboard-stat dashboard-stat-v2 red" href="/Redbook/Entry">
+                    <div class="visual">
+                        <i class="fa fa-book"></i>
+                    </div>
+                    <div class="details">
+                        <div class="number">
+                            Redbook
+                        </div>
+                        <div class="desc">Record Redbook Entries</div>
+                    </div>
+                </a>
+            </div>
+        }
+        else if (User.IsDivisionalVP() || User.IsRegionalManager() || User.IsDSquaredAdmin())
+        {
+            <div class="col-md-4">
+                <a class="dashboard-stat dashboard-stat-v2 red" href="/Redbook/Index">
+                    <div class="visual">
+                        <i class="fa fa-book"></i>
+                    </div>
+                    <div class="details">
+                        <div class="number">
+                            Redbook
+                        </div>
+                        <div class="desc">Search Redbook Entries</div>
+                    </div>
+                </a>
+            </div>
+        }
+
+
+
+        if (User.IsDivisionalVP() || User.IsRegionalManager() || User.IsDSquaredAdmin())
+        {
+            <div class="col-md-4">
+                <a class="dashboard-stat dashboard-stat-v2 red" href="/TipReporting/Search">
+                    <div class="visual">
+                        <i class="fa fa-file"></i>
+                    </div>
+                    <div class="details">
+                        <div class="number">
+                            Tip Reporting
+                        </div>
+                        <div class="desc">Search for Make Up Pay</div>
+                    </div>
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="col-md-4">
+                <a class="dashboard-stat dashboard-stat-v2 red" href="/TipReporting">
+                    <div class="visual">
+                        <i class="fa fa-file"></i>
+                    </div>
+                    <div class="details">
+                        <div class="number">
+                            Tip Reporting
+                        </div>
+                        <div class="desc">View Make Up Pay</div>
+                    </div>
+                </a>
+            </div>
+        }
     }
 </div>

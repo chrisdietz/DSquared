@@ -6,8 +6,21 @@
 </head>
 <body>
     <hgroup>
-        <h1>Error.</h1>
-        <h2>An error occurred while processing your request.</h2>
+        <h1>Error</h1>
+
+        @model System.Web.Mvc.HandleErrorInfo
+
+        @if (Model != null)
+        {
+            <h5>
+                @Model.Exception.Message  in @Model.ControllerName
+            </h5>
+            <h5>
+                If this error persists, please contact the IT Service Desk at 407-581-3366 or by clicking on this link: <a href="https://itservice.millersalehouse.com">Submit an IT Support Request</a>
+            </h5>
+        }
+
     </hgroup>
 </body>
 </html>
+

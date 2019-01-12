@@ -39,7 +39,7 @@ namespace D_Squared.Web.Controllers
 
             if (!eq.EmployeeExists(username))
             {
-                ErrorViewModel error = new ErrorViewModel
+                EmployeeErrorViewModel error = new EmployeeErrorViewModel
                 {
                     Username = username
                 };
@@ -65,7 +65,7 @@ namespace D_Squared.Web.Controllers
 
             if (!eq.EmployeeExists(username))
             {
-                ErrorViewModel error = new ErrorViewModel
+                EmployeeErrorViewModel error = new EmployeeErrorViewModel
                 {
                     Username = username
                 };
@@ -74,7 +74,7 @@ namespace D_Squared.Web.Controllers
             }
             else
             {
-                TipReportingSearchViewModel model = init.InitializeTipReportingSearchViewModel(username, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin());
+                TipReportingSearchViewModel model = init.InitializeTipReportingSearchViewModel(username, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredTips() ? true : User.IsDSquaredAdmin());
 
                 return View(model);
             }
@@ -88,7 +88,7 @@ namespace D_Squared.Web.Controllers
 
             if (!eq.EmployeeExists(username))
             {
-                ErrorViewModel error = new ErrorViewModel
+                EmployeeErrorViewModel error = new EmployeeErrorViewModel
                 {
                     Username = username
                 };
@@ -97,7 +97,7 @@ namespace D_Squared.Web.Controllers
             }
             else
             {
-                model = init.InitializeTipReportingSearchViewModel(model.SearchDTO, username,  User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin());
+                model = init.InitializeTipReportingSearchViewModel(model.SearchDTO, username,  User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredTips() ? true : User.IsDSquaredAdmin());
 
                 return View(model);
             }

@@ -100,9 +100,11 @@
     <Compile Include="Entities\FY18Budget.cs" />
     <Compile Include="Entities\HelpDocument.cs" />
     <Compile Include="Entities\MakeUpPay.cs" />
+    <Compile Include="Entities\MinimumWage.cs" />
     <Compile Include="Entities\RedbookEntry.cs" />
     <Compile Include="Entities\RedbookSalesEvent.cs" />
     <Compile Include="Entities\SalesForecast.cs" />
+    <Compile Include="Entities\SpreadHour.cs" />
     <Compile Include="Entities\StoreLocation.cs" />
     <Compile Include="Entities\TipCredit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -114,6 +116,7 @@
     <Compile Include="TransferObjects\FY18BudgetDTO.cs" />
     <Compile Include="TransferObjects\RedbookSearchDTO.cs" />
     <Compile Include="TransferObjects\SalesForecastDTO.cs" />
+    <Compile Include="TransferObjects\SpreadHourDTO.cs" />
     <Compile Include="TransferObjects\TipReportingSearchDTO.cs" />
   </ItemGroup>
   <ItemGroup>
