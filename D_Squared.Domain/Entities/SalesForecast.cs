@@ -28,11 +28,14 @@ namespace D_Squared.Domain.Entities
         [Display(Name = "Total Sales Forecast")]
         public decimal ForecastAmount { get; set; }
 
-        [Display(Name = "FY17 Sales")]
+        [Display(Name = "FY18 Sales")]
         public decimal ActualPriorYear { get; set; }
 
-        [Display(Name = "FY16 Sales")]
+        [Display(Name = "FY17 Sales")]
         public decimal ActualPrior2Years { get; set; }
+
+        [Display(Name = "FY16 Sales")]
+        public decimal ActualPrior3Years { get; set; }
 
         [Display(Name = "6 Week Average")]
         public decimal AvgPrior4Weeks { get; set; }

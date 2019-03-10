@@ -305,7 +305,7 @@ namespace D_Squared.Web.Helpers
             foreach (var day in dates)
             {
                 if (!sfq.CheckForExistingSalesForecastByDate(day, storeNumber))
-                    theList.Add(new SalesForecastDTO(day, sfq.fdq.GetSalesPriorYear(storeNumber, day), sfq.fdq.GetSalesPriorTwoYears(storeNumber, day), sfq.fdq.GetAverageSalesPerMonth(storeNumber, day), sfq.fdq.GetLaborForecast(storeNumber, day)));
+                    theList.Add(new SalesForecastDTO(day, sfq.fdq.GetSalesPriorYear(storeNumber, day), sfq.fdq.GetSalesPriorTwoYears(storeNumber, day), sfq.fdq.GetSalesPriorThreeYears(storeNumber, day), sfq.fdq.GetAverageSalesPerMonth(storeNumber, day), sfq.fdq.GetLaborForecast(storeNumber, day)));
                 else
                     theList.Add(new SalesForecastDTO(sfq.GetSalesForecastsByDate(day, storeNumber)));
             }

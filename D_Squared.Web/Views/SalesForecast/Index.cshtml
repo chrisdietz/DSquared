@@ -58,11 +58,20 @@
                         <th>
                             @Html.DisplayNameFor(model => model.Weekdays.FirstOrDefault().DateOfEntry)
                         </th>
-                        <th>
+                        <th class="fy18col">
+                            <i class="fyicon fa fa-angle-double-left" data-year="2018" data-direction="left"></i>
                             @Html.DisplayNameFor(model => model.Weekdays.FirstOrDefault().PriorYearSales)
+                            <i class="fa fa-angle-double-right" style="color:#FFF"></i>
                         </th>
-                        <th>
+                        <th class="fy17col" hidden>
+                            <i class="fyicon fa fa-angle-double-left" data-year="2017" data-direction="left"></i>
                             @Html.DisplayNameFor(model => model.Weekdays.FirstOrDefault().Prior2YearSales)
+                            <i class="fyicon fa fa-angle-double-right" data-year="2017" data-direction="right"></i>
+                        </th>
+                        <th class="fy16col" hidden>
+                            <i class="fa fa-angle-double-left" style="color:#FFF"></i>
+                            @Html.DisplayNameFor(model => model.Weekdays.FirstOrDefault().Prior3YearSales)
+                            <i class="fyicon fa fa-angle-double-right" data-year="2016" data-direction="right"></i>
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.Weekdays.FirstOrDefault().AverageSalesPerMonth)
@@ -89,6 +98,7 @@
                             @Html.HiddenFor(model => model.Weekdays[i].DateOfEntry)
                             @Html.HiddenFor(model => model.Weekdays[i].PriorYearSales)
                             @Html.HiddenFor(model => model.Weekdays[i].Prior2YearSales)
+                            @Html.HiddenFor(model => model.Weekdays[i].Prior3YearSales)
                             @Html.HiddenFor(model => model.Weekdays[i].AverageSalesPerMonth)
                             @Html.HiddenFor(model => model.Weekdays[i].LaborForecast)
                             @Html.HiddenFor(model => model.Weekdays[i].ForecastAmount)
@@ -104,11 +114,14 @@
                             <td>
                                 @Model.Weekdays[i].DateOfEntry.ToShortDateString()
                             </td>
-                            <td>
+                            <td class="fy18col">
                                 @Model.Weekdays[i].PriorYearSales.ToString("C0")
                             </td>
-                            <td>
+                            <td class="fy17col" hidden>
                                 @Model.Weekdays[i].Prior2YearSales.ToString("C0")
+                            </td>
+                            <td class="fy16col" hidden>
+                                @Model.Weekdays[i].Prior3YearSales.ToString("C0")
                             </td>
                             <td>
                                 @Model.Weekdays[i].AverageSalesPerMonth.ToString("C0")
@@ -132,14 +145,19 @@
                         <td colspan="3">
                             <strong style="float:right"><u>Column Totals:</u></strong>
                         </td>
-                        <td>
+                        <td class="fy18col">
                             <strong>
                                 @Model.Calculations.SalesForecastColumnTotalsDTO.PriorYearSalesTotal.ToString("C0")
                             </strong>
                         </td>
-                        <td>
+                        <td class="fy17col" hidden>
                             <strong>
                                 @Model.Calculations.SalesForecastColumnTotalsDTO.Prior2YearSalesTotal.ToString("C0")
+                            </strong>
+                        </td>
+                        <td class="fy16col" hidden>
+                            <strong>
+                                @Model.Calculations.SalesForecastColumnTotalsDTO.Prior3YearSalesTotal.ToString("C0")
                             </strong>
                         </td>
                         <td>
@@ -170,7 +188,7 @@
                     </tr>
 
                     <tr>
-                        <td colspan="9">
+                        <td colspan="8">
                             <strong style="float:right">
                                 <u>50/50 Recommended FOH Labor:</u>
                             </strong>
@@ -187,7 +205,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="9">
+                        <td colspan="8">
                             <strong style="float:right">
                                 <u>FOH Variance</u>
                             </strong>
@@ -213,7 +231,7 @@
                     </tr>
 
                     <tr>
-                        <td colspan="9">
+                        <td colspan="8">
                             <strong style="float:right">
                                 <u>50/50 Recommended BOH Labor:</u>
                             </strong>
@@ -230,7 +248,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="9">
+                        <td colspan="8">
                             <strong style="float:right">
                                 <u>BOH Variance</u>
                             </strong>
@@ -256,7 +274,7 @@
                     </tr>
 
                     <tr>
-                        <td colspan="9">
+                        <td colspan="8">
                             <strong style="float:right">
                                 <u>50/50 Recommended Labor:</u>
                             </strong>
@@ -273,7 +291,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="9">
+                        <td colspan="8">
                             <strong style="float:right">
                                 <u>Variance</u>
                             </strong>

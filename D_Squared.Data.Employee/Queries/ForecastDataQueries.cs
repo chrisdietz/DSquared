@@ -32,6 +32,14 @@ namespace D_Squared.Data.Millers.Queries
                 return new decimal(0);
         }
 
+        public decimal GetSalesPriorThreeYears(string storeNumber, DateTime day)
+        {
+            if (db.SalesForecasts.Any(fd => fd.StoreNumber == storeNumber && fd.BusinessDate == day))
+                return db.SalesForecasts.Where(fd => fd.StoreNumber == storeNumber && fd.BusinessDate == day).FirstOrDefault().ActualPrior3Years;
+            else
+                return new decimal(0);
+        }
+
         public decimal GetAverageSalesPerMonth(string storeNumber, DateTime day)
         {
             if (db.SalesForecasts.Any(fd => fd.StoreNumber == storeNumber && fd.BusinessDate == day))

@@ -16,6 +16,7 @@ namespace D_Squared.Data.Millers.Context
             objectContext.CommandTimeout = 60 * 30;
         }
 
+        //not used anymore
         public DbSet<ForecastDatum> ForecastData { get; set; }
 
         public DbSet<SalesForecast> SalesForecasts { get; set; }

@@ -143,13 +143,20 @@
                 @*@Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().ForecastAmount)*@
                 Fcst Amount
             </th>
-            <th>
-                FY17 Sales
-                @*@Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().ActualPriorYear)*@
+            <th class="fy18col" style="width:115px;">
+                <i class="fyicon fa fa-angle-double-left" data-year="2018" data-direction="left"></i>
+                FY18 Sales
+                <i class="fa fa-angle-double-right" style="color:#FFF"></i>
             </th>
-            <th>
+            <th class="fy17col" style="width:115px;" hidden>
+                <i class="fyicon fa fa-angle-double-left" data-year="2017" data-direction="left"></i>
+                FY17 Sales
+                <i class="fyicon fa fa-angle-double-right" data-year="2017" data-direction="right"></i>
+            </th>
+            <th class="fy16col" style="width:115px;" hidden>
                 FY16 Sales
-                @*@Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().ActualPrior2Years)*@
+                <i class="fyicon fa fa-angle-double-right" data-year="2016" data-direction="right"></i>
+                <i class="fa fa-angle-double-right" style="color:#FFF"></i>
             </th>
             <th>
                 6 Week Avg
@@ -199,12 +206,16 @@
                     @*@result.ForecastAmount.ToString("C0")*@
                 </td>
 
-                <td>
+                <td class="fy18col">
                     @result.Calculations.SalesForecastColumnTotalsDTO.PriorYearSalesTotal.ToString("C0")
                 </td>
 
-                <td>
+                <td class="fy17col" hidden>
                     @result.Calculations.SalesForecastColumnTotalsDTO.Prior2YearSalesTotal.ToString("C0")
+                </td>
+
+                <td class="fy16col" hidden>
+                    @result.Calculations.SalesForecastColumnTotalsDTO.Prior3YearSalesTotal.ToString("C0")
                 </td>
 
                 <td>

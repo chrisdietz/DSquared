@@ -19,6 +19,27 @@
                 dateFormat: 'mm-dd-yy'
             });
         });
+
+        $('.fyicon').on('click', (e) => {
+            const theYear = e.currentTarget.dataset.year;
+            const theDirection = e.currentTarget.dataset.direction;
+
+            if ((theYear === '2018' && theDirection === 'left') || (theYear === '2016' && theDirection === 'right')) {
+                $('.fy18col').hide();
+                $('.fy17col').show();
+                $('.fy16col').hide();
+            }
+            else if (theYear === '2017' && theDirection === 'left') {
+                $('.fy18col').hide();
+                $('.fy17col').hide();
+                $('.fy16col').show();
+            }
+            else {
+                $('.fy18col').show();
+                $('.fy17col').hide();
+                $('.fy16col').hide();
+            }
+        });
     };
 
     return {

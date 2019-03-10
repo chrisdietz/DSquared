@@ -48,7 +48,7 @@ namespace D_Squared.Data.Queries
                 dto = LiveUpdateSalesForecastDTO(new SalesForecastDTO(GetSalesForecastRecordsByDate(date, storeNumber)), storeNumber);
             } 
             else
-                dto = new SalesForecastDTO(date, fdq.GetSalesPriorYear(storeNumber, date), fdq.GetSalesPriorTwoYears(storeNumber, date), fdq.GetAverageSalesPerMonth(storeNumber, date), fdq.GetLaborForecast(storeNumber, date));
+                dto = new SalesForecastDTO(date, fdq.GetSalesPriorYear(storeNumber, date), fdq.GetSalesPriorTwoYears(storeNumber, date), fdq.GetSalesPriorThreeYears(storeNumber, date), fdq.GetAverageSalesPerMonth(storeNumber, date), fdq.GetLaborForecast(storeNumber, date));
 
             return dto;
         }

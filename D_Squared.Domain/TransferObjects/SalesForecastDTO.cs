@@ -24,18 +24,20 @@ namespace D_Squared.Domain.TransferObjects
             ForecastPM = salesForecast.ForecastPM;
             PriorYearSales = salesForecast.ActualPriorYear;
             Prior2YearSales = salesForecast.ActualPrior2Years;
+            Prior3YearSales = salesForecast.ActualPrior3Years;
             AverageSalesPerMonth = salesForecast.AvgPrior4Weeks;
             LaborForecast = salesForecast.LaborForecast;
             LaborFOH = salesForecast.LaborFOH;
             LaborBOH = salesForecast.LaborBOH;
         }
 
-        public SalesForecastDTO(DateTime newSalesForecastDate, decimal priorSales, decimal prior2Sales, decimal averageSales, decimal laborForecast)
+        public SalesForecastDTO(DateTime newSalesForecastDate, decimal priorSales, decimal prior2Sales, decimal prior3Sales, decimal averageSales, decimal laborForecast)
         {
             DayOfWeek = newSalesForecastDate.DayOfWeek.ToString();
             DateOfEntry = newSalesForecastDate;
             PriorYearSales = priorSales;
             Prior2YearSales = prior2Sales;
+            Prior3YearSales = prior3Sales;
             AverageSalesPerMonth = averageSales;
             LaborForecast = laborForecast;
         }
@@ -51,6 +53,7 @@ namespace D_Squared.Domain.TransferObjects
                 ForecastPM = forecast.ForecastPM;
                 PriorYearSales = forecast.ActualPriorYear;
                 Prior2YearSales = forecast.ActualPrior2Years;
+                Prior3YearSales = forecast.ActualPrior3Years;
                 AverageSalesPerMonth = forecast.AvgPrior4Weeks;
                 LaborForecast = forecast.LaborForecast;
                 LaborFOH = forecast.LaborFOH;
@@ -76,11 +79,14 @@ namespace D_Squared.Domain.TransferObjects
         [DisplayFormat(DataFormatString = "{0:F0}", ApplyFormatInEditMode = true)]
         public decimal ForecastPM { get; set; }
 
-        [Display(Name = "FY17 Sales")]
+        [Display(Name = "FY18 Sales")]
         public decimal PriorYearSales { get; set; }
 
-        [Display(Name = "FY16 Sales")]
+        [Display(Name = "FY17 Sales")]
         public decimal Prior2YearSales { get; set; }
+
+        [Display(Name = "FY16 Sales")]
+        public decimal Prior3YearSales { get; set; }
 
         [Display(Name = "6 Week Average")]
         public decimal AverageSalesPerMonth { get; set; }
@@ -237,6 +243,7 @@ namespace D_Squared.Domain.TransferObjects
         {
             PriorYearSalesTotal = weekdays.Sum(w => w.PriorYearSales);
             Prior2YearSalesTotal = weekdays.Sum(w => w.Prior2YearSales);
+            Prior3YearSalesTotal = weekdays.Sum(w => w.Prior3YearSales);
             AverageSalesPerMonthTotal = weekdays.Sum(w => w.AverageSalesPerMonth);
             ForecastAMTotal = weekdays.Sum(w => w.ForecastAM);
             ForecastPMTotal = weekdays.Sum(w => w.ForecastPM);
@@ -248,6 +255,7 @@ namespace D_Squared.Domain.TransferObjects
         {
             PriorYearSalesTotal = weekdays.Sum(w => w.ActualPriorYear);
             Prior2YearSalesTotal = weekdays.Sum(w => w.ActualPrior2Years);
+            Prior3YearSalesTotal = weekdays.Sum(w => w.ActualPrior3Years);
             AverageSalesPerMonthTotal = weekdays.Sum(w => w.AvgPrior4Weeks);
             ForecastAMTotal = weekdays.Sum(w => w.ForecastAM);
             ForecastPMTotal = weekdays.Sum(w => w.ForecastPM);
@@ -258,6 +266,8 @@ namespace D_Squared.Domain.TransferObjects
         public decimal PriorYearSalesTotal { get; set; }
 
         public decimal Prior2YearSalesTotal { get; set; }
+
+        public decimal Prior3YearSalesTotal { get; set; }
 
         public decimal AverageSalesPerMonthTotal { get; set; }
 
