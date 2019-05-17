@@ -17,9 +17,7 @@ namespace D_Squared.Web.Controllers
     public class SpreadHoursController : BaseController
     {
         private readonly D_SquaredDbContext db;
-        private readonly EmployeeDbContext e_db;
 
-        private readonly EmployeeQueries eq;
         private readonly CodeQueries cq;
         private readonly SpreadHourQueries shq;
 
@@ -28,9 +26,6 @@ namespace D_Squared.Web.Controllers
         public SpreadHoursController()
         {
             db = new D_SquaredDbContext();
-
-            e_db = new EmployeeDbContext();
-            eq = new EmployeeQueries(e_db);
 
             cq = new CodeQueries(db);
             shq = new SpreadHourQueries(db);
@@ -41,23 +36,9 @@ namespace D_Squared.Web.Controllers
         // GET: SpreadHours
         public ActionResult Index(bool isLastWeek = false)
         {
-            string username = User.TruncatedName;
+            SpreadHourViewModel model = init.InitializeSpreadHourViewModel(User.TruncatedName, isLastWeek);
 
-            if (!eq.EmployeeExists(username))
-            {
-                EmployeeErrorViewModel error = new EmployeeErrorViewModel
-                {
-                    Username = username
-                };
-
-                return View("../Home/EmployeeError", error);
-            }
-            else
-            {
-                SpreadHourViewModel model = init.InitializeSpreadHourViewModel(username, isLastWeek);
-
-                return View(model);
-            }
+            return View(model);
         }
 
         public ActionResult PreviousWeek()
@@ -67,23 +48,9 @@ namespace D_Squared.Web.Controllers
 
         public ActionResult Search()
         {
-            string username = User.TruncatedName;
+            SpreadHourSearchViewModel model = init.InitializeSpreadHourSearchViewModel(User.TruncatedName, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin());
 
-            if (!eq.EmployeeExists(username))
-            {
-                EmployeeErrorViewModel error = new EmployeeErrorViewModel
-                {
-                    Username = username
-                };
-
-                return View("../Home/EmployeeError", error);
-            }
-            else
-            {
-                SpreadHourSearchViewModel model = init.InitializeSpreadHourSearchViewModel(username, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin());
-
-                return View(model);
-            }
+            return View(model);
         }
 
         [HttpPost]
@@ -91,23 +58,9 @@ namespace D_Squared.Web.Controllers
         [MultipleButton(Name = "action", Argument = "Search")]
         public ActionResult Search(SpreadHourSearchViewModel model)
         {
-            string username = User.TruncatedName;
-
-            if (!eq.EmployeeExists(username))
-            {
-                EmployeeErrorViewModel error = new EmployeeErrorViewModel
-                {
-                    Username = username
-                };
-
-                return View("../Home/EmployeeError", error);
-            }
-            else
-            {
-                model = init.InitializeSpreadHourSearchViewModel(model.SearchDTO, username, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin());
+                model = init.InitializeSpreadHourSearchViewModel(model.SearchDTO, User.TruncatedName, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin());
 
                 return View(model);
-            }
         }
 
         [HttpPost]

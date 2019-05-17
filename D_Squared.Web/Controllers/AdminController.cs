@@ -17,18 +17,14 @@ namespace D_Squared.Web.Controllers
     public class AdminController : BaseController
     {
         private readonly D_SquaredDbContext db;
-        private readonly EmployeeDbContext e_db;
 
-        private readonly EmployeeQueries eq;
         private readonly CodeQueries cq;
         private readonly RedbookEntryQueries rbeq;
 
         public AdminController()
         {
             db = new D_SquaredDbContext();
-            e_db = new EmployeeDbContext();
 
-            eq = new EmployeeQueries(e_db);
             rbeq = new RedbookEntryQueries(db);
             cq = new CodeQueries(db);
         }
@@ -36,46 +32,20 @@ namespace D_Squared.Web.Controllers
         // GET: Admin
         public ActionResult Index()
         {
-            string username = User.TruncatedName;
-
-            if (!eq.EmployeeExists(username))
-            {
-                EmployeeErrorViewModel error = new EmployeeErrorViewModel
-                {
-                    Username = username
-                };
-
-                return View("../Home/EmployeeError", error);
-            }
-            else
-            {
-                AdminViewModel model = new AdminViewModel(eq.GetEmployeeInfo(username));
-                return View(model);
-            }
+            AdminViewModel model = new AdminViewModel(eq.GetEmployeeInfo(User.TruncatedName));
+            return View(model);
         }
 
         public ActionResult ConvertEventsAffectingSales()
         {
             string username = User.TruncatedName;
 
-            if (!eq.EmployeeExists(username))
-            {
-                EmployeeErrorViewModel error = new EmployeeErrorViewModel
-                {
-                    Username = username
-                };
+            rbeq.AdminConvertRedbookEventsToChildTable(username);
 
-                return View("../Home/EmployeeError", error);
-            }
-            else
-            {
-                rbeq.AdminConvertRedbookEventsToChildTable(username);
+            Success("Successfully converted all Redbook JSON column 'SelectedEvents' values to records in 'RedbookSalesEvents' child table");
 
-                Success("Successfully converted all Redbook JSON column 'SelectedEvents' values to records in 'RedbookSalesEvents' child table");
-
-                AdminViewModel model = new AdminViewModel(eq.GetEmployeeInfo(username));
-                return View("Index", model);
-            }
+            AdminViewModel model = new AdminViewModel(eq.GetEmployeeInfo(username));
+            return View("Index", model);
         }
     }
 }

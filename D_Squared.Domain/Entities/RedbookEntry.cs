@@ -61,6 +61,12 @@ namespace D_Squared.Domain.Entities
 
         public bool IsReadOnly { get; set; }
 
+        [Display(Name = "Sales")]
+        public decimal? Sales { get; set; }
+
+        [Display(Name = "Discounts")]
+        public decimal? Discounts { get; set; }
+
         #region AuditFields
         [ScaffoldColumn(false)]
         [DataType(DataType.DateTime)]

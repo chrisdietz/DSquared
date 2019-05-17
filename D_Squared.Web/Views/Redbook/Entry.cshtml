@@ -40,13 +40,13 @@
     </div>
 
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="panel panel-default firstRowPanel">
                 <div class="panel-heading lead" style="margin-bottom: 0px">
                     Record Selection
                 </div>
                 <div class="panel-body">
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <div class="form-group">
                             @Html.LabelFor(model => model.SelectedDateString, htmlAttributes: new { @class = "control-label" })
                             @Html.EditorFor(model => model.SelectedDateString, new { htmlAttributes = new { @class = "refreshOnChange form-control date-picker", onkeydown = "return false", onpaste = "return false" } })
@@ -61,12 +61,13 @@
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-5">
             <div class="panel panel-default firstRowPanel">
                 <div class="panel-heading lead" style="margin-bottom: 0px">
-                    Sales Forecast Data
+                    Sales Data
                 </div>
-                <div class="panel-body">
+
+                <div class="panel-body panel-default col-md-5">
                     <dl class="dl-horizontal" style="margin-bottom: 0">
                         <dt>
                             @Html.DisplayNameFor(model => model.SalesForecastDTO.ForecastAmount)
@@ -105,10 +106,34 @@
                     </dl>
 
                     <div class="form-group">
-                        <span onclick="GetSalesForecastDetail('@Model.SelectedDateString', '@Model.RedbookEntry.LocationId')" style="float:right">
+                        <span onclick="GetSalesForecastDetail('@Model.SelectedDateString', '@Model.RedbookEntry.LocationId')" style="float:left">
                             <a class="btn btn-xs btn-dsquared">More Details</a>
                         </span>
                     </div>
+                </div>
+                <div class="panel-body panel-default col-md-7">
+                    <dl class="dl-horizontal" style="margin-bottom: 0">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.SalesDataDTO.DateOfEntry)
+                        </dt>
+                        <dd>
+                            @Model.SalesDataDTO.DateOfEntry.ToShortDateString()
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.SalesDataDTO.Sales)
+                        </dt>
+                        <dd>
+                            @Model.SalesDataDTO.Sales.ToString("C0")
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.SalesDataDTO.Discounts)
+                        </dt>
+                        <dd>
+                            @Model.SalesDataDTO.Discounts.ToString("C0")
+                        </dd>
+                    </dl>
                 </div>
             </div>
         </div>

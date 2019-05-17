@@ -19,13 +19,15 @@ namespace D_Squared.Web.Helpers
         private readonly RedbookEntryQueries rbeq;
         private readonly CodeQueries cq;
         private readonly SalesForecastQueries sfq;
+        private readonly SalesDataQueries sd;
         private readonly EmployeeQueries eq;
 
-        public RedbookEntryInitializer(RedbookEntryQueries rbeq, CodeQueries cq, SalesForecastQueries sfq, EmployeeQueries eq)
+        public RedbookEntryInitializer(RedbookEntryQueries rbeq, CodeQueries cq, SalesForecastQueries sfq, SalesDataQueries sd, EmployeeQueries eq)
         {
             this.rbeq = rbeq;
             this.cq = cq;
             this.sfq = sfq;
+            this.sd = sd;
             this.eq = eq;
         }
 
@@ -130,6 +132,7 @@ namespace D_Squared.Web.Helpers
                 LocationSelectList = eq.GetLocationList().ToSelectList(storeNumber),
                 EmployeeInfo = eq.GetEmployeeInfo(userName),
                 SalesForecastDTO = sfq.GetLiveSalesForecastDTO(convertedSelectedDate, storeNumber),
+                SalesDataDTO = sd.GetCurrentDaySales(storeNumber),
                 EventDTOs = CreateEventDtos(cq.GetDistinctListByCodeCategory("Event"), redbookEntry.SalesEvents == null ? new List<RedbookSalesEvent>() : redbookEntry.SalesEvents.ToList()),
                 WeatherSelectListAM = cq.GetDistinctListByCodeCategory("Weather").ToSelectList(null, true, "N/A"),
                 WeatherSelectListPM = cq.GetDistinctListByCodeCategory("Weather").ToSelectList(null, true, "N/A"),
@@ -141,6 +144,11 @@ namespace D_Squared.Web.Helpers
             };
 
             return model;
+        }
+
+        public SalesDataDTO InitializeSalesDataDTO(string storeNumber)
+        {
+            return sd.GetCurrentDaySales(storeNumber);
         }
 
         public RedbookEntryBaseViewModel InitializeBaseViewModel(RedbookEntryBaseViewModel model, string userName)

@@ -45,6 +45,10 @@ namespace D_Squared.Data.Context
 
         public DbSet<MinimumWage> MimumumWages { get; set; }
 
+        public DbSet<TipPercentage> TipPercentage { get; set; }
+
+        public DbSet<LSSales> LSSales { get; set; }
+
         public static D_SquaredDbContext Create()
         {
             return new D_SquaredDbContext();

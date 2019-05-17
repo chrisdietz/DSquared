@@ -16,12 +16,14 @@ namespace D_Squared.Web.Models
         {
             SalesForecastDTO = new SalesForecastDTO();
             RedbookEntry = new RedbookEntry();
+            SalesDataDTO = new SalesDataDTO();
         }
 
-        public RedbookEntryBaseViewModel(RedbookEntry redbookEntry, SalesForecastDTO salesForecastDTO)
+        public RedbookEntryBaseViewModel(RedbookEntry redbookEntry, SalesForecastDTO salesForecastDTO, SalesDataDTO salesDataDTO)
         {
             RedbookEntry = redbookEntry;
             SalesForecastDTO = salesForecastDTO;
+            SalesDataDTO = salesDataDTO;
         }
 
         [Display(Name = "Record Date")]
@@ -52,6 +54,8 @@ namespace D_Squared.Web.Models
 
         public SalesForecastDTO SalesForecastDTO { get; set; }
 
+        public SalesDataDTO SalesDataDTO { get; set; }
+
         public EmployeeDTO EmployeeInfo { get; set; }
 
         public List<EventDTO> EventDTOs { get; set; }
@@ -70,6 +74,8 @@ namespace D_Squared.Web.Models
         public RedbookEntry RedbookEntry { get; set; }
 
         public SalesForecastDTO SalesForecastDTO { get; set; }
+
+        public SalesDataDTO SalesDataDTO { get; set; }
 
         public List<EventDTO> EventDTOs { get; set; }
 

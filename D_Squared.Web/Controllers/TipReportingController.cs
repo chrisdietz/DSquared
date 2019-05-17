@@ -15,9 +15,7 @@ namespace D_Squared.Web.Controllers
     public class TipReportingController : BaseController
     {
         private readonly D_SquaredDbContext db;
-        private readonly EmployeeDbContext e_db;
 
-        private readonly EmployeeQueries eq;
         private readonly TipQueries tq;
 
         private readonly TipReportingInitializer init;
@@ -25,9 +23,7 @@ namespace D_Squared.Web.Controllers
         public TipReportingController()
         {
             db = new D_SquaredDbContext();
-            e_db = new EmployeeDbContext();
 
-            eq = new EmployeeQueries(e_db);
             tq = new TipQueries(db);
 
             init = new TipReportingInitializer(eq, tq);
@@ -35,23 +31,9 @@ namespace D_Squared.Web.Controllers
 
         public ActionResult Index(bool isLastWeek = false)
         {
-            string username = User.TruncatedName;
+            TipReportingViewModel model = init.InitializeTipReportingViewModel(User.TruncatedName, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin(), isLastWeek);
 
-            if (!eq.EmployeeExists(username))
-            {
-                EmployeeErrorViewModel error = new EmployeeErrorViewModel
-                {
-                    Username = username
-                };
-
-                return View("../Home/EmployeeError", error);
-            }
-            else
-            {
-                TipReportingViewModel model = init.InitializeTipReportingViewModel(username, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin(), isLastWeek);
-
-                return View(model);
-            }
+            return View(model);
         }
 
         public ActionResult PreviousWeek()
@@ -61,46 +43,18 @@ namespace D_Squared.Web.Controllers
 
         public ActionResult Search()
         {
-            string username = User.TruncatedName;
+            TipReportingSearchViewModel model = init.InitializeTipReportingSearchViewModel(User.TruncatedName, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredTips() ? true : User.IsDSquaredAdmin());
 
-            if (!eq.EmployeeExists(username))
-            {
-                EmployeeErrorViewModel error = new EmployeeErrorViewModel
-                {
-                    Username = username
-                };
-
-                return View("../Home/EmployeeError", error);
-            }
-            else
-            {
-                TipReportingSearchViewModel model = init.InitializeTipReportingSearchViewModel(username, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredTips() ? true : User.IsDSquaredAdmin());
-
-                return View(model);
-            }
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Search(TipReportingSearchViewModel model)
         {
-            string username = User.TruncatedName;
+            model = init.InitializeTipReportingSearchViewModel(model.SearchDTO, User.TruncatedName,  User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredTips() ? true : User.IsDSquaredAdmin());
 
-            if (!eq.EmployeeExists(username))
-            {
-                EmployeeErrorViewModel error = new EmployeeErrorViewModel
-                {
-                    Username = username
-                };
-
-                return View("../Home/EmployeeError", error);
-            }
-            else
-            {
-                model = init.InitializeTipReportingSearchViewModel(model.SearchDTO, username,  User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredTips() ? true : User.IsDSquaredAdmin());
-
-                return View(model);
-            }
+            return View(model);
         }
     }
 }

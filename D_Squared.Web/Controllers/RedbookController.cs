@@ -18,14 +18,13 @@ namespace D_Squared.Web.Controllers
     public class RedbookController : BaseController
     {
         private readonly D_SquaredDbContext db;
-        private readonly EmployeeDbContext e_db;
         private readonly ForecastDataDbContext f_db;
 
         private readonly RedbookEntryQueries rbeq;
         private readonly CodeQueries cq;
         private readonly SalesForecastQueries sfq;
-        private readonly EmployeeQueries eq;
         private readonly BudgetQueries bq;
+        private readonly SalesDataQueries sd;
 
         private readonly RedbookEntryInitializer init;
         private readonly SalesForecastInitializer s_init;
@@ -33,16 +32,15 @@ namespace D_Squared.Web.Controllers
         public RedbookController()
         {
             db = new D_SquaredDbContext();
-            e_db = new EmployeeDbContext();
             f_db = new ForecastDataDbContext();
 
             rbeq = new RedbookEntryQueries(db);
             cq = new CodeQueries(db);
             sfq = new SalesForecastQueries(db, f_db);
-            eq = new EmployeeQueries(e_db);
             bq = new BudgetQueries(db);
+            sd = new SalesDataQueries(db);
 
-            init = new RedbookEntryInitializer(rbeq, cq, sfq, eq);
+            init = new RedbookEntryInitializer(rbeq, cq, sfq, sd, eq);
             s_init = new SalesForecastInitializer(sfq, bq, eq, cq);
         }
 
@@ -51,32 +49,21 @@ namespace D_Squared.Web.Controllers
         {
             string username = User.TruncatedName;
 
-            if (!eq.EmployeeExists(username))
-            {
-                EmployeeErrorViewModel error = new EmployeeErrorViewModel
-                {
-                    Username = username
-                };
+            EmployeeDTO employee = eq.GetEmployeeInfo(username);
 
-                return View("../Home/EmployeeError", error);
+            if (selectedDate == null)
+            {
+                RedbookEntryBaseViewModel model = init.InitializeBaseViewModel(DateTime.Today.ToLocalTime().ToShortDateString(), employee.StoreNumber, username);
+
+                return View(model);
             }
             else
             {
-                EmployeeDTO employee = eq.GetEmployeeInfo(username);
+                RedbookEntryBaseViewModel model = init.InitializeBaseViewModel(selectedDate, employee.StoreNumber, username);
 
-                if (selectedDate == null)
-                {
-                    RedbookEntryBaseViewModel model = init.InitializeBaseViewModel(DateTime.Today.ToLocalTime().ToShortDateString(), employee.StoreNumber, username);
-
-                    return View(model);
-                }
-                else
-                {
-                    RedbookEntryBaseViewModel model = init.InitializeBaseViewModel(selectedDate, employee.StoreNumber, username);
-
-                    return View(model);
-                }
+                return View(model);
             }
+            
         }
 
 
@@ -86,24 +73,10 @@ namespace D_Squared.Web.Controllers
         [MultipleButton(Name = "action", Argument = "Entry")]
         public ActionResult Entry(RedbookEntryBaseViewModel model)
         {
-            string username = User.TruncatedName;
+            model = init.InitializeBaseViewModel(model.SelectedDateString, model.SelectedLocation, User.TruncatedName);
+            ModelState.Clear();
 
-            if (!eq.EmployeeExists(username))
-            {
-                EmployeeErrorViewModel error = new EmployeeErrorViewModel
-                {
-                    Username = username
-                };
-
-                return View("../Home/EmployeeError", error);
-            }
-            else
-            {
-                model = init.InitializeBaseViewModel(model.SelectedDateString, model.SelectedLocation, username);
-                ModelState.Clear();
-
-                return View(model);
-            }
+            return View(model);
         }
 
         [HttpPost]
@@ -128,6 +101,9 @@ namespace D_Squared.Web.Controllers
 
                 if (ModelState.IsValid)
                 {
+                    model.SalesDataDTO = init.InitializeSalesDataDTO(model.RedbookEntry.LocationId);
+                    model.RedbookEntry.Sales = model.SalesDataDTO.Sales;
+                    model.RedbookEntry.Discounts = model.SalesDataDTO.Discounts;
                     rbeq.SaveRedbookEntry(model.RedbookEntry, model.EventDTOs, username);
                     Success("The Redbook for Restaurant: <u>" + model.RedbookEntry.LocationId + "</u> and Date: <u>" + model.RedbookEntry.BusinessDate.ToShortDateString() + "</u> has been saved successfully. You may close this window");
                 }
@@ -231,48 +207,20 @@ namespace D_Squared.Web.Controllers
 
         public ActionResult Index()
         {
-            string username = User.TruncatedName;
+            RedbookEntrySearchViewModel model = init.InitializeRedbookEntrySearchViewModel(eq.GetEmployeeInfo(User.TruncatedName), User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin());
 
-            if (!eq.EmployeeExists(username))
-            {
-                EmployeeErrorViewModel error = new EmployeeErrorViewModel
-                {
-                    Username = username
-                };
-
-                return View("../Home/EmployeeError", error);
-            }
-            else
-            {
-                RedbookEntrySearchViewModel model = init.InitializeRedbookEntrySearchViewModel(eq.GetEmployeeInfo(username), User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin());
-
-                return View(model);
-            }
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Index(RedbookEntrySearchViewModel model)
         {
-            string username = User.TruncatedName;
+            model.EmployeeInfo = eq.GetEmployeeInfo(User.TruncatedName);
+            model = init.InitializeRedbookEntrySearchViewModel(model, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin());
+            model.SearchResults = rbeq.GetRedbookEntries(model.SearchViewModel.SearchDTO, model.SearchViewModel.LocationSelectList.Select(l => l.Text.Substring(0, 3)).ToList());
 
-            if (!eq.EmployeeExists(username))
-            {
-                EmployeeErrorViewModel error = new EmployeeErrorViewModel
-                {
-                    Username = username
-                };
-
-                return View("../Home/EmployeeError", error);
-            }
-            else
-            {
-                model.EmployeeInfo = eq.GetEmployeeInfo(username);
-                model = init.InitializeRedbookEntrySearchViewModel(model, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin());
-                model.SearchResults = rbeq.GetRedbookEntries(model.SearchViewModel.SearchDTO, model.SearchViewModel.LocationSelectList.Select(l => l.Text.Substring(0, 3)).ToList());
-
-                return View(model);
-            }
+            return View(model);
         }
 
         public ActionResult UpdateSearchPartialDropdowns(string lId, string mAM, string mPM)

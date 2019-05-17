@@ -16,42 +16,27 @@ namespace D_Squared.Web.Controllers
     public class DailyDepositController : BaseController
     {
         private readonly D_SquaredDbContext db;
-        private readonly EmployeeDbContext e_db;
         private readonly DailyDepositQueries ddq;
-        private readonly EmployeeQueries eq;
 
         public DailyDepositController()
         {
             db = new D_SquaredDbContext();
             ddq = new DailyDepositQueries(db);
-
-            e_db = new EmployeeDbContext();
-            eq = new EmployeeQueries(e_db);
         }
 
         public ActionResult Index()
         {
             string username = User.TruncatedName;
 
-            if (!eq.EmployeeExists(username))
-            {
-                EmployeeErrorViewModel error = new EmployeeErrorViewModel
-                {
-                    Username = username
-                };
+            DateTime today = DateTime.Now.ToLocalTime();
+            EmployeeDTO employee = eq.GetEmployeeInfo(username);
+            List<DepositEntryDTO> weekdays = ddq.GetSpecificWeekAsDepositEntryDTOList(DateTime.Today.ToLocalTime(), employee.StoreNumber);
 
-                return View("../Home/EmployeeError", error);
-            }
-            else
-            {
-                DateTime today = DateTime.Now.ToLocalTime();
-                EmployeeDTO employee = eq.GetEmployeeInfo(username);
-                List<DepositEntryDTO> weekdays = ddq.GetSpecificWeekAsDepositEntryDTOList(DateTime.Today.ToLocalTime(), employee.StoreNumber);
+            DailyDepositViewModel model = new DailyDepositViewModel(weekdays, today, employee, true);
 
-                DailyDepositViewModel model = new DailyDepositViewModel(weekdays, today, employee, true);
-
-                return View(model);
-            }
+            bool testing = true;
+            if (testing) throw new Exception("Testing");
+            return View(model);
         }
 
         public ActionResult DailyDepositHelp()
@@ -113,32 +98,20 @@ namespace D_Squared.Web.Controllers
         {
             string username = User.TruncatedName;
 
-            if (!eq.EmployeeExists(username))
+            DateTime currentDate = DateTime.Today.ToLocalTime();
+            List<DateTime> theWeek = ddq.GetCurrentWeek(currentDate);
+
+            DepositReportViewModel model = new DepositReportViewModel()
             {
-                EmployeeErrorViewModel error = new EmployeeErrorViewModel
-                {
-                    Username = username
-                };
+                CurrentDate = DateTime.Now.ToLocalTime(),
+                SearchDTO = new DepositSummarySearchDTO(currentDate),
+                SummaryList = ddq.GetDepositSummaryList(currentDate, eq.GetLocationList()),
+                ColumnTotalList = ddq.GetWeeklyReportColumnTotals(currentDate),
+                EndingPeriod = theWeek.LastOrDefault(),
+                StartingPeriod = theWeek.FirstOrDefault()
+            };
 
-                return View("EmployeeError", "Home", error);
-            }
-            else
-            {
-                DateTime currentDate = DateTime.Today.ToLocalTime();
-                List<DateTime> theWeek = ddq.GetCurrentWeek(currentDate);
-
-                DepositReportViewModel model = new DepositReportViewModel()
-                {
-                    CurrentDate = DateTime.Now.ToLocalTime(),
-                    SearchDTO = new DepositSummarySearchDTO(currentDate),
-                    SummaryList = ddq.GetDepositSummaryList(currentDate, eq.GetLocationList()),
-                    ColumnTotalList = ddq.GetWeeklyReportColumnTotals(currentDate),
-                    EndingPeriod = theWeek.LastOrDefault(),
-                    StartingPeriod = theWeek.FirstOrDefault()
-                };
-
-                return View("DepositReport", model);
-            }
+            return View("DepositReport", model);
         }
 
         [HttpPost]

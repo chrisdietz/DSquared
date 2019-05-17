@@ -108,6 +108,12 @@
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.6.0\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.Web.4.8.1\lib\net35\NLog.Web.dll</HintPath>
+    </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
@@ -118,6 +124,10 @@
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.4.1\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -183,6 +193,7 @@
     <Compile Include="Controllers\RedbookController.cs" />
     <Compile Include="Controllers\SalesForecastController.cs" />
     <Compile Include="Controllers\SpreadHoursController.cs" />
+    <Compile Include="Controllers\TipPercentageController.cs" />
     <Compile Include="Controllers\TipReportingController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -209,6 +220,7 @@
     <Compile Include="Models\SalesForecastReportViewModel.cs" />
     <Compile Include="Models\SalesForecastViewModel.cs" />
     <Compile Include="Models\SpreadHourViewModels.cs" />
+    <Compile Include="Models\TipPercentageViewModel.cs" />
     <Compile Include="Models\TipReportingViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -498,6 +510,9 @@
     <Content Include="Content\select2-bootstrap.less" />
     <Content Include="Content\select2-bootstrap-build.scss" />
     <Content Include="Content\select2-bootstrap-build.less" />
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-3.2.1-vsdoc.js" />
@@ -627,6 +642,7 @@
     <Content Include="Views\SalesForecast\_SalesForecastEditDetail.cshtml" />
     <Content Include="Views\SpreadHours\Index.cshtml" />
     <Content Include="Views\SpreadHours\Search.cshtml" />
+    <Content Include="Views\TipPercentage\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

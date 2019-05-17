@@ -19,11 +19,9 @@ namespace D_Squared.Web.Controllers
     public class SalesForecastController : BaseController
     {
         private readonly D_SquaredDbContext db;
-        private readonly EmployeeDbContext e_db;
         private readonly ForecastDataDbContext f_db;
 
         private readonly SalesForecastQueries sfq;
-        private readonly EmployeeQueries eq;
         private readonly BudgetQueries bq;
         private readonly CodeQueries cq;
 
@@ -37,32 +35,15 @@ namespace D_Squared.Web.Controllers
             bq = new BudgetQueries(db);
             cq = new CodeQueries(db);
 
-            e_db = new EmployeeDbContext();
-            eq = new EmployeeQueries(e_db);
-
             init = new SalesForecastInitializer(sfq, bq, eq, cq);
         }
 
 
         public ActionResult Index()
         {
-            string username = User.TruncatedName;
+            SalesForecastViewModel model = init.InitializeSalesForecastEntryViewModel(User.TruncatedName);
 
-            if (!eq.EmployeeExists(username))
-            {
-                EmployeeErrorViewModel error = new EmployeeErrorViewModel
-                {
-                    Username = username
-                };
-
-                return View("../Home/EmployeeError", error);
-            }
-            else
-            {
-                SalesForecastViewModel model = init.InitializeSalesForecastEntryViewModel(username);
-
-                return View(model);
-            }
+            return View(model);
         }
 
         [HttpPost]
@@ -106,50 +87,24 @@ namespace D_Squared.Web.Controllers
         {
             string username = User.TruncatedName;
 
-            if (!eq.EmployeeExists(username))
-            {
-                EmployeeErrorViewModel error = new EmployeeErrorViewModel
-                {
-                    Username = username
-                };
+            SalesForecastSearchViewModel model = new SalesForecastSearchViewModel();
 
-                return View("../Home/EmployeeError", error);
-            }
+            if (TempData["SearchDTO"] != null)
+                model = init.InitializeSalesForecastSearchViewModel((SalesForecastSearchDTO)TempData["SearchDTO"], username, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin());
             else
-            {
-                SalesForecastSearchViewModel model = new SalesForecastSearchViewModel();
+                model = init.InitializeSalesForecastSearchViewModel(username, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin());
 
-                if (TempData["SearchDTO"] != null)
-                    model = init.InitializeSalesForecastSearchViewModel((SalesForecastSearchDTO)TempData["SearchDTO"], username, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin());
-                else
-                    model = init.InitializeSalesForecastSearchViewModel(username, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin());
-
-                return View("Search", model);
-            }
+            return View("Search", model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Search(SalesForecastSearchViewModel model)
         {
-            string username = User.TruncatedName;
+            model.EmployeeInfo = eq.GetEmployeeInfo(User.TruncatedName);
+            model = init.InitializeSalesForecastSearchViewModel(model, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin());
 
-            if (!eq.EmployeeExists(username))
-            {
-                EmployeeErrorViewModel error = new EmployeeErrorViewModel
-                {
-                    Username = username
-                };
-
-                return View("../Home/EmployeeError", error);
-            }
-            else
-            {
-                model.EmployeeInfo = eq.GetEmployeeInfo(username);
-                model = init.InitializeSalesForecastSearchViewModel(model, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin());
-
-                return View(model);
-            }
+            return View(model);
         }
 
         [HttpPost]
@@ -194,47 +149,19 @@ namespace D_Squared.Web.Controllers
         [MultipleButton(Name = "action", Argument = "SearchDate")]
         public ActionResult SearchDate(SalesForecastViewModel model)
         {
-            string username = User.TruncatedName;
+            model = init.InitializeSalesForecastEntryViewModel(User.TruncatedName, model.SelectedDateString);
 
-            if (!eq.EmployeeExists(username))
-            {
-                EmployeeErrorViewModel error = new EmployeeErrorViewModel
-                {
-                    Username = username
-                };
+            ModelState.Clear();
 
-                return View("../Home/EmployeeError", error);
-            }
-            else
-            {
-                model = init.InitializeSalesForecastEntryViewModel(username, model.SelectedDateString);
-
-                ModelState.Clear();
-
-                return View("Index", model);
-            }
+            return View("Index", model);
         }
 
         [AuthorizeGroup(ROLES.GeneralManagerGroup)]
         public ActionResult SalesForecastReport()
         {
-            string username = User.TruncatedName;
-            if (!eq.EmployeeExists(username))
-            {
-                EmployeeErrorViewModel error = new EmployeeErrorViewModel
-                {
-                    Username = username
-                };
+            SalesForecastReportViewModel model = init.InitializeSalesForecastReportViewModel();
 
-                return View("EmployeeError", "Home", error);
-            }
-            else
-            {
-                SalesForecastReportViewModel model = init.InitializeSalesForecastReportViewModel();
-
-                return View("SalesForecastReport", model);
-            }
-
+            return View("SalesForecastReport", model);
         }
 
         [HttpPost]
