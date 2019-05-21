@@ -34,8 +34,6 @@ namespace D_Squared.Web.Controllers
 
             DailyDepositViewModel model = new DailyDepositViewModel(weekdays, today, employee, true);
 
-            bool testing = true;
-            if (testing) throw new Exception("Testing");
             return View(model);
         }
 
