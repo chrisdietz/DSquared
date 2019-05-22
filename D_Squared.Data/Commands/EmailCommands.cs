@@ -40,6 +40,8 @@ namespace D_Squared.Data.Commands
         {
             StringBuilder sb = new StringBuilder();
 
+            // Get two digit year part of current year (This works until 2099)
+            int currentYear = DateTime.Now.Year % 1000;
             //content header
             sb.AppendLine("Submission Summary for location <u>" + entry.LocationId + "</u> and date <u>" + entry.BusinessDate.ToShortDateString() + "</u><br><br>");
 
@@ -86,8 +88,8 @@ namespace D_Squared.Data.Commands
             sb.AppendLine("<b>Total Forecast: </b>" + dto.Record.ForecastAmount.ToString("C0") + "<br>");
             sb.AppendLine("<b>AM Forecast: </b>" + dto.Record.ForecastAM.ToString("C0") + "<br>");
             sb.AppendLine("<b>PM Forecast: </b>" + dto.Record.ForecastPM.ToString("C0") + "<br>");
-            sb.AppendLine("<b>FY17 Sales: </b>" + dto.Record.PriorYearSales.ToString("C0") + "<br>");
-            sb.AppendLine("<b>FY16 Sales: </b>" + dto.Record.Prior2YearSales.ToString("C0") + "<br>");
+            sb.AppendLine($"<b>FY{currentYear - 1} Sales: </b>" + dto.Record.PriorYearSales.ToString("C0") + "<br>");
+            sb.AppendLine($"<b>FY{currentYear - 2} Sales: </b>" + dto.Record.Prior2YearSales.ToString("C0") + "<br>");
             sb.AppendLine("<b>6 Week Average: </b>" + dto.Record.AverageSalesPerMonth.ToString("C0") + "<br>");
             sb.AppendLine("<b>Labor Forecast: </b>" + dto.Record.LaborForecast.ToString("C0") + "<br><br>");
 
@@ -115,8 +117,8 @@ namespace D_Squared.Data.Commands
             sb.Append("<th>Total Forecast</th>");
             sb.Append("<th>AM Forecast</th>");
             sb.Append("<th>PM Forecast</th>");
-            sb.Append("<th>FY17 Sales</th>");
-            sb.Append("<th>FY16 Sales</th>");
+            sb.Append($"<th>FY{currentYear - 1} Sales</th>");
+            sb.Append($"<th>FY{currentYear - 2} Sales</th>");
             sb.Append("<th>6 Week Average</th>");
             sb.Append("<th>Labor Forecast</th>");
             sb.Append("</tr>");

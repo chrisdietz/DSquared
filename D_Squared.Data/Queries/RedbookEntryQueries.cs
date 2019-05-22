@@ -107,6 +107,9 @@ namespace D_Squared.Data.Queries
             exisitingRecord.FoodAndBeverage = model.FoodAndBeverage;
             exisitingRecord.MPower = model.MPower;
             exisitingRecord.IsReadOnly = wasSubmitted;
+            exisitingRecord.Sales = model.Sales;
+            exisitingRecord.Discounts = model.Discounts;
+            exisitingRecord.Checks = model.Checks;
 
             exisitingRecord.UpdatedDate = DateTime.Now;
             exisitingRecord.UpdatedBy = currentUser;

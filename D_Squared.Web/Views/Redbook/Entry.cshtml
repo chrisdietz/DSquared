@@ -66,7 +66,16 @@
                 <div class="panel-heading lead" style="margin-bottom: 0px">
                     Sales Data
                 </div>
-
+                <div>
+                    <dl class="dl-horizontal" style="margin-left: 60px;margin-bottom: 0px">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.SalesDataDTO.DateOfEntry)
+                        </dt>
+                        <dd>
+                            @Model.SalesDataDTO.DateOfEntry.ToShortDateString()
+                        </dd>
+                    </dl>
+                </div>
                 <div class="panel-body panel-default col-md-5">
                     <dl class="dl-horizontal" style="margin-bottom: 0">
                         <dt>
@@ -114,13 +123,6 @@
                 <div class="panel-body panel-default col-md-7">
                     <dl class="dl-horizontal" style="margin-bottom: 0">
                         <dt>
-                            @Html.DisplayNameFor(model => model.SalesDataDTO.DateOfEntry)
-                        </dt>
-                        <dd>
-                            @Model.SalesDataDTO.DateOfEntry.ToShortDateString()
-                        </dd>
-
-                        <dt>
                             @Html.DisplayNameFor(model => model.SalesDataDTO.Sales)
                         </dt>
                         <dd>
@@ -132,6 +134,13 @@
                         </dt>
                         <dd>
                             @Model.SalesDataDTO.Discounts.ToString("C0")
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.SalesDataDTO.Checks)
+                        </dt>
+                        <dd>
+                            @Model.SalesDataDTO.Checks
                         </dd>
                     </dl>
                 </div>

@@ -104,6 +104,8 @@ namespace D_Squared.Web.Controllers
                     model.SalesDataDTO = init.InitializeSalesDataDTO(model.RedbookEntry.LocationId);
                     model.RedbookEntry.Sales = model.SalesDataDTO.Sales;
                     model.RedbookEntry.Discounts = model.SalesDataDTO.Discounts;
+                    model.RedbookEntry.Checks = model.SalesDataDTO.Checks;
+
                     rbeq.SaveRedbookEntry(model.RedbookEntry, model.EventDTOs, username);
                     Success("The Redbook for Restaurant: <u>" + model.RedbookEntry.LocationId + "</u> and Date: <u>" + model.RedbookEntry.BusinessDate.ToShortDateString() + "</u> has been saved successfully. You may close this window");
                 }
@@ -149,6 +151,12 @@ namespace D_Squared.Web.Controllers
 
                 if (ModelState.IsValid)
                 {
+                    // Set Sales and discounts data in RedbookEntry
+                    model.SalesDataDTO = init.InitializeSalesDataDTO(model.RedbookEntry.LocationId);
+                    model.RedbookEntry.Sales = model.SalesDataDTO.Sales;
+                    model.RedbookEntry.Discounts = model.SalesDataDTO.Discounts;
+                    model.RedbookEntry.Checks = model.SalesDataDTO.Checks;
+
                     SalesForecastExportDTO dto = s_init.GetSalesForecastExportDTO(username, model.SelectedDateString);
                     rbeq.SubmitRedbookEntry(model.RedbookEntry, model.EventDTOs, dto, username);
                     Success("The Redbook for Restaurant: <u>" + model.RedbookEntry.LocationId + "</u> and Date: <u>" + model.RedbookEntry.BusinessDate.ToShortDateString() + "</u> has been submitted successfully. You may close this window");

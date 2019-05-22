@@ -23,6 +23,7 @@ namespace D_Squared.Domain.TransferObjects
                 DateOfEntry = salesData.BusinessDate;
                 Sales = salesData.Sales;
                 Discounts = salesData.Discounts;
+                Checks = salesData.CheckID;
             }
             else
             {
@@ -41,5 +42,8 @@ namespace D_Squared.Domain.TransferObjects
 
         [Display(Name = "Discounts")]
         public decimal Discounts { get; set; }
+
+        [Display(Name = "Checks")]
+        public string Checks { get; set; }
     }
 }

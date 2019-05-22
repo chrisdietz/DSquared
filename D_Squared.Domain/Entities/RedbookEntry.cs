@@ -67,6 +67,9 @@ namespace D_Squared.Domain.Entities
         [Display(Name = "Discounts")]
         public decimal? Discounts { get; set; }
 
+        [Display(Name = "Checks")]
+        public string Checks { get; set; }
+
         #region AuditFields
         [ScaffoldColumn(false)]
         [DataType(DataType.DateTime)]
