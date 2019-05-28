@@ -217,6 +217,7 @@
     <Compile Include="Models\HelpDocumentViewModel.cs" />
     <Compile Include="Models\HomeViewModel.cs" />
     <Compile Include="Models\RedbookViewModels.cs" />
+    <Compile Include="Models\SalesDataPartialViewModel.cs" />
     <Compile Include="Models\SalesForecastReportViewModel.cs" />
     <Compile Include="Models\SalesForecastViewModel.cs" />
     <Compile Include="Models\SpreadHourViewModels.cs" />
@@ -643,6 +644,7 @@
     <Content Include="Views\SpreadHours\Index.cshtml" />
     <Content Include="Views\SpreadHours\Search.cshtml" />
     <Content Include="Views\TipPercentage\Index.cshtml" />
+    <Content Include="Views\Redbook\_SalesDataDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

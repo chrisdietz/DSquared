@@ -264,6 +264,16 @@ namespace D_Squared.Web.Helpers
 
             return model;
         }
+
+        public SalesDataPartialViewModel InitializeSalesDataPartialViewModel(int redbookEntryId)
+        {
+            SalesDataPartialViewModel salesDataPartialViewModel = new SalesDataPartialViewModel();
+            RedbookEntry redbookEntry = rbeq.FindById(redbookEntryId);
+            salesDataPartialViewModel.DailySales = rbeq.GetRedbookDailySalesData(redbookEntryId);
+            salesDataPartialViewModel.DateOfEntry = redbookEntry.BusinessDate;
+            salesDataPartialViewModel.StoreNumber = redbookEntry.LocationId;
+            return salesDataPartialViewModel;
+        }
     }
 
     public class SalesForecastInitializer

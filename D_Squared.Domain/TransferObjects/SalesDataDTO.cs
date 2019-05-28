@@ -31,6 +31,18 @@ namespace D_Squared.Domain.TransferObjects
             }
         }
 
+        public SalesDataDTO (RedbookSalesData rbSalesData)
+        {
+            if (rbSalesData != null)
+            {
+                DateOfEntry = rbSalesData.CreatedDate;
+                Sales = rbSalesData.Sales.HasValue ? rbSalesData.Sales.Value : 0;
+                Discounts = rbSalesData.Discounts.HasValue ? rbSalesData.Discounts.Value : 0;
+                Checks = rbSalesData.Checks;
+                Manager = rbSalesData.CreatedBy;
+            }
+        }
+
         [Display(Name = "Day of Week")]
         public string DayOfWeek { get; set; }
 
@@ -45,5 +57,7 @@ namespace D_Squared.Domain.TransferObjects
 
         [Display(Name = "Checks")]
         public string Checks { get; set; }
+
+        public string Manager { get; set; }
     }
 }

@@ -87,7 +87,7 @@ namespace D_Squared.Data.Queries
                 return GetRedbookEntry(convertedDate, storeNumber);
             else
             {
-                SaveRedbookEntry(new RedbookEntry() { BusinessDate = convertedDate, LocationId = storeNumber }, new List<EventDTO>(), currentUser);
+                SaveRedbookEntry(new RedbookEntry() { BusinessDate = convertedDate, LocationId = storeNumber }, new List<EventDTO>(), currentUser, false);
                 return GetRedbookEntry(convertedDate, storeNumber);
             }
         }
@@ -114,6 +114,9 @@ namespace D_Squared.Data.Queries
             exisitingRecord.UpdatedDate = DateTime.Now;
             exisitingRecord.UpdatedBy = currentUser;
 
+            // Save Sales data to RedbookSalesData
+            InsertRedbookSalesData(model, currentUser);
+
             db.SaveChanges();
 
             CompareAndUpdateRedbookSalesEvents(currentUser, exisitingRecord.Id, salesEvents);
@@ -121,7 +124,7 @@ namespace D_Squared.Data.Queries
             return exisitingRecord;
         }
 
-        public void InsertRedbookEntryRecord(RedbookEntry model, List<EventDTO> salesEvents, string currentUser)
+        public void InsertRedbookEntryRecord(RedbookEntry model, List<EventDTO> salesEvents, string currentUser, bool insertSalesData)
         {
             model.CreatedBy = currentUser;
             model.UpdatedBy = currentUser;
@@ -130,17 +133,33 @@ namespace D_Squared.Data.Queries
 
             RedbookEntry savedEntry = db.RedbookEntries.Add(model);
 
+            // Save Sales data to RedbookSalesData
+            if(insertSalesData) InsertRedbookSalesData(model, currentUser);
+
             db.SaveChanges();
 
             CompareAndUpdateRedbookSalesEvents(currentUser, savedEntry.Id, salesEvents);
         }
 
-        public void SaveRedbookEntry(RedbookEntry redbookEntry, List<EventDTO> salesEvents, string currentUser)
+        private void InsertRedbookSalesData(RedbookEntry model, string currentUser)
+        {
+            RedbookSalesData redbookSalesData = new RedbookSalesData();
+            redbookSalesData.RedbookEntryId = model.Id;
+            redbookSalesData.Sales = model.Sales;
+            redbookSalesData.Discounts = model.Discounts;
+            redbookSalesData.Checks = model.Checks;
+            redbookSalesData.CreatedBy = currentUser;
+            redbookSalesData.CreatedDate = DateTime.Now;
+
+            db.RedbookSalesDatas.Add(redbookSalesData);
+        }
+
+        public void SaveRedbookEntry(RedbookEntry redbookEntry, List<EventDTO> salesEvents, string currentUser, bool insertSalesData = true)
         {
             if (RedbookEntryExists(redbookEntry.BusinessDate, redbookEntry.LocationId))
                 UpdateRedbookEntryRecord(redbookEntry, salesEvents, currentUser);
             else
-                InsertRedbookEntryRecord(redbookEntry, salesEvents, currentUser);
+                InsertRedbookEntryRecord(redbookEntry, salesEvents, currentUser, insertSalesData);
         }
 
         public void SubmitRedbookEntry(RedbookEntry redbookEntry, List<EventDTO> salesEvents, SalesForecastExportDTO salesForecast, string currentUser)
@@ -213,6 +232,14 @@ namespace D_Squared.Data.Queries
 
                 db.SaveChanges();
             }
+        }
+
+        public List<SalesDataDTO> GetRedbookDailySalesData(int redbookEntryId)
+        {
+            List<RedbookSalesData> dailySales = db.RedbookSalesDatas.Where(r => r.RedbookEntryId == redbookEntryId).OrderByDescending(r => r.CreatedDate).ToList();
+            List<SalesDataDTO> salesDataDTOs = new List<SalesDataDTO>();
+            dailySales.ForEach(ds => salesDataDTOs.Add(new SalesDataDTO(ds)));
+            return salesDataDTOs;
         }
     }
 }

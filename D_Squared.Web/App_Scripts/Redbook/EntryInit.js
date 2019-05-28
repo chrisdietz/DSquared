@@ -101,6 +101,19 @@ function GetSalesForecastDetail(d, sn) {
     });
 }
 
+function GetRedbookSalesData(redbookEntryId) {
+    $.when($.ajax({
+        url: '/Redbook/SalesDataDetails',
+        type: "GET",
+        data: { redbookEntryId: redbookEntryId },
+        success: function (data) {
+            $('#salesDataDetailPartial').html(data);
+            $('#salesDataModal').modal('show');
+        }
+    })).then(function () {
+        initDetail.init();
+    });
+}
 var initDetail = function () {
     var e = function () {
 

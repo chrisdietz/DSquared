@@ -95,5 +95,7 @@ namespace D_Squared.Domain.Entities
         public virtual ICollection<CompetitiveEvent> CompetitiveEvents { get; set; }
 
         public virtual ICollection<RedbookSalesEvent> SalesEvents { get; set; }
+
+        public virtual ICollection<RedbookSalesData> RedbookSalesDatas { get; set; }
     }
 }

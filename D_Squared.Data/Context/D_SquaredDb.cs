@@ -49,6 +49,8 @@ namespace D_Squared.Data.Context
 
         public DbSet<LSSales> LSSales { get; set; }
 
+        public DbSet<RedbookSalesData> RedbookSalesDatas { get; set; }
+
         public static D_SquaredDbContext Create()
         {
             return new D_SquaredDbContext();

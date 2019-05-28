@@ -238,6 +238,14 @@ namespace D_Squared.Web.Controllers
             return PartialView("~/Views/Redbook/_SearchPartial.cshtml", partialModel);
         }
 
+        public ActionResult SalesDataDetails(int redbookEntryId)
+        {
+            string username = User.TruncatedName;
+
+            SalesDataPartialViewModel partial = init.InitializeSalesDataPartialViewModel(redbookEntryId);
+
+            return PartialView("~/Views/Redbook/_SalesDataDetail.cshtml", partial);
+        }
 
         protected override void Dispose(bool disposing)
         {

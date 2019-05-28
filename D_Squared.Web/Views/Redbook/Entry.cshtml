@@ -142,7 +142,16 @@
                         <dd>
                             @Model.SalesDataDTO.Checks
                         </dd>
+                        <dt>&nbsp;</dt>
+                        <dd>&nbsp;</dd>
+                        <dt>&nbsp;</dt>
+                        <dd>&nbsp;</dd>
                     </dl>
+                    <div class="form-group">
+                        <span onclick="GetRedbookSalesData('@Model.RedbookEntry.Id')" style="float:right">
+                            <a class="btn btn-xs btn-dsquared">Sales Details</a>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -229,7 +238,7 @@
                 </div>
             </div>
         </div>
-          
+
     </div>
     <div class="row">
         <div class="col-md-8">
@@ -243,13 +252,13 @@
                     {
                         <a class="btn btn-success btn-xs" style="float:right" data-toggle="modal" onclick="CreateCompetitiveEventModal(@Model.RedbookEntry.Id)">Create</a>
                     }
-                    
+
                     Competitive Events
                 </div>
                 <div class="panel-body" style="overflow-y: scroll; height: 225px">
                     @Html.Partial("~/Views/Redbook/_CompetitiveEventList.cshtml", Model.CompetitiveEventListViewModel)
                 </div>
-            </div>     
+            </div>
         </div>
         <div class="col-md-4">
             <div class="panel panel-default thirdRowPanel">
@@ -269,7 +278,7 @@
                     }
                 </div>
             </div>
-        </div>  
+        </div>
     </div>
 
     //submit and save
@@ -351,6 +360,10 @@
 
 <!--sales forecast detail holder-->
 <div id="salesForecastDetailPartial">
+</div>
+
+<!--sales data detail holder-->
+<div id="salesDataDetailPartial">
 </div>
 
 <!--must explicitly define the controller and action-->

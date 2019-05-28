@@ -109,6 +109,7 @@
     <Compile Include="Entities\MakeUpPay.cs" />
     <Compile Include="Entities\MinimumWage.cs" />
     <Compile Include="Entities\RedbookEntry.cs" />
+    <Compile Include="Entities\RedbookSalesData.cs" />
     <Compile Include="Entities\RedbookSalesEvent.cs" />
     <Compile Include="Entities\LSSales.cs" />
     <Compile Include="Entities\SalesForecast.cs" />
