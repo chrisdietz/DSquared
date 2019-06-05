@@ -132,7 +132,7 @@ namespace D_Squared.Web.Helpers
                 LocationSelectList = eq.GetLocationList().ToSelectList(storeNumber),
                 EmployeeInfo = eq.GetEmployeeInfo(userName),
                 SalesForecastDTO = sfq.GetLiveSalesForecastDTO(convertedSelectedDate, storeNumber),
-                SalesDataDTO = sd.GetCurrentDaySales(storeNumber),
+                SalesDataDTO = sd.GetSelectedBusinessDaySales(convertedSelectedDate, storeNumber),
                 EventDTOs = CreateEventDtos(cq.GetDistinctListByCodeCategory("Event"), redbookEntry.SalesEvents == null ? new List<RedbookSalesEvent>() : redbookEntry.SalesEvents.ToList()),
                 WeatherSelectListAM = cq.GetDistinctListByCodeCategory("Weather").ToSelectList(null, true, "N/A"),
                 WeatherSelectListPM = cq.GetDistinctListByCodeCategory("Weather").ToSelectList(null, true, "N/A"),
@@ -146,9 +146,10 @@ namespace D_Squared.Web.Helpers
             return model;
         }
 
-        public SalesDataDTO InitializeSalesDataDTO(string storeNumber)
+        public SalesDataDTO InitializeSalesDataDTO(string selectedDateString, string storeNumber)
         {
-            return sd.GetCurrentDaySales(storeNumber);
+            DateTime convertedSelectedDate = TryParseDateTimeString(selectedDateString);
+            return sd.GetSelectedBusinessDaySales(convertedSelectedDate, storeNumber);
         }
 
         public RedbookEntryBaseViewModel InitializeBaseViewModel(RedbookEntryBaseViewModel model, string userName)

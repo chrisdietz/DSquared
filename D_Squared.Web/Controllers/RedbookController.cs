@@ -101,7 +101,7 @@ namespace D_Squared.Web.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    model.SalesDataDTO = init.InitializeSalesDataDTO(model.RedbookEntry.LocationId);
+                    model.SalesDataDTO = init.InitializeSalesDataDTO(model.SelectedDateString, model.RedbookEntry.LocationId);
                     model.RedbookEntry.Sales = model.SalesDataDTO.Sales;
                     model.RedbookEntry.Discounts = model.SalesDataDTO.Discounts;
                     model.RedbookEntry.Checks = model.SalesDataDTO.Checks;
@@ -152,7 +152,7 @@ namespace D_Squared.Web.Controllers
                 if (ModelState.IsValid)
                 {
                     // Set Sales and discounts data in RedbookEntry
-                    model.SalesDataDTO = init.InitializeSalesDataDTO(model.RedbookEntry.LocationId);
+                    model.SalesDataDTO = init.InitializeSalesDataDTO(model.SelectedDateString, model.RedbookEntry.LocationId);
                     model.RedbookEntry.Sales = model.SalesDataDTO.Sales;
                     model.RedbookEntry.Discounts = model.SalesDataDTO.Discounts;
                     model.RedbookEntry.Checks = model.SalesDataDTO.Checks;

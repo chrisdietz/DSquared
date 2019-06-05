@@ -28,5 +28,12 @@ namespace D_Squared.Data.Queries
             SalesDataDTO sdDTO = new SalesDataDTO(sData);
             return sdDTO;
         }
+
+        public SalesDataDTO GetSelectedBusinessDaySales(DateTime businessDate, string storeNumber)
+        {
+            LSSales sData = db.LSSales.Where(sd => sd.BusinessDate == businessDate.Date && sd.Store.StartsWith(storeNumber)).FirstOrDefault();
+            SalesDataDTO sdDTO = new SalesDataDTO(sData);
+            return sdDTO;
+        }
     }
 }
