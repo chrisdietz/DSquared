@@ -45,7 +45,9 @@ namespace D_Squared.Data.Context
 
         public DbSet<MinimumWage> MimumumWages { get; set; }
 
-        public DbSet<TipPercentage> TipPercentage { get; set; }
+        public DbSet<TipPercentage> TipPercentages { get; set; }
+
+        public DbSet<EmployeeJob> EmployeeJobs { get; set; }
 
         public DbSet<LSSales> LSSales { get; set; }
 
@@ -61,6 +63,8 @@ namespace D_Squared.Data.Context
             modelBuilder.Entity<FY18Budget>().ToTable("FY18Budgets");
             modelBuilder.Entity<SpreadHour>().ToTable("SpreadHours");
             modelBuilder.Entity<MinimumWage>().ToTable("MinimumWages");
+            modelBuilder.Entity<EmployeeJob>().ToTable("EmployeeJob");
+            modelBuilder.Entity<TipPercentage>().ToTable("TipPercentage");
 
             base.OnModelCreating(modelBuilder);
         }

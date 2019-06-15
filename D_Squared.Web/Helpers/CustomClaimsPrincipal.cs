@@ -24,10 +24,20 @@ namespace D_Squared.Web.Helpers
         {
             Identity = identity;
 
-            Name = identity.Name;
-            TruncatedName = identity.Name.Substring(identity.Name.IndexOf('\\') + 1);
+            if (ConfigurationManager.AppSettings["ApplicationRegion"] == "Development")
+            {
+                Name = "jhodge";
+                TruncatedName = Name;
 
-            identity.AddClaim(new Claim(ClaimTypes.GivenName, identity.Name));
+                identity.AddClaim(new Claim(ClaimTypes.GivenName, Name));
+            }
+            else
+            {
+                Name = identity.Name;
+                TruncatedName = identity.Name.Substring(identity.Name.IndexOf('\\') + 1);
+
+                identity.AddClaim(new Claim(ClaimTypes.GivenName, identity.Name));
+            }
         }
 
         /// <summary>

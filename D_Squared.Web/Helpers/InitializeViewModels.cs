@@ -11,27 +11,19 @@ using Newtonsoft.Json;
 using System.Configuration;
 using D_Squared.Domain;
 using System.Globalization;
+using System.Web.Mvc;
 
 namespace D_Squared.Web.Helpers
 {
-    public class RedbookEntryInitializer
+    public abstract class InitializerBase
     {
-        private readonly RedbookEntryQueries rbeq;
-        private readonly CodeQueries cq;
-        private readonly SalesForecastQueries sfq;
-        private readonly SalesDataQueries sd;
-        private readonly EmployeeQueries eq;
+        protected readonly EmployeeQueries eq;
 
-        public RedbookEntryInitializer(RedbookEntryQueries rbeq, CodeQueries cq, SalesForecastQueries sfq, SalesDataQueries sd, EmployeeQueries eq)
+        protected InitializerBase(EmployeeQueries eq)
         {
-            this.rbeq = rbeq;
-            this.cq = cq;
-            this.sfq = sfq;
-            this.sd = sd;
             this.eq = eq;
         }
 
-        #region Helpers
         protected List<string> GetPastWeek()
         {
             return Enumerable.Range(0, 7).Select(i => DateTime.Now.ToLocalTime().Date.AddDays(-i).ToShortDateString()).ToList();
@@ -51,6 +43,57 @@ namespace D_Squared.Web.Helpers
 
             return dates;
         }
+
+        protected List<DateTime> GetCurrentWeekAsDates(DateTime selectedDay)
+        {
+            int currentDayOfWeek = (int)selectedDay.DayOfWeek;
+            DateTime sunday = selectedDay.AddDays(-currentDayOfWeek);
+            DateTime monday = sunday.AddDays(1);
+
+            if (currentDayOfWeek == 0)
+            {
+                monday = monday.AddDays(-7);
+            }
+            var dates = Enumerable.Range(0, 7).Select(days => monday.AddDays(days)).ToList();
+
+            return dates;
+        }
+
+        protected DateTime TryParseDateTimeString(string date)
+        {
+            DateTime.TryParse(date, out DateTime convertedDate);
+
+            return convertedDate;
+        }
+        
+        protected List<string> GetLocationList(EmployeeDTO employee, bool isRegional, bool isDivisional, bool isAdmin, bool includeClosed = true)
+        {
+            return isRegional ? eq.GetStoreLocationListByRegion(employee, includeClosed)
+                                        : isDivisional ? eq.GetStoreLocationListByDivision(employee, includeClosed)
+                                        : isAdmin ? eq.GetStoreLocationListForAdmin(includeClosed)
+                                        : new List<string>();
+        }
+
+    }
+
+    public class RedbookEntryInitializer : InitializerBase
+    {
+        private readonly RedbookEntryQueries rbeq;
+        private readonly CodeQueries cq;
+        private readonly SalesForecastQueries sfq;
+        private readonly SalesDataQueries sd;
+        //private readonly EmployeeQueries eq; 
+
+        public RedbookEntryInitializer(RedbookEntryQueries rbeq, CodeQueries cq, SalesForecastQueries sfq, SalesDataQueries sd, EmployeeQueries eq) : base(eq)
+        {
+            this.rbeq = rbeq;
+            this.cq = cq;
+            this.sfq = sfq;
+            this.sd = sd;
+            //this.eq = eq;
+        }
+
+        #region Helpers
 
         protected List<EventDTO> CreateEventDtos(List<string> eventCodeList, List<string> selectedEvents)
         {
@@ -82,12 +125,6 @@ namespace D_Squared.Web.Helpers
             return eventPairs;
         }
 
-        protected DateTime TryParseDateTimeString(string date)
-        {
-            DateTime.TryParse(date, out DateTime convertedDate);
-
-            return convertedDate;
-        }
 
         protected string SerializeSelectedEventDTOs(List<EventDTO> list)
         {
@@ -99,13 +136,6 @@ namespace D_Squared.Web.Helpers
             return JsonConvert.DeserializeObject<List<EventDTO>>(selectedEvents);
         }
 
-        protected List<string> GetLocationList(EmployeeDTO employee, bool isRegional, bool isDivisional, bool isAdmin)
-        {
-            return isRegional ? eq.GetStoreLocationListByRegion(employee)
-                                        : isDivisional ? eq.GetStoreLocationListByDivision(employee)
-                                        : isAdmin ? eq.GetStoreLocationListForAdmin()
-                                        : new List<string>();
-        }
         #endregion
 
         public RedbookEntry BindPostValuesToEntity(RedbookEntry redbookEntry, string selectedDateString, string selectedStoreNumber)
@@ -277,49 +307,26 @@ namespace D_Squared.Web.Helpers
         }
     }
 
-    public class SalesForecastInitializer
+    public class SalesForecastInitializer : InitializerBase
     {
-        private readonly EmployeeQueries eq;
+        //private readonly EmployeeQueries eq;
         private readonly BudgetQueries bq;
         private readonly SalesForecastQueries sfq;
         private readonly CodeQueries cq;
 
-        public SalesForecastInitializer(SalesForecastQueries sfq, BudgetQueries bq, EmployeeQueries eq, CodeQueries cq)
+        public SalesForecastInitializer(SalesForecastQueries sfq, BudgetQueries bq, EmployeeQueries eq, CodeQueries cq) : base(eq)
         {
             this.sfq = sfq;
             this.bq = bq;
-            this.eq = eq;
+            //this.eq = eq;
             this.cq = cq;
-        }
-
-        protected List<string> GetLocationList(EmployeeDTO employee, bool isRegional, bool isDivisional, bool isAdmin)
-        {
-            return isRegional ? eq.GetStoreLocationListByRegion(employee)
-                                        : isDivisional ? eq.GetStoreLocationListByDivision(employee)
-                                        : isAdmin ? eq.GetStoreLocationListForAdmin()
-                                        : new List<string>();
-        }
-
-        protected List<DateTime> GetCurrentWeek(DateTime selectedDay)
-        {
-            int currentDayOfWeek = (int)selectedDay.DayOfWeek;
-            DateTime sunday = selectedDay.AddDays(-currentDayOfWeek);
-            DateTime monday = sunday.AddDays(1);
-
-            if (currentDayOfWeek == 0)
-            {
-                monday = monday.AddDays(-7);
-            }
-            var dates = Enumerable.Range(0, 7).Select(days => monday.AddDays(days)).ToList();
-
-            return dates;
         }
 
         protected List<SalesForecastDTO> GetSpecificWeekAsSalesForecastDTOList(DateTime selectedDay, string storeNumber)
         {
             List<SalesForecastDTO> theList = new List<SalesForecastDTO>();
 
-            var dates = GetCurrentWeek(selectedDay);
+            var dates = GetCurrentWeekAsDates(selectedDay);
 
             foreach (var day in dates)
             {
@@ -420,7 +427,7 @@ namespace D_Squared.Web.Helpers
         {
             DateTime now = DateTime.Now.ToLocalTime();
             DateTime today = DateTime.Today.ToLocalTime();
-            DateTime startDate = GetCurrentWeek(now).First();
+            DateTime startDate = GetCurrentWeekAsDates(now).First();
             EmployeeDTO employee = eq.GetEmployeeInfo(username);
             DateTime.TryParse(selectedDate, out DateTime convertedSelectedDate);
 
@@ -496,7 +503,7 @@ namespace D_Squared.Web.Helpers
 
         public List<SalesForecastSummaryColumnDTO> GetWeeklyReportColumnTotals(DateTime selectedDay)
         {
-            List<DateTime> dates = GetCurrentWeek(selectedDay);
+            List<DateTime> dates = GetCurrentWeekAsDates(selectedDay);
             List<SalesForecast> theList = sfq.GetSalesForecastByDates(dates);
 
             List<SalesForecastSummaryColumnDTO> columnSums = new List<SalesForecastSummaryColumnDTO>();
@@ -512,7 +519,7 @@ namespace D_Squared.Web.Helpers
         public SalesForecastReportViewModel InitializeSalesForecastReportViewModel()
         {
             DateTime now = DateTime.Now.ToLocalTime();
-            List<DateTime> theWeek = GetCurrentWeek(now);
+            List<DateTime> theWeek = GetCurrentWeekAsDates(now);
 
             SalesForecastReportViewModel model = new SalesForecastReportViewModel()
             {
@@ -532,7 +539,7 @@ namespace D_Squared.Web.Helpers
             DateTime desiredDate = model.SearchDTO.DesiredDate;
 
             DateTime now = DateTime.Now.ToLocalTime();
-            List<DateTime> theWeek = GetCurrentWeek(desiredDate);
+            List<DateTime> theWeek = GetCurrentWeekAsDates(desiredDate);
 
             model.CurrentDate = now;
             model.SearchDTO = new SalesForecastSummarySearchDTO(desiredDate);
@@ -620,8 +627,8 @@ namespace D_Squared.Web.Helpers
         {
             List<string> locationList = GetLocationList(model.EmployeeInfo, false, false, isAdmin).Select(l => l.Substring(0, 3)).ToList();
 
-            DateTime fiscStart = model.SearchViewModel.SearchDTO.StartDate = GetCurrentWeek(model.SearchViewModel.SearchDTO.StartDate).FirstOrDefault();
-            DateTime fiscEnd = model.SearchViewModel.SearchDTO.EndDate = GetCurrentWeek(model.SearchViewModel.SearchDTO.EndDate).LastOrDefault();
+            DateTime fiscStart = model.SearchViewModel.SearchDTO.StartDate = GetCurrentWeekAsDates(model.SearchViewModel.SearchDTO.StartDate).FirstOrDefault();
+            DateTime fiscEnd = model.SearchViewModel.SearchDTO.EndDate = GetCurrentWeekAsDates(model.SearchViewModel.SearchDTO.EndDate).LastOrDefault();
 
             model.SearchViewModel.LocationSelectList = locationList.ToSelectList(null, null, model.SearchViewModel.SearchDTO.LocationId, true, "Any", "Any");
             //model.SearchViewModel.WeekdaySelectList = DomainConstants.WeekdayConstants.WeekdayList().ToSelectList(null, null, model.SearchViewModel.SearchDTO.DayOfWeek, true, "Any", "Any");
@@ -668,45 +675,22 @@ namespace D_Squared.Web.Helpers
         }
     }
 
-    public class TipReportingInitializer
+    public class TipReportingInitializer : InitializerBase
     {
-        private readonly EmployeeQueries eq;
+        //private readonly EmployeeQueries eq;
         private readonly TipQueries tq;
 
-        public TipReportingInitializer(EmployeeQueries eq, TipQueries tq)
+        public TipReportingInitializer(EmployeeQueries eq, TipQueries tq) : base(eq)
         {
-            this.eq = eq;
+            //this.eq = eq;
             this.tq = tq;
-        }
-
-        protected List<string> GetLocationList(EmployeeDTO employee, bool isRegional, bool isDivisional, bool isAdmin)
-        {
-            return isRegional ? eq.GetStoreLocationListByRegion(employee)
-                                        : isDivisional ? eq.GetStoreLocationListByDivision(employee)
-                                        : isAdmin ? eq.GetStoreLocationListForAdmin()
-                                        : new List<string>();
-        }
-
-        protected List<DateTime> GetCurrentWeek(DateTime selectedDay)
-        {
-            int currentDayOfWeek = (int)selectedDay.DayOfWeek;
-            DateTime sunday = selectedDay.AddDays(-currentDayOfWeek);
-            DateTime monday = sunday.AddDays(1);
-
-            if (currentDayOfWeek == 0)
-            {
-                monday = monday.AddDays(-7);
-            }
-            var dates = Enumerable.Range(0, 7).Select(days => monday.AddDays(days)).ToList();
-
-            return dates;
         }
 
         public TipReportingViewModel InitializeTipReportingViewModel(string username, bool isRegional, bool isDivisional, bool isAdmin, bool isLastWeek = false)
         {
             EmployeeDTO employee = eq.GetEmployeeInfo(username);
 
-            List<DateTime> daysInWeek = GetCurrentWeek(!isLastWeek ? DateTime.Today : DateTime.Today.AddDays(-7));
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(!isLastWeek ? DateTime.Today : DateTime.Today.AddDays(-7));
 
             TipReportingViewModel model = new TipReportingViewModel()
             {
@@ -741,8 +725,8 @@ namespace D_Squared.Web.Helpers
             EmployeeDTO employee = eq.GetEmployeeInfo(username);
             List<string> locationList = GetLocationList(employee, isRegional, isDivisional, isAdmin);
 
-            DateTime fiscStart = searchDTO.StartDate = GetCurrentWeek(searchDTO.StartDate).LastOrDefault();
-            DateTime fiscEnd = searchDTO.EndDate = GetCurrentWeek(searchDTO.EndDate).LastOrDefault();
+            DateTime fiscStart = searchDTO.StartDate = GetCurrentWeekAsDates(searchDTO.StartDate).LastOrDefault();
+            DateTime fiscEnd = searchDTO.EndDate = GetCurrentWeekAsDates(searchDTO.EndDate).LastOrDefault();
 
             TipReportingSearchViewModel model = new TipReportingSearchViewModel()
             {
@@ -756,38 +740,15 @@ namespace D_Squared.Web.Helpers
         }
     }
 
-    public class SpreadHoursInitializer
+    public class SpreadHoursInitializer : InitializerBase
     {
-        private readonly EmployeeQueries eq;
+        //private readonly EmployeeQueries eq;
         private readonly SpreadHourQueries shq;
 
-        public SpreadHoursInitializer(EmployeeQueries eq, SpreadHourQueries shq)
+        public SpreadHoursInitializer(EmployeeQueries eq, SpreadHourQueries shq) : base(eq)
         {
-            this.eq = eq;
+            //this.eq = eq;
             this.shq = shq;
-        }
-
-        protected List<string> GetLocationList(EmployeeDTO employee, bool isRegional, bool isDivisional, bool isAdmin)
-        {
-            return isRegional ? eq.GetStoreLocationListByRegion(employee)
-                                        : isDivisional ? eq.GetStoreLocationListByDivision(employee)
-                                        : isAdmin ? eq.GetStoreLocationListForAdmin()
-                                        : new List<string>();
-        }
-
-        protected List<DateTime> GetCurrentWeek(DateTime selectedDay)
-        {
-            int currentDayOfWeek = (int)selectedDay.DayOfWeek;
-            DateTime sunday = selectedDay.AddDays(-currentDayOfWeek);
-            DateTime monday = sunday.AddDays(1);
-
-            if (currentDayOfWeek == 0)
-            {
-                monday = monday.AddDays(-7);
-            }
-            var dates = Enumerable.Range(0, 7).Select(days => monday.AddDays(days)).ToList();
-
-            return dates;
         }
 
         protected List<SpreadHourDTO> GetSpreadHourDTOs(List<SpreadHour> spreadHours)
@@ -812,7 +773,7 @@ namespace D_Squared.Web.Helpers
         {
             EmployeeDTO employee = eq.GetEmployeeInfo(username);
 
-            List<DateTime> daysInWeek = GetCurrentWeek(!isLastWeek ? DateTime.Today : DateTime.Today.AddDays(-7));
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(!isLastWeek ? DateTime.Today : DateTime.Today.AddDays(-7));
 
             SpreadHourViewModel model = new SpreadHourViewModel()
             {
@@ -848,8 +809,8 @@ namespace D_Squared.Web.Helpers
             EmployeeDTO employee = eq.GetEmployeeInfo(username);
             List<string> locationList = GetLocationList(employee, isRegional, isDivisional, isAdmin);
 
-            DateTime fiscStart = searchDTO.StartDate = GetCurrentWeek(searchDTO.StartDate).FirstOrDefault();
-            DateTime fiscEnd = searchDTO.EndDate = GetCurrentWeek(searchDTO.EndDate).LastOrDefault();
+            DateTime fiscStart = searchDTO.StartDate = GetCurrentWeekAsDates(searchDTO.StartDate).FirstOrDefault();
+            DateTime fiscEnd = searchDTO.EndDate = GetCurrentWeekAsDates(searchDTO.EndDate).LastOrDefault();
 
             SpreadHourSearchViewModel model = new SpreadHourSearchViewModel()
             {
@@ -861,5 +822,103 @@ namespace D_Squared.Web.Helpers
 
             return model;
         }
+    }
+
+    public class TipPercentageInitializer : InitializerBase
+    {
+        //private readonly EmployeeQueries eq;
+        private readonly TipPercentageQueries tpq;
+
+        public TipPercentageInitializer(EmployeeQueries eq, TipPercentageQueries tpq) : base(eq)
+        {
+            //this.eq = eq;
+            this.tpq = tpq;
+        }
+
+        public List<TipPercentageDTO> GetTipPercentageDTOs(List<TipPercentage> tipPercentages)
+        {
+            var groupedTipPercentages = tipPercentages.GroupBy(t => t.EmployeeNumber);
+            List<TipPercentageDTO> tipPercentageDTOs = new List<TipPercentageDTO>();
+            foreach (var group in groupedTipPercentages)
+            {
+                var totalSales = group.Sum(tp => tp.Sales.Value);
+                var totalTips = group.Sum(tp => tp.Tips.Value);
+                // Sometimes there are tips but no sales. To avoid devideByZero exception..
+                var tipPercent = (totalSales != 0) ? (totalTips * 100) / totalSales : (totalTips * 100);
+                tipPercentageDTOs.Add(new TipPercentageDTO
+                {
+                    EmployeeNumber = group.Key,
+                    EmployeeName = group.First().EmployeeName,
+                    StoreNumber = group.First().StoreNumber,
+                    TotalSalesForTheWeek = totalSales,
+                    TotalTipsForTheWeek = totalTips,
+                    TipPercentageForTheWeek = tipPercent
+                });
+            }
+
+            return tipPercentageDTOs;
+        }
+
+        public TipPercentageSearchViewModel InitializeTipPercentageSearchViewModel(CustomClaimsPrincipal User, TipPercentageSearchDTO  searchDTO)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(User.TruncatedName);
+
+            List<string> locationList = GetLocationList(employee, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin(), false);
+
+            if (locationList.Count() == 0) locationList.Add(employee.StoreNumber);
+
+            string selectedLocation = employee.StoreNumber;
+
+            if (!string.IsNullOrEmpty(searchDTO.SelectedLocation)) selectedLocation = searchDTO.SelectedLocation.Substring(0, 3);
+
+            List<SelectListItem>  tippedEmployees = tpq.GetTippedEmployees(selectedLocation).Select(tp => new SelectListItem
+            {
+                Text = tp.EmployeeName,
+                Value = tp.EmployeeNumber
+            }).ToList();
+            tippedEmployees.Insert(0, new SelectListItem { Value = "", Text = "All" });
+
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(searchDTO.SelectedDate);
+
+            List<TipPercentage> tipPercentages = (string.IsNullOrEmpty(searchDTO.SelectedEmployee)) 
+                                                    ? tpq.GetTipPercentagesByWeek(selectedLocation, daysInWeek.FirstOrDefault(), daysInWeek.LastOrDefault())
+                                                    : tpq.GetTipPercentagesByEmployeeByWeek(searchDTO.SelectedEmployee, selectedLocation, daysInWeek.FirstOrDefault(), daysInWeek.LastOrDefault());
+            var totalStoreSales = tipPercentages.Sum(tp => tp.Sales.Value);
+            var totalStoreTips = tipPercentages.Sum(tp => tp.Tips.Value);
+            TipPercentageSearchViewModel model = new TipPercentageSearchViewModel()
+            {
+                EmployeeInfo = employee,
+                LocationSelectList = locationList.ToSelectList(null, null, null, true, "Any", "Any"),
+                EmployeeSelectList = tippedEmployees,
+                SearchResults = GetTipPercentageDTOs(tipPercentages),
+                BusinessWeekStartDate = daysInWeek.FirstOrDefault(),
+                BusinessWeekEndDate = daysInWeek.LastOrDefault(),
+                MAHAverageTipPercentageForBizWeek = tpq.GetMAHAverageTipPercentForBusinessWeek(daysInWeek.FirstOrDefault(), daysInWeek.LastOrDefault()),
+                StoreAverageTipPercentageForBizWeek = ((totalStoreSales != 0) ? (totalStoreTips * 100)/totalStoreSales : (totalStoreTips * 100))
+            };
+
+            return model;
+        }
+
+
+        public TipPercentagePartialViewModel InitializeTipPercentagePartialViewModel(string storeNumber, string employeeNumber, DateTime startDate, DateTime endDate)
+        {
+            List<TipPercentage> tipPercentages = tpq.GetTipPercentagesByEmployeeByWeek(employeeNumber, storeNumber, startDate, endDate);
+            List<TipPercentageDTO> tipPercentDTOs = tipPercentages.ConvertAll(tp => new TipPercentageDTO(tp));
+            List<string> employeeJobs = tpq.GetTippedEmployeeByEmployeeNumber(employeeNumber);
+            string jobs = string.Join(", ", employeeJobs);
+            TipPercentagePartialViewModel model = new TipPercentagePartialViewModel()
+            {
+                DetailResults = tipPercentDTOs,
+                BusinessWeekStartDate = startDate,
+                BusinessWeekEndDate = endDate,
+                StoreNumber = storeNumber,
+                EmployeeName = tipPercentDTOs.FirstOrDefault().EmployeeName,
+                Job = jobs
+            };
+
+            return model;
+        }
+        
     }
 }

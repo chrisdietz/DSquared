@@ -10,8 +10,12 @@ namespace D_Squared.Domain.TransferObjects
 {
     public class TipPercentageDTO
     {
+        [Display(Name = "Business Date")]
         public DateTime BusinessDate { get; set; }
 
+        public string EmployeeNumber { get; set; }
+
+        [Display(Name = "Bartender/Server")]
         public String EmployeeName { get; set; }
 
         public string StoreNumber { get; set; }
@@ -20,7 +24,16 @@ namespace D_Squared.Domain.TransferObjects
 
         public decimal? Sales { get; set; }
 
-        public decimal? TotalTips { get; set; }
+        public decimal? Tips { get; set; }
+
+        [Display(Name = "Total Sales")]
+        public decimal TotalSalesForTheWeek { get; set; }
+
+        [Display(Name = "Total Tips")]
+        public decimal TotalTipsForTheWeek { get; set; }
+
+        [Display(Name = "Tip %")]
+        public decimal TipPercentageForTheWeek { get; set; }
 
         public TipPercentageDTO() { }
 
@@ -31,32 +44,29 @@ namespace D_Squared.Domain.TransferObjects
             StoreNumber = tipPercentage.StoreNumber;
             Job = tipPercentage.Job;
             Sales = tipPercentage.Sales;
-            TotalTips = tipPercentage.TotalTips;
+            Tips = tipPercentage.Tips;
         }
     }
     public class TipPercentageSearchDTO
     {
+        [Display(Name = "Business Week by Date")]
+        [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime SelectedDate { get; set; }
+
+        public string SelectedLocation { get; set; }
+        public string SelectedEmployee { get; set; }
+
         public TipPercentageSearchDTO()
         {
-            StartDate = DateTime.Today;
-            EndDate = DateTime.Today;
-
+            SelectedDate = DateTime.Today;
+            SelectedLocation = string.Empty;
             SelectedEmployee = string.Empty;
         }
 
-        public TipPercentageSearchDTO(DateTime startDate, DateTime endDate)
+        public TipPercentageSearchDTO(DateTime selectedDate)
         {
-            StartDate = startDate;
-            EndDate = endDate;
+            SelectedDate = selectedDate;
         }
 
-        [Display(Name = "Fiscal Week")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yy}")]
-        public DateTime StartDate { get; set; }
-
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yy}")]
-        public DateTime EndDate { get; set; }
-
-        public string SelectedEmployee { get; set; }
     }
 }

@@ -70,19 +70,40 @@ namespace D_Squared.Data.Millers.Queries
             return db.StoreLocations.Select(sl => sl.LocationName.Substring(0, 3)).ToList();
         }
 
-        public List<string> GetStoreLocationListForAdmin()
+        public List<string> GetStoreLocationListForAdmin(bool includeClosed)
         {
-            return db.StoreLocations.Select(sl => sl.LocationName).ToList();
+            if (includeClosed)
+            {
+                return db.StoreLocations.Select(sl => sl.LocationName).ToList();
+            }
+            else
+            {
+                return db.StoreLocations.Where(sl => sl.isClose == 0).Select(sl => sl.LocationName).ToList();
+            }
         }
 
-        public List<string> GetStoreLocationListByRegion(EmployeeDTO employee)
+        public List<string> GetStoreLocationListByRegion(EmployeeDTO employee, bool includeClosed)
         {
-            return db.StoreLocations.Where(sl => sl.Region == employee.LastName).Select(sl => sl.LocationName).ToList();
+            if (includeClosed)
+            {
+                return db.StoreLocations.Where(sl => sl.Region == employee.LastName).Select(sl => sl.LocationName).ToList();
+            }
+            else
+            {
+                return db.StoreLocations.Where(sl => sl.Region == employee.LastName && sl.isClose == 0).Select(sl => sl.LocationName).ToList();
+            }
         }
 
-        public List<string> GetStoreLocationListByDivision(EmployeeDTO employee)
+        public List<string> GetStoreLocationListByDivision(EmployeeDTO employee, bool includeClosed)
         {
-            return db.StoreLocations.Where(sl => sl.Division == employee.LastName).Select(sl => sl.LocationName).ToList();
+            if (includeClosed)
+            {
+                return db.StoreLocations.Where(sl => sl.Division == employee.LastName).Select(sl => sl.LocationName).ToList();
+            }
+            else
+            {
+                return db.StoreLocations.Where(sl => sl.Division == employee.LastName && sl.isClose == 0).Select(sl => sl.LocationName).ToList();
+            }
         }
     }
 }

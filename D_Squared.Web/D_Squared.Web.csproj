@@ -234,6 +234,8 @@
     <Content Include="App_Scripts\SalesForecast\IndexInit.js" />
     <Content Include="App_Scripts\SalesForecast\SearchInit.js" />
     <Content Include="App_Scripts\SpreadHour\SearchInit.js" />
+    <Content Include="App_Scripts\TipPercentage\DetailsInit.js" />
+    <Content Include="App_Scripts\TipPercentage\SearchInit.js" />
     <Content Include="App_Scripts\TipReporting\SearchInit.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -645,6 +647,7 @@
     <Content Include="Views\SpreadHours\Search.cshtml" />
     <Content Include="Views\TipPercentage\Index.cshtml" />
     <Content Include="Views\Redbook\_SalesDataDetail.cshtml" />
+    <Content Include="Views\TipPercentage\_EmployeeSalesAndTipsDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
