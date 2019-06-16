@@ -6,7 +6,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h3 class="modal-title">Bartender/Server Sales and Tips - Details</h3>
+                <h3 class="modal-title">TM Sales and Tips - Details</h3>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -14,25 +14,25 @@
                         <div class="panel panel-default thirdRowPanelModal">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <dl class="dl-horizontal">
+                                    <dl>
                                         <dt>
                                             @Html.DisplayNameFor(model => model.EmployeeName)
                                         </dt>
-                                        <dd style="margin-bottom:5px">
+                                        <dd>
                                             @Model.EmployeeName
                                         </dd>
 
                                         <dt>
                                             @Html.DisplayNameFor(model => model.Job)
                                         </dt>
-                                        <dd style="margin-bottom:5px">
+                                        <dd>
                                             @Model.Job
                                         </dd>
 
                                         <dt>
                                             @Html.DisplayNameFor(model => model.StoreNumber)
                                         </dt>
-                                        <dd style="margin-bottom:5px">
+                                        <dd>
                                             @Model.StoreNumber
                                         </dd>
 
@@ -41,6 +41,23 @@
                                         </dt>
                                         <dd style="margin-bottom:5px">
                                             @Model.BusinessWeekStartDate.ToShortDateString() - @Model.BusinessWeekEndDate.ToShortDateString()
+                                        </dd>
+                                    </dl>
+                                </div>
+                                <div class="col-md-6">
+                                    <dl>
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.YTDMAHAverageTipPercentage)
+                                        </dt>
+                                        <dd>
+                                            @Model.YTDMAHAverageTipPercentage.ToString("0.00")
+                                        </dd>
+
+                                        <dt>
+                                            @Html.DisplayNameFor(model => model.YTDStoreAverageTipPercentage)
+                                        </dt>
+                                        <dd>
+                                            @Model.YTDStoreAverageTipPercentage.ToString("0.00")
                                         </dd>
                                     </dl>
                                 </div>

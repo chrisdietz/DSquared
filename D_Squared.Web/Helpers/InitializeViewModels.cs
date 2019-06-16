@@ -59,6 +59,11 @@ namespace D_Squared.Web.Helpers
             return dates;
         }
 
+        protected DateTime GetStartingDateOfCurrentYear()
+        {
+            return DateTime.Parse($"1/1/{DateTime.Today.Year}");
+        }
+
         protected DateTime TryParseDateTimeString(string date)
         {
             DateTime.TryParse(date, out DateTime convertedDate);
@@ -893,8 +898,9 @@ namespace D_Squared.Web.Helpers
                 SearchResults = GetTipPercentageDTOs(tipPercentages),
                 BusinessWeekStartDate = daysInWeek.FirstOrDefault(),
                 BusinessWeekEndDate = daysInWeek.LastOrDefault(),
-                MAHAverageTipPercentageForBizWeek = tpq.GetMAHAverageTipPercentForBusinessWeek(daysInWeek.FirstOrDefault(), daysInWeek.LastOrDefault()),
-                StoreAverageTipPercentageForBizWeek = ((totalStoreSales != 0) ? (totalStoreTips * 100)/totalStoreSales : (totalStoreTips * 100))
+                // Calculate MAH and store average tip %s for YTD sales and tips
+                YTDMAHAverageTipPercentage = tpq.GetMAHAverageTipPercentForGivenDates(GetStartingDateOfCurrentYear(), DateTime.Today),
+                YTDStoreAverageTipPercentage = tpq.GetStoreAverageTipPercentForGivenDates(GetStartingDateOfCurrentYear(), DateTime.Today, selectedLocation)
             };
 
             return model;
@@ -914,7 +920,10 @@ namespace D_Squared.Web.Helpers
                 BusinessWeekEndDate = endDate,
                 StoreNumber = storeNumber,
                 EmployeeName = tipPercentDTOs.FirstOrDefault().EmployeeName,
-                Job = jobs
+                Job = jobs,
+                // Calculate MAH and store average tip %s for YTD sales and tips
+                YTDMAHAverageTipPercentage = tpq.GetMAHAverageTipPercentForGivenDates(GetStartingDateOfCurrentYear(), DateTime.Today),
+                YTDStoreAverageTipPercentage = tpq.GetStoreAverageTipPercentForGivenDates(GetStartingDateOfCurrentYear(), DateTime.Today, storeNumber)
             };
 
             return model;

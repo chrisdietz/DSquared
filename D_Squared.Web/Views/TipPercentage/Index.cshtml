@@ -5,6 +5,32 @@
     <script src="~/App_Scripts/TipPercentage/DetailsInit.js" type="text/javascript"></script>
 }
 
+<style type="text/css">
+    dl {
+        width: 100%;
+        overflow: hidden;
+        margin-left:50px;
+        margin-bottom:0;
+        padding:0
+    }
+
+    dt {
+        float: left;
+        width: 50%;
+        /* adjust the width; make sure the total of both is 100% */
+        margin: 0;
+        padding: 0
+    }
+
+    dd {
+        float: left;
+        width: 50%;
+        /* adjust the width; make sure the total of both is 100% */
+        margin: 0;
+        padding: 0
+    }
+</style>
+
 <div class="jumbotron" style="background-image: url('/Content/images/lightwood-bg.jpg'); padding-bottom:5px; padding-top:20px; margin-bottom:10px">
     <div style="max-width:500px; display: block; margin: 0 auto;">
         <img src="~/Content/images/millers_d2_logo.png" style="max-width:500px;" />
@@ -53,10 +79,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div class="panel panel-default firstRowPanel">
                     <div class="form-group">
-                        <dl class="dl-horizontal" style="margin-left: 60px;margin-bottom: 0px">
+                        <dl>
                             <dt>
                                 Business Week
                             </dt>
@@ -64,21 +90,22 @@
                                 @Model.BusinessWeekStartDate.ToShortDateString() - @Model.BusinessWeekEndDate.ToShortDateString()
                             </dd>
                             <dt>
-                                @Html.DisplayNameFor(model => model.MAHAverageTipPercentageForBizWeek)
+                                @Html.DisplayNameFor(model => model.YTDMAHAverageTipPercentage)
                             </dt>
                             <dd>
-                                @Model.MAHAverageTipPercentageForBizWeek.ToString("0.00")
+                                @Model.YTDMAHAverageTipPercentage.ToString("0.00")
                             </dd>
                             <dt>
-                                @Html.DisplayNameFor(model => model.StoreAverageTipPercentageForBizWeek)
+                                @Html.DisplayNameFor(model => model.YTDStoreAverageTipPercentage)
                             </dt>
                             <dd>
-                                @Model.StoreAverageTipPercentageForBizWeek.ToString("0.00")
+                                @Model.YTDStoreAverageTipPercentage.ToString("0.00")
                             </dd>
                         </dl>
                     </div>
                 </div>
             </div>
+            <div class="col-md-1"></div>
         </div>
         <div class="row">
             <div class="col-md-6">
@@ -121,6 +148,7 @@
                 @{
                     foreach (var result in Model.SearchResults)
                     {
+                        var cellBGColor = (result.TipPercentageForTheWeek < Model.YTDMAHAverageTipPercentage) ? "alert-danger" : "";
                         <tr>
                             <td>
                                 @Html.DisplayFor(model => result.EmployeeName)
@@ -131,7 +159,7 @@
                             <td>
                                 @result.TotalTipsForTheWeek.ToString("C0")
                             </td>
-                            <td>
+                            <td class="@cellBGColor">
                                 @Html.DisplayFor(model => result.TipPercentageForTheWeek)
                             </td>
                             <td style="width:70px">

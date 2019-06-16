@@ -15,7 +15,7 @@ namespace D_Squared.Domain.TransferObjects
 
         public string EmployeeNumber { get; set; }
 
-        [Display(Name = "Bartender/Server")]
+        [Display(Name = "TM")]
         public String EmployeeName { get; set; }
 
         public string StoreNumber { get; set; }

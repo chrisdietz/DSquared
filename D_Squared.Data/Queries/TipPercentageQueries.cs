@@ -46,7 +46,8 @@ namespace D_Squared.Data.Queries
                                  .ThenBy(tp => tp.BusinessDate)
                                  .ToList();
         }
-        public decimal GetMAHAverageTipPercentForBusinessWeek(DateTime startDate, DateTime endDate)
+
+        public decimal GetMAHAverageTipPercentForGivenDates(DateTime startDate, DateTime endDate)
         {
             DateTime realEndDate = endDate.AddDays(1);
             List<TipPercentage> tpList = db.TipPercentages.Where(tp => tp.BusinessDate >= startDate && tp.BusinessDate < realEndDate).ToList();
@@ -54,6 +55,16 @@ namespace D_Squared.Data.Queries
             var totalMAHTips = tpList.Sum(tp => tp.Tips.Value);
 
             return ((totalMAHSales != 0) ? (totalMAHTips * 100) / totalMAHSales : (totalMAHTips * 100));
+        }
+
+        public decimal GetStoreAverageTipPercentForGivenDates(DateTime startDate, DateTime endDate, string storeNumber)
+        {
+            DateTime realEndDate = endDate.AddDays(1);
+            List<TipPercentage> tpList = db.TipPercentages.Where(tp => tp.BusinessDate >= startDate && tp.BusinessDate < realEndDate && tp.StoreNumber == storeNumber).ToList();
+            var totalStoreSales = tpList.Sum(tp => tp.Sales.Value);
+            var totalStoreTips = tpList.Sum(tp => tp.Tips.Value);
+
+            return ((totalStoreSales != 0) ? (totalStoreTips * 100) / totalStoreSales : (totalStoreTips * 100));
         }
 
         public List<EmployeeJob> GetTippedEmployees(string storeNumber)
