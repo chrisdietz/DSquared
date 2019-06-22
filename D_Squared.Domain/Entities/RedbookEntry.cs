@@ -70,6 +70,9 @@ namespace D_Squared.Domain.Entities
         [Display(Name = "Checks")]
         public string Checks { get; set; }
 
+        [Display(Name = "LSM Activities")]
+        public string LSMActivities { get; set; }
+
         #region AuditFields
         [ScaffoldColumn(false)]
         [DataType(DataType.DateTime)]
