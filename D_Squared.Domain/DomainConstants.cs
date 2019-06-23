@@ -19,10 +19,10 @@ namespace D_Squared.Domain
             public const string RedbookRegionalGroup = "redbookReg";
             public const string RedbookDivisionalVPGroup = "redbookDvp";
 
-            public const string DSquaredTipsGroup = "D2Tips";
-            public const string DSquaredSpreadGroup = "D2Spread";
+            public const string DSquaredTipReportingGroup = "D2TipReporting";
+            public const string DSquaredSpreadHoursGroup = "D2SpreadHours";
 
-            public const string DSquaredAdminGroup = "d2Admins";
+            public const string DSquaredAdminGroup = "D2Admin";
         }
 
         public static class CompetitiveEventConstants

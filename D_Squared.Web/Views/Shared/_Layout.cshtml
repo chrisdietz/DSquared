@@ -164,13 +164,13 @@
                             @Html.ActionLink("Spread Hours", "Search", "SpreadHours", null, new { @class = "custom-navbar" })
                         </li>
                     }
-                    else if (User.IsDSquaredSpread())
+                    else if (User.IsDSquaredSpreadHours())
                     {
                         <li>
                             @Html.ActionLink("Spread Hours", "Index", "SpreadHours", null, new { @class = "custom-navbar" })
                         </li>
                     }
-                    else if (User.IsDSquaredTips())
+                    else if (User.IsDSquaredTipReporting())
                     {
                         <li>
                             @Html.ActionLink("Tip Reporting", "Search", "TipReporting", null, new { @class = "custom-navbar" })

@@ -43,7 +43,7 @@ namespace D_Squared.Web.Controllers
 
         public ActionResult Search()
         {
-            TipReportingSearchViewModel model = init.InitializeTipReportingSearchViewModel(User.TruncatedName, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredTips() ? true : User.IsDSquaredAdmin());
+            TipReportingSearchViewModel model = init.InitializeTipReportingSearchViewModel(User.TruncatedName, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredTipReporting() ? true : User.IsDSquaredAdmin());
 
             return View(model);
         }
@@ -52,7 +52,7 @@ namespace D_Squared.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Search(TipReportingSearchViewModel model)
         {
-            model = init.InitializeTipReportingSearchViewModel(model.SearchDTO, User.TruncatedName,  User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredTips() ? true : User.IsDSquaredAdmin());
+            model = init.InitializeTipReportingSearchViewModel(model.SearchDTO, User.TruncatedName,  User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredTipReporting() ? true : User.IsDSquaredAdmin());
 
             return View(model);
         }

@@ -695,14 +695,22 @@ namespace D_Squared.Web.Helpers
         {
             EmployeeDTO employee = eq.GetEmployeeInfo(username);
 
-            List<DateTime> daysInWeek = GetCurrentWeekAsDates(!isLastWeek ? DateTime.Today : DateTime.Today.AddDays(-7));
-
+            // Get last two weeks
+            //List<DateTime> daysInWeek = GetCurrentWeekAsDates(!isLastWeek ? DateTime.Today : DateTime.Today.AddDays(-14));
+            List<MakeUpPay> makeUpPays = new List<MakeUpPay>();
+            DateTime lastFiscalWeekEnding = GetCurrentWeekAsDates(!isLastWeek ? DateTime.Today : DateTime.Today.AddDays(-7)).LastOrDefault();
+            makeUpPays.AddRange(tq.GetOutstandingMakeUps(employee.StoreNumber, lastFiscalWeekEnding));
+            if (isLastWeek)
+            {
+                DateTime lastBeforeFiscalWeekEnding = GetCurrentWeekAsDates(DateTime.Today.AddDays(-14)).LastOrDefault();
+                makeUpPays.AddRange(tq.GetOutstandingMakeUps(employee.StoreNumber, lastBeforeFiscalWeekEnding));
+            }
             TipReportingViewModel model = new TipReportingViewModel()
             {
                 EmployeeInfo = employee,
-                MakeUpPayList = tq.GetOutstandingMakeUps(employee.StoreNumber, daysInWeek.LastOrDefault()),
+                MakeUpPayList = makeUpPays,
                 AccessTime = DateTime.Now,
-                EndingPeriod = daysInWeek.LastOrDefault(),
+                EndingPeriod = lastFiscalWeekEnding,
                 CurrentWeekFlag = !isLastWeek
             };
 

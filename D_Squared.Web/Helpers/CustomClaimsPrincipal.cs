@@ -26,7 +26,7 @@ namespace D_Squared.Web.Helpers
 
             if (ConfigurationManager.AppSettings["ApplicationRegion"] == "Development")
             {
-                Name = "jhodge";
+                Name = "DRobertson";
                 TruncatedName = Name;
 
                 identity.AddClaim(new Claim(ClaimTypes.GivenName, Name));
@@ -105,20 +105,20 @@ namespace D_Squared.Web.Helpers
                 return IsInRole(DomainConstants.RoleNames.RedbookDivisionalVPGroup);
         }
 
-        public bool IsDSquaredTips()
+        public bool IsDSquaredTipReporting()
         {
             if (ConfigurationManager.AppSettings["ApplicationRegion"] == "Development")
                 return true;
             else //quick check for general manager role
-                return IsInRole(DomainConstants.RoleNames.DSquaredTipsGroup);
+                return IsInRole(DomainConstants.RoleNames.DSquaredTipReportingGroup);
         }
 
-        public bool IsDSquaredSpread()
+        public bool IsDSquaredSpreadHours()
         {
             if (ConfigurationManager.AppSettings["ApplicationRegion"] == "Development")
                 return true;
             else //quick check for general manager role
-                return IsInRole(DomainConstants.RoleNames.DSquaredSpreadGroup);
+                return IsInRole(DomainConstants.RoleNames.DSquaredSpreadHoursGroup);
         }
 
         public bool IsDSquaredAdmin()

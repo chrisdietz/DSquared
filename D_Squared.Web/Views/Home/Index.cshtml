@@ -19,7 +19,7 @@
 <hr />
 
 <div class="row">
-    @if (User.IsDSquaredTips() && !User.IsDSquaredAdmin())
+    @if (User.IsDSquaredTipReporting() && !User.IsDSquaredAdmin())
     {
         <div class="col-md-4">
             <a class="dashboard-stat dashboard-stat-v2 red" href="/TipReporting/Search">
@@ -96,7 +96,7 @@
                 </a>
             </div>
 
-            if (User.IsDSquaredSpread())
+            if (User.IsDSquaredSpreadHours())
             {
                 <div class="col-md-4">
                     <a class="dashboard-stat dashboard-stat-v2 red" href="/SpreadHours/Index">
