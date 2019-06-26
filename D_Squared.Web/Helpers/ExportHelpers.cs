@@ -60,4 +60,58 @@ namespace D_Squared.Web.Helpers
             return sb;
         }
     }
+
+    public static class NYSExportHelper
+    {
+        public static StringBuilder ExportNYS(List<NYSDTO> nYSDTOs, bool orderByDays)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            if (!orderByDays)
+            {
+                sb.AppendLine("Store Number,Date,Employee,Position,First Clock In,Last Clock Out,Total Hours,NYS,NYS Pay*");
+
+                foreach (NYSDTO nys in nYSDTOs)
+                {
+                    sb.AppendLine(nys.NYS.StoreNumber + ","
+                                    + nys.NYS.BusinessDate + ","
+                                    + nys.NYS.EmployeeName + ","
+                                    + nys.NYS.Job + ","
+                                    + nys.NYS.FirstClockIn.ToShortDateString() + ","
+                                    + nys.NYS.LastClockOut.ToShortDateString() + ","
+                                    + nys.NYS.TotalHours + ","
+                                    + nys.NYS.NYSHours + ","
+                                    + nys.NYSPay.ToString("C"));
+                }
+
+                sb.AppendLine(" , , , , , , ," + nYSDTOs.Sum(s => s.NYS.NYSHours) + "," + nYSDTOs.Sum(s => s.NYSPay).ToString("C0"));
+            }
+            else
+            {
+                sb.AppendLine("Store Number,Date,Day of Week,,,,,NYS,NYS Pay*");
+
+                var nysByStore = nYSDTOs.GroupBy(nys => nys.NYS.StoreNumber).ToList();
+
+                foreach (var nysbs in nysByStore)
+                {
+                    var nysByDay = nysbs.GroupBy(gb => gb.NYS.BusinessDate).ToList();
+                    decimal hoursTotal = 0;
+                    decimal payTotal = 0;
+
+                    foreach (var nysbd in nysByDay)
+                    {
+                        hoursTotal += nysbd.Sum(s => s.NYS.NYSHours);
+                        payTotal += nysbd.Sum(s => s.NYSPay);
+
+                        sb.AppendLine(nysbs.Key + "," + nysbd.Key.ToShortDateString() + "," + nysbd.Key.DayOfWeek + "," + " , , , ," + nysbd.Sum(s => s.NYS.NYSHours) + "," + nysbd.Sum(s => s.NYSPay).ToString("C0"));
+                    }
+
+                    sb.AppendLine(" , , , , , , ," + hoursTotal + "," + payTotal.ToString("C0"));
+                    sb.AppendLine();
+                }
+            }
+
+            return sb;
+        }
+    }
 }

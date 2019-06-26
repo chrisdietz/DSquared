@@ -97,19 +97,40 @@
                         </li>
                         <li class="dropdown">
                             <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
-                                Spread Hours
+                                Hours
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    @Html.ActionLink("Entry", "Index", "SpreadHours", null, new { @class = "custom-navbar" })
+                                    <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
+                                        Spread Hours
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            @Html.ActionLink("Entry", "Index", "SpreadHours", null, new { @class = "custom-navbar" })
+                                        </li>
+                                        <li>
+                                            @Html.ActionLink("Search", "Search", "SpreadHours", null, new { @class = "custom-navbar" })
+                                        </li>
+                                    </ul>
                                 </li>
                                 <li>
-                                    @Html.ActionLink("Search", "Search", "SpreadHours", null, new { @class = "custom-navbar" })
+                                    <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
+                                        NYS Hours
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul>
+                                        <li>
+                                            @Html.ActionLink("Entry", "Index", "NYS", null, new { @class = "custom-navbar" })
+                                        </li>
+                                        <li>
+                                            @Html.ActionLink("Search", "Search", "NYS", null, new { @class = "custom-navbar" })
+                                        </li>
+                                    </ul>
                                 </li>
                             </ul>
                         </li>
-
                         <li class="dropdown">
                             <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
                                 Administration
@@ -163,11 +184,20 @@
                         <li>
                             @Html.ActionLink("Spread Hours", "Search", "SpreadHours", null, new { @class = "custom-navbar" })
                         </li>
+                        <li>
+                            @Html.ActionLink("NYS Hours", "Search", "NYS", null, new { @class = "custom-navbar" })
+                        </li>
                     }
                     else if (User.IsDSquaredSpreadHours())
                     {
                         <li>
                             @Html.ActionLink("Spread Hours", "Index", "SpreadHours", null, new { @class = "custom-navbar" })
+                        </li>
+                    }
+                    else if (User.IsDSquaredNYSMandatedHours())
+                    {
+                        <li>
+                            @Html.ActionLink("NYS Hours", "Index", "NYS", null, new { @class = "custom-navbar" })
                         </li>
                     }
                     else if (User.IsDSquaredTipReporting())

@@ -938,4 +938,88 @@ namespace D_Squared.Web.Helpers
         }
         
     }
+
+    public class NYSInitializer : InitializerBase
+    {
+        //private readonly EmployeeQueries eq;
+        private readonly NYSQueries nysq;
+
+        public NYSInitializer(EmployeeQueries eq, NYSQueries nysq) : base(eq)
+        {
+            //this.eq = eq;
+            this.nysq = nysq;
+        }
+
+        protected List<NYSDTO> GetNYSDTOs(List<NYS> nysList)
+        {
+            List<NYSDTO> dtoList = new List<NYSDTO>();
+            List<MinimumWage> minimumWages = nysq.GetMinimumWages();
+
+            foreach (NYS nys in nysList)
+            {
+                MinimumWage minWage = new MinimumWage();
+
+                if (minimumWages.Any(mw => mw.StoreNumber == nys.StoreNumber))
+                    minWage = minimumWages.Where(mw => mw.StoreNumber == nys.StoreNumber).FirstOrDefault();
+
+                dtoList.Add(new NYSDTO(nys, minWage));
+            }
+
+            return dtoList;
+        }
+
+        public NYSViewModel InitializeNYSViewModel(string username, bool isLastWeek = false)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(username);
+
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(!isLastWeek ? DateTime.Today : DateTime.Today.AddDays(-7));
+
+            NYSViewModel model = new NYSViewModel()
+            {
+                EmployeeInfo = employee,
+                NYSDTOs = GetNYSDTOs(nysq.GetNYSByWeek(employee.StoreNumber, daysInWeek.FirstOrDefault(), daysInWeek.LastOrDefault())),
+                AccessTime = DateTime.Now,
+                EndingPeriod = daysInWeek.LastOrDefault(),
+                CurrentWeekFlag = !isLastWeek
+            };
+
+            return model;
+        }
+
+        public NYSSearchViewModel InitializeNYSSearchViewModel(string username, bool isRegional, bool isDivisional, bool isAdmin)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(username);
+            List<string> locationList = GetLocationList(employee, isRegional, isDivisional, isAdmin);
+
+            NYSSearchViewModel model = new NYSSearchViewModel()
+            {
+                LocationSelectList = locationList.ToSelectList(null, null, null, true, "Any", "Any"),
+                SearchDTO = new NYSSearchDTO(),
+                SearchResults = new List<NYSDTO>(),
+                EmployeeInfo = employee
+            };
+
+            return model;
+        }
+
+
+        public NYSSearchViewModel InitializeNYSSearchViewModel(NYSSearchDTO searchDTO, string username, bool isRegional, bool isDivisional, bool isAdmin)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(username);
+            List<string> locationList = GetLocationList(employee, isRegional, isDivisional, isAdmin);
+
+            DateTime fiscStart = searchDTO.StartDate = GetCurrentWeekAsDates(searchDTO.StartDate).FirstOrDefault();
+            DateTime fiscEnd = searchDTO.EndDate = GetCurrentWeekAsDates(searchDTO.EndDate).LastOrDefault();
+
+            NYSSearchViewModel model = new NYSSearchViewModel()
+            {
+                EmployeeInfo = employee,
+                SearchResults = GetNYSDTOs(nysq.GetNYS(searchDTO, locationList.Select(l => l.Substring(0, 3)).ToList(), fiscStart, fiscEnd)),
+                LocationSelectList = locationList.ToSelectList(null, null, searchDTO.SelectedLocation, true, "Any", "Any"),
+                SearchDTO = searchDTO
+            };
+
+            return model;
+        }
+    }
 }

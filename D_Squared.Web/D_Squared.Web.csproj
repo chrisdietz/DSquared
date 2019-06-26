@@ -190,6 +190,7 @@
     <Compile Include="Controllers\DailyDepositController.cs" />
     <Compile Include="Controllers\HelpDocumentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\NYSController.cs" />
     <Compile Include="Controllers\RedbookController.cs" />
     <Compile Include="Controllers\SalesForecastController.cs" />
     <Compile Include="Controllers\SpreadHoursController.cs" />
@@ -216,6 +217,7 @@
     <Compile Include="Models\Export.cs" />
     <Compile Include="Models\HelpDocumentViewModel.cs" />
     <Compile Include="Models\HomeViewModel.cs" />
+    <Compile Include="Models\NYSViewModel.cs" />
     <Compile Include="Models\RedbookViewModels.cs" />
     <Compile Include="Models\SalesDataPartialViewModel.cs" />
     <Compile Include="Models\SalesForecastReportViewModel.cs" />
@@ -226,6 +228,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Scripts\NYS\SearchInit.js" />
     <Content Include="App_Scripts\Redbook\CreateInit.js" />
     <Content Include="App_Scripts\Redbook\EntryInit.js" />
     <Content Include="App_Scripts\Redbook\IndexDropdownUpdates.js" />
@@ -648,6 +651,8 @@
     <Content Include="Views\TipPercentage\Index.cshtml" />
     <Content Include="Views\Redbook\_SalesDataDetail.cshtml" />
     <Content Include="Views\TipPercentage\_EmployeeSalesAndTipsDetail.cshtml" />
+    <Content Include="Views\NYS\Index.cshtml" />
+    <Content Include="Views\NYS\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

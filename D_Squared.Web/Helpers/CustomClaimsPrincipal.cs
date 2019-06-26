@@ -24,20 +24,20 @@ namespace D_Squared.Web.Helpers
         {
             Identity = identity;
 
-            if (ConfigurationManager.AppSettings["ApplicationRegion"] == "Development")
-            {
-                Name = "DRobertson";
-                TruncatedName = Name;
+            //if (ConfigurationManager.AppSettings["ApplicationRegion"] == "Development")
+            //{
+            //    Name = "CJohnson";
+            //    TruncatedName = Name;
 
-                identity.AddClaim(new Claim(ClaimTypes.GivenName, Name));
-            }
-            else
-            {
+            //    identity.AddClaim(new Claim(ClaimTypes.GivenName, Name));
+            //}
+            //else
+            //{
                 Name = identity.Name;
                 TruncatedName = identity.Name.Substring(identity.Name.IndexOf('\\') + 1);
 
                 identity.AddClaim(new Claim(ClaimTypes.GivenName, identity.Name));
-            }
+            //}
         }
 
         /// <summary>
@@ -119,6 +119,14 @@ namespace D_Squared.Web.Helpers
                 return true;
             else //quick check for general manager role
                 return IsInRole(DomainConstants.RoleNames.DSquaredSpreadHoursGroup);
+        }
+
+        public bool IsDSquaredNYSMandatedHours()
+        {
+            if (ConfigurationManager.AppSettings["ApplicationRegion"] == "Development")
+                return true;
+            else //quick check for NYS Mandated hours role
+                return IsInRole(DomainConstants.RoleNames.DSquaredMandatedHoursGroup);
         }
 
         public bool IsDSquaredAdmin()

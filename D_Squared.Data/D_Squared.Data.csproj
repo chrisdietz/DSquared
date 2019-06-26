@@ -104,6 +104,7 @@
     <Compile Include="Queries\CodeQueries.cs" />
     <Compile Include="Queries\DailyDepositQueries.cs" />
     <Compile Include="Queries\HelpDocumentQueries.cs" />
+    <Compile Include="Queries\NYSQueries.cs" />
     <Compile Include="Queries\RedbookEntryQueries.cs" />
     <Compile Include="Queries\SalesDataQueries.cs" />
     <Compile Include="Queries\SalesForecastQueries.cs" />
