@@ -117,7 +117,7 @@
                                 </li>
                                 <li>
                                     <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
-                                        NYS Hours
+                                        Mandated Hours
                                         <span class="caret"></span>
                                     </a>
                                     <ul>
@@ -185,7 +185,7 @@
                             @Html.ActionLink("Spread Hours", "Search", "SpreadHours", null, new { @class = "custom-navbar" })
                         </li>
                         <li>
-                            @Html.ActionLink("NYS Hours", "Search", "NYS", null, new { @class = "custom-navbar" })
+                            @Html.ActionLink("Mandated Hours", "Search", "NYS", null, new { @class = "custom-navbar" })
                         </li>
                     }
                     else if (User.IsDSquaredSpreadHours())
@@ -197,7 +197,7 @@
                     else if (User.IsDSquaredNYSMandatedHours())
                     {
                         <li>
-                            @Html.ActionLink("NYS Hours", "Index", "NYS", null, new { @class = "custom-navbar" })
+                            @Html.ActionLink("Mandated Hours", "Index", "NYS", null, new { @class = "custom-navbar" })
                         </li>
                     }
                     else if (User.IsDSquaredTipReporting())
