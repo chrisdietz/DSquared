@@ -35,5 +35,43 @@ namespace D_Squared.Data.Queries
             SalesDataDTO sdDTO = new SalesDataDTO(sData);
             return sdDTO;
         }
+
+        public List<WeeklyTotalDurationDTO> GetWeeklyTotalDurationDTOs(string storeNumber, DateTime weekEnding)
+        {
+            List<WeeklyTotalDurationDTO> weeklyTotalDurationDTOs = db.WeeklyTotalDurations.Where(w => w.StoreNumber == storeNumber && w.WeekEnding == weekEnding && w.TotalDuration > 35)
+                                                                    .Select(w => new WeeklyTotalDurationDTO
+                                                                    {
+                                                                        WeekEnding = w.WeekEnding,
+                                                                        StoreNumber = w.StoreNumber,
+                                                                        StaffName = w.StaffName,
+                                                                        TotalDuration = w.TotalDuration
+                                                                    }).ToList();
+
+            return weeklyTotalDurationDTOs;
+        }
+
+        public List<WeeklyTotalDurationDTO>  GetWeeklyTotalDurationDTOsByJob(string job, string storeNumber, DateTime weekEnding)
+        {
+            List<WeeklyTotalDurationDTO> weeklyTotalDurationDTOs = db.WeeklyTotalDurations.Where(w => w.StoreNumber == storeNumber && w.WeekEnding == weekEnding /*&& w.Job == job*/)
+                                                                    .Select(w => new WeeklyTotalDurationDTO
+                                                                    {
+                                                                        WeekEnding = w.WeekEnding,
+                                                                        StoreNumber = w.StoreNumber,
+                                                                        StaffName = w.StaffName,
+                                                                        TotalDuration = w.TotalDuration
+                                                                    }).ToList();
+
+            return weeklyTotalDurationDTOs;
+        }
+
+        public List<EmployeeJobDTO> GetDistinctJobNames(string storeNumber)
+        {
+            List<EmployeeJobDTO> jobs = db.EmployeeJobs.Where(j => j.StoreNumber == storeNumber).Distinct()
+                                        .Select(j => new EmployeeJobDTO
+                                        {
+                                            Job = j.Job
+                                        }).ToList();
+            return jobs;
+        }
     }
 }

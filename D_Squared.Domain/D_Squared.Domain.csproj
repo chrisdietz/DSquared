@@ -119,6 +119,7 @@
     <Compile Include="Entities\StoreLocation.cs" />
     <Compile Include="Entities\TipCredit.cs" />
     <Compile Include="Entities\TipPercentage.cs" />
+    <Compile Include="Entities\WeeklyTotalDuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TransferObjects\BudgetDTO.cs" />
     <Compile Include="TransferObjects\DepositEntryDTO.cs" />
@@ -134,6 +135,7 @@
     <Compile Include="TransferObjects\SpreadHourDTO.cs" />
     <Compile Include="TransferObjects\TipPercentageDTO.cs" />
     <Compile Include="TransferObjects\TipReportingSearchDTO.cs" />
+    <Compile Include="TransferObjects\WeeklyTotalDurationDTO.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

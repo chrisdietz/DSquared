@@ -193,6 +193,7 @@
     <Compile Include="Controllers\NYSController.cs" />
     <Compile Include="Controllers\RedbookController.cs" />
     <Compile Include="Controllers\SalesForecastController.cs" />
+    <Compile Include="Controllers\SalesReportingController.cs" />
     <Compile Include="Controllers\SpreadHoursController.cs" />
     <Compile Include="Controllers\TipPercentageController.cs" />
     <Compile Include="Controllers\TipReportingController.cs" />
@@ -218,6 +219,7 @@
     <Compile Include="Models\HelpDocumentViewModel.cs" />
     <Compile Include="Models\HomeViewModel.cs" />
     <Compile Include="Models\NYSViewModel.cs" />
+    <Compile Include="Models\OvertimeReportingViewModel.cs" />
     <Compile Include="Models\RedbookViewModels.cs" />
     <Compile Include="Models\SalesDataPartialViewModel.cs" />
     <Compile Include="Models\SalesForecastReportViewModel.cs" />
@@ -653,6 +655,8 @@
     <Content Include="Views\TipPercentage\_EmployeeSalesAndTipsDetail.cshtml" />
     <Content Include="Views\NYS\Index.cshtml" />
     <Content Include="Views\NYS\Search.cshtml" />
+    <Content Include="Views\SalesReporting\OvertimeReport.cshtml" />
+    <Content Include="Views\SalesReporting\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

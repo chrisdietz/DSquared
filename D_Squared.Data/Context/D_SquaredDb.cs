@@ -55,6 +55,8 @@ namespace D_Squared.Data.Context
 
         public DbSet<NYS> NYS { get; set; }
 
+        public DbSet<WeeklyTotalDuration> WeeklyTotalDurations { get; set; }
+
         public static D_SquaredDbContext Create()
         {
             return new D_SquaredDbContext();
@@ -68,6 +70,7 @@ namespace D_Squared.Data.Context
             modelBuilder.Entity<EmployeeJob>().ToTable("EmployeeJob");
             modelBuilder.Entity<TipPercentage>().ToTable("TipPercentage");
             modelBuilder.Entity<NYS>().Property(p => p.NYSHours).HasColumnName("NYS");
+            modelBuilder.Entity<WeeklyTotalDuration>().ToTable("WeeklyTotalDuration");
 
             base.OnModelCreating(modelBuilder);
         }

@@ -19,6 +19,8 @@ namespace D_Squared.Domain.TransferObjects
 
         public string Job { get; set; }
 
+        public EmployeeJobDTO() { }
+
         public EmployeeJobDTO(EmployeeJob employeeJob)
         {
             Id = employeeJob.Id;

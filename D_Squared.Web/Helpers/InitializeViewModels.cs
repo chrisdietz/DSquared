@@ -946,7 +946,6 @@ namespace D_Squared.Web.Helpers
 
         public NYSInitializer(EmployeeQueries eq, NYSQueries nysq) : base(eq)
         {
-            //this.eq = eq;
             this.nysq = nysq;
         }
 
@@ -1017,6 +1016,53 @@ namespace D_Squared.Web.Helpers
                 SearchResults = GetNYSDTOs(nysq.GetNYS(searchDTO, locationList.Select(l => l.Substring(0, 3)).ToList(), fiscStart, fiscEnd)),
                 LocationSelectList = locationList.ToSelectList(null, null, searchDTO.SelectedLocation, true, "Any", "Any"),
                 SearchDTO = searchDTO
+            };
+
+            return model;
+        }
+    }
+
+    public class SalesReportingInitializer : InitializerBase
+    {
+        private readonly SalesDataQueries sdq;
+
+        public SalesReportingInitializer(EmployeeQueries eq, SalesDataQueries sdq) : base(eq)
+        {
+            this.sdq = sdq;
+        }
+
+        public OvertimeReportingSearchViewModel InitializeOvertimeReportingSearchViewModel(CustomClaimsPrincipal User, WeeklyTotalDurationSearchDTO searchDTO)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(User.TruncatedName);
+
+            List<string> locationList = GetLocationList(employee, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin(), false);
+
+            if (locationList.Count() == 0) locationList.Add(employee.StoreNumber);
+
+            string selectedLocation = employee.StoreNumber;
+
+            if (!string.IsNullOrEmpty(searchDTO.SelectedLocation)) selectedLocation = searchDTO.SelectedLocation.Substring(0, 3);
+
+            List<SelectListItem> jobs = sdq.GetDistinctJobNames(selectedLocation).Select(jn => new SelectListItem
+            {
+                Text = jn.Job,
+                Value = jn.Job
+            }).ToList();
+            jobs.Insert(0, new SelectListItem { Value = "", Text = "All" });
+
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(searchDTO.SelectedDate);
+
+            List<WeeklyTotalDurationDTO> weeklyTotalDurationDTOs = (string.IsNullOrEmpty(searchDTO.SelectedJob))
+                                                    ? sdq.GetWeeklyTotalDurationDTOs(selectedLocation, daysInWeek.LastOrDefault())
+                                                    : sdq.GetWeeklyTotalDurationDTOsByJob(searchDTO.SelectedJob, selectedLocation, daysInWeek.LastOrDefault());
+
+            OvertimeReportingSearchViewModel model = new OvertimeReportingSearchViewModel()
+            {
+                EmployeeInfo = employee,
+                LocationSelectList = locationList.ToSelectList(null, null, null, true, "Any", "Any"),
+                SearchResults = weeklyTotalDurationDTOs,
+                BusinessWeekStartDate = daysInWeek.FirstOrDefault(),
+                BusinessWeekEndDate = daysInWeek.LastOrDefault(),
             };
 
             return model;
