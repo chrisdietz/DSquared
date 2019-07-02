@@ -129,6 +129,13 @@ namespace D_Squared.Web.Helpers
                 return IsInRole(DomainConstants.RoleNames.DSquaredMandatedHoursGroup);
         }
 
+        public bool IsDSquaredReports()
+        {
+            if (ConfigurationManager.AppSettings["ApplicationRegion"] == "Development")
+                return true;
+            else //quick check for Reports role
+                return IsInRole(DomainConstants.RoleNames.DSquaredReportsGroup);
+        }
         public bool IsDSquaredAdmin()
         {
             if (ConfigurationManager.AppSettings["ApplicationRegion"] == "Development")

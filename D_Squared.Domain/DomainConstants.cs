@@ -22,6 +22,7 @@ namespace D_Squared.Domain
             public const string DSquaredTipReportingGroup = "D2TipReporting";
             public const string DSquaredSpreadHoursGroup = "D2SpreadHours";
             public const string DSquaredMandatedHoursGroup = "D2MandatedHours";
+            public const string DSquaredReportsGroup = "D2Reports";
 
             public const string DSquaredAdminGroup = "D2Admin";
         }

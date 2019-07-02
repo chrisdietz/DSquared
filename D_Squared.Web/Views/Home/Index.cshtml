@@ -210,6 +210,8 @@
                 </a>
             </div>
         }
+        @if (User.IsDSquaredReports() || User.IsDivisionalVP() || User.IsRegionalManager() || User.IsDSquaredAdmin())
+        {
         <div class="col-md-4">
             <a class="dashboard-stat dashboard-stat-v2 red" href="/SalesReporting/Index">
                 <div class="visual">
@@ -223,5 +225,6 @@
                 </div>
             </a>
         </div>
+        }
     }
 </div>
