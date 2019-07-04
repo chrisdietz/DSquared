@@ -71,6 +71,14 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SearchDTO.SelectedHours, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        <div class="input-group col-md-8">
+                           @Html.TextBoxFor(m => m.SearchDTO.SelectedHours, new { @Value = Model.SearchDTO.SelectedHours, @class= "form-control" })
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col-md-5">
                 <div class="panel panel-default firstRowPanel">
@@ -116,7 +124,7 @@
                         @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().TotalDuration)
                     </th>
                     <th class="alert-danger">
-                        @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().Overtime)
+                        Hours Over @Model.SearchDTO.SelectedHours
                     </th>
                 </tr>
             </thead>

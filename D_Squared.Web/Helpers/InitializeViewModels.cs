@@ -1053,13 +1053,13 @@ namespace D_Squared.Web.Helpers
             List<DateTime> daysInWeek = GetCurrentWeekAsDates(searchDTO.SelectedDate);
 
             List<WeeklyTotalDurationDTO> weeklyTotalDurationDTOs = (string.IsNullOrEmpty(searchDTO.SelectedJob))
-                                                    ? sdq.GetWeeklyTotalDurationDTOs(selectedLocation, daysInWeek.LastOrDefault())
-                                                    : sdq.GetWeeklyTotalDurationDTOsByJob(searchDTO.SelectedJob, selectedLocation, daysInWeek.LastOrDefault());
+                                                    ? sdq.GetWeeklyTotalDurationDTOs(selectedLocation, daysInWeek.LastOrDefault(), searchDTO.SelectedHours)
+                                                    : sdq.GetWeeklyTotalDurationDTOsByJob(searchDTO.SelectedJob, selectedLocation, daysInWeek.LastOrDefault(), searchDTO.SelectedHours);
 
             OvertimeReportingSearchViewModel model = new OvertimeReportingSearchViewModel()
             {
                 EmployeeInfo = employee,
-                LocationSelectList = locationList.ToSelectList(null, null, null, true, "Any", "Any"),
+                LocationSelectList = locationList.ToSelectList(null, null, null, true, "Select", "Select"),
                 SearchResults = weeklyTotalDurationDTOs,
                 BusinessWeekStartDate = daysInWeek.FirstOrDefault(),
                 BusinessWeekEndDate = daysInWeek.LastOrDefault(),

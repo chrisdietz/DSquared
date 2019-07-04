@@ -190,6 +190,7 @@
     <Compile Include="Controllers\DailyDepositController.cs" />
     <Compile Include="Controllers\HelpDocumentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LaborReportsController.cs" />
     <Compile Include="Controllers\NYSController.cs" />
     <Compile Include="Controllers\RedbookController.cs" />
     <Compile Include="Controllers\SalesForecastController.cs" />
@@ -655,8 +656,9 @@
     <Content Include="Views\TipPercentage\_EmployeeSalesAndTipsDetail.cshtml" />
     <Content Include="Views\NYS\Index.cshtml" />
     <Content Include="Views\NYS\Search.cshtml" />
-    <Content Include="Views\SalesReporting\OvertimeReport.cshtml" />
     <Content Include="Views\SalesReporting\Index.cshtml" />
+    <Content Include="Views\LaborReports\Index.cshtml" />
+    <Content Include="Views\LaborReports\OvertimeReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

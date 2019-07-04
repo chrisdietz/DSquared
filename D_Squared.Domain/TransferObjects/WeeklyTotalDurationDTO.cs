@@ -18,7 +18,7 @@ namespace D_Squared.Domain.TransferObjects
         [Display(Name = "Hours Worked")]
         public double TotalDuration { get; set; }
         [Display(Name = "Hours Over 35")]
-        public double Overtime { get { return (TotalDuration - 35); } }
+        public double Overtime { get; set; }
 
         public WeeklyTotalDurationDTO()
         {
@@ -46,12 +46,16 @@ namespace D_Squared.Domain.TransferObjects
 
         public string SelectedLocation { get; set; }
         public string SelectedJob { get; set; }
+        [Display(Name = "Hours")]
+        [Range(0, 168, ErrorMessage = "Only Numbers are allowed.")]
+        public int SelectedHours { get; set; }
 
         public WeeklyTotalDurationSearchDTO()
         {
             SelectedDate = DateTime.Today;
             SelectedLocation = string.Empty;
             SelectedJob = string.Empty;
+            SelectedHours = 35; // Default Hours
         }
 
         public WeeklyTotalDurationSearchDTO(DateTime selectedDate)

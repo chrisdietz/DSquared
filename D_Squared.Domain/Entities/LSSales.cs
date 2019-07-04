@@ -10,7 +10,7 @@ namespace D_Squared.Domain.Entities
     public class LSSales
     {
         [Key]
-        public string CheckID { get; set; }
+        public long CheckID { get; set; }
 
         [Display(Name = "Date")]
         public DateTime BusinessDate { get; set; }

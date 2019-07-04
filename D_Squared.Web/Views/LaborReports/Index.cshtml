@@ -1,0 +1,36 @@
+﻿@model D_Squared.Web.Models.OvertimeReportingSearchViewModel
+<div class="jumbotron" style="background-image: url('/Content/images/lightwood-bg.jpg'); padding-bottom:5px; padding-top:20px; margin-bottom:10px">
+    <div style="max-width:500px; display: block; margin: 0 auto;">
+        <img src="~/Content/images/millers_d2_logo.png" style="max-width:500px;" />
+    </div>
+    <div class="text-center" style="display: block; margin: 0 auto; max-width:500px">
+        <h2>Reports</h2>
+        <p class="lead">
+            Employee: @Model.EmployeeInfo.FirstName @Model.EmployeeInfo.LastName
+            <br />
+            Access Time: @DateTime.Now.ToLocalTime().ToString()
+            <br />
+            Restaurant: <strong><u>@Model.EmployeeInfo.StoreNumber</u></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </p>
+    </div>
+</div>
+
+<hr />
+
+<div class="row">
+
+    <div class="col-md-4">
+        <a class="dashboard-stat dashboard-stat-v2 red" href="OvertimeReport">
+            <div class="visual">
+                <i class="fa fa-file"></i>
+            </div>
+            <div class="details">
+                <div class="number">
+                    Overtime Report
+                </div>
+                <div class="desc">View Overtime Report</div>
+            </div>
+        </a>
+    </div>
+</div>
+

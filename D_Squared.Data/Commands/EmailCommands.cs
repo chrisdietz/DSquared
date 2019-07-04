@@ -56,6 +56,7 @@ namespace D_Squared.Data.Commands
             sb.AppendLine("<b>Employee Notes: </b>" + entry.EmployeeNotes + "<br>");
             sb.AppendLine("<b>Food and Beverage: </b>" + entry.FoodAndBeverage + "<br>");
             sb.AppendLine("<b>M Power: </b>" + entry.MPower + "<br>");
+            sb.AppendLine("<b>LSM Activities: </b>" + entry.LSMActivities + "<br>");
             sb.Append("<b>Events Affecting Sales: </b>");
 
             //event listing

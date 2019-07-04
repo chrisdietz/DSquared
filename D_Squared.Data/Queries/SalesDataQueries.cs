@@ -31,34 +31,43 @@ namespace D_Squared.Data.Queries
 
         public SalesDataDTO GetSelectedBusinessDaySales(DateTime businessDate, string storeNumber)
         {
-            LSSales sData = db.LSSales.Where(sd => sd.BusinessDate == businessDate.Date && sd.Store.StartsWith(storeNumber)).FirstOrDefault();
-            SalesDataDTO sdDTO = new SalesDataDTO(sData);
+            List<LSSales> sDataList = db.LSSales.Where(sd => sd.BusinessDate == businessDate.Date && sd.Store.StartsWith(storeNumber)).ToList();
+            SalesDataDTO sdDTO = new SalesDataDTO();
+            if(sDataList != null && sDataList.Count > 0)
+            {
+                sdDTO.Sales = sDataList.Sum(sd => sd.Sales);
+                sdDTO.Discounts = sDataList.Sum(sd => sd.Discounts);
+                sdDTO.DateOfEntry = sDataList.FirstOrDefault().BusinessDate;
+                sdDTO.Checks = sDataList.Select(sd => sd.CheckID).Distinct().ToList().Count.ToString();
+            }
             return sdDTO;
         }
 
-        public List<WeeklyTotalDurationDTO> GetWeeklyTotalDurationDTOs(string storeNumber, DateTime weekEnding)
+        public List<WeeklyTotalDurationDTO> GetWeeklyTotalDurationDTOs(string storeNumber, DateTime weekEnding, int hours)
         {
-            List<WeeklyTotalDurationDTO> weeklyTotalDurationDTOs = db.WeeklyTotalDurations.Where(w => w.StoreNumber == storeNumber && w.WeekEnding == weekEnding && w.TotalDuration > 35)
+            List<WeeklyTotalDurationDTO> weeklyTotalDurationDTOs = db.WeeklyTotalDurations.Where(w => w.StoreNumber == storeNumber && w.WeekEnding == weekEnding && w.TotalDuration > hours)
                                                                     .Select(w => new WeeklyTotalDurationDTO
                                                                     {
                                                                         WeekEnding = w.WeekEnding,
                                                                         StoreNumber = w.StoreNumber,
                                                                         StaffName = w.StaffName,
-                                                                        TotalDuration = w.TotalDuration
+                                                                        TotalDuration = w.TotalDuration,
+                                                                        Overtime = w.TotalDuration - hours
                                                                     }).ToList();
 
             return weeklyTotalDurationDTOs;
         }
 
-        public List<WeeklyTotalDurationDTO>  GetWeeklyTotalDurationDTOsByJob(string job, string storeNumber, DateTime weekEnding)
+        public List<WeeklyTotalDurationDTO>  GetWeeklyTotalDurationDTOsByJob(string job, string storeNumber, DateTime weekEnding, int hours)
         {
-            List<WeeklyTotalDurationDTO> weeklyTotalDurationDTOs = db.WeeklyTotalDurations.Where(w => w.StoreNumber == storeNumber && w.WeekEnding == weekEnding /*&& w.Job == job*/)
+            List<WeeklyTotalDurationDTO> weeklyTotalDurationDTOs = db.WeeklyTotalDurations.Where(w => w.StoreNumber == storeNumber && w.WeekEnding == weekEnding && w.TotalDuration > hours /*&& w.Job == job*/)
                                                                     .Select(w => new WeeklyTotalDurationDTO
                                                                     {
                                                                         WeekEnding = w.WeekEnding,
                                                                         StoreNumber = w.StoreNumber,
                                                                         StaffName = w.StaffName,
-                                                                        TotalDuration = w.TotalDuration
+                                                                        TotalDuration = w.TotalDuration,
+                                                                        Overtime = w.TotalDuration - hours
                                                                     }).ToList();
 
             return weeklyTotalDurationDTOs;

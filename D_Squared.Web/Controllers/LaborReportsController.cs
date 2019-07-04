@@ -11,13 +11,13 @@ using System.Web.Mvc;
 
 namespace D_Squared.Web.Controllers
 {
-    public class SalesReportingController : BaseController
+    public class LaborReportsController : BaseController
     {
         private readonly D_SquaredDbContext db;
         private readonly SalesDataQueries sdq;
         private readonly SalesReportingInitializer init;
 
-        public SalesReportingController()
+        public LaborReportsController()
         {
             db = new D_SquaredDbContext();
             sdq = new SalesDataQueries(db);
@@ -25,6 +25,7 @@ namespace D_Squared.Web.Controllers
             init = new SalesReportingInitializer(eq, sdq);
         }
 
+        // GET: LaborReports
         public ActionResult Index()
         {
             string username = User.TruncatedName;
@@ -32,8 +33,15 @@ namespace D_Squared.Web.Controllers
             OvertimeReportingSearchViewModel model = new OvertimeReportingSearchViewModel() { EmployeeInfo = employee };
             return View(model);
         }
-        // GET: 
+        public ActionResult OvertimeReport(WeeklyTotalDurationSearchDTO searchDTO)
+        {
+            string username = User.TruncatedName;
+            EmployeeDTO employee = eq.GetEmployeeInfo(username);
+            OvertimeReportingSearchViewModel model = init.InitializeOvertimeReportingSearchViewModel(User, searchDTO);
+            model.SearchDTO = searchDTO;
 
-        
+            return View(model);
+        }
+
     }
 }

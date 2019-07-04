@@ -23,7 +23,7 @@ namespace D_Squared.Domain.TransferObjects
                 DateOfEntry = salesData.BusinessDate;
                 Sales = salesData.Sales;
                 Discounts = salesData.Discounts;
-                Checks = salesData.CheckID;
+                Checks = salesData.CheckID != long.MinValue ? salesData.CheckID.ToString() : "0";
             }
             else
             {
