@@ -31,7 +31,7 @@ namespace D_Squared.Domain.TransferObjects
             }
         }
 
-        public SalesDataDTO (RedbookSalesData rbSalesData)
+        public SalesDataDTO(RedbookSalesData rbSalesData)
         {
             if (rbSalesData != null)
             {
@@ -59,5 +59,60 @@ namespace D_Squared.Domain.TransferObjects
         public string Checks { get; set; }
 
         public string Manager { get; set; }
+
+        [Display(Name = "Food Sales")]
+        public decimal FoodSales { get; set; }
+
+        [Display(Name = "Liquor Sales")]
+        public decimal LiquorSales { get; set; }
+
+        [Display(Name = "Beer Draft Sales")]
+        public decimal BeerDraftSales { get; set; }
+
+        [Display(Name = "Beer Bottle Sales")]
+        public decimal BeerBottleSales { get; set; }
+
+        [Display(Name = "Non Alc Bev Sales")]
+        public decimal NonAlcBevSales { get; set; }
+
+        [Display(Name = "Wine Sales")]
+        public decimal WineSales { get; set; }
+
+        [Display(Name = "Retail Beer Sales")]
+        public decimal RetailBeerSales { get; set; }
+
+        [Display(Name = "Retail Sales")]
+        public decimal RetailSales { get; set; }
+
+        [Display(Name = "Tax Amount")]
+        public decimal TaxAmount { get; set; }
+
+        [Display(Name = "Payment Amount")]
+        public decimal PaymentAmount { get; set; }
+
+        [Display(Name = "Adjustment Sales")]
+        public decimal AdjustmentSales { get; set; }
+    }
+
+    public class SalesDataSearchDTO
+    {
+        [Display(Name = "Business Date")]
+        [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime SelectedDate { get; set; }
+        public bool ByDate { get; set; }
+        public bool ByWeek { get; set; }
+
+        public string SelectedLocation { get; set; }
+
+        public SalesDataSearchDTO()
+        {
+            SelectedDate = DateTime.Today;
+            SelectedLocation = string.Empty;
+        }
+
+        public SalesDataSearchDTO(DateTime selectedDate)
+        {
+            SelectedDate = selectedDate;
+        }
     }
 }

@@ -23,5 +23,16 @@ namespace D_Squared.Domain.Entities
 
         [Display(Name = "Discounts")]
         public decimal Discounts { get; set; }
+
+        public decimal FoodSales { get; set; }
+        public decimal LiquorSales { get; set; }
+        public decimal BeerDraftSales { get; set; }
+        public decimal BeerBottleSales { get; set; }
+        public decimal NonAlcBevSales { get; set; }
+        public decimal WineSales { get; set; }
+        public decimal RetailBeerSales { get; set; }
+        public decimal RetailSales { get; set; }
+        public decimal TaxAmount { get; set; }
+        public decimal PaymentAmount { get; set; }
     }
 }
