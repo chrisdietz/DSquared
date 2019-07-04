@@ -33,11 +33,11 @@ namespace D_Squared.Data.Queries
         {
             List<LSSales> sDataList = db.LSSales.Where(sd => sd.BusinessDate == businessDate.Date && sd.Store.StartsWith(storeNumber)).ToList();
             SalesDataDTO sdDTO = new SalesDataDTO();
-            if(sDataList != null && sDataList.Count > 0)
+            sdDTO.DateOfEntry = businessDate;
+            if (sDataList != null && sDataList.Count > 0)
             {
                 sdDTO.Sales = sDataList.Sum(sd => sd.Sales);
                 sdDTO.Discounts = sDataList.Sum(sd => sd.Discounts);
-                sdDTO.DateOfEntry = sDataList.FirstOrDefault().BusinessDate;
                 sdDTO.Checks = sDataList.Select(sd => sd.CheckID).Distinct().ToList().Count.ToString();
             }
             return sdDTO;
