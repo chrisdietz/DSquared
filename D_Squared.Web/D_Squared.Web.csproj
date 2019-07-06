@@ -746,6 +746,7 @@
     <Content Include="Views\SalesReporting\Index.cshtml" />
     <Content Include="Views\LaborReports\Index.cshtml" />
     <Content Include="Views\LaborReports\OvertimeReport.cshtml" />
+    <Content Include="Views\SalesReporting\SalesReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

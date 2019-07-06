@@ -24,6 +24,16 @@ namespace D_Squared.Domain.TransferObjects
                 Sales = salesData.Sales;
                 Discounts = salesData.Discounts;
                 Checks = salesData.CheckID != long.MinValue ? salesData.CheckID.ToString() : "0";
+                FoodSales = salesData.FoodSales;
+                LiquorSales = salesData.LiquorSales;
+                BeerDraftSales = salesData.BeerDraftSales;
+                BeerBottleSales = salesData.BeerBottleSales;
+                NonAlcBevSales = salesData.NonAlcBevSales;
+                WineSales = salesData.WineSales;
+                RetailBeerSales = salesData.RetailBeerSales;
+                RetailSales = salesData.RetailSales;
+                TaxAmount = salesData.TaxAmount;
+                PaymentAmount = salesData.PaymentAmount;
             }
             else
             {
@@ -96,11 +106,13 @@ namespace D_Squared.Domain.TransferObjects
 
     public class SalesDataSearchDTO
     {
+        public const string ReportByDay = "ByDay";
+        public const string ReportByWeek = "ByWeek";
+
         [Display(Name = "Business Date")]
         [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime SelectedDate { get; set; }
-        public bool ByDate { get; set; }
-        public bool ByWeek { get; set; }
+        public string SelectedReportType { get; set; }
 
         public string SelectedLocation { get; set; }
 
@@ -108,6 +120,7 @@ namespace D_Squared.Domain.TransferObjects
         {
             SelectedDate = DateTime.Today;
             SelectedLocation = string.Empty;
+            SelectedReportType = ReportByDay;
         }
 
         public SalesDataSearchDTO(DateTime selectedDate)

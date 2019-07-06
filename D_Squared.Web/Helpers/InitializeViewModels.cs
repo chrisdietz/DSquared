@@ -1067,5 +1067,35 @@ namespace D_Squared.Web.Helpers
 
             return model;
         }
+
+        public SalesReportSearchViewModel InitializeSalesReportSearchViewModel(CustomClaimsPrincipal User, SalesDataSearchDTO searchDTO)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(User.TruncatedName);
+
+            List<string> locationList = GetLocationList(employee, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin(), false);
+
+            if (locationList.Count() == 0) locationList.Add(employee.StoreNumber);
+
+            string selectedLocation = employee.StoreNumber;
+
+            if (string.IsNullOrEmpty(searchDTO.SelectedLocation)) searchDTO.SelectedLocation = selectedLocation;
+
+
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(searchDTO.SelectedDate);
+
+            List<SalesDataDTO> salesDataDTOs = (searchDTO.SelectedReportType == SalesDataSearchDTO.ReportByDay) ? sdq.GetSalesDataByDay(searchDTO.SelectedLocation, searchDTO.SelectedDate)
+                                                                    : sdq.GetSalesDataByWeek(searchDTO.SelectedLocation, daysInWeek.FirstOrDefault(), daysInWeek.LastOrDefault());
+            SalesReportSearchViewModel model = new SalesReportSearchViewModel
+            {
+                SearchResults = salesDataDTOs,
+                BusinessWeekStartDate = daysInWeek.FirstOrDefault(),
+                BusinessWeekEndDate = daysInWeek.LastOrDefault(),
+                EmployeeInfo = employee,
+                SearchDTO = searchDTO,
+                LocationSelectList = locationList.ToSelectList(null, null, null, true, "Select", "Select")
+            };
+
+            return model;
+        }
     }
 }

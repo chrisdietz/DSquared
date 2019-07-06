@@ -29,11 +29,20 @@ namespace D_Squared.Web.Controllers
         {
             string username = User.TruncatedName;
             EmployeeDTO employee = eq.GetEmployeeInfo(username);
-            OvertimeReportingSearchViewModel model = new OvertimeReportingSearchViewModel() { EmployeeInfo = employee };
+            SalesReportSearchViewModel model = new SalesReportSearchViewModel() { EmployeeInfo = employee };
             return View(model);
         }
         // GET: 
+        public ActionResult SalesReport(SalesDataSearchDTO searchDTO)
+        {
+            string username = User.TruncatedName;
+            EmployeeDTO employee = eq.GetEmployeeInfo(username);
+            if (string.IsNullOrEmpty(searchDTO.SelectedReportType)) searchDTO.SelectedReportType = SalesDataSearchDTO.ReportByDay;
+            SalesReportSearchViewModel model = init.InitializeSalesReportSearchViewModel(User, searchDTO);
+            model.SearchDTO = searchDTO;
 
-        
+            return View(model);
+        }
+
     }
 }

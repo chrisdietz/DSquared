@@ -82,5 +82,63 @@ namespace D_Squared.Data.Queries
                                         }).ToList();
             return jobs;
         }
+
+        public List<SalesDataDTO> GetSalesDataByDay(string storeNumber, DateTime businessDate)
+        {
+            List<SalesDataDTO> sDataList = db.LSSales.Where(sd => sd.BusinessDate == businessDate.Date && sd.Store.StartsWith(storeNumber))
+                                            .Select(ls => new SalesDataDTO
+                                            {
+                                                DateOfEntry = ls.BusinessDate,
+                                                Sales = ls.Sales,
+                                                Discounts = ls.Discounts,
+                                                FoodSales = ls.FoodSales,
+                                                LiquorSales = ls.LiquorSales,
+                                                BeerDraftSales = ls.BeerDraftSales,
+                                                BeerBottleSales = ls.BeerBottleSales,
+                                                NonAlcBevSales = ls.NonAlcBevSales,
+                                                WineSales = ls.WineSales,
+                                                RetailBeerSales = ls.RetailBeerSales,
+                                                RetailSales = ls.RetailSales,
+                                                TaxAmount = ls.TaxAmount,
+                                                PaymentAmount = ls.PaymentAmount,
+                                                AdjustmentSales = ls.Sales - ls.Discounts
+                                            }).ToList();
+            return sDataList;
+
+        }
+
+        public List<SalesDataDTO> GetSalesDataByWeek(string storeNumber, DateTime startDate, DateTime endDate)
+        {
+            DateTime realEndDate = endDate.AddDays(1);
+            var lsSalesGroup = from sd in db.LSSales
+                                      where sd.BusinessDate >= startDate && sd.BusinessDate < realEndDate && sd.Store == storeNumber
+                                      group sd by sd.BusinessDate into sDataGroup
+                                      orderby sDataGroup.Key descending
+                                      select sDataGroup;
+            List<SalesDataDTO> salesDataDTOs = new List<SalesDataDTO>();
+            foreach (var sDataGroup in lsSalesGroup)
+            {
+                SalesDataDTO sdDTO = new SalesDataDTO()
+                {
+                    DateOfEntry = sDataGroup.Key,
+                    Sales = sDataGroup.Sum(sd => sd.Sales),
+                    Discounts = sDataGroup.Sum(sd => sd.Discounts),
+                    FoodSales = sDataGroup.Sum(sd => sd.FoodSales),
+                    LiquorSales = sDataGroup.Sum(sd => sd.LiquorSales),
+                    BeerDraftSales = sDataGroup.Sum(sd => sd.BeerDraftSales),
+                    BeerBottleSales = sDataGroup.Sum(sd => sd.BeerBottleSales),
+                    NonAlcBevSales = sDataGroup.Sum(sd => sd.NonAlcBevSales),
+                    WineSales = sDataGroup.Sum(sd => sd.WineSales),
+                    RetailBeerSales = sDataGroup.Sum(sd => sd.RetailBeerSales),
+                    RetailSales = sDataGroup.Sum(sd => sd.RetailSales),
+                    TaxAmount = sDataGroup.Sum(sd => sd.TaxAmount),
+                    PaymentAmount = sDataGroup.Sum(sd => sd.PaymentAmount),
+                    AdjustmentSales = sDataGroup.Sum(sd => sd.Sales) - sDataGroup.Sum(sd => sd.Discounts)
+                };
+                salesDataDTOs.Add(sdDTO);
+            }
+
+            return salesDataDTOs;
+        }
     }
 }
