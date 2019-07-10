@@ -133,9 +133,18 @@
         </caption>
         <thead>
             <tr>
-                <th>
-                    Business Date
-                </th>
+                @if (Model.SearchDTO.SelectedReportType == SalesDataSearchDTO.ReportByWeek)
+                {
+                    <th>
+                        Business Date
+                    </th>
+                }
+                else
+                {
+                    <th>
+                        Time
+                    </th>
+                }
                 <th>
                     @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().FoodSales)
                 </th>
@@ -176,44 +185,53 @@
             @{
                 foreach (var result in Model.SearchResults)
                 {
-                    <tr>
-                        <td>
-                            @result.DateOfEntry.ToShortDateString()
-                        </td>
-                        <td>
-                            @result.FoodSales.ToString("C2")
-                        </td>
-                        <td>
-                            @result.NonAlcBevSales.ToString("C2")
-                        </td>
-                        <td>
-                            @result.BeerBottleSales.ToString("C2")
-                        </td>
-                        <td>
-                            @result.BeerDraftSales.ToString("C2")
-                        </td>
-                        <td>
-                            @result.LiquorSales.ToString("C2")
-                        </td>
-                        <td>
-                            @result.RetailSales.ToString("C2")
-                        </td>
-                        <td>
-                            @result.WineSales.ToString("C2")
-                        </td>
-                        <td>
-                            @result.Sales.ToString("C2")
-                        </td>
-                        <td>
-                            @result.Discounts.ToString("C2")
-                        </td>
-                        <td>
-                            @result.AdjustmentSales.ToString("C2")
-                        </td>
-                        <td>
-                            @result.TaxAmount.ToString("C2")
-                        </td>
-                    </tr>
+            <tr>
+                @if (Model.SearchDTO.SelectedReportType == SalesDataSearchDTO.ReportByWeek)
+                {
+                    <td>
+                        @result.DateOfEntry.ToShortDateString()
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        @result.CloseTime.ToShortTimeString()
+                    </td>
+                }
+                <td>
+                    @result.FoodSales.ToString("C2")
+                </td>
+                <td>
+                    @result.NonAlcBevSales.ToString("C2")
+                </td>
+                <td>
+                    @result.BeerBottleSales.ToString("C2")
+                </td>
+                <td>
+                    @result.BeerDraftSales.ToString("C2")
+                </td>
+                <td>
+                    @result.LiquorSales.ToString("C2")
+                </td>
+                <td>
+                    @result.RetailSales.ToString("C2")
+                </td>
+                <td>
+                    @result.WineSales.ToString("C2")
+                </td>
+                <td>
+                    @result.Sales.ToString("C2")
+                </td>
+                <td>
+                    @result.Discounts.ToString("C2")
+                </td>
+                <td>
+                    @result.AdjustmentSales.ToString("C2")
+                </td>
+                <td>
+                    @result.TaxAmount.ToString("C2")
+                </td>
+            </tr>
                 }
             }
 

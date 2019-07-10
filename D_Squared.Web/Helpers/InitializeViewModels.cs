@@ -1031,35 +1031,79 @@ namespace D_Squared.Web.Helpers
             this.sdq = sdq;
         }
 
+        public SalesReportSearchViewModel InitializeSalesReportSearchViewModel(CustomClaimsPrincipal User, SalesDataSearchDTO searchDTO)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(User.TruncatedName);
+
+            List<string> locationList = GetLocationList(employee, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin(), false);
+
+            List<SelectListItem> locSelectList = null;
+            if (locationList.Count() == 0)
+            {
+                locSelectList = locationList.ToSelectList(null, null, null, true, employee.StoreNumber, employee.StoreNumber);
+            }
+            else
+            {
+                locSelectList = locationList.ToSelectList(null, null, null, true, "Select", "Select");
+            }
+
+            string selectedLocation = employee.StoreNumber;
+
+            if (string.IsNullOrEmpty(searchDTO.SelectedLocation)) searchDTO.SelectedLocation = selectedLocation;
+
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(searchDTO.SelectedDate);
+
+            List<SalesDataDTO> salesDataDTOs = (searchDTO.SelectedReportType == SalesDataSearchDTO.ReportByDay) ? sdq.GetSalesDataByDay(searchDTO.SelectedLocation.Substring(0, 3), searchDTO.SelectedDate)
+                                                                    : sdq.GetSalesDataByWeek(searchDTO.SelectedLocation.Substring(0, 3), daysInWeek.FirstOrDefault(), daysInWeek.LastOrDefault());
+            SalesReportSearchViewModel model = new SalesReportSearchViewModel
+            {
+                SearchResults = salesDataDTOs,
+                BusinessWeekStartDate = daysInWeek.FirstOrDefault(),
+                BusinessWeekEndDate = daysInWeek.LastOrDefault(),
+                EmployeeInfo = employee,
+                SearchDTO = searchDTO,
+                LocationSelectList = locSelectList
+            };
+
+            return model;
+        }
+    }
+
+    public class LaborReportsInitializer : InitializerBase
+    {
+        private readonly LaborDataQueries ldq;
+
+        public LaborReportsInitializer(EmployeeQueries eq, LaborDataQueries ldq) : base(eq)
+        {
+            this.ldq = ldq;
+        }
+
         public OvertimeReportingSearchViewModel InitializeOvertimeReportingSearchViewModel(CustomClaimsPrincipal User, WeeklyTotalDurationSearchDTO searchDTO)
         {
             EmployeeDTO employee = eq.GetEmployeeInfo(User.TruncatedName);
 
             List<string> locationList = GetLocationList(employee, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin(), false);
 
-            if (locationList.Count() == 0) locationList.Add(employee.StoreNumber);
-
-            string selectedLocation = employee.StoreNumber;
-
-            if (!string.IsNullOrEmpty(searchDTO.SelectedLocation)) selectedLocation = searchDTO.SelectedLocation.Substring(0, 3);
-
-            List<SelectListItem> jobs = sdq.GetDistinctJobNames(selectedLocation).Select(jn => new SelectListItem
+            List<SelectListItem> locSelectList = null;
+            if (locationList.Count() == 0)
             {
-                Text = jn.Job,
-                Value = jn.Job
-            }).ToList();
-            jobs.Insert(0, new SelectListItem { Value = "", Text = "All" });
+                locSelectList = locationList.ToSelectList(null, null, null, true, employee.StoreNumber, employee.StoreNumber);
+            }
+            else
+            {
+                locSelectList = locationList.ToSelectList(null, null, null, true, "Select", "Select");
+            }
+
+            if (string.IsNullOrEmpty(searchDTO.SelectedLocation)) searchDTO.SelectedLocation = employee.StoreNumber;
 
             List<DateTime> daysInWeek = GetCurrentWeekAsDates(searchDTO.SelectedDate);
 
-            List<WeeklyTotalDurationDTO> weeklyTotalDurationDTOs = (string.IsNullOrEmpty(searchDTO.SelectedJob))
-                                                    ? sdq.GetWeeklyTotalDurationDTOs(selectedLocation, daysInWeek.LastOrDefault(), searchDTO.SelectedHours)
-                                                    : sdq.GetWeeklyTotalDurationDTOsByJob(searchDTO.SelectedJob, selectedLocation, daysInWeek.LastOrDefault(), searchDTO.SelectedHours);
-
+            List<WeeklyTotalDurationDTO> weeklyTotalDurationDTOs = ldq.GetWeeklyTotalDurationDTOs(searchDTO.SelectedLocation.Substring(0, 3), daysInWeek.LastOrDefault(), searchDTO.SelectedHours);
+         
             OvertimeReportingSearchViewModel model = new OvertimeReportingSearchViewModel()
             {
                 EmployeeInfo = employee,
-                LocationSelectList = locationList.ToSelectList(null, null, null, true, "Select", "Select"),
+                LocationSelectList = locSelectList,
                 SearchResults = weeklyTotalDurationDTOs,
                 BusinessWeekStartDate = daysInWeek.FirstOrDefault(),
                 BusinessWeekEndDate = daysInWeek.LastOrDefault(),
@@ -1068,31 +1112,60 @@ namespace D_Squared.Web.Helpers
             return model;
         }
 
-        public SalesReportSearchViewModel InitializeSalesReportSearchViewModel(CustomClaimsPrincipal User, SalesDataSearchDTO searchDTO)
+        public LaborSummarySearchViewModel InitializeLaborSummarySearchViewModel(CustomClaimsPrincipal User, LaborDataSearchDTO searchDTO)
         {
             EmployeeDTO employee = eq.GetEmployeeInfo(User.TruncatedName);
 
             List<string> locationList = GetLocationList(employee, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin(), false);
 
-            if (locationList.Count() == 0) locationList.Add(employee.StoreNumber);
+            List<SelectListItem> locSelectList = null;
+            if (locationList.Count() == 0)
+            {
+                locSelectList = locationList.ToSelectList(null, null, null, true, employee.StoreNumber, employee.StoreNumber);
+            }
+            else
+            {
+                locSelectList = locationList.ToSelectList(null, null, null, true, "Select", "Select");
+            }
 
-            string selectedLocation = employee.StoreNumber;
-
-            if (string.IsNullOrEmpty(searchDTO.SelectedLocation)) searchDTO.SelectedLocation = selectedLocation;
+            if (string.IsNullOrEmpty(searchDTO.SelectedLocation)) searchDTO.SelectedLocation = employee.StoreNumber;
 
 
             List<DateTime> daysInWeek = GetCurrentWeekAsDates(searchDTO.SelectedDate);
 
-            List<SalesDataDTO> salesDataDTOs = (searchDTO.SelectedReportType == SalesDataSearchDTO.ReportByDay) ? sdq.GetSalesDataByDay(searchDTO.SelectedLocation, searchDTO.SelectedDate)
-                                                                    : sdq.GetSalesDataByWeek(searchDTO.SelectedLocation, daysInWeek.FirstOrDefault(), daysInWeek.LastOrDefault());
-            SalesReportSearchViewModel model = new SalesReportSearchViewModel
+            List<LaborDataDTO> laborDataDTOs = null;
+
+            if (searchDTO.SelectedDayOrWeekFilter == LaborDataSearchDTO.ReportByDay)
             {
-                SearchResults = salesDataDTOs,
+                if(searchDTO.SelectedJobOrCenterFilter == LaborDataSearchDTO.ReportByJob)
+                {
+                    laborDataDTOs = ldq.GetLaborDataByDayAndJob(searchDTO.SelectedLocation.Substring(0, 3), searchDTO.SelectedDate);
+                }
+                else
+                {
+                    laborDataDTOs = ldq.GetLaborDataByDayAndCenter(searchDTO.SelectedLocation.Substring(0, 3), searchDTO.SelectedDate);
+                }
+            }
+            else
+            {
+                if (searchDTO.SelectedJobOrCenterFilter == LaborDataSearchDTO.ReportByJob)
+                {
+                    laborDataDTOs = ldq.GetLaborDataByWeekAndJob(searchDTO.SelectedLocation.Substring(0, 3), daysInWeek.FirstOrDefault(), daysInWeek.LastOrDefault());
+                }
+                else
+                {
+                    laborDataDTOs = ldq.GetLaborDataByWeekAndCenter(searchDTO.SelectedLocation.Substring(0, 3), daysInWeek.FirstOrDefault(), daysInWeek.LastOrDefault());
+                }
+            }
+
+            LaborSummarySearchViewModel model = new LaborSummarySearchViewModel
+            {
+                SearchResults = laborDataDTOs,
                 BusinessWeekStartDate = daysInWeek.FirstOrDefault(),
                 BusinessWeekEndDate = daysInWeek.LastOrDefault(),
                 EmployeeInfo = employee,
                 SearchDTO = searchDTO,
-                LocationSelectList = locationList.ToSelectList(null, null, null, true, "Select", "Select")
+                LocationSelectList = locSelectList
             };
 
             return model;

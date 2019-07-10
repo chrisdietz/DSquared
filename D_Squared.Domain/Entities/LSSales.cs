@@ -10,10 +10,13 @@ namespace D_Squared.Domain.Entities
     public class LSSales
     {
         [Key]
+        public long ID { get; set; }
         public long CheckID { get; set; }
 
         [Display(Name = "Date")]
         public DateTime BusinessDate { get; set; }
+
+        public DateTime CloseTime { get; set; }
 
         [StringLength(3)]
         public string Store { get; set; }

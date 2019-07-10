@@ -21,6 +21,7 @@ namespace D_Squared.Domain.TransferObjects
             {
                 DayOfWeek = salesData.BusinessDate.DayOfWeek.ToString();
                 DateOfEntry = salesData.BusinessDate;
+                CloseTime = salesData.CloseTime;
                 Sales = salesData.Sales;
                 Discounts = salesData.Discounts;
                 Checks = salesData.CheckID != long.MinValue ? salesData.CheckID.ToString() : "0";
@@ -58,6 +59,9 @@ namespace D_Squared.Domain.TransferObjects
 
         [Display(Name = "Date")]
         public DateTime DateOfEntry { get; set; }
+
+        [Display(Name = "Time")]
+        public DateTime CloseTime { get; set; }
 
         [Display(Name = "Sales")]
         public decimal Sales { get; set; }

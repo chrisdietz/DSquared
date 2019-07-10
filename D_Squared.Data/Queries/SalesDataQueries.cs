@@ -43,36 +43,6 @@ namespace D_Squared.Data.Queries
             return sdDTO;
         }
 
-        public List<WeeklyTotalDurationDTO> GetWeeklyTotalDurationDTOs(string storeNumber, DateTime weekEnding, int hours)
-        {
-            List<WeeklyTotalDurationDTO> weeklyTotalDurationDTOs = db.WeeklyTotalDurations.Where(w => w.StoreNumber == storeNumber && w.WeekEnding == weekEnding && w.TotalDuration > hours)
-                                                                    .Select(w => new WeeklyTotalDurationDTO
-                                                                    {
-                                                                        WeekEnding = w.WeekEnding,
-                                                                        StoreNumber = w.StoreNumber,
-                                                                        StaffName = w.StaffName,
-                                                                        TotalDuration = w.TotalDuration,
-                                                                        Overtime = w.TotalDuration - hours
-                                                                    }).ToList();
-
-            return weeklyTotalDurationDTOs;
-        }
-
-        public List<WeeklyTotalDurationDTO>  GetWeeklyTotalDurationDTOsByJob(string job, string storeNumber, DateTime weekEnding, int hours)
-        {
-            List<WeeklyTotalDurationDTO> weeklyTotalDurationDTOs = db.WeeklyTotalDurations.Where(w => w.StoreNumber == storeNumber && w.WeekEnding == weekEnding && w.TotalDuration > hours /*&& w.Job == job*/)
-                                                                    .Select(w => new WeeklyTotalDurationDTO
-                                                                    {
-                                                                        WeekEnding = w.WeekEnding,
-                                                                        StoreNumber = w.StoreNumber,
-                                                                        StaffName = w.StaffName,
-                                                                        TotalDuration = w.TotalDuration,
-                                                                        Overtime = w.TotalDuration - hours
-                                                                    }).ToList();
-
-            return weeklyTotalDurationDTOs;
-        }
-
         public List<EmployeeJobDTO> GetDistinctJobNames(string storeNumber)
         {
             List<EmployeeJobDTO> jobs = db.EmployeeJobs.Where(j => j.StoreNumber == storeNumber).Distinct()
@@ -89,6 +59,7 @@ namespace D_Squared.Data.Queries
                                             .Select(ls => new SalesDataDTO
                                             {
                                                 DateOfEntry = ls.BusinessDate,
+                                                CloseTime = ls.CloseTime,
                                                 Sales = ls.Sales,
                                                 Discounts = ls.Discounts,
                                                 FoodSales = ls.FoodSales,

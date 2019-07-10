@@ -14,15 +14,15 @@ namespace D_Squared.Web.Controllers
     public class LaborReportsController : BaseController
     {
         private readonly D_SquaredDbContext db;
-        private readonly SalesDataQueries sdq;
-        private readonly SalesReportingInitializer init;
+        private readonly LaborDataQueries ldq;
+        private readonly LaborReportsInitializer init;
 
         public LaborReportsController()
         {
             db = new D_SquaredDbContext();
-            sdq = new SalesDataQueries(db);
+            ldq = new LaborDataQueries(db);
 
-            init = new SalesReportingInitializer(eq, sdq);
+            init = new LaborReportsInitializer(eq, ldq);
         }
 
         // GET: LaborReports
@@ -43,5 +43,15 @@ namespace D_Squared.Web.Controllers
             return View(model);
         }
 
+        public ActionResult LaborSummary(LaborDataSearchDTO searchDTO)
+        {
+            string username = User.TruncatedName;
+            EmployeeDTO employee = eq.GetEmployeeInfo(username);
+            
+            LaborSummarySearchViewModel model = init.InitializeLaborSummarySearchViewModel(User, searchDTO);
+            model.SearchDTO = searchDTO;
+
+            return View(model);
+        }
     }
 }

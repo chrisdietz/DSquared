@@ -10,6 +10,7 @@ namespace D_Squared.Domain.Entities
     public class WeeklyTotalDuration
     {
         [Key]
+        public long Id { get; set; }
         public string ExternalID { get; set; }
         public DateTime WeekEnding { get; set; }
         public string StoreNumber { get; set; }
