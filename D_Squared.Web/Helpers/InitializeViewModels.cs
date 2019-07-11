@@ -1067,6 +1067,40 @@ namespace D_Squared.Web.Helpers
 
             return model;
         }
+
+        public IdealCashReportSearchViewModel InitializeIdealCashReportSearchViewModel(CustomClaimsPrincipal User, IdealCashSearchDTO searchDTO)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(User.TruncatedName);
+
+            List<string> locationList = GetLocationList(employee, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin(), false);
+
+            List<SelectListItem> locSelectList = null;
+            if (locationList.Count() == 0)
+            {
+                locSelectList = locationList.ToSelectList(null, null, null, true, employee.StoreNumber, employee.StoreNumber);
+            }
+            else
+            {
+                locSelectList = locationList.ToSelectList(null, null, null, true, "Select", "Select");
+            }
+
+            if (string.IsNullOrEmpty(searchDTO.SelectedLocation)) searchDTO.SelectedLocation = employee.StoreNumber;
+
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(searchDTO.SelectedDate);
+
+            List<IdealCashDTO> idealCashDTOs = sdq.GetIdealCashDataByWeek(searchDTO.SelectedLocation.Substring(0, 3), daysInWeek.FirstOrDefault(), daysInWeek.LastOrDefault());
+
+            IdealCashReportSearchViewModel model = new IdealCashReportSearchViewModel()
+            {
+                EmployeeInfo = employee,
+                LocationSelectList = locSelectList,
+                SearchResults = idealCashDTOs,
+                BusinessWeekStartDate = daysInWeek.FirstOrDefault(),
+                BusinessWeekEndDate = daysInWeek.LastOrDefault()
+            };
+
+            return model;
+        }
     }
 
     public class LaborReportsInitializer : InitializerBase
@@ -1170,5 +1204,6 @@ namespace D_Squared.Web.Helpers
 
             return model;
         }
+
     }
 }

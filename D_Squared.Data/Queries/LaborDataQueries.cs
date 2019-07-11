@@ -110,5 +110,6 @@ namespace D_Squared.Data.Queries
 
             return laborDataDTOs;
         }
+
     }
 }

@@ -111,5 +111,32 @@ namespace D_Squared.Data.Queries
 
             return salesDataDTOs;
         }
+
+
+        public List<IdealCashDTO> GetIdealCashDataByWeek(string storeNumber, DateTime startDate, DateTime endDate)
+        {
+            DateTime realEndDate = endDate.AddDays(1);
+            List<IdealCashDTO> idealCashDTOs = db.LSIdealCashes.Where(i => i.Store == storeNumber && i.BusinessDate >= startDate && i.BusinessDate < realEndDate)
+                                                    .Select(i => new IdealCashDTO
+                                                    {
+                                                        BusinessDate = i.BusinessDate,
+                                                        Store = i.Store,
+                                                        Cash = i.Cash,
+                                                        CCTips = i.CCTips,
+                                                        PaidIn = i.PaidIn,
+                                                        PaidOut = i.PaidOut,
+                                                        IdealCash = i.IdealCash
+                                                    }).ToList();
+
+            List<SalesDataDTO> salesDataDTOs = GetSalesDataByWeek(storeNumber, startDate, endDate);
+            foreach (var idealCashDTO in idealCashDTOs)
+            {
+                SalesDataDTO sdDTO = salesDataDTOs.Find(s => s.DateOfEntry == idealCashDTO.BusinessDate);
+                idealCashDTO.TotalSales = Convert.ToDouble(sdDTO.Sales);
+
+            }
+
+            return idealCashDTOs;
+        }
     }
 }

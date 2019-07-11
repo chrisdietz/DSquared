@@ -219,6 +219,7 @@
     <Compile Include="Models\Export.cs" />
     <Compile Include="Models\HelpDocumentViewModel.cs" />
     <Compile Include="Models\HomeViewModel.cs" />
+    <Compile Include="Models\IdealCashReportViewModel.cs" />
     <Compile Include="Models\LaborSummaryViewModel.cs" />
     <Compile Include="Models\NYSViewModel.cs" />
     <Compile Include="Models\OvertimeReportingViewModel.cs" />
@@ -749,6 +750,7 @@
     <Content Include="Views\LaborReports\OvertimeReport.cshtml" />
     <Content Include="Views\SalesReporting\SalesReport.cshtml" />
     <Content Include="Views\LaborReports\LaborSummary.cshtml" />
+    <Content Include="Views\SalesReporting\IdealCashReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

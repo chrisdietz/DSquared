@@ -43,6 +43,16 @@ namespace D_Squared.Web.Controllers
 
             return View(model);
         }
+        
+        public ActionResult IdealCashReport(IdealCashSearchDTO searchDTO)
+        {
+            string username = User.TruncatedName;
+            EmployeeDTO employee = eq.GetEmployeeInfo(username);
 
+            IdealCashReportSearchViewModel model = init.InitializeIdealCashReportSearchViewModel(User, searchDTO);
+            model.SearchDTO = searchDTO;
+
+            return View(model);
+        }
     }
 }
