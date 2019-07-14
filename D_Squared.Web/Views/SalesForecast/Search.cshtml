@@ -6,23 +6,36 @@
 }
 
 <div class="jumbotron" style="background-image: url('/Content/images/lightwood-bg.jpg'); padding-bottom:5px; padding-top:20px; margin-bottom:10px">
-    <div style="max-width:500px; display: block; margin: 0 auto;">
-        <img src="~/Content/images/millers_d2_logo.png" style="max-width:500px;" />
-    </div>
-    <div class="text-center" style="display: block; margin: 0 auto; max-width:500px">
-        <h2>Sales Forecast Search</h2>
-        <p class="lead">
-            Employee: @Model.EmployeeInfo.FirstName @Model.EmployeeInfo.LastName
-            <br />
-            <br />
-            Access Time: @DateTime.Now.ToLocalTime().ToString()
-            <br />
-            <br />
-        </p>
+    <div class="row">
+        <div class="col-md-4">
+            <div style="max-width:500px; display: block; margin: 0 auto;float:left;">
+                <img src="~/Content/images/millers_d2_logo.png" style="max-width:300px;" />
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="text-center" style="display: block; margin: 0 auto; max-width:500px">
+                <h2>Sales Forecast Search</h2>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="text-center" style="display: block; margin: 0 auto; max-width:500px">
+                <p class="lead">
+                    Time: @DateTime.Now.ToLocalTime().ToString()
+                    <br />
+                    Employee: @Model.EmployeeInfo.FirstName @Model.EmployeeInfo.LastName
+                </p>
+            </div>
+        </div>
     </div>
 </div>
 <br />
-<br />
+<div class="row">
+    <div class="col-md-12">
+        <a data-toggle="modal" href="#helpModal" class="btn btn-dsquared btn-sm" style="float:right; margin-left: 10px;"><i class="fa fa-question-circle" aria-hidden="true"></i></a>
+    </div>
+    <br />
+    <br />
+</div>
 
 @using (Html.BeginForm())
 {
@@ -50,65 +63,65 @@
                 })
 
                 @*<div class="form-group">
-                    @Html.LabelFor(model => model.SearchViewModel.SearchDTO.ForecastAmountMin, htmlAttributes: new { @class = "control-label col-md-4" })
-                    <div class="col-md-8">
-                        <div class="input-group col-md-8">
-                            @Html.EditorFor(model => model.SearchViewModel.SearchDTO.ForecastAmountMin, new { htmlAttributes = new { @class = "form-control" } })
-                            <span class="input-group-addon"> to </span>
-                            @Html.EditorFor(model => model.SearchViewModel.SearchDTO.ForecastAmountMax, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.LabelFor(model => model.SearchViewModel.SearchDTO.ForecastAmountMin, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            <div class="input-group col-md-8">
+                                @Html.EditorFor(model => model.SearchViewModel.SearchDTO.ForecastAmountMin, new { htmlAttributes = new { @class = "form-control" } })
+                                <span class="input-group-addon"> to </span>
+                                @Html.EditorFor(model => model.SearchViewModel.SearchDTO.ForecastAmountMax, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
                         </div>
-                    </div>
-                </div>*@
+                    </div>*@
 
             </div>
 
             @*<div class="col-md-6">
 
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.SearchViewModel.SearchDTO.ActualPriorYearMin, htmlAttributes: new { @class = "control-label col-md-4" })
-                    <div class="col-md-8">
-                        <div class="input-group col-md-8">
-                            @Html.EditorFor(model => model.SearchViewModel.SearchDTO.ActualPriorYearMin, new { htmlAttributes = new { @class = "form-control" } })
-                            <span class="input-group-addon"> to </span>
-                            @Html.EditorFor(model => model.SearchViewModel.SearchDTO.ActualPriorYearMax, new { htmlAttributes = new { @class = "form-control" } })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SearchViewModel.SearchDTO.ActualPriorYearMin, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            <div class="input-group col-md-8">
+                                @Html.EditorFor(model => model.SearchViewModel.SearchDTO.ActualPriorYearMin, new { htmlAttributes = new { @class = "form-control" } })
+                                <span class="input-group-addon"> to </span>
+                                @Html.EditorFor(model => model.SearchViewModel.SearchDTO.ActualPriorYearMax, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.SearchViewModel.SearchDTO.ActualPrior2YearsMin, htmlAttributes: new { @class = "control-label col-md-4" })
-                    <div class="col-md-8">
-                        <div class="input-group col-md-8">
-                            @Html.EditorFor(model => model.SearchViewModel.SearchDTO.ActualPrior2YearsMin, new { htmlAttributes = new { @class = "form-control" } })
-                            <span class="input-group-addon"> to </span>
-                            @Html.EditorFor(model => model.SearchViewModel.SearchDTO.ActualPrior2YearsMax, new { htmlAttributes = new { @class = "form-control" } })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SearchViewModel.SearchDTO.ActualPrior2YearsMin, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            <div class="input-group col-md-8">
+                                @Html.EditorFor(model => model.SearchViewModel.SearchDTO.ActualPrior2YearsMin, new { htmlAttributes = new { @class = "form-control" } })
+                                <span class="input-group-addon"> to </span>
+                                @Html.EditorFor(model => model.SearchViewModel.SearchDTO.ActualPrior2YearsMax, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.SearchViewModel.SearchDTO.AvgPrior4WeeksMin, htmlAttributes: new { @class = "control-label col-md-4" })
-                    <div class="col-md-8">
-                        <div class="input-group col-md-8">
-                            @Html.EditorFor(model => model.SearchViewModel.SearchDTO.AvgPrior4WeeksMin, new { htmlAttributes = new { @class = "form-control" } })
-                            <span class="input-group-addon"> to </span>
-                            @Html.EditorFor(model => model.SearchViewModel.SearchDTO.AvgPrior4WeeksMax, new { htmlAttributes = new { @class = "form-control" } })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SearchViewModel.SearchDTO.AvgPrior4WeeksMin, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            <div class="input-group col-md-8">
+                                @Html.EditorFor(model => model.SearchViewModel.SearchDTO.AvgPrior4WeeksMin, new { htmlAttributes = new { @class = "form-control" } })
+                                <span class="input-group-addon"> to </span>
+                                @Html.EditorFor(model => model.SearchViewModel.SearchDTO.AvgPrior4WeeksMax, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.SearchViewModel.SearchDTO.LaborForecastMin, htmlAttributes: new { @class = "control-label col-md-4" })
-                    <div class="col-md-8">
-                        <div class="input-group col-md-8">
-                            @Html.EditorFor(model => model.SearchViewModel.SearchDTO.LaborForecastMin, new { htmlAttributes = new { @class = "form-control" } })
-                            <span class="input-group-addon"> to </span>
-                            @Html.EditorFor(model => model.SearchViewModel.SearchDTO.LaborForecastMax, new { htmlAttributes = new { @class = "form-control" } })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SearchViewModel.SearchDTO.LaborForecastMin, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            <div class="input-group col-md-8">
+                                @Html.EditorFor(model => model.SearchViewModel.SearchDTO.LaborForecastMin, new { htmlAttributes = new { @class = "form-control" } })
+                                <span class="input-group-addon"> to </span>
+                                @Html.EditorFor(model => model.SearchViewModel.SearchDTO.LaborForecastMax, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>*@
+                </div>*@
         </div>
 
         <div class="row">
@@ -316,4 +329,5 @@
 <div id="editDetailPartial">
 </div>
 
-
+<!--must explicitly define the controller and action and pageHeaderKey. PageHeaderKey can be found in HelpDocument.cs-->
+@{Html.RenderAction("ModalDetails", "Home", new { @controller = "SalesForecast", @action = "Search", @pageHeaderKey = "SalesForecastSearch" });}

@@ -1,22 +1,31 @@
 ﻿@model D_Squared.Web.Models.DailyDepositViewModel
 
 <div class="jumbotron" style="background-image: url('/Content/images/lightwood-bg.jpg'); padding-bottom:5px; padding-top:20px; margin-bottom:10px">
-    <div style="max-width:500px; display: block; margin: 0 auto;">
-        <img src="~/Content/images/millers_d2_logo.png" style="max-width:500px;" />
-    </div>
-    <div class="text-center" style="display: block; margin: 0 auto; max-width:500px">
-        <h2>Daily Deposits</h2>
-        <p class="lead">
-            Employee: @Model.EmployeeInfo.FirstName @Model.EmployeeInfo.LastName
-            <br />
-            Entry Time: @Model.AccessTime.ToLocalTime().ToString()
-            <br />
-            Restaurant: <strong><u>@Model.EmployeeInfo.StoreNumber</u></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            Period Ending: @Model.EndingPeriod.ToShortDateString()
-        </p>
+    <div class="row">
+        <div class="col-md-4">
+            <div style="max-width:500px; display: block; margin: 0 auto;float:left;">
+                <img src="~/Content/images/millers_d2_logo.png" style="max-width:300px;" />
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="text-center" style="display: block; margin: 0 auto; max-width:500px">
+                <h2>Daily Deposits</h2>
+                <p class="lead">
+                    Restaurant: <strong><u>@Model.EmployeeInfo.StoreNumber</u></strong>
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="text-center" style="display: block; margin: 0 auto; max-width:500px">
+                <p class="lead">
+                    Time: @Model.AccessTime.ToLocalTime().ToString()
+                    <br />
+                    Employee: @Model.EmployeeInfo.FirstName @Model.EmployeeInfo.LastName
+                </p>
+            </div>
+        </div>
     </div>
 </div>
-
 @using (Html.BeginForm("Index", "DailyDeposit", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
@@ -42,7 +51,7 @@
                     @if (User.IsGeneralManager())
                     {
                         @Html.ActionLink("Reports", "DepositReport", "DailyDeposit", null, new { @class = "btn btn-dsquared btn-sm", @style = "float: right;" })
-                    }                
+                    }
                 </caption>
                 <thead>
                     <tr>
@@ -115,8 +124,9 @@
     </div>
 }
 
-<!--must explicitly define the controller and action-->
-@{Html.RenderAction("ModalDetails", "Home", new { @controller = "DailyDeposit", @action = "Index" });}
+<!--must explicitly define the controller and action and pageHeaderKey. PageHeaderKey can be found in HelpDocument.cs-->
+@{Html.RenderAction("ModalDetails", "Home", new { @controller = "DailyDeposit", @action = "Index", @pageHeaderKey = "DailyDeposits" });}
+
 
 <script>
     $(document).on('submit', 'form', function () {

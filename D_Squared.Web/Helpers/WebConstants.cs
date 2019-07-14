@@ -29,5 +29,10 @@ namespace D_Squared.Web.Helpers
             public const string PRODUCTIONMESSAGE = "PRODUCTION Region";
             public const string UNKNOWNMESSAGE = "UNKNOWN Region, Application Region must be defined in configuration as Development or Production.";
         }
+
+        public static class PageHeaders
+        {
+            
+        }
     }
 }

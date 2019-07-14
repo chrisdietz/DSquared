@@ -1,20 +1,30 @@
 ﻿@model D_Squared.Web.Models.OvertimeReportingSearchViewModel
 <div class="jumbotron" style="background-image: url('/Content/images/lightwood-bg.jpg'); padding-bottom:5px; padding-top:20px; margin-bottom:10px">
-    <div style="max-width:500px; display: block; margin: 0 auto;">
-        <img src="~/Content/images/millers_d2_logo.png" style="max-width:500px;" />
-    </div>
-    <div class="text-center" style="display: block; margin: 0 auto; max-width:500px">
-        <h2>Reports</h2>
-        <p class="lead">
-            Employee: @Model.EmployeeInfo.FirstName @Model.EmployeeInfo.LastName
-            <br />
-            Access Time: @DateTime.Now.ToLocalTime().ToString()
-            <br />
-            Restaurant: <strong><u>@Model.EmployeeInfo.StoreNumber</u></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        </p>
+    <div class="row">
+        <div class="col-md-4">
+            <div style="max-width:500px; display: block; margin: 0 auto;float:left;">
+                <img src="~/Content/images/millers_d2_logo.png" style="max-width:300px;" />
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="text-center" style="display: block; margin: 0 auto; max-width:500px">
+                <h2>Reports</h2>
+                <p class="lead">
+                    Restaurant: <strong><u>@Model.EmployeeInfo.StoreNumber</u></strong>
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="text-center" style="display: block; margin: 0 auto; max-width:500px">
+                <p class="lead">
+                    Time: @DateTime.Now.ToLocalTime().ToString()
+                    <br />
+                    Employee: @Model.EmployeeInfo.FirstName @Model.EmployeeInfo.LastName
+                </p>
+            </div>
+        </div>
     </div>
 </div>
-
 <hr />
 
 <div class="row">

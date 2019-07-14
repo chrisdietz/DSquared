@@ -34,7 +34,9 @@ textarea {
 .navbar-text {
     color: #fff !important;
 }
-
+.licolor {
+    color: #fff;
+}
 .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover {
     background-color: #501617;
 }
@@ -408,4 +410,11 @@ Fontawesome Icons
     *margin-right: .3em;
     line-height: 14px;
     -webkit-font-smoothing: antialiased;
+}
+
+.list-group-item.red {
+    background-color: #6E1E1F;
+}
+.list-group-item.red.list-group-item:hover {
+    background-color: #501617;
 }

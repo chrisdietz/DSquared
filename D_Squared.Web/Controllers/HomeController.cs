@@ -32,14 +32,13 @@ namespace D_Squared.Web.Controllers
         }
 
         //refactor to use a helpdocuments query class function instead of direct db call
-        public ActionResult ModalDetails(string controller, string action)
+        public ActionResult ModalDetails(string controller, string action, string pageHeaderKey)
         {
             HelpDocument helpDocument = new HelpDocument();
 
             if (db.HelpDocuments.Any(hd => hd.ControllerName == controller && hd.ActionName == action))
             {
                 helpDocument = db.HelpDocuments.Where(hd => hd.ControllerName == controller && hd.ActionName == action).FirstOrDefault();
-                return PartialView("_DetailModal", helpDocument);
             }
             else
             {
@@ -49,9 +48,10 @@ namespace D_Squared.Web.Controllers
                     ActionName = action,
                     HelpHtml = "&lt;h4&gt;No Help Document was found for this resource.&lt;/h4&gt;"
                 };
-
-                return PartialView("_DetailModal", helpDocument);
             }
+
+            helpDocument.PageHeader = helpDocument.PageHeaders[pageHeaderKey];
+            return PartialView("_DetailModal", helpDocument);
         }
     }
 }

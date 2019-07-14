@@ -57,7 +57,13 @@
     </div>
 </div>
 <br />
-<br />
+<div class="row">
+    <div class="col-md-12">
+        <a data-toggle="modal" href="#helpModal" class="btn btn-dsquared btn-sm" style="float:right; margin-left: 10px;"><i class="fa fa-question-circle" aria-hidden="true"></i></a>
+    </div>
+    <br />
+    <br />
+</div>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -112,96 +118,96 @@
 
     if (Model.SearchResults.Count > 0)
     {
-    <table id="dtOvertime" class="table table-striped table-bordered table-responsive">
-        <caption class="caption">
-            Total Items: @Model.SearchResults.Count()
-        </caption>
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().BusinessDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().TotalSales)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().Cash)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().CCTips)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().PaidIn)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().PaidOut)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().IdealCash)
-                </th>
-            </tr>
-        </thead>
-        <tbody>
+        <table id="dtOvertime" class="table table-striped table-bordered table-responsive">
+            <caption class="caption">
+                Total Items: @Model.SearchResults.Count()
+            </caption>
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().BusinessDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().TotalSales)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().Cash)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().CCTips)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().PaidIn)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().PaidOut)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().IdealCash)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
 
-            @{
-                foreach (var result in Model.SearchResults)
-                {
-            <tr>
-                <td>
-                    @result.BusinessDate.ToShortDateString()
-                </td>
-                <td>
-                    @result.TotalSales.ToString("C2")
-                </td>
-                <td>
-                    @result.Cash.ToString("C2")
-                </td>
-                <td>
-                    @result.CCTips.ToString("C2")
-                </td>
-                <td>
-                    @result.PaidIn.ToString("C2")
-                </td>
-                <td>
-                    @result.PaidOut.ToString("C2")
-                </td>
-                <td>
-                    @result.IdealCash.ToString("C2")
-                </td>
-            </tr>
+                @{
+                    foreach (var result in Model.SearchResults)
+                    {
+                        <tr>
+                            <td>
+                                @result.BusinessDate.ToShortDateString()
+                            </td>
+                            <td>
+                                @result.TotalSales.ToString("C2")
+                            </td>
+                            <td>
+                                @result.Cash.ToString("C2")
+                            </td>
+                            <td>
+                                @result.CCTips.ToString("C2")
+                            </td>
+                            <td>
+                                @result.PaidIn.ToString("C2")
+                            </td>
+                            <td>
+                                @result.PaidOut.ToString("C2")
+                            </td>
+                            <td>
+                                @result.IdealCash.ToString("C2")
+                            </td>
+                        </tr>
+                    }
+
                 }
 
-            }
-
-        </tbody>
-        <tfoot>
-            @{
-            <tr>
-                <td>
-                    Total
-                </td>
-                <td>
-                    @Model.SearchResults.Sum(sd => sd.TotalSales).ToString("C2")
-                </td>
-                <td>
-                    @Model.SearchResults.Sum(sd => sd.Cash).ToString("C2")
-                </td>
-                <td>
-                    @Model.SearchResults.Sum(sd => sd.CCTips).ToString("C2")
-                </td>
-                <td>
-                    @Model.SearchResults.Sum(sd => sd.PaidIn).ToString("C2")
-                </td>
-                <td>
-                    @Model.SearchResults.Sum(sd => sd.PaidOut).ToString("C2")
-                </td>
-                <td>
-                    @Model.SearchResults.Sum(sd => sd.IdealCash).ToString("C2")
-                </td>
-            </tr>
-            }
-        <tfoot>
-    </table>
+            </tbody>
+            <tfoot>
+                @{
+                    <tr>
+                        <td>
+                            Total
+                        </td>
+                        <td>
+                            @Model.SearchResults.Sum(sd => sd.TotalSales).ToString("C2")
+                        </td>
+                        <td>
+                            @Model.SearchResults.Sum(sd => sd.Cash).ToString("C2")
+                        </td>
+                        <td>
+                            @Model.SearchResults.Sum(sd => sd.CCTips).ToString("C2")
+                        </td>
+                        <td>
+                            @Model.SearchResults.Sum(sd => sd.PaidIn).ToString("C2")
+                        </td>
+                        <td>
+                            @Model.SearchResults.Sum(sd => sd.PaidOut).ToString("C2")
+                        </td>
+                        <td>
+                            @Model.SearchResults.Sum(sd => sd.IdealCash).ToString("C2")
+                        </td>
+                    </tr>
+                }
+            <tfoot>
+        </table>
     }
     else
     {
@@ -211,3 +217,5 @@
     }
 }
 
+<!--must explicitly define the controller and action-->
+@{Html.RenderAction("ModalDetails", "Home", new { @controller = "SalesReporting", @action = "IdealCashReport", pageHeaderKey = "IdealCashReport" });}

@@ -8,9 +8,9 @@
     dl {
         width: 100%;
         overflow: hidden;
-        margin-left:50px;
-        margin-bottom:0;
-        padding:0
+        margin-left: 50px;
+        margin-bottom: 0;
+        padding: 0
     }
 
     dt {
@@ -28,38 +28,42 @@
         margin: 0;
         padding: 0
     }
-    table.dataTable thead .sorting:after,
-    table.dataTable thead .sorting:before,
-    table.dataTable thead .sorting_asc:after,
-    table.dataTable thead .sorting_asc:before,
-    table.dataTable thead .sorting_asc_disabled:after,
-    table.dataTable thead .sorting_asc_disabled:before,
-    table.dataTable thead .sorting_desc:after,
-    table.dataTable thead .sorting_desc:before,
-    table.dataTable thead .sorting_desc_disabled:after,
-    table.dataTable thead .sorting_desc_disabled:before {
-    bottom: .5em;
-    }
 </style>
 
 <div class="jumbotron" style="background-image: url('/Content/images/lightwood-bg.jpg'); padding-bottom:5px; padding-top:20px; margin-bottom:10px">
-    <div style="max-width:500px; display: block; margin: 0 auto;">
-        <img src="~/Content/images/millers_d2_logo.png" style="max-width:500px;" />
-    </div>
-    <div class="text-center" style="display: block; margin: 0 auto; max-width:500px">
-        <h2>Overtime Report View</h2>
-        <p class="lead">
-            Employee: @Model.EmployeeInfo.FirstName @Model.EmployeeInfo.LastName
-            <br />
-            Location: @Model.EmployeeInfo.StoreNumber
-            <br />
-            Access Time: @DateTime.Now.ToLocalTime().ToString()
-            <br />
-        </p>
+    <div class="row">
+        <div class="col-md-4">
+            <div style="max-width:500px; display: block; margin: 0 auto;float:left;">
+                <img src="~/Content/images/millers_d2_logo.png" style="max-width:300px;" />
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="text-center" style="display: block; margin: 0 auto; max-width:500px">
+                <h2>Overtime Report</h2>
+                <p class="lead">
+                    Location: <strong><u>@Model.EmployeeInfo.StoreNumber</u></strong>
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="text-center" style="display: block; margin: 0 auto; max-width:500px">
+                <p class="lead">
+                    Time: @DateTime.Now.ToLocalTime().ToString()
+                    <br />
+                    Employee: @Model.EmployeeInfo.FirstName @Model.EmployeeInfo.LastName
+                </p>
+            </div>
+        </div>
     </div>
 </div>
 <br />
-<br />
+<div class="row">
+    <div class="col-md-12">
+        <a data-toggle="modal" href="#helpModal" class="btn btn-dsquared btn-sm" style="float:right; margin-left: 10px;"><i class="fa fa-question-circle" aria-hidden="true"></i></a>
+    </div>
+    <br />
+    <br />
+</div>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -86,7 +90,7 @@
                     @Html.LabelFor(model => model.SearchDTO.SelectedHours, htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
                         <div class="input-group col-md-8">
-                           @Html.TextBoxFor(m => m.SearchDTO.SelectedHours, new { @Value = Model.SearchDTO.SelectedHours, @class= "form-control" })
+                            @Html.TextBoxFor(m => m.SearchDTO.SelectedHours, new { @Value = Model.SearchDTO.SelectedHours, @class = "form-control" })
                         </div>
                     </div>
                 </div>
@@ -170,3 +174,5 @@
     }
 }
 
+<!--must explicitly define the controller and action and pageHeaderKey. PageHeaderKey can be found in HelpDocument.cs-->
+@{Html.RenderAction("ModalDetails", "Home", new { @controller = "LaborReports", @action = "OvertimeReport", @pageHeaderKey = "OvertimeReport" });}

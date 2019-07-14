@@ -1,243 +1,204 @@
 ﻿@model D_Squared.Web.Models.HomeViewModel
 
 <div class="jumbotron" style="background-image: url('/Content/images/lightwood-bg.jpg'); padding-bottom:5px; padding-top:20px; margin-bottom:10px">
-    <div style="max-width:500px; display: block; margin: 0 auto;">
-        <img src="~/Content/images/millers_d2_logo.png" style="max-width:500px;" />
-    </div>
-    <div class="text-center" style="display: block; margin: 0 auto; max-width:500px">
-        <h2>Redbook Dashboard</h2>
-        <p class="lead">
-            Employee: @Model.EmployeeInfo.FirstName @Model.EmployeeInfo.LastName
-            <br />
-            Access Time: @Model.AccessTime.ToLocalTime().ToString()
-            <br />
-            Restaurant: <strong><u>@Model.EmployeeInfo.StoreNumber</u></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        </p>
+    <div class="row">
+        <div class="col-md-4">
+            <div style="max-width:500px; display: block; margin: 0 auto;float:left;">
+                <img src="~/Content/images/millers_d2_logo.png" style="max-width:300px;" />
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="text-center" style="display: block; margin: 0 auto; max-width:500px">
+                <h2>Redbook Dashboard</h2>
+                <p class="lead">
+                    Restaurant: <strong><u>@Model.EmployeeInfo.StoreNumber</u></strong>
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="text-center" style="display: block; margin: 0 auto; max-width:500px">
+                <p class="lead">
+                    Time: @Model.AccessTime.ToLocalTime().ToString()
+                    <br />
+                    Employee: @Model.EmployeeInfo.FirstName @Model.EmployeeInfo.LastName
+                </p>
+            </div>
+        </div>
     </div>
 </div>
 
 <hr />
 
 <div class="row">
-    @if (User.IsDSquaredTipReporting() && !User.IsDSquaredAdmin())
-    {
-        <div class="col-md-4">
-            <a class="dashboard-stat dashboard-stat-v2 red" href="/TipReporting/Search">
-                <div class="visual">
-                    <i class="fa fa-file"></i>
-                </div>
-                <div class="details">
-                    <div class="number">
-                        Tip Reporting
-                    </div>
-                    <div class="desc">Search for Make Up Pay</div>
-                </div>
+    <div class="col-md-4">
+        <div class="list-group">
+            <a class="list-group-item red">
+                <h4 class="list-group-item-heading" style="color:white"><i class="fa fa-bank"></i>  Daily Deposits</h4>
+            </a>
+            <a href="/DailyDeposit" class="list-group-item">
+                <h4 class="list-group-item-heading"><i class="fa fa-dollar"></i>  Daily Deposits</h4>
+                <p class="list-group-item-text">Record Daily Deposits</p>
+            </a>
+            <a class="list-group-item">
+                <h4 class="list-group-item-heading">&nbsp;</h4>
+                <p class="list-group-item-text">&nbsp;</p>
             </a>
         </div>
-    }
-    else
-    {
-        <div class="col-md-4">
-            <a class="dashboard-stat dashboard-stat-v2 red" href="/DailyDeposit">
-                <div class="visual">
-                    <i class="fa fa-usd"></i>
-                </div>
-                <div class="details">
-                    <div class="number">
-                        Daily Deposits
-                    </div>
-                    <div class="desc">Record Daily Deposits</div>
-                </div>
+
+    </div>
+
+    <div class="col-md-4">
+        <div class="list-group">
+            <a class="list-group-item red">
+                <h4 class="list-group-item-heading" style="color:white"><i class="fa fa-user"></i>  Employee Management</h4>
             </a>
-        </div>
-        if (User.IsDivisionalVP() || User.IsRegionalManager() || User.IsDSquaredAdmin())
-        {
-            <div class="col-md-4">
-                <a class="dashboard-stat dashboard-stat-v2 red" href="/SalesForecast/Search">
-                    <div class="visual">
-                        <i class="fa fa-search"></i>
-                    </div>
-                    <div class="details">
-                        <div class="number">
-                            Sales Forecasts
-                        </div>
-                        <div class="desc">Search Sales Forecasts</div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-md-4">
-                <a class="dashboard-stat dashboard-stat-v2 red" href="/SpreadHours/Search">
-                    <div class="visual">
-                        <i class="fa fa-user-circle"></i>
-                    </div>
-                    <div class="details">
-                        <div class="number">
-                            Spread Hours
-                        </div>
-                        <div class="desc">Search Spread Hours</div>
-                    </div>
-                </a>
-            </div>
-        }
-        else
-        {
-            <div class="col-md-4">
-                <a class="dashboard-stat dashboard-stat-v2 red" href="/SalesForecast">
-                    <div class="visual">
-                        <i class="fa fa-search"></i>
-                    </div>
-                    <div class="details">
-                        <div class="number">
-                            Sales Forecasts
-                        </div>
-                        <div class="desc">Record Sales Forecasts</div>
-                    </div>
-                </a>
-            </div>
-
-            if (User.IsDSquaredSpreadHours())
+            @if (User.IsDSquaredNYSMandatedHours())
             {
-                <div class="col-md-4">
-                    <a class="dashboard-stat dashboard-stat-v2 red" href="/SpreadHours/Index">
-                        <div class="visual">
-                            <i class="fa fa-user-circle"></i>
-                        </div>
-                        <div class="details">
-                            <div class="number">
-                                Spread Hours
-                            </div>
-                            <div class="desc">View Spread Hours</div>
-                        </div>
-                    </a>
-                </div>
-            }
-        }
-
-        if (User.IsRedbookManager())
-        {
-            <div class="col-md-4">
-                <a class="dashboard-stat dashboard-stat-v2 red" href="/Redbook/Entry">
-                    <div class="visual">
-                        <i class="fa fa-book"></i>
-                    </div>
-                    <div class="details">
-                        <div class="number">
-                            Redbook
-                        </div>
-                        <div class="desc">Record Redbook Entries</div>
-                    </div>
-                </a>
-            </div>
-        }
-        else if (User.IsDivisionalVP() || User.IsRegionalManager() || User.IsDSquaredAdmin())
-        {
-            <div class="col-md-4">
-                <a class="dashboard-stat dashboard-stat-v2 red" href="/Redbook/Index">
-                    <div class="visual">
-                        <i class="fa fa-book"></i>
-                    </div>
-                    <div class="details">
-                        <div class="number">
-                            Redbook
-                        </div>
-                        <div class="desc">Search Redbook Entries</div>
-                    </div>
-                </a>
-            </div>
-        }
-
-
-
-        if (User.IsDivisionalVP() || User.IsRegionalManager() || User.IsDSquaredAdmin())
-        {
-            <div class="col-md-4">
-                <a class="dashboard-stat dashboard-stat-v2 red" href="/TipReporting/Search">
-                    <div class="visual">
-                        <i class="fa fa-file"></i>
-                    </div>
-                    <div class="details">
-                        <div class="number">
-                            Tip Reporting
-                        </div>
-                        <div class="desc">Search for Make Up Pay</div>
-                    </div>
-                </a>
-            </div>
-        }
-        else
-        {
-            <div class="col-md-4">
-                <a class="dashboard-stat dashboard-stat-v2 red" href="/TipReporting">
-                    <div class="visual">
-                        <i class="fa fa-file"></i>
-                    </div>
-                    <div class="details">
-                        <div class="number">
-                            Tip Reporting
-                        </div>
-                        <div class="desc">View Make Up Pay</div>
-                    </div>
-                </a>
-            </div>
-        }
-        <div class="col-md-4">
-            <a class="dashboard-stat dashboard-stat-v2 red" href="/TipPercentage">
-                <div class="visual">
-                    <i class="fa fa-file"></i>
-                </div>
-                <div class="details">
-                    <div class="number">
-                        Tip Percentage
-                    </div>
-                    <div class="desc">View Tip Percentage</div>
-                </div>
+            <a href="/NYS/Index" class="list-group-item">
+                <h4 class="list-group-item-heading"><i class="fa fa-calendar-times-o"></i>  Mandated Hours</h4>
+                <p class="list-group-item-text">View Mandated Hours</p>
             </a>
+            }
+            @if (User.IsDSquaredSpreadHours())
+            {
+            <a href="/SpreadHours/Index" class="list-group-item">
+                <h4 class="list-group-item-heading"><i class="fa fa-calendar-times-o"></i>  Spread Hours</h4>
+                <p class="list-group-item-text">View Spread Hours</p>
+            </a>
+            }
         </div>
-        if (User.IsDSquaredNYSMandatedHours())
-        {
-            <div class="col-md-4">
-                <a class="dashboard-stat dashboard-stat-v2 red" href="/NYS/Index">
-                    <div class="visual">
-                        <i class="fa fa-user-circle"></i>
-                    </div>
-                    <div class="details">
-                        <div class="number">
-                            Mandated Hours
-                        </div>
-                        <div class="desc">View Mandated Hours</div>
-                    </div>
+
+    </div>
+    <div class="col-md-4">
+        <div class="list-group">
+            <a class="list-group-item red">
+                <h4 class="list-group-item-heading" style="color:white"><i class="fa fa-money"></i>  Gratuity Management</h4>
+            </a>
+            <a href="/TipPercentage" class="list-group-item">
+                <h4 class="list-group-item-heading"><i class="fa fa-percent"></i>  Tip Percentage</h4>
+                <p class="list-group-item-text">View Tip Percentage</p>
+            </a>
+            @if (User.IsDivisionalVP() || User.IsRegionalManager() || User.IsDSquaredAdmin() || User.IsDSquaredTipReporting())
+            {
+                <a href="/TipReporting/Search" class="list-group-item">
+                    <h4 class="list-group-item-heading"><i class="fa fa-binoculars"></i>  Tip Reporting</h4>
+                    <p class="list-group-item-text">Search for Make Up Pay</p>
+                </a>
+            }
+            else
+            {
+                <a href="/TipReporting" class="list-group-item">
+                    <h4 class="list-group-item-heading"><i class="fa fa-file-o"></i>  Tip Reporting</h4>
+                    <p class="list-group-item-text">View Make Up Pay</p>
+                </a>
+            }
+        </div>
+
+    </div>
+
+    @if (User.IsDSquaredReports() || User.IsDivisionalVP() || User.IsRegionalManager() || User.IsDSquaredAdmin())
+    {
+        <div class="col-md-4">
+            <div class="list-group">
+                <a class="list-group-item red">
+                    <h4 class="list-group-item-heading" style="color:white"><i class="fa fa-user"></i>  Labor Reports</h4>
+                </a>
+                <a href="/LaborReports/LaborSummary" class="list-group-item">
+                    <h4 class="list-group-item-heading"><i class="fa fa-file-o"></i>  Labor Summary Report</h4>
+                    <p class="list-group-item-text">View Labor Summary Report</p>
+                </a>
+                <a href="/LaborReports/OvertimeReport" class="list-group-item">
+                    <h4 class="list-group-item-heading"><i class="fa fa-file-o"></i>  Overtime Report</h4>
+                    <p class="list-group-item-text">View Overtime Report</p>
                 </a>
             </div>
-        }
-        if (User.IsDSquaredReports() || User.IsDivisionalVP() || User.IsRegionalManager() || User.IsDSquaredAdmin())
-        {
-            <div class="col-md-4">
-                <a class="dashboard-stat dashboard-stat-v2 red" href="/LaborReports/Index">
-                    <div class="visual">
-                        <i class="fa fa-user-circle"></i>
-                    </div>
-                    <div class="details">
-                        <div class="number">
-                            Labor Reports
-                        </div>
-                        <div class="desc">View Labor Reports</div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-4">
-                <a class="dashboard-stat dashboard-stat-v2 red" href="/SalesReporting/Index">
-                    <div class="visual">
-                        <i class="fa fa-user-circle"></i>
-                    </div>
-                    <div class="details">
-                        <div class="number">
-                            Sales Reports
-                        </div>
-                        <div class="desc">View Sales Reports</div>
-                    </div>
-                </a>
-            </div>
-        }
+
+        </div>
     }
+
+    @if (User.IsDivisionalVP() || User.IsRegionalManager() || User.IsDSquaredAdmin() || User.IsRedbookManager())
+    {
+        <div class="col-md-4">
+            <div class="list-group">
+                <a class="list-group-item red">
+                    <h4 class="list-group-item-heading" style="color:white"><i class="fa fa-book"></i>  Redbook</h4>
+                </a>
+                @if (User.IsRedbookManager())
+                {
+                    <a href="/Redbook/Entry" class="list-group-item">
+                        <h4 class="list-group-item-heading"><i class="fa fa-pencil"></i>  Redbook Entry</h4>
+                        <p class="list-group-item-text">Record Redbook Entries</p>
+                    </a>
+                    <a class="list-group-item">
+                        <h4 class="list-group-item-heading">&nbsp;</h4>
+                        <p class="list-group-item-text">&nbsp;</p>
+                    </a>
+                }
+                else if (User.IsDivisionalVP() || User.IsRegionalManager() || User.IsDSquaredAdmin())
+                {
+                    <a href="/LaborReports/OvertimeReport" class="list-group-item">
+                        <h4 class="list-group-item-heading"><i class="fa fa-binoculars"></i>  Redbook Search</h4>
+                        <p class="list-group-item-text">Search Redbook Entries</p>
+                    </a>
+                    <a class="list-group-item">
+                        <h4 class="list-group-item-heading">&nbsp;</h4>
+                        <p class="list-group-item-text">&nbsp;</p>
+                    </a>
+                }
+            </div>
+
+        </div>
+    }
+    <div class="col-md-4">
+        <div class="list-group">
+            <a class="list-group-item red">
+                <h4 class="list-group-item-heading" style="color:white"><i class="fa fa-bar-chart-o"></i>  Sales Forecasts</h4>
+            </a>
+            @if (User.IsDivisionalVP() || User.IsRegionalManager() || User.IsDSquaredAdmin())
+            {
+                <a href="/SalesForecast/Search" class="list-group-item">
+                    <h4 class="list-group-item-heading"><i class="fa fa-binoculars"></i>  Search Sales Forecasts</h4>
+                    <p class="list-group-item-text">Search Sales Forecasts</p>
+                </a>
+                <a class="list-group-item">
+                    <h4 class="list-group-item-heading">&nbsp;</h4>
+                    <p class="list-group-item-text">&nbsp;</p>
+                </a>
+            }
+            else
+            {
+                <a href="/SalesForecast" class="list-group-item">
+                    <h4 class="list-group-item-heading"><i class="fa fa-pencil"></i>  Record Sales Forecasts</h4>
+                    <p class="list-group-item-text">Record Sales Forecasts</p>
+                </a>
+                <a class="list-group-item">
+                    <h4 class="list-group-item-heading">&nbsp;</h4>
+                    <p class="list-group-item-text">&nbsp;</p>
+                </a>
+            }
+        </div>
+
+    </div>
+
+
+    @if (User.IsDSquaredReports() || User.IsDivisionalVP() || User.IsRegionalManager() || User.IsDSquaredAdmin())
+    {
+        <div class="col-md-4">
+            <div class="list-group">
+                <a class="list-group-item red">
+                    <h4 class="list-group-item-heading" style="color:white"><i class="fa fa-money"></i>  Sales Reports</h4>
+                </a>
+                <a href="/SalesReporting/SalesReport" class="list-group-item">
+                    <h4 class="list-group-item-heading"><i class="fa fa-file-o"></i>  Sales Report</h4>
+                    <p class="list-group-item-text">View Sales Report</p>
+                </a>
+                <a href="/SalesReporting/IdealCashReport" class="list-group-item">
+                    <h4 class="list-group-item-heading"><i class="fa fa-file-o"></i>  Ideal Cash Report</h4>
+                    <p class="list-group-item-text">View Ideal Cash Report</p>
+                </a>
+            </div>
+
+        </div>
+    }
+
 </div>

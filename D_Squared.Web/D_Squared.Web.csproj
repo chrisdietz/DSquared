@@ -483,6 +483,7 @@
     <Content Include="Content\images\forward_enabled.png" />
     <Content Include="Content\images\forward_enabled_hover.png" />
     <Content Include="Content\images\lightwood-bg.jpg" />
+    <Content Include="Content\images\millers_d2_logo_bkp.png" />
     <Content Include="Content\images\millers_d2_logo.png" />
     <Content Include="Content\images\sort_asc.png" />
     <Content Include="Content\images\sort_asc_disabled.png" />
