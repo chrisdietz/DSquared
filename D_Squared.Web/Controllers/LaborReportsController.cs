@@ -54,5 +54,15 @@ namespace D_Squared.Web.Controllers
             return View(model);
         }
 
+        public ActionResult Labor8020(Labor8020SearchDTO searchDTO)
+        {
+            string username = User.TruncatedName;
+            EmployeeDTO employee = eq.GetEmployeeInfo(username);
+
+            Labor8020SearchViewModel model = init.InitializeLabor8020SearchViewModel(User, searchDTO);
+            model.SearchDTO = searchDTO;
+
+            return View(model);
+        }
     }
 }

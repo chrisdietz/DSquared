@@ -61,6 +61,8 @@ namespace D_Squared.Data.Context
 
         public DbSet<LSIdealCash> LSIdealCashes { get; set; }
 
+        public DbSet<LS8020> LS8020s { get; set; }
+
         public static D_SquaredDbContext Create()
         {
             return new D_SquaredDbContext();
@@ -77,6 +79,7 @@ namespace D_Squared.Data.Context
             modelBuilder.Entity<WeeklyTotalDuration>().ToTable("WeeklyTotalDuration");
             modelBuilder.Entity<LSLabor>().ToTable("LSLabor");
             modelBuilder.Entity<LSIdealCash>().ToTable("LSIdealCash");
+            modelBuilder.Entity<LS8020>().ToTable("LS8020");
 
             base.OnModelCreating(modelBuilder);
         }

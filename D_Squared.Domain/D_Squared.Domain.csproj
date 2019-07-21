@@ -107,6 +107,7 @@
     <Compile Include="Entities\ForecastDatum.cs" />
     <Compile Include="Entities\FY18Budget.cs" />
     <Compile Include="Entities\HelpDocument.cs" />
+    <Compile Include="Entities\LS8020.cs" />
     <Compile Include="Entities\LSIdealCash.cs" />
     <Compile Include="Entities\LSLabor.cs" />
     <Compile Include="Entities\MakeUpPay.cs" />
@@ -131,6 +132,7 @@
     <Compile Include="TransferObjects\EventDTO.cs" />
     <Compile Include="TransferObjects\FY18BudgetDTO.cs" />
     <Compile Include="TransferObjects\IdealCashDTO.cs" />
+    <Compile Include="TransferObjects\Labor8020DTO.cs" />
     <Compile Include="TransferObjects\LaborDataDTO.cs" />
     <Compile Include="TransferObjects\NYSDTO.cs" />
     <Compile Include="TransferObjects\RedbookSearchDTO.cs" />

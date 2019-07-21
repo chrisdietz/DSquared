@@ -29,7 +29,18 @@ namespace D_Squared.Web.Controllers
         }
 
         // GET: TipPercentage
-        public ActionResult Index(TipPercentageSearchDTO searchDTO)
+        public ActionResult Index(bool isLastWeek = false)
+        {
+            TipPercentageViewModel model = init.InitializeTipPercentageViewModel(User, isLastWeek);
+            return View(model);
+        }
+
+        public ActionResult PreviousWeek()
+        {
+            return RedirectToAction("Index", new { isLastWeek = true });
+        }
+
+        public ActionResult Search(TipPercentageSearchDTO searchDTO)
         {
             string username = User.TruncatedName;
             //DateTime selectedDate = DateTime.Today;
@@ -39,7 +50,6 @@ namespace D_Squared.Web.Controllers
 
             return View(model);
         }
-
         public ActionResult Detail(string storeNumber, string employeeNumber, DateTime startDate, DateTime endDate)
         {
             string username = User.TruncatedName;

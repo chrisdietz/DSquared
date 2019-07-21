@@ -12,10 +12,19 @@ namespace D_Squared.Web.Models
     {
         public EmployeeDTO EmployeeInfo { get; set; }
 
-        [Display(Name = "TM")]
-        public List<SelectListItem> EmployeeSelectList { get; set; }
-
         public List<TipPercentageDTO> TipPercentageList { get; set; }
+
+        public DateTime BusinessWeekStartDate { get; set; }
+
+        public DateTime BusinessWeekEndDate { get; set; }
+
+        [Display(Name = "YTD MAH Avg Tip %")]
+        public decimal YTDMAHAverageTipPercentage { get; set; }
+
+        [Display(Name = "YTD Restaurant Avg Tip %")]
+        public decimal YTDStoreAverageTipPercentage { get; set; }
+
+        public bool CurrentWeekFlag { get; set; }
     }
 
     public class TipPercentageSearchViewModel

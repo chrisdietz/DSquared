@@ -20,9 +20,13 @@ namespace D_Squared.Domain
             public const string RedbookDivisionalVPGroup = "redbookDvp";
 
             public const string DSquaredTipReportingGroup = "D2TipReporting";
+            public const string DSquaredTipPercentageGroup = "D2TipPercentage";
             public const string DSquaredSpreadHoursGroup = "D2SpreadHours";
             public const string DSquaredMandatedHoursGroup = "D2MandatedHours";
             public const string DSquaredReportsGroup = "D2Reports";
+            public const string DSquaredDailyDepositsGroup = "D2DailyDeposits";
+            public const string DSquaredSalesForecastsGroup = "D2SalesForecasts";
+
 
             public const string DSquaredAdminGroup = "D2Admin";
         }

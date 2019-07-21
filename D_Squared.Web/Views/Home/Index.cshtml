@@ -44,7 +44,6 @@
                 <p class="list-group-item-text">&nbsp;</p>
             </a>
         </div>
-
     </div>
 
     <div class="col-md-4">
@@ -54,17 +53,17 @@
             </a>
             @if (User.IsDSquaredNYSMandatedHours())
             {
-            <a href="/NYS/Index" class="list-group-item">
-                <h4 class="list-group-item-heading"><i class="fa fa-calendar-times-o"></i>  Mandated Hours</h4>
-                <p class="list-group-item-text">View Mandated Hours</p>
-            </a>
+                <a href="/NYS/Index" class="list-group-item">
+                    <h4 class="list-group-item-heading"><i class="fa fa-calendar-times-o"></i>  Mandated Hours</h4>
+                    <p class="list-group-item-text">View Mandated Hours</p>
+                </a>
             }
             @if (User.IsDSquaredSpreadHours())
             {
-            <a href="/SpreadHours/Index" class="list-group-item">
-                <h4 class="list-group-item-heading"><i class="fa fa-calendar-times-o"></i>  Spread Hours</h4>
-                <p class="list-group-item-text">View Spread Hours</p>
-            </a>
+                <a href="/SpreadHours/Index" class="list-group-item">
+                    <h4 class="list-group-item-heading"><i class="fa fa-calendar-times-o"></i>  Spread Hours</h4>
+                    <p class="list-group-item-text">View Spread Hours</p>
+                </a>
             }
         </div>
 
@@ -74,12 +73,12 @@
             <a class="list-group-item red">
                 <h4 class="list-group-item-heading" style="color:white"><i class="fa fa-money"></i>  Gratuity Management</h4>
             </a>
-            <a href="/TipPercentage" class="list-group-item">
-                <h4 class="list-group-item-heading"><i class="fa fa-percent"></i>  Tip Percentage</h4>
-                <p class="list-group-item-text">View Tip Percentage</p>
-            </a>
             @if (User.IsDivisionalVP() || User.IsRegionalManager() || User.IsDSquaredAdmin() || User.IsDSquaredTipReporting())
             {
+                <a href="/TipPercentage/Search" class="list-group-item">
+                    <h4 class="list-group-item-heading"><i class="fa fa-percent"></i>  Tip Percentage</h4>
+                    <p class="list-group-item-text">Search Tip Percentage</p>
+                </a>
                 <a href="/TipReporting/Search" class="list-group-item">
                     <h4 class="list-group-item-heading"><i class="fa fa-binoculars"></i>  Tip Reporting</h4>
                     <p class="list-group-item-text">Search for Make Up Pay</p>
@@ -87,6 +86,10 @@
             }
             else
             {
+                <a href="/TipPercentage" class="list-group-item">
+                    <h4 class="list-group-item-heading"><i class="fa fa-percent"></i>  Tip Percentage</h4>
+                    <p class="list-group-item-text">View Tip Percentage</p>
+                </a>
                 <a href="/TipReporting" class="list-group-item">
                     <h4 class="list-group-item-heading"><i class="fa fa-file-o"></i>  Tip Reporting</h4>
                     <p class="list-group-item-text">View Make Up Pay</p>
@@ -110,6 +113,10 @@
                 <a href="/LaborReports/OvertimeReport" class="list-group-item">
                     <h4 class="list-group-item-heading"><i class="fa fa-file-o"></i>  Overtime Report</h4>
                     <p class="list-group-item-text">View Overtime Report</p>
+                </a>
+                <a href="/LaborReports/Labor8020" class="list-group-item">
+                    <h4 class="list-group-item-heading"><i class="fa fa-file-o"></i>  80/20 Report</h4>
+                    <p class="list-group-item-text">View 80/20 Report</p>
                 </a>
             </div>
 
@@ -197,8 +204,26 @@
                     <p class="list-group-item-text">View Ideal Cash Report</p>
                 </a>
             </div>
-
         </div>
+        <!-- Use collapse code using the following example when need arises-->
+        @*<div class="col-md-4">
+            <div class="panel list-group">
+                <a class="list-group-item red" data-toggle="collapse" data-target="#sr">
+                    <h4 class="list-group-item-heading" style="color:white"><i class="fa fa-money"></i>  Sales Reports</h4>
+                </a>
+                <div class="collapse" id="sr">
+                    <a href="/SalesReporting/SalesReport" class="list-group-item">
+                        <h4 class="list-group-item-heading"><i class="fa fa-file-o"></i>  Sales Report</h4>
+                        <p class="list-group-item-text">View Sales Report</p>
+                    </a>
+                    <a href="/SalesReporting/IdealCashReport" class="list-group-item">
+                        <h4 class="list-group-item-heading"><i class="fa fa-file-o"></i>  Ideal Cash Report</h4>
+                        <p class="list-group-item-text">View Ideal Cash Report</p>
+                    </a>
+                </div>
+            </div>
+
+        </div>*@
     }
 
 </div>

@@ -143,6 +143,98 @@ namespace D_Squared.Web.Helpers
             else //quick check for general manager role
                 return IsInRole(DomainConstants.RoleNames.DSquaredAdminGroup);
         }
+
+        public bool IsDSquaredDailyDepoists()
+        {
+            if (ConfigurationManager.AppSettings["ApplicationRegion"] == "Development")
+                return true;
+            else //quick check for general manager role
+                return IsInRole(DomainConstants.RoleNames.DSquaredDailyDepositsGroup);
+        }
+
+        public bool IsDSquaredSalesForecasts()
+        {
+            if (ConfigurationManager.AppSettings["ApplicationRegion"] == "Development")
+                return true;
+            else //quick check for general manager role
+                return IsInRole(DomainConstants.RoleNames.DSquaredSalesForecastsGroup);
+        }
+
+        public bool IsDSquaredTipPercentage()
+        {
+            if (ConfigurationManager.AppSettings["ApplicationRegion"] == "Development")
+                return true;
+            else //quick check for general manager role
+                return IsInRole(DomainConstants.RoleNames.DSquaredTipPercentageGroup);
+        }
+
+        public bool DailyDepositsAllowed()
+        {
+            return (IsDSquaredDailyDepoists() || IsDSquaredAdmin() || IsRedbookManager());
+        }
+        public bool SalesForecastsEntryAllowed()
+        {
+            return (IsDSquaredSalesForecasts() || IsDSquaredAdmin() || IsRedbookManager());
+        }
+        public bool SalesForecastsSearchAllowed()
+        {
+            return (IsDSquaredSalesForecasts() || IsDSquaredAdmin() || IsRegionalManager() || IsDivisionalVP());
+        }
+        public bool EmployeeManagementAllowed()
+        {
+            return (SpreadHoursViewAllowed() || SpreadHoursSearchAllowed() || MandatedHoursViewAllowed() || MandatedHoursSearchAllowed());
+        }
+        public bool SpreadHoursViewAllowed()
+        {
+            return (IsDSquaredSpreadHours() || IsDSquaredAdmin());
+        }
+
+        public bool SpreadHoursSearchAllowed()
+        {
+            return (IsDSquaredAdmin() || IsRegionalManager() || IsDivisionalVP());
+        }
+
+        public bool MandatedHoursViewAllowed()
+        {
+            return (IsDSquaredNYSMandatedHours() || IsDSquaredAdmin());
+        }
+
+        public bool MandatedHoursSearchAllowed()
+        {
+            return (IsDSquaredAdmin() || IsRegionalManager() || IsDivisionalVP());
+        }
+        public bool RedbookEntryAllowed()
+        {
+            return (IsDSquaredAdmin() || IsRedbookManager());
+        }
+        public bool RedbookSearchAllowed()
+        {
+            return (IsDSquaredAdmin() || IsRegionalManager() || IsDivisionalVP());
+        }
+        public bool GratuityManagementAllowed()
+        {
+            return (TipReportViewAllowed() || TipReportSearchAllowed() || TipPercentageViewAllowed() || TipPercentageSearchAllowed());
+        }
+        public bool TipReportViewAllowed()
+        {
+            return (IsDSquaredTipReporting() || IsRedbookManager() || IsDSquaredAdmin());
+        }
+        public bool TipReportSearchAllowed()
+        {
+            return (IsDSquaredAdmin() || IsRegionalManager() || IsDivisionalVP());
+        }
+        public bool TipPercentageViewAllowed()
+        {
+            return (IsDSquaredTipPercentage() || IsRedbookManager() || IsDSquaredAdmin());
+        }
+        public bool TipPercentageSearchAllowed()
+        {
+            return (IsDSquaredAdmin() || IsRegionalManager() || IsDivisionalVP());
+        }
+        public bool ReportsAllowed()
+        {
+            return (IsDSquaredReports() || IsDSquaredAdmin() || IsRegionalManager() || IsDivisionalVP());
+        }
     }
 
     public interface ICustomClaimsPrincipal : IPrincipal

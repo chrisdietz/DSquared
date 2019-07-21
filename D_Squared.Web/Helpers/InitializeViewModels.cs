@@ -872,7 +872,32 @@ namespace D_Squared.Web.Helpers
             return tipPercentageDTOs;
         }
 
-        public TipPercentageSearchViewModel InitializeTipPercentageSearchViewModel(CustomClaimsPrincipal User, TipPercentageSearchDTO  searchDTO)
+        public TipPercentageViewModel InitializeTipPercentageViewModel(CustomClaimsPrincipal User, bool isLastWeek = false)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(User.TruncatedName);
+
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(!isLastWeek ? DateTime.Today : DateTime.Today.AddDays(-7));
+
+            List<TipPercentage> tipPercentages = tpq.GetTipPercentagesByWeek(employee.StoreNumber, daysInWeek.FirstOrDefault(), daysInWeek.LastOrDefault());
+
+            var totalStoreSales = tipPercentages.Sum(tp => tp.Sales.Value);
+            var totalStoreTips = tipPercentages.Sum(tp => tp.Tips.Value);
+            TipPercentageViewModel model = new TipPercentageViewModel()
+            {
+                EmployeeInfo = employee,
+                TipPercentageList = GetTipPercentageDTOs(tipPercentages),
+                BusinessWeekStartDate = daysInWeek.FirstOrDefault(),
+                BusinessWeekEndDate = daysInWeek.LastOrDefault(),
+                // Calculate MAH and store average tip %s for YTD sales and tips
+                YTDMAHAverageTipPercentage = tpq.GetMAHAverageTipPercentForGivenDates(GetStartingDateOfCurrentYear(), DateTime.Today),
+                YTDStoreAverageTipPercentage = tpq.GetStoreAverageTipPercentForGivenDates(GetStartingDateOfCurrentYear(), DateTime.Today, employee.StoreNumber),
+                CurrentWeekFlag = !isLastWeek
+            };
+
+            return model;
+        }
+
+        public TipPercentageSearchViewModel InitializeTipPercentageSearchViewModel(CustomClaimsPrincipal User, TipPercentageSearchDTO searchDTO)
         {
             EmployeeDTO employee = eq.GetEmployeeInfo(User.TruncatedName);
 
@@ -884,7 +909,7 @@ namespace D_Squared.Web.Helpers
 
             if (!string.IsNullOrEmpty(searchDTO.SelectedLocation)) selectedLocation = searchDTO.SelectedLocation.Substring(0, 3);
 
-            List<SelectListItem>  tippedEmployees = tpq.GetTippedEmployees(selectedLocation).Select(tp => new SelectListItem
+            List<SelectListItem> tippedEmployees = tpq.GetTippedEmployees(selectedLocation).Select(tp => new SelectListItem
             {
                 Text = tp.EmployeeName,
                 Value = tp.EmployeeNumber
@@ -893,7 +918,7 @@ namespace D_Squared.Web.Helpers
 
             List<DateTime> daysInWeek = GetCurrentWeekAsDates(searchDTO.SelectedDate);
 
-            List<TipPercentage> tipPercentages = (string.IsNullOrEmpty(searchDTO.SelectedEmployee)) 
+            List<TipPercentage> tipPercentages = (string.IsNullOrEmpty(searchDTO.SelectedEmployee))
                                                     ? tpq.GetTipPercentagesByWeek(selectedLocation, daysInWeek.FirstOrDefault(), daysInWeek.LastOrDefault())
                                                     : tpq.GetTipPercentagesByEmployeeByWeek(searchDTO.SelectedEmployee, selectedLocation, daysInWeek.FirstOrDefault(), daysInWeek.LastOrDefault());
             var totalStoreSales = tipPercentages.Sum(tp => tp.Sales.Value);
@@ -913,7 +938,6 @@ namespace D_Squared.Web.Helpers
 
             return model;
         }
-
 
         public TipPercentagePartialViewModel InitializeTipPercentagePartialViewModel(string storeNumber, string employeeNumber, DateTime startDate, DateTime endDate)
         {
@@ -1195,6 +1219,52 @@ namespace D_Squared.Web.Helpers
             LaborSummarySearchViewModel model = new LaborSummarySearchViewModel
             {
                 SearchResults = laborDataDTOs,
+                BusinessWeekStartDate = daysInWeek.FirstOrDefault(),
+                BusinessWeekEndDate = daysInWeek.LastOrDefault(),
+                EmployeeInfo = employee,
+                SearchDTO = searchDTO,
+                LocationSelectList = locSelectList
+            };
+
+            return model;
+        }
+
+        public Labor8020SearchViewModel InitializeLabor8020SearchViewModel(CustomClaimsPrincipal User, Labor8020SearchDTO searchDTO)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(User.TruncatedName);
+
+            List<string> locationList = GetLocationList(employee, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin(), false);
+
+            List<SelectListItem> locSelectList = null;
+            if (locationList.Count() == 0)
+            {
+                locSelectList = locationList.ToSelectList(null, null, null, true, employee.StoreNumber, employee.StoreNumber);
+            }
+            else
+            {
+                locSelectList = locationList.ToSelectList(null, null, null, true, "Select", "Select");
+            }
+
+            if (string.IsNullOrEmpty(searchDTO.SelectedLocation)) searchDTO.SelectedLocation = employee.StoreNumber;
+
+
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(searchDTO.SelectedDate);
+
+            List<Labor8020DTO> labor8020DTOs = null;
+
+            if (searchDTO.SelectedDayOrWeekFilter == Labor8020SearchDTO.ReportByDay)
+            {
+                labor8020DTOs = ldq.GetLabor8020ByDayAnd8020Filter(searchDTO.SelectedLocation.Substring(0, 3), searchDTO.SelectedDate, searchDTO.Selected8020Filter);
+            }
+            else
+            {
+                labor8020DTOs = ldq.GetLabor8020ByWeekAnd8020Filter(searchDTO.SelectedLocation.Substring(0, 3), daysInWeek.FirstOrDefault(), 
+                                                                        daysInWeek.LastOrDefault(), searchDTO.Selected8020Filter);
+            }
+
+            Labor8020SearchViewModel model = new Labor8020SearchViewModel
+            {
+                SearchResults = labor8020DTOs,
                 BusinessWeekStartDate = daysInWeek.FirstOrDefault(),
                 BusinessWeekEndDate = daysInWeek.LastOrDefault(),
                 EmployeeInfo = employee,

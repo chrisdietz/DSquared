@@ -44,200 +44,235 @@
                 <ul class="nav navbar-nav">
                     <li><a class="custom-navbar" href="/">Dashboard</a></li>
 
-                    @if (User.IsDSquaredAdmin())
-                    {
-                        <li>
-                            @Html.ActionLink("Daily Deposits", "Index", "DailyDeposit", null, new { @class = "custom-navbar" })
-                        </li>
-
-                        <li class="dropdown">
-                            <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
-                                Sales Forecasts
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    @Html.ActionLink("Entry", "Index", "SalesForecast", null, new { @class = "custom-navbar" })
-                                </li>
-                                <li>
-                                    @Html.ActionLink("Search", "Search", "SalesForecast", null, new { @class = "custom-navbar" })
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li class="dropdown">
-                            <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
-                                Redbook
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    @Html.ActionLink("Entry", "Entry", "Redbook", null, new { @class = "custom-navbar" })
-                                </li>
-                                <li>
-                                    @Html.ActionLink("Search", "Index", "Redbook", null, new { @class = "custom-navbar" })
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li class="dropdown">
-                            <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
-                                Gratuity Management
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
-                                        Tip Reporting
-                                        <span class="caret"></span>
-                                    </a>
-                                    <ul>
+                    @{
+                        if (User.IsDSquaredAdmin())
+                        {
+                            <li class="dropdown">
+                                <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
+                                    Administration
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        @Html.ActionLink("Dashboard", "Index", "Admin")
+                                    </li>
+                                    <li>
+                                        @Html.ActionLink("Codes", "Index", "Codes")
+                                    </li>
+                                    <li>
+                                        @Html.ActionLink("Help Documents", "Index", "HelpDocuments")
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        if (User.DailyDepositsAllowed())
+                        {
+                            <li>
+                                @Html.ActionLink("Daily Deposits", "Index", "DailyDeposit", null, new { @class = "custom-navbar" })
+                            </li>
+                        }
+                        if (User.EmployeeManagementAllowed())
+                        {
+                            <li class="dropdown">
+                                <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
+                                    Employee Mgmt
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    @if (User.SpreadHoursViewAllowed() || User.SpreadHoursSearchAllowed())
+                                    {
                                         <li>
-                                            @Html.ActionLink("View", "Index", "TipReporting", null, new { @class = "licolor" })
+                                            <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
+                                                Spread Hours
+                                                <span class="caret"></span>
+                                            </a>
+                                            <ul>
+                                                @if (User.SpreadHoursViewAllowed())
+                                                {
+                                                    <li>
+                                                        @Html.ActionLink("View", "Index", "SpreadHours", null, new { @class = "licolor" })
+                                                    </li>
+                                                }
+                                                @if (User.SpreadHoursSearchAllowed())
+                                                {
+                                                    <li>
+                                                        @Html.ActionLink("Search", "Search", "SpreadHours", null, new { @class = "licolor" })
+                                                    </li>
+                                                }
+                                            </ul>
                                         </li>
+                                    }
+                                    @if (User.MandatedHoursViewAllowed() || User.MandatedHoursSearchAllowed())
+                                    {
                                         <li>
-                                            @Html.ActionLink("Search", "Search", "TipReporting", null, new { @class = "licolor" })
+                                            <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
+                                                Mandated Hours
+                                                <span class="caret"></span>
+                                            </a>
+                                            <ul>
+                                                @if (User.MandatedHoursViewAllowed())
+                                                {
+                                                    <li>
+                                                        @Html.ActionLink("View", "Index", "NYS", null, new { @class = "licolor" })
+                                                    </li>
+                                                }
+                                                @if (User.MandatedHoursSearchAllowed())
+                                                {
+                                                    <li>
+                                                        @Html.ActionLink("Search", "Search", "NYS", null, new { @class = "licolor" })
+                                                    </li>
+                                                }
+                                            </ul>
                                         </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="/NYS/Index" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
-                                        Tip Percentage
-                                        <span class="caret"></span>
-                                    </a>
-                                    <ul>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                        if (User.GratuityManagementAllowed())
+                        {
+                            <li class="dropdown">
+                                <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
+                                    Gratuity Mgmt
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    @if (User.TipReportViewAllowed() || User.TipReportSearchAllowed())
+                                    {
                                         <li>
-                                            @Html.ActionLink("View", "Index", "TipPercentage", null, new { @class = "licolor" })
+                                            <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
+                                                Tip Reporting
+                                                <span class="caret"></span>
+                                            </a>
+                                            <ul>
+                                                @if (User.TipReportViewAllowed())
+                                                {
+                                                    <li>
+                                                        @Html.ActionLink("View", "Index", "TipReporting", null, new { @class = "licolor" })
+                                                    </li>
+                                                }
+                                                @if (User.TipReportSearchAllowed())
+                                                {
+                                                    <li>
+                                                        @Html.ActionLink("Search", "Search", "TipReporting", null, new { @class = "licolor" })
+                                                    </li>
+                                                }
+                                            </ul>
                                         </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
-                                Employee Management
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
-                                        Spread Hours
-                                        <span class="caret"></span>
-                                    </a>
-                                    <ul>
+                                    }
+                                    @if (User.TipPercentageViewAllowed() || User.TipPercentageSearchAllowed())
+                                    {
                                         <li>
-                                            @Html.ActionLink("View", "Index", "SpreadHours", null, new { @class = "licolor" })
+                                            <a href="/NYS/Index" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
+                                                Tip Percentage
+                                                <span class="caret"></span>
+                                            </a>
+                                            <ul>
+                                                @if (User.TipPercentageViewAllowed())
+                                                {
+                                                    <li>
+                                                        @Html.ActionLink("View", "Index", "TipPercentage", null, new { @class = "licolor" })
+                                                    </li>
+                                                }
+                                                @if (User.TipPercentageSearchAllowed())
+                                                {
+                                                    <li>
+                                                        @Html.ActionLink("Search", "Search", "TipPercentage", null, new { @class = "licolor" })
+                                                    </li>
+                                                }
+                                            </ul>
                                         </li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                        if (User.RedbookEntryAllowed() || User.RedbookSearchAllowed())
+                        {
+                            <li class="dropdown">
+                                <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
+                                    Redbook
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    @if (User.RedbookEntryAllowed())
+                                    {
                                         <li>
-                                            @Html.ActionLink("Search", "Search", "SpreadHours", null, new { @class = "licolor" })
+                                            @Html.ActionLink("Entry", "Entry", "Redbook", null, new { @class = "custom-navbar" })
                                         </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
-                                        Mandated Hours
-                                        <span class="caret"></span>
-                                    </a>
-                                    <ul>
+                                    }
+                                    @if (User.RedbookSearchAllowed())
+                                    {
                                         <li>
-                                            @Html.ActionLink("View", "Index", "NYS", null, new { @class = "licolor" })
+                                            @Html.ActionLink("Search", "Index", "Redbook", null, new { @class = "custom-navbar" })
                                         </li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                        if (User.ReportsAllowed())
+                        {
+                            <li class="dropdown">
+                                <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
+                                    Reports
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
+                                            Labor Reports
+                                            <span class="caret"></span>
+                                        </a>
+                                        <ul>
+                                            <li>
+                                                @Html.ActionLink("Labor Summary Report", "LaborSummary", "LaborReports", null, new { @class = "licolor" })
+                                            </li>
+                                            <li>
+                                                @Html.ActionLink("Overtime Report", "OvertimeReport", "LaborReports", null, new { @class = "licolor" })
+                                            </li>
+                                            <li>
+                                                @Html.ActionLink("80/20 Report", "Labor8020", "LaborReports", null, new { @class = "licolor" })
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
+                                            Sales Reports
+                                            <span class="caret"></span>
+                                        </a>
+                                        <ul>
+                                            <li>
+                                                @Html.ActionLink("Sales Report", "SalesReport", "SalesReporting", null, new { @class = "licolor" })
+                                            </li>
+                                            <li>
+                                                @Html.ActionLink("Ideal Cash Report", "IdealCashReport", "SalesReporting", null, new { @class = "licolor" })
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        if (User.SalesForecastsEntryAllowed() || User.SalesForecastsSearchAllowed())
+                        {
+                            <li class="dropdown">
+                                <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
+                                    Sales Forecasts
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    @if (User.SalesForecastsEntryAllowed())
+                                    {
                                         <li>
-                                            @Html.ActionLink("Search", "Search", "NYS", null, new { @class = "licolor" })
+                                            @Html.ActionLink("Entry", "Index", "SalesForecast", null, new { @class = "custom-navbar" })
                                         </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
-                                Administration
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    @Html.ActionLink("Dashboard", "Index", "Admin")
-                                </li>
-                                <li>
-                                    @Html.ActionLink("Codes", "Index", "Codes")
-                                </li>
-                                <li>
-                                    @Html.ActionLink("Help Documents", "Index", "HelpDocuments")
-                                </li>
-                            </ul>
-                        </li>
-                    }
-                    else if (User.IsRedbookManager())
-                    {
-                        <li>
-                            @Html.ActionLink("Daily Deposits", "Index", "DailyDeposit", null, new { @class = "custom-navbar" })
-                        </li>
-                        <li>
-                            @Html.ActionLink("Sales Forecasts", "Index", "SalesForecast", null, new { @class = "custom-navbar" })
-                        </li>
-                        <li>
-                            @Html.ActionLink("Redbook", "Entry", "Redbook", null, new { @class = "custom-navbar" })
-                        </li>
-                        <li>
-                            @Html.ActionLink("Tip Reporting", "Index", "TipReporting", null, new { @class = "custom-navbar" })
-                        </li>
-                        <li>
-                            @Html.ActionLink("Tip Percentage", "Index", "TipPercentage", null, new { @class = "custom-navbar" })
-                        </li>
-                    }
-                    else if (User.IsDivisionalVP() || User.IsRegionalManager())
-                    {
-                        <li>
-                            @Html.ActionLink("Sales Forecasts", "Search", "SalesForecast", null, new { @class = "custom-navbar" })
-                        </li>
-                        <li>
-                            @Html.ActionLink("Redbook", "Index", "Redbook", null, new { @class = "custom-navbar" })
-                        </li>
-                        <li>
-                            @Html.ActionLink("Tip Reporting", "Search", "TipReporting", null, new { @class = "custom-navbar" })
-                        </li>
-                        <li>
-                            @Html.ActionLink("Tip Percentage", "Index", "TipPercentage", null, new { @class = "custom-navbar" })
-                        </li>
-                        <li>
-                            @Html.ActionLink("Spread Hours", "Search", "SpreadHours", null, new { @class = "custom-navbar" })
-                        </li>
-                        <li>
-                            @Html.ActionLink("Mandated Hours", "Search", "NYS", null, new { @class = "custom-navbar" })
-                        </li>
-                    }
-                    else if (User.IsDSquaredSpreadHours())
-                    {
-                        <li>
-                            @Html.ActionLink("Spread Hours", "Index", "SpreadHours", null, new { @class = "custom-navbar" })
-                        </li>
-                    }
-                    else if (User.IsDSquaredNYSMandatedHours())
-                    {
-                        <li>
-                            @Html.ActionLink("Mandated Hours", "Index", "NYS", null, new { @class = "custom-navbar" })
-                        </li>
-                    }
-                    else if (User.IsDSquaredTipReporting())
-                    {
-                        <li>
-                            @Html.ActionLink("Tip Reporting", "Search", "TipReporting", null, new { @class = "custom-navbar" })
-                        </li>
-                    }
-                    else
-                    {
-                        <li>
-                            @Html.ActionLink("Daily Deposits", "Index", "DailyDeposit", null, new { @class = "custom-navbar" })
-                        </li>
-                        <li>
-                            @Html.ActionLink("Sales Forecasts", "Index", "SalesForecast", null, new { @class = "custom-navbar" })
-                        </li>
-                        <li>
-                            @Html.ActionLink("Tip Reporting", "Index", "TipReporting", null, new { @class = "custom-navbar" })
-                        </li>
-                        <li>
-                            @Html.ActionLink("Tip Percentage", "Index", "TipPercentage", null, new { @class = "custom-navbar" })
-                        </li>
+                                    }
+                                    @if (User.SalesForecastsSearchAllowed())
+                                    {
+                                        <li>
+                                            @Html.ActionLink("Search", "Search", "SalesForecast", null, new { @class = "custom-navbar" })
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                        }
                     }
                 </ul>
                 <p class="nav navbar-text navbar-right">Hello, @User.TruncatedName!</p>

@@ -111,5 +111,43 @@ namespace D_Squared.Data.Queries
             return laborDataDTOs;
         }
 
+        public List<Labor8020DTO> GetLabor8020ByDayAnd8020Filter(string storeNumber, DateTime businessDate, string filter_8020)
+        {
+            var lsLabor8020s = db.LS8020s.Where(ld => ld.BusinessDate == businessDate.Date && ld.Store.Contains(storeNumber) && ld.P_8020 == filter_8020).ToList();
+
+            return BuildLabor8020DTOs(lsLabor8020s);
+        }
+
+        public List<Labor8020DTO> GetLabor8020ByWeekAnd8020Filter(string storeNumber, DateTime startDate, DateTime endDate, string filter_8020)
+        {
+            DateTime realEndDate = endDate.AddDays(1);
+            var lsLabor8020s = db.LS8020s.Where(ld => ld.BusinessDate >= startDate && ld.BusinessDate < realEndDate 
+                                                        && ld.Store.Contains(storeNumber) && ld.P_8020 == filter_8020).ToList();
+
+            return BuildLabor8020DTOs(lsLabor8020s);
+        }
+
+        private List<Labor8020DTO> BuildLabor8020DTOs(List<LS8020> lsLabor8020s)
+        {
+            List<Labor8020DTO> labor8020DTOs = new List<Labor8020DTO>();
+            foreach (var lS8020 in lsLabor8020s)
+            {
+                Labor8020DTO l8020DTO = new Labor8020DTO
+                {
+                    Store = lS8020.Store,
+                    BusinessDate = lS8020.BusinessDate,
+                    PersonnelNumber = lS8020.PersonnelNumber,
+                    EmployeeName = lS8020.EmployeeName,
+                    JobName = lS8020.JobName,
+                    P_8020 = lS8020.P_8020,
+                    P_8020Manager = lS8020.P_8020Manager
+                };
+
+                labor8020DTOs.Add(l8020DTO);
+            }
+
+            return labor8020DTOs;
+        }
+
     }
 }
