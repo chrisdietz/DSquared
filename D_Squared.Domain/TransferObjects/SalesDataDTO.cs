@@ -35,6 +35,7 @@ namespace D_Squared.Domain.TransferObjects
                 RetailSales = salesData.RetailSales;
                 TaxAmount = salesData.TaxAmount;
                 PaymentAmount = salesData.PaymentAmount;
+                CheckNumber = salesData.CheckNumber;
             }
             else
             {
@@ -106,6 +107,9 @@ namespace D_Squared.Domain.TransferObjects
 
         [Display(Name = "Adjustment Sales")]
         public decimal AdjustmentSales { get; set; }
+
+        [Display(Name = "Check Number")]
+        public string CheckNumber { get; set; }
     }
 
     public class SalesDataSearchDTO

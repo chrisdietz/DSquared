@@ -12,7 +12,7 @@ namespace D_Squared.Domain.Entities
         [Key]
         public long ID { get; set; }
         public long CheckID { get; set; }
-
+        public string CheckNumber { get; set; }
         [Display(Name = "Date")]
         public DateTime BusinessDate { get; set; }
 

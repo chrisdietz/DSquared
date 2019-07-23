@@ -72,6 +72,7 @@ namespace D_Squared.Data.Queries
                                                 RetailSales = ls.RetailSales,
                                                 TaxAmount = ls.TaxAmount,
                                                 PaymentAmount = ls.PaymentAmount,
+                                                CheckNumber = ls.CheckNumber,
                                                 AdjustmentSales = ls.Sales - ls.Discounts
                                             }).ToList();
             return sDataList;
