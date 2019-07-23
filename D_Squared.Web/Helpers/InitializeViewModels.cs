@@ -1125,6 +1125,52 @@ namespace D_Squared.Web.Helpers
 
             return model;
         }
+
+        public PaidInOutSearchViewModel InitializePaidInOutSearchViewModel(CustomClaimsPrincipal User, PaidInOutSearchDTO searchDTO)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(User.TruncatedName);
+
+            List<string> locationList = GetLocationList(employee, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin(), false);
+
+            List<SelectListItem> locSelectList = null;
+            if (locationList.Count() == 0)
+            {
+                locSelectList = locationList.ToSelectList(null, null, null, true, employee.StoreNumber, employee.StoreNumber);
+            }
+            else
+            {
+                locSelectList = locationList.ToSelectList(null, null, null, true, "Select", "Select");
+            }
+
+            if (string.IsNullOrEmpty(searchDTO.SelectedLocation)) searchDTO.SelectedLocation = employee.StoreNumber;
+
+
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(searchDTO.SelectedDate);
+
+            List<PaidInOutDTO> paidInOutDTOs = null;
+
+            if (searchDTO.SelectedDayOrWeekFilter == Labor8020SearchDTO.ReportByDay)
+            {
+                paidInOutDTOs = sdq.GetPaidInOutByDayAndAccountTypeFilter(searchDTO.SelectedLocation.Substring(0, 3), searchDTO.SelectedDate, searchDTO.SelectedAccountTypeFilter);
+            }
+            else
+            {
+                paidInOutDTOs = sdq.GetPaidInOutByWeekAndAccountTypeFilter(searchDTO.SelectedLocation.Substring(0, 3), daysInWeek.FirstOrDefault(),
+                                                                        daysInWeek.LastOrDefault(), searchDTO.SelectedAccountTypeFilter);
+            }
+
+            PaidInOutSearchViewModel model = new PaidInOutSearchViewModel
+            {
+                SearchResults = paidInOutDTOs,
+                BusinessWeekStartDate = daysInWeek.FirstOrDefault(),
+                BusinessWeekEndDate = daysInWeek.LastOrDefault(),
+                EmployeeInfo = employee,
+                SearchDTO = searchDTO,
+                LocationSelectList = locSelectList
+            };
+
+            return model;
+        }
     }
 
     public class LaborReportsInitializer : InitializerBase

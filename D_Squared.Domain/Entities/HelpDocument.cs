@@ -33,6 +33,7 @@ namespace D_Squared.Domain.Entities
             PageHeaders.Add("OvertimeReport", "Overtime Report");
             PageHeaders.Add("LaborSummary", "Labor Summary Report");
             PageHeaders.Add("Labor8020", "80/20 Report");
+            PageHeaders.Add("PaidInOut", "Paid In/Out Report");
         }
 
         public int Id { get; set; }

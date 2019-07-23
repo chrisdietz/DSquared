@@ -113,6 +113,7 @@
     <Compile Include="Entities\MakeUpPay.cs" />
     <Compile Include="Entities\MinimumWage.cs" />
     <Compile Include="Entities\NYS.cs" />
+    <Compile Include="Entities\PaidInOut.cs" />
     <Compile Include="Entities\RedbookEntry.cs" />
     <Compile Include="Entities\RedbookSalesData.cs" />
     <Compile Include="Entities\RedbookSalesEvent.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="TransferObjects\Labor8020DTO.cs" />
     <Compile Include="TransferObjects\LaborDataDTO.cs" />
     <Compile Include="TransferObjects\NYSDTO.cs" />
+    <Compile Include="TransferObjects\PaidInOutDTO.cs" />
     <Compile Include="TransferObjects\RedbookSearchDTO.cs" />
     <Compile Include="TransferObjects\SalesDataDTO.cs" />
     <Compile Include="TransferObjects\SalesForecastDTO.cs" />

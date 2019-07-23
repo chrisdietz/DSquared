@@ -224,6 +224,7 @@
     <Compile Include="Models\LaborSummaryViewModel.cs" />
     <Compile Include="Models\NYSViewModel.cs" />
     <Compile Include="Models\OvertimeReportingViewModel.cs" />
+    <Compile Include="Models\PaidInOutViewModel.cs" />
     <Compile Include="Models\RedbookViewModels.cs" />
     <Compile Include="Models\SalesDataPartialViewModel.cs" />
     <Compile Include="Models\SalesForecastReportViewModel.cs" />
@@ -755,6 +756,7 @@
     <Content Include="Views\SalesReporting\IdealCashReport.cshtml" />
     <Content Include="Views\LaborReports\Labor8020.cshtml" />
     <Content Include="Views\TipPercentage\Search.cshtml" />
+    <Content Include="Views\SalesReporting\PaidInOut.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

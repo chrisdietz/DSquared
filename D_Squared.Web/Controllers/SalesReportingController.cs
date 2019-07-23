@@ -54,5 +54,16 @@ namespace D_Squared.Web.Controllers
 
             return View(model);
         }
+
+        public ActionResult PaidInOut(PaidInOutSearchDTO searchDTO)
+        {
+            string username = User.TruncatedName;
+            EmployeeDTO employee = eq.GetEmployeeInfo(username);
+
+            PaidInOutSearchViewModel model = init.InitializePaidInOutSearchViewModel(User, searchDTO);
+            model.SearchDTO = searchDTO;
+
+            return View(model);
+        }
     }
 }

@@ -138,5 +138,44 @@ namespace D_Squared.Data.Queries
 
             return idealCashDTOs;
         }
+
+        public List<PaidInOutDTO> GetPaidInOutByDayAndAccountTypeFilter(string storeNumber, DateTime businessDate, string accountTypeFilter)
+        {
+            var paidInOuts = db.PaidInOuts.Where(pio => pio.BusinessDate == businessDate.Date && pio.Store.Contains(storeNumber) && pio.AccountType == accountTypeFilter).ToList();
+
+            return BuildPaidInOutDTOs(paidInOuts);
+        }
+
+        public List<PaidInOutDTO> GetPaidInOutByWeekAndAccountTypeFilter(string storeNumber, DateTime startDate, DateTime endDate, string accountTypeFilter)
+        {
+            DateTime realEndDate = endDate.AddDays(1);
+            var paidInOuts = db.PaidInOuts.Where(ld => ld.BusinessDate >= startDate && ld.BusinessDate < realEndDate
+                                                        && ld.Store.Contains(storeNumber) && ld.AccountType == accountTypeFilter).ToList();
+
+            return BuildPaidInOutDTOs(paidInOuts);
+        }
+
+        private List<PaidInOutDTO> BuildPaidInOutDTOs(List<PaidInOut> paidInOuts)
+        {
+            List<PaidInOutDTO> paidInOutDTOs = new List<PaidInOutDTO>();
+            foreach (var paidInOut in paidInOuts)
+            {
+                PaidInOutDTO paidInOutDTO = new PaidInOutDTO
+                {
+                    Store = paidInOut.Store,
+                    BusinessDate = paidInOut.BusinessDate,
+                    PersonnelNumber = paidInOut.PersonnelNumber,
+                    EmployeeName = paidInOut.EmployeeName,
+                    Receipt = paidInOut.Receipt,
+                    AccountType = paidInOut.AccountType,
+                    AccountName = paidInOut.AccountName,
+                    ExpenseAmount = paidInOut.ExpenseAmount
+                };
+
+                paidInOutDTOs.Add(paidInOutDTO);
+            }
+
+            return paidInOutDTOs;
+        }
     }
 }
