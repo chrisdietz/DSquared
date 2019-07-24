@@ -82,7 +82,7 @@ namespace D_Squared.Data.Context
             modelBuilder.Entity<LSLabor>().ToTable("LSLabor");
             modelBuilder.Entity<LSIdealCash>().ToTable("LSIdealCash");
             modelBuilder.Entity<LS8020>().ToTable("LS8020");
-            modelBuilder.Entity<PaidInOut>().ToTable("PaidInOut");
+            modelBuilder.Entity<PaidInOut>().ToTable("LSPaidInOut");
 
             base.OnModelCreating(modelBuilder);
         }
