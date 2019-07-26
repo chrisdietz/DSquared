@@ -105,5 +105,6 @@ namespace D_Squared.Data.Millers.Queries
                 return db.StoreLocations.Where(sl => sl.Division == employee.LastName && sl.isClose == 0).Select(sl => sl.LocationName).ToList();
             }
         }
+
     }
 }

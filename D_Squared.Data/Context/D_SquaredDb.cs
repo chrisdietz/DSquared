@@ -65,6 +65,8 @@ namespace D_Squared.Data.Context
 
         public DbSet<PaidInOut> PaidInOuts { get; set; }
 
+        public DbSet<LSServerSales> LSServerSales { get; set; }
+
         public static D_SquaredDbContext Create()
         {
             return new D_SquaredDbContext();
@@ -83,6 +85,7 @@ namespace D_Squared.Data.Context
             modelBuilder.Entity<LSIdealCash>().ToTable("LSIdealCash");
             modelBuilder.Entity<LS8020>().ToTable("LS8020");
             modelBuilder.Entity<PaidInOut>().ToTable("LSPaidInOut");
+            modelBuilder.Entity<LSServerSales>().ToTable("LSServerSales");
 
             base.OnModelCreating(modelBuilder);
         }

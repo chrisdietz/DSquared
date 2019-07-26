@@ -65,5 +65,16 @@ namespace D_Squared.Web.Controllers
 
             return View(model);
         }
+
+        public ActionResult ServerSales(ServerSalesSearchDTO searchDTO)
+        {
+            string username = User.TruncatedName;
+            EmployeeDTO employee = eq.GetEmployeeInfo(username);
+
+            ServerSalesSearchViewModel model = init.InitializeServerSalesSearchViewModel(User, searchDTO);
+            model.SearchDTO = searchDTO;
+
+            return View(model);
+        }
     }
 }

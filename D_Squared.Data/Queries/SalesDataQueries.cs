@@ -16,6 +16,12 @@ namespace D_Squared.Data.Queries
         {
             this.db = db;
         }
+
+        public List<EmployeeJob> GetStoreEmployees(string storeNumber)
+        {
+            return db.EmployeeJobs.Where(e => e.StoreNumber == storeNumber).ToList();
+        }
+
         public bool CheckForExistingSalesDataByDate(DateTime date, string storeNumber)
         {
             return db.LSSales.Any(sd => sd.BusinessDate == date && sd.Store == storeNumber);
@@ -177,6 +183,65 @@ namespace D_Squared.Data.Queries
             }
 
             return paidInOutDTOs;
+        }
+
+        public List<ServerSalesDTO> GetServerSalesDTOsByDate(string storeNumber, DateTime businessDate, int employeeID)
+        {
+            var lsServerSales =
+                (employeeID == -1)
+                        ? db.LSServerSales.Where(ss => ss.BusinessDate == businessDate.Date && ss.Store.Contains(storeNumber)).ToList()
+                        : db.LSServerSales.Where(ss => ss.BusinessDate == businessDate.Date && ss.Store.Contains(storeNumber) && ss.EmployeeID == employeeID).ToList();
+
+            return BuildServerSalesDTOs(lsServerSales);
+        }
+
+        public List<ServerSalesDTO> GetServerSalesDTOsByWeek(string storeNumber, DateTime startDate, DateTime endDate, int employeeID)
+        {
+            DateTime realEndDate = endDate.AddDays(1);
+            var lsServerSales =
+                (employeeID == -1)
+                        ? db.LSServerSales.Where(ss => ss.BusinessDate >= startDate && ss.BusinessDate < realEndDate && ss.Store.Contains(storeNumber)).ToList()
+                        : db.LSServerSales.Where(ss => ss.BusinessDate >= startDate && ss.BusinessDate < realEndDate && ss.Store.Contains(storeNumber) 
+                            && ss.EmployeeID == employeeID).ToList();
+
+            return BuildServerSalesDTOs(lsServerSales);
+        }
+
+        public List<ServerSalesDTO> GetServerSalesDTOsBy_BiWeekly(string storeNumber, DateTime startDate, DateTime endDate, int employeeID)
+        {
+            DateTime realEndDate = endDate.AddDays(1);
+            var lsServerSales =
+                (employeeID == -1)
+                        ? db.LSServerSales.Where(ss => ss.BusinessDate >= startDate && ss.BusinessDate < realEndDate && ss.Store.Contains(storeNumber)).ToList()
+                        : db.LSServerSales.Where(ss => ss.BusinessDate >= startDate && ss.BusinessDate < realEndDate && ss.Store.Contains(storeNumber)
+                            && ss.EmployeeID == employeeID).ToList();
+
+            return BuildServerSalesDTOs(lsServerSales);
+        }
+
+        private List<ServerSalesDTO> BuildServerSalesDTOs(List<LSServerSales> lSServerSales)
+        {
+            List<ServerSalesDTO> serverSalesDTOs = new List<ServerSalesDTO>();
+            foreach (var lsSSales in lSServerSales)
+            {
+                ServerSalesDTO serverSalesDTO = new ServerSalesDTO
+                {
+                    Store = lsSSales.Store,
+                    BusinessDate = lsSSales.BusinessDate,
+                    TotalSales = lsSSales.TotalSales,
+                    EmployeeName = lsSSales.EmployeeName,
+                    FoodSales = lsSSales.FoodSales,
+                    FoodSalesPercent = lsSSales.FoodSalesPercent,
+                    LBWSales = lsSSales.LBWSales,
+                    LBWSalesPercent = lsSSales.LBWSalesPercent,
+                    NonAlcBevSales = lsSSales.NonAlcBevSales,
+                    NonAlcBevSalesPercent = lsSSales.NonAlcBevSalesPercent
+                };
+
+                serverSalesDTOs.Add(serverSalesDTO);
+            }
+
+            return serverSalesDTOs;
         }
     }
 }

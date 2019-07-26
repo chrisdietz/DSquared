@@ -6,7 +6,9 @@
         $(".locationSelect").select2({
             width: '67%'
         }); 
-
+        $(".employeeSelect").select2({
+            width: '67%'
+        });
         $(function () {
             $(".date-picker").datepicker({
                 changeMonth: true,

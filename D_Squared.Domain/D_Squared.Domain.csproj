@@ -110,6 +110,7 @@
     <Compile Include="Entities\LS8020.cs" />
     <Compile Include="Entities\LSIdealCash.cs" />
     <Compile Include="Entities\LSLabor.cs" />
+    <Compile Include="Entities\LSServerSales.cs" />
     <Compile Include="Entities\MakeUpPay.cs" />
     <Compile Include="Entities\MinimumWage.cs" />
     <Compile Include="Entities\NYS.cs" />
@@ -140,6 +141,7 @@
     <Compile Include="TransferObjects\RedbookSearchDTO.cs" />
     <Compile Include="TransferObjects\SalesDataDTO.cs" />
     <Compile Include="TransferObjects\SalesForecastDTO.cs" />
+    <Compile Include="TransferObjects\ServerSalesDTO.cs" />
     <Compile Include="TransferObjects\SpreadHourDTO.cs" />
     <Compile Include="TransferObjects\TipPercentageDTO.cs" />
     <Compile Include="TransferObjects\TipReportingSearchDTO.cs" />

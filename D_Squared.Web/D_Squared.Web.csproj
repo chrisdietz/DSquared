@@ -230,6 +230,7 @@
     <Compile Include="Models\SalesForecastReportViewModel.cs" />
     <Compile Include="Models\SalesForecastViewModel.cs" />
     <Compile Include="Models\SalesReportViewModel.cs" />
+    <Compile Include="Models\ServerSalesViewModel.cs" />
     <Compile Include="Models\SpreadHourViewModels.cs" />
     <Compile Include="Models\TipPercentageViewModel.cs" />
     <Compile Include="Models\TipReportingViewModels.cs" />
@@ -757,6 +758,7 @@
     <Content Include="Views\LaborReports\Labor8020.cshtml" />
     <Content Include="Views\TipPercentage\Search.cshtml" />
     <Content Include="Views\SalesReporting\PaidInOut.cshtml" />
+    <Content Include="Views\SalesReporting\ServerSales.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

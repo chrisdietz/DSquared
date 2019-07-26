@@ -1171,6 +1171,61 @@ namespace D_Squared.Web.Helpers
 
             return model;
         }
+
+        public ServerSalesSearchViewModel InitializeServerSalesSearchViewModel(CustomClaimsPrincipal User, ServerSalesSearchDTO searchDTO)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(User.TruncatedName);
+
+            List<string> locationList = GetLocationList(employee, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin(), false);
+
+            List<SelectListItem> locSelectList = null;
+            if (locationList.Count() == 0)
+            {
+                locSelectList = locationList.ToSelectList(null, null, null, true, employee.StoreNumber, employee.StoreNumber);
+            }
+            else
+            {
+                locSelectList = locationList.ToSelectList(null, null, null, true, "Select", "Select");
+            }
+
+            if (string.IsNullOrEmpty(searchDTO.SelectedLocation)) searchDTO.SelectedLocation = employee.StoreNumber;
+
+            List<SelectListItem> employees = sdq.GetStoreEmployees(searchDTO.SelectedLocation).Select(e => new SelectListItem
+            {
+                Text = e.EmployeeName,
+                Value = e.EmployeeNumber
+            }).ToList();
+            employees.Insert(0, new SelectListItem { Value = "-1", Text = "All" });
+
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(searchDTO.SelectedDate);
+            List<ServerSalesDTO> serverSalesDTOs = null;
+            switch (searchDTO.SelectedDWBWFilter)
+            {
+                case ServerSalesSearchDTO.ReportByDay:
+                    serverSalesDTOs = sdq.GetServerSalesDTOsByDate(searchDTO.SelectedLocation, searchDTO.SelectedDate, Convert.ToInt32(searchDTO.SelectedEmployee));
+                    break;
+                case ServerSalesSearchDTO.ReportByWeek:
+                    serverSalesDTOs = sdq.GetServerSalesDTOsByWeek(searchDTO.SelectedLocation, daysInWeek.FirstOrDefault(), daysInWeek.LastOrDefault(), Convert.ToInt32(searchDTO.SelectedEmployee));
+                    break;
+                case ServerSalesSearchDTO.ReportByBiWeekly:
+                    serverSalesDTOs = sdq.GetServerSalesDTOsBy_BiWeekly(searchDTO.SelectedLocation, daysInWeek.FirstOrDefault().AddDays(-7), daysInWeek.LastOrDefault(), Convert.ToInt32(searchDTO.SelectedEmployee));
+                    break;
+                default:
+                    break;
+            }
+
+            ServerSalesSearchViewModel model = new ServerSalesSearchViewModel()
+            {
+                EmployeeInfo = employee,
+                LocationSelectList = locSelectList,
+                EmployeeSelectList = employees,
+                SearchResults = serverSalesDTOs,
+                BusinessWeekStartDate = (searchDTO.SelectedDWBWFilter == ServerSalesSearchDTO.ReportByWeek) ? daysInWeek.FirstOrDefault() : daysInWeek.FirstOrDefault().AddDays(-7),
+                BusinessWeekEndDate = daysInWeek.LastOrDefault(),
+            };
+
+            return model;
+        }
     }
 
     public class LaborReportsInitializer : InitializerBase
