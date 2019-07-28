@@ -11,6 +11,14 @@ namespace D_Squared.Web.Models
     public class SalesReportViewModel
     {
         public EmployeeDTO EmployeeInfo { get; set; }
+
+        public List<SalesDataDTO> SalesList { get; set; }
+
+        public DateTime BusinessWeekStartDate { get; set; }
+
+        public DateTime BusinessWeekEndDate { get; set; }
+
+        public bool CurrentWeekFlag { get; set; }
     }
 
     public class SalesReportSearchViewModel

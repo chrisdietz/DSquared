@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace D_Squared.Domain.Entities
 {
@@ -15,8 +12,10 @@ namespace D_Squared.Domain.Entities
         public HelpDocument()
         {
             PageHeaders = new Dictionary<string, string>();
-            PageHeaders.Add("IdealCashReport", "Ideal Cash Report");
-            PageHeaders.Add("SalesReport", "Sales Report");
+            PageHeaders.Add("IdealCashView", "Ideal Cash Report - View");
+            PageHeaders.Add("IdealCashSearch", "Ideal Cash Report - Search");
+            PageHeaders.Add("SalesView", "Sales Report - View");
+            PageHeaders.Add("SalesSearch", "Sales Report - Search");
             PageHeaders.Add("RedbookEntry", "Redbook Entry");
             PageHeaders.Add("RedbookSearch", "Redbook Search");
             PageHeaders.Add("SalesForecasts", "Sales Forecasts");
@@ -30,11 +29,16 @@ namespace D_Squared.Domain.Entities
             PageHeaders.Add("SpreadHoursSearch", "Spread Hours Search");
             PageHeaders.Add("MandatedHoursView", "Mandated Hours View");
             PageHeaders.Add("MandatedHoursSearch", "Mandated Hours Search");
-            PageHeaders.Add("OvertimeReport", "Overtime Report");
-            PageHeaders.Add("LaborSummary", "Labor Summary Report");
-            PageHeaders.Add("Labor8020", "80/20 Report");
-            PageHeaders.Add("PaidInOut", "Paid In/Out Report");
-            PageHeaders.Add("ServerSales", "Server Sales Report");
+            PageHeaders.Add("OvertimeView", "Overtime Report - View");
+            PageHeaders.Add("OvertimeSearch", "Overtime Report - Search");
+            PageHeaders.Add("LaborSummaryView", "Labor Summary Report - View");
+            PageHeaders.Add("LaborSummarySearch", "Labor Summary Report - Search");
+            PageHeaders.Add("Labor8020View", "80/20 Report - View");
+            PageHeaders.Add("Labor8020Search", "80/20 Report - Search");
+            PageHeaders.Add("PaidInOutView", "Paid In/Out Report - View");
+            PageHeaders.Add("PaidInOutSearch", "Paid In/Out Report - Search");
+            PageHeaders.Add("ServerSalesView", "Server Sales Report - View");
+            PageHeaders.Add("ServerSalesSearch", "Server Sales Report - Search");
         }
 
         public int Id { get; set; }

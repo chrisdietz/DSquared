@@ -11,6 +11,14 @@ namespace D_Squared.Web.Models
     public class OvertimeReportingViewModel
     {
         public EmployeeDTO EmployeeInfo { get; set; }
+
+        public List<WeeklyTotalDurationDTO> WeeklyTotalDurationList { get; set; }
+
+        public DateTime BusinessWeekStartDate { get; set; }
+
+        public DateTime BusinessWeekEndDate { get; set; }
+
+        public bool CurrentWeekFlag { get; set; }
     }
     public class OvertimeReportingSearchViewModel
     {

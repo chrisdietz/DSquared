@@ -1,5 +1,4 @@
-﻿
-@model D_Squared.Web.Models.IdealCashReportSearchViewModel
+﻿@model D_Squared.Web.Models.OvertimeReportingSearchViewModel
 
 @section Scripts{
     <script src="~/App_Scripts/LaborReports/SearchInit.js" type="text/javascript"></script>
@@ -29,15 +28,6 @@
         margin: 0;
         padding: 0
     }
-
-    tbody {
-        text-align: right;
-    }
-
-    tfoot {
-        font-weight: bold;
-        text-align: right;
-    }
 </style>
 
 <div class="jumbotron" style="background-image: url('/Content/images/lightwood-bg.jpg'); padding-bottom:5px; padding-top:20px; margin-bottom:10px">
@@ -49,7 +39,7 @@
         </div>
         <div class="col-md-4">
             <div class="text-center" style="display: block; margin: 0 auto; max-width:500px">
-                <h2>Ideal Cash Report View</h2>
+                <h2>Overtime Report - Search</h2>
                 <p class="lead">
                     Location: <strong><u>@Model.EmployeeInfo.StoreNumber</u></strong>
                 </p>
@@ -96,6 +86,14 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SearchDTO.SelectedHours, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        <div class="input-group col-md-8">
+                            @Html.TextBoxFor(m => m.SearchDTO.SelectedHours, new { @Value = Model.SearchDTO.SelectedHours, @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col-md-5">
                 <div class="panel panel-default firstRowPanel">
@@ -135,25 +133,13 @@
             <thead>
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().BusinessDate)
+                        @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().StaffName)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().TotalSales)
+                        @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().TotalDuration)
                     </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().Cash)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().CCTips)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().PaidIn)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().PaidOut)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().IdealCash)
+                    <th class="alert-danger">
+                        Hours Over @Model.SearchDTO.SelectedHours
                     </th>
                 </tr>
             </thead>
@@ -164,25 +150,13 @@
                     {
                         <tr>
                             <td>
-                                @result.BusinessDate.ToShortDateString()
+                                @Html.DisplayFor(model => result.StaffName)
                             </td>
                             <td>
-                                @result.TotalSales.ToString("C2")
+                                @result.TotalDuration.ToString("0.00")
                             </td>
                             <td>
-                                @result.Cash.ToString("C2")
-                            </td>
-                            <td>
-                                @result.CCTips.ToString("C2")
-                            </td>
-                            <td>
-                                @result.PaidIn.ToString("C2")
-                            </td>
-                            <td>
-                                @result.PaidOut.ToString("C2")
-                            </td>
-                            <td>
-                                @result.IdealCash.ToString("C2")
+                                @result.Overtime.ToString("0.00")
                             </td>
                         </tr>
                     }
@@ -190,33 +164,6 @@
                 }
 
             </tbody>
-            <tfoot>
-                @{
-                    <tr>
-                        <td>
-                            Total
-                        </td>
-                        <td>
-                            @Model.SearchResults.Sum(sd => sd.TotalSales).ToString("C2")
-                        </td>
-                        <td>
-                            @Model.SearchResults.Sum(sd => sd.Cash).ToString("C2")
-                        </td>
-                        <td>
-                            @Model.SearchResults.Sum(sd => sd.CCTips).ToString("C2")
-                        </td>
-                        <td>
-                            @Model.SearchResults.Sum(sd => sd.PaidIn).ToString("C2")
-                        </td>
-                        <td>
-                            @Model.SearchResults.Sum(sd => sd.PaidOut).ToString("C2")
-                        </td>
-                        <td>
-                            @Model.SearchResults.Sum(sd => sd.IdealCash).ToString("C2")
-                        </td>
-                    </tr>
-                }
-            <tfoot>
         </table>
     }
     else
@@ -227,5 +174,5 @@
     }
 }
 
-<!--must explicitly define the controller and action-->
-@{Html.RenderAction("ModalDetails", "Home", new { @controller = "SalesReporting", @action = "IdealCashReport", pageHeaderKey = "IdealCashReport" });}
+<!--must explicitly define the controller and action and pageHeaderKey. PageHeaderKey can be found in HelpDocument.cs-->
+@{Html.RenderAction("ModalDetails", "Home", new { @controller = "LaborReports", @action = "OvertimeSearch", @pageHeaderKey = "OvertimeSearch" });}

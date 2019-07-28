@@ -1055,6 +1055,25 @@ namespace D_Squared.Web.Helpers
             this.sdq = sdq;
         }
 
+        public SalesReportViewModel InitializeSalesReportViewModel(CustomClaimsPrincipal User, bool isLastWeek = false)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(User.TruncatedName);
+
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(!isLastWeek ? DateTime.Today : DateTime.Today.AddDays(-7));
+
+            List<SalesDataDTO> salesDataDTOs = sdq.GetSalesDataByWeek(employee.StoreNumber.Substring(0, 3), daysInWeek.FirstOrDefault(), daysInWeek.LastOrDefault());
+            SalesReportViewModel model = new SalesReportViewModel
+            {
+                SalesList = salesDataDTOs,
+                BusinessWeekStartDate = daysInWeek.FirstOrDefault(),
+                BusinessWeekEndDate = daysInWeek.LastOrDefault(),
+                EmployeeInfo = employee,
+                CurrentWeekFlag = !isLastWeek
+            };
+
+            return model;
+        }
+
         public SalesReportSearchViewModel InitializeSalesReportSearchViewModel(CustomClaimsPrincipal User, SalesDataSearchDTO searchDTO)
         {
             EmployeeDTO employee = eq.GetEmployeeInfo(User.TruncatedName);
@@ -1092,6 +1111,25 @@ namespace D_Squared.Web.Helpers
             return model;
         }
 
+        public IdealCashReportViewModel InitializeIdealCashReportViewModel(CustomClaimsPrincipal User, bool isLastWeek = false)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(User.TruncatedName);
+
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(!isLastWeek ? DateTime.Today : DateTime.Today.AddDays(-7));
+
+            List<IdealCashDTO> idealCashDTOs = sdq.GetIdealCashDataByWeek(employee.StoreNumber.Substring(0, 3), daysInWeek.FirstOrDefault(), daysInWeek.LastOrDefault());
+            IdealCashReportViewModel model = new IdealCashReportViewModel
+            {
+                IdealCashList = idealCashDTOs,
+                BusinessWeekStartDate = daysInWeek.FirstOrDefault(),
+                BusinessWeekEndDate = daysInWeek.LastOrDefault(),
+                EmployeeInfo = employee,
+                CurrentWeekFlag = !isLastWeek
+            };
+
+            return model;
+        }
+
         public IdealCashReportSearchViewModel InitializeIdealCashReportSearchViewModel(CustomClaimsPrincipal User, IdealCashSearchDTO searchDTO)
         {
             EmployeeDTO employee = eq.GetEmployeeInfo(User.TruncatedName);
@@ -1121,6 +1159,26 @@ namespace D_Squared.Web.Helpers
                 SearchResults = idealCashDTOs,
                 BusinessWeekStartDate = daysInWeek.FirstOrDefault(),
                 BusinessWeekEndDate = daysInWeek.LastOrDefault()
+            };
+
+            return model;
+        }
+
+        public PaidInOutViewModel InitializePaidInOutViewModel(CustomClaimsPrincipal User, bool isLastWeek = false)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(User.TruncatedName);
+
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(!isLastWeek ? DateTime.Today : DateTime.Today.AddDays(-7));
+
+            List<PaidInOutDTO> paidInOutDTOs = sdq.GetPaidInOutByWeekAndAccountTypeFilter(employee.StoreNumber.Substring(0, 3), daysInWeek.FirstOrDefault(),
+                                                                                            daysInWeek.LastOrDefault());
+            PaidInOutViewModel model = new PaidInOutViewModel
+            {
+                PaidInOutList = paidInOutDTOs,
+                BusinessWeekStartDate = daysInWeek.FirstOrDefault(),
+                BusinessWeekEndDate = daysInWeek.LastOrDefault(),
+                EmployeeInfo = employee,
+                CurrentWeekFlag = !isLastWeek
             };
 
             return model;
@@ -1167,6 +1225,26 @@ namespace D_Squared.Web.Helpers
                 EmployeeInfo = employee,
                 SearchDTO = searchDTO,
                 LocationSelectList = locSelectList
+            };
+
+            return model;
+        }
+
+        public ServerSalesViewModel InitializeServerSalesViewModel(CustomClaimsPrincipal User, bool isLastWeek = false)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(User.TruncatedName);
+
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(!isLastWeek ? DateTime.Today : DateTime.Today.AddDays(-7));
+
+            List<ServerSalesDTO> serverSalesDTOs = sdq.GetServerSalesDTOsByWeek(employee.StoreNumber, daysInWeek.FirstOrDefault(), daysInWeek.LastOrDefault(), -1);
+
+            ServerSalesViewModel model = new ServerSalesViewModel
+            {
+                ServerSalesList = serverSalesDTOs,
+                BusinessWeekStartDate = daysInWeek.FirstOrDefault(),
+                BusinessWeekEndDate = daysInWeek.LastOrDefault(),
+                EmployeeInfo = employee,
+                CurrentWeekFlag = !isLastWeek
             };
 
             return model;
@@ -1237,6 +1315,27 @@ namespace D_Squared.Web.Helpers
             this.ldq = ldq;
         }
 
+        public OvertimeReportingViewModel InitializeOvertimeReportingViewModel(CustomClaimsPrincipal User, bool isLastWeek = false)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(User.TruncatedName);
+
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(!isLastWeek ? DateTime.Today : DateTime.Today.AddDays(-7));
+
+            int defaultHours = 35;
+
+            List<WeeklyTotalDurationDTO> weeklyTotalDurationDTOs = ldq.GetWeeklyTotalDurationDTOs(employee.StoreNumber.Substring(0, 3), daysInWeek.LastOrDefault(), defaultHours);
+            OvertimeReportingViewModel model = new OvertimeReportingViewModel
+            {
+                WeeklyTotalDurationList = weeklyTotalDurationDTOs,
+                BusinessWeekStartDate = daysInWeek.FirstOrDefault(),
+                BusinessWeekEndDate = daysInWeek.LastOrDefault(),
+                EmployeeInfo = employee,
+                CurrentWeekFlag = !isLastWeek
+            };
+
+            return model;
+        }
+
         public OvertimeReportingSearchViewModel InitializeOvertimeReportingSearchViewModel(CustomClaimsPrincipal User, WeeklyTotalDurationSearchDTO searchDTO)
         {
             EmployeeDTO employee = eq.GetEmployeeInfo(User.TruncatedName);
@@ -1266,6 +1365,25 @@ namespace D_Squared.Web.Helpers
                 SearchResults = weeklyTotalDurationDTOs,
                 BusinessWeekStartDate = daysInWeek.FirstOrDefault(),
                 BusinessWeekEndDate = daysInWeek.LastOrDefault(),
+            };
+
+            return model;
+        }
+
+        public LaborSummaryViewModel InitializeLaborSummaryViewModel(CustomClaimsPrincipal User, bool isLastWeek = false)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(User.TruncatedName);
+
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(!isLastWeek ? DateTime.Today : DateTime.Today.AddDays(-7));
+
+            List<LaborDataDTO> laborDataDTOs = ldq.GetLaborDataByWeekAndJob(employee.StoreNumber.Substring(0, 3), daysInWeek.FirstOrDefault(), daysInWeek.LastOrDefault());
+            LaborSummaryViewModel model = new LaborSummaryViewModel
+            {
+                LaborDataList = laborDataDTOs,
+                BusinessWeekStartDate = daysInWeek.FirstOrDefault(),
+                BusinessWeekEndDate = daysInWeek.LastOrDefault(),
+                EmployeeInfo = employee,
+                CurrentWeekFlag = !isLastWeek
             };
 
             return model;
@@ -1325,6 +1443,26 @@ namespace D_Squared.Web.Helpers
                 EmployeeInfo = employee,
                 SearchDTO = searchDTO,
                 LocationSelectList = locSelectList
+            };
+
+            return model;
+        }
+
+        public Labor8020ViewModel InitializeLabor8020ViewModel(CustomClaimsPrincipal User, bool isLastWeek = false)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(User.TruncatedName);
+
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(!isLastWeek ? DateTime.Today : DateTime.Today.AddDays(-7));
+
+            List<Labor8020DTO> labor8020DTOs = ldq.GetLabor8020ByWeekAnd8020Filter(employee.StoreNumber.Substring(0, 3), daysInWeek.FirstOrDefault(),
+                                                        daysInWeek.LastOrDefault());
+            Labor8020ViewModel model = new Labor8020ViewModel
+            {
+                Labor8020List = labor8020DTOs,
+                BusinessWeekStartDate = daysInWeek.FirstOrDefault(),
+                BusinessWeekEndDate = daysInWeek.LastOrDefault(),
+                EmployeeInfo = employee,
+                CurrentWeekFlag = !isLastWeek
             };
 
             return model;

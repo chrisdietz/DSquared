@@ -153,10 +153,13 @@ namespace D_Squared.Data.Queries
             return BuildPaidInOutDTOs(paidInOuts);
         }
 
-        public List<PaidInOutDTO> GetPaidInOutByWeekAndAccountTypeFilter(string storeNumber, DateTime startDate, DateTime endDate, string accountTypeFilter)
+        public List<PaidInOutDTO> GetPaidInOutByWeekAndAccountTypeFilter(string storeNumber, DateTime startDate, DateTime endDate, string accountTypeFilter = null)
         {
             DateTime realEndDate = endDate.AddDays(1);
-            var paidInOuts = db.PaidInOuts.Where(ld => ld.BusinessDate >= startDate && ld.BusinessDate < realEndDate
+            var paidInOuts = (accountTypeFilter == null) 
+                                ? db.PaidInOuts.Where(ld => ld.BusinessDate >= startDate && ld.BusinessDate < realEndDate
+                                                        && ld.Store.Contains(storeNumber)).ToList()
+                                : db.PaidInOuts.Where(ld => ld.BusinessDate >= startDate && ld.BusinessDate < realEndDate
                                                         && ld.Store.Contains(storeNumber) && ld.AccountType == accountTypeFilter).ToList();
 
             return BuildPaidInOutDTOs(paidInOuts);

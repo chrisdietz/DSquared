@@ -32,8 +32,19 @@ namespace D_Squared.Web.Controllers
             SalesReportSearchViewModel model = new SalesReportSearchViewModel() { EmployeeInfo = employee };
             return View(model);
         }
-        // GET: 
-        public ActionResult SalesReport(SalesDataSearchDTO searchDTO)
+
+        public ActionResult SalesView(bool isLastWeek = false)
+        {
+            SalesReportViewModel model = init.InitializeSalesReportViewModel(User, isLastWeek);
+            return View(model);
+        }
+
+        public ActionResult PreviousWeek(string actionName)
+        {
+            return RedirectToAction(actionName, new { isLastWeek = true });
+        }
+
+        public ActionResult SalesSearch(SalesDataSearchDTO searchDTO)
         {
             string username = User.TruncatedName;
             EmployeeDTO employee = eq.GetEmployeeInfo(username);
@@ -43,8 +54,14 @@ namespace D_Squared.Web.Controllers
 
             return View(model);
         }
-        
-        public ActionResult IdealCashReport(IdealCashSearchDTO searchDTO)
+
+        public ActionResult IdealCashView(bool isLastWeek = false)
+        {
+            IdealCashReportViewModel model = init.InitializeIdealCashReportViewModel(User, isLastWeek);
+            return View(model);
+        }
+
+        public ActionResult IdealCashSearch(IdealCashSearchDTO searchDTO)
         {
             string username = User.TruncatedName;
             EmployeeDTO employee = eq.GetEmployeeInfo(username);
@@ -55,7 +72,13 @@ namespace D_Squared.Web.Controllers
             return View(model);
         }
 
-        public ActionResult PaidInOut(PaidInOutSearchDTO searchDTO)
+        public ActionResult PaidInOutView(bool isLastWeek = false)
+        {
+            PaidInOutViewModel model = init.InitializePaidInOutViewModel(User, isLastWeek);
+            return View(model);
+        }
+
+        public ActionResult PaidInOutSearch(PaidInOutSearchDTO searchDTO)
         {
             string username = User.TruncatedName;
             EmployeeDTO employee = eq.GetEmployeeInfo(username);
@@ -66,7 +89,13 @@ namespace D_Squared.Web.Controllers
             return View(model);
         }
 
-        public ActionResult ServerSales(ServerSalesSearchDTO searchDTO)
+        public ActionResult ServerSalesView(bool isLastWeek = false)
+        {
+            ServerSalesViewModel model = init.InitializeServerSalesViewModel(User, isLastWeek);
+            return View(model);
+        }
+
+        public ActionResult ServerSalesSearch(ServerSalesSearchDTO searchDTO)
         {
             string username = User.TruncatedName;
             EmployeeDTO employee = eq.GetEmployeeInfo(username);

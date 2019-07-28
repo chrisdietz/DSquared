@@ -33,7 +33,19 @@ namespace D_Squared.Web.Controllers
             OvertimeReportingSearchViewModel model = new OvertimeReportingSearchViewModel() { EmployeeInfo = employee };
             return View(model);
         }
-        public ActionResult OvertimeReport(WeeklyTotalDurationSearchDTO searchDTO)
+
+        public ActionResult PreviousWeek(string actionName)
+        {
+            return RedirectToAction(actionName, new { isLastWeek = true });
+        }
+
+        public ActionResult OvertimeView(bool isLastWeek = false)
+        {
+            OvertimeReportingViewModel model = init.InitializeOvertimeReportingViewModel(User, isLastWeek);
+            return View(model);
+        }
+
+        public ActionResult OvertimeSearch(WeeklyTotalDurationSearchDTO searchDTO)
         {
             string username = User.TruncatedName;
             EmployeeDTO employee = eq.GetEmployeeInfo(username);
@@ -42,8 +54,14 @@ namespace D_Squared.Web.Controllers
 
             return View(model);
         }
+        
+        public ActionResult LaborSummaryView(bool isLastWeek = false)
+        {
+            LaborSummaryViewModel model = init.InitializeLaborSummaryViewModel(User, isLastWeek);
+            return View(model);
+        }
 
-        public ActionResult LaborSummary(LaborDataSearchDTO searchDTO)
+        public ActionResult LaborSummarySearch(LaborDataSearchDTO searchDTO)
         {
             string username = User.TruncatedName;
             EmployeeDTO employee = eq.GetEmployeeInfo(username);
@@ -54,7 +72,13 @@ namespace D_Squared.Web.Controllers
             return View(model);
         }
 
-        public ActionResult Labor8020(Labor8020SearchDTO searchDTO)
+        public ActionResult Labor8020View(bool isLastWeek = false)
+        {
+            Labor8020ViewModel model = init.InitializeLabor8020ViewModel(User, isLastWeek);
+            return View(model);
+        }
+
+        public ActionResult Labor8020Search(Labor8020SearchDTO searchDTO)
         {
             string username = User.TruncatedName;
             EmployeeDTO employee = eq.GetEmployeeInfo(username);

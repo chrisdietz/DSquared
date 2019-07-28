@@ -751,14 +751,21 @@
     <Content Include="Views\NYS\Search.cshtml" />
     <Content Include="Views\SalesReporting\Index.cshtml" />
     <Content Include="Views\LaborReports\Index.cshtml" />
-    <Content Include="Views\LaborReports\OvertimeReport.cshtml" />
-    <Content Include="Views\SalesReporting\SalesReport.cshtml" />
-    <Content Include="Views\LaborReports\LaborSummary.cshtml" />
-    <Content Include="Views\SalesReporting\IdealCashReport.cshtml" />
-    <Content Include="Views\LaborReports\Labor8020.cshtml" />
+    <Content Include="Views\LaborReports\OvertimeSearch.cshtml" />
+    <Content Include="Views\SalesReporting\SalesSearch.cshtml" />
+    <Content Include="Views\LaborReports\LaborSummarySearch.cshtml" />
+    <Content Include="Views\SalesReporting\IdealCashSearch.cshtml" />
+    <Content Include="Views\LaborReports\Labor8020Search.cshtml" />
     <Content Include="Views\TipPercentage\Search.cshtml" />
-    <Content Include="Views\SalesReporting\PaidInOut.cshtml" />
-    <Content Include="Views\SalesReporting\ServerSales.cshtml" />
+    <Content Include="Views\SalesReporting\PaidInOutSearch.cshtml" />
+    <Content Include="Views\SalesReporting\ServerSalesSearch.cshtml" />
+    <Content Include="Views\SalesReporting\SalesView.cshtml" />
+    <Content Include="Views\SalesReporting\IdealCashView.cshtml" />
+    <Content Include="Views\SalesReporting\PaidInOutView.cshtml" />
+    <Content Include="Views\SalesReporting\ServerSalesView.cshtml" />
+    <Content Include="Views\LaborReports\Labor8020View.cshtml" />
+    <Content Include="Views\LaborReports\LaborSummaryView.cshtml" />
+    <Content Include="Views\LaborReports\OvertimeView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

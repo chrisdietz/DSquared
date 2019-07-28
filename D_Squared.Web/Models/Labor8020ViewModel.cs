@@ -11,6 +11,14 @@ namespace D_Squared.Web.Models
     public class Labor8020ViewModel
     {
         public EmployeeDTO EmployeeInfo { get; set; }
+
+        public List<Labor8020DTO> Labor8020List { get; set; }
+
+        public DateTime BusinessWeekStartDate { get; set; }
+
+        public DateTime BusinessWeekEndDate { get; set; }
+
+        public bool CurrentWeekFlag { get; set; }
     }
 
     public class Labor8020SearchViewModel

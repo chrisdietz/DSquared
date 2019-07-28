@@ -217,41 +217,10 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
-                                            Labor Reports
-                                            <span class="caret"></span>
-                                        </a>
-                                        <ul>
-                                            <li>
-                                                @Html.ActionLink("Labor Summary Report", "LaborSummary", "LaborReports", null, new { @class = "licolor" })
-                                            </li>
-                                            <li>
-                                                @Html.ActionLink("Overtime Report", "OvertimeReport", "LaborReports", null, new { @class = "licolor" })
-                                            </li>
-                                            <li>
-                                                @Html.ActionLink("80/20 Report", "Labor8020", "LaborReports", null, new { @class = "licolor" })
-                                            </li>
-                                        </ul>
+                                        @Html.ActionLink("Labor Reports", "Index", "LaborReports", null, new { @class = "licolor" })
                                     </li>
                                     <li>
-                                        <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
-                                            Sales Reports
-                                            <span class="caret"></span>
-                                        </a>
-                                        <ul>
-                                            <li>
-                                                @Html.ActionLink("Sales Report", "SalesReport", "SalesReporting", null, new { @class = "licolor" })
-                                            </li>
-                                            <li>
-                                                @Html.ActionLink("Ideal Cash Report", "IdealCashReport", "SalesReporting", null, new { @class = "licolor" })
-                                            </li>
-                                            <li>
-                                                @Html.ActionLink("Paid In/Out Report", "PaidInOut", "SalesReporting", null, new { @class = "licolor" })
-                                            </li>
-                                            <li>
-                                                @Html.ActionLink("Server Sales Report", "ServerSales", "SalesReporting", null, new { @class = "licolor" })
-                                            </li>
-                                        </ul>
+                                        @Html.ActionLink("Sales Reports", "Index", "SalesReporting", null, new { @class = "licolor" })
                                     </li>
                                 </ul>
                             </li>

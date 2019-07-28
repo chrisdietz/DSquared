@@ -1,49 +1,94 @@
 ﻿@model D_Squared.Web.Models.SalesReportSearchViewModel
 <div class="jumbotron" style="background-image: url('/Content/images/lightwood-bg.jpg'); padding-bottom:5px; padding-top:20px; margin-bottom:10px">
-    <div style="max-width:500px; display: block; margin: 0 auto;">
-        <img src="~/Content/images/millers_d2_logo.png" style="max-width:500px;" />
-    </div>
-    <div class="text-center" style="display: block; margin: 0 auto; max-width:500px">
-        <h2>Reports</h2>
-        <p class="lead">
-            Employee: @Model.EmployeeInfo.FirstName @Model.EmployeeInfo.LastName
-            <br />
-            Access Time: @DateTime.Now.ToLocalTime().ToString()
-            <br />
-            Restaurant: <strong><u>@Model.EmployeeInfo.StoreNumber</u></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        </p>
+    <div class="row">
+        <div class="col-md-4">
+            <div style="max-width:500px; display: block; margin: 0 auto;float:left;">
+                <img src="~/Content/images/millers_d2_logo.png" style="max-width:300px;" />
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="text-center" style="display: block; margin: 0 auto; max-width:500px">
+                <h3>Sales Reports</h3>
+                <p class="lead">
+                    Location: <strong><u>@Model.EmployeeInfo.StoreNumber</u></strong>
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="text-center" style="display: block; margin: 0 auto; max-width:500px">
+                <p class="lead">
+                    Time: @DateTime.Now.ToLocalTime().ToString()
+                    <br />
+                    Employee: @Model.EmployeeInfo.FirstName @Model.EmployeeInfo.LastName
+                </p>
+            </div>
+        </div>
     </div>
 </div>
 
 <hr />
 
 <div class="row">
-
     <div class="col-md-4">
-        <a class="dashboard-stat dashboard-stat-v2 red" href="SalesReport">
-            <div class="visual">
-                <i class="fa fa-file"></i>
-            </div>
-            <div class="details">
-                <div class="number">
-                    Sales Report
-                </div>
-                <div class="desc">View Sales Report</div>
-            </div>
-        </a>
+        <div class="list-group">
+            <a class="list-group-item red">
+                <h4 class="list-group-item-heading" style="color:white"><i class="fa fa-money"></i>  Ideal Cash Report</h4>
+            </a>
+            <a href="/SalesReporting/IdealCashView" class="list-group-item">
+                <h4 class="list-group-item-heading"><i class="fa fa-file-o"></i>  Ideal Cash Report - View</h4>
+                <p class="list-group-item-text">Ideal Cash Report - View</p>
+            </a>
+            <a href="/SalesReporting/IdealCashSearch" class="list-group-item">
+                <h4 class="list-group-item-heading"><i class="fa fa-file-o"></i>  Ideal Cash Report - Search</h4>
+                <p class="list-group-item-text">Ideal Cash Report - Search</p>
+            </a>
+        </div>
     </div>
     <div class="col-md-4">
-        <a class="dashboard-stat dashboard-stat-v2 red" href="IdealCashReport">
-            <div class="visual">
-                <i class="fa fa-file"></i>
-            </div>
-            <div class="details">
-                <div class="number">
-                    Ideal Cash Report
-                </div>
-                <div class="desc">View Ideal Cash Report</div>
-            </div>
-        </a>
+        <div class="list-group">
+            <a class="list-group-item red">
+                <h4 class="list-group-item-heading" style="color:white"><i class="fa fa-money"></i>  Paid In/Out Report</h4>
+            </a>
+            <a href="/SalesReporting/PaidInOutView" class="list-group-item">
+                <h4 class="list-group-item-heading"><i class="fa fa-file-o"></i>  Paid In/Out Report - View</h4>
+                <p class="list-group-item-text">Paid In/Out Report - View</p>
+            </a>
+            <a href="/SalesReporting/PaidInOutSearch" class="list-group-item">
+                <h4 class="list-group-item-heading"><i class="fa fa-file-o"></i>  Paid In/Out Report - Search</h4>
+                <p class="list-group-item-text">Paid In/Out Report - Search</p>
+            </a>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="list-group">
+            <a class="list-group-item red">
+                <h4 class="list-group-item-heading" style="color:white"><i class="fa fa-money"></i>  Sales Report</h4>
+            </a>
+            <a href="/SalesReporting/SalesView" class="list-group-item">
+                <h4 class="list-group-item-heading"><i class="fa fa-file-o"></i>  Sales Report - View</h4>
+                <p class="list-group-item-text">Sales Report - View</p>
+            </a>
+            <a href="/SalesReporting/SalesSearch" class="list-group-item">
+                <h4 class="list-group-item-heading"><i class="fa fa-file-o"></i>  Sales Report - Search</h4>
+                <p class="list-group-item-text">Sales Report - Search</p>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="list-group">
+            <a class="list-group-item red">
+                <h4 class="list-group-item-heading" style="color:white"><i class="fa fa-money"></i>  Server Sales Report</h4>
+            </a>
+            <a href="/SalesReporting/ServerSalesView" class="list-group-item">
+                <h4 class="list-group-item-heading"><i class="fa fa-file-o"></i>  Server Sales Report - View</h4>
+                <p class="list-group-item-text">Server Sales Report - View</p>
+            </a>
+            <a href="/SalesReporting/ServerSalesSearch" class="list-group-item">
+                <h4 class="list-group-item-heading"><i class="fa fa-file-o"></i>  Server Sales Report - Search</h4>
+                <p class="list-group-item-text">Server Sales Report - Search</p>
+            </a>
+        </div>
     </div>
 </div>
 

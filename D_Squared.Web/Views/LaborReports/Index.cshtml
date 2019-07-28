@@ -8,9 +8,9 @@
         </div>
         <div class="col-md-4">
             <div class="text-center" style="display: block; margin: 0 auto; max-width:500px">
-                <h2>Reports</h2>
+                <h3>Labor Reports</h3>
                 <p class="lead">
-                    Restaurant: <strong><u>@Model.EmployeeInfo.StoreNumber</u></strong>
+                    Location: <strong><u>@Model.EmployeeInfo.StoreNumber</u></strong>
                 </p>
             </div>
         </div>
@@ -25,35 +25,56 @@
         </div>
     </div>
 </div>
+
 <hr />
 
 <div class="row">
+    <div class="col-md-4">
+        <div class="list-group">
+            <a class="list-group-item red">
+                <h4 class="list-group-item-heading" style="color:white"><i class="fa fa-money"></i>  80/20 Report</h4>
+            </a>
+            <a href="/LaborReports/Labor8020View" class="list-group-item">
+                <h4 class="list-group-item-heading"><i class="fa fa-file-o"></i>  80/20 Report - View</h4>
+                <p class="list-group-item-text">80/20 Report - View</p>
+            </a>
+            <a href="/LaborReports/Labor8020Search" class="list-group-item">
+                <h4 class="list-group-item-heading"><i class="fa fa-file-o"></i>  80/20 Report - Search</h4>
+                <p class="list-group-item-text">80/20 Report - Search</p>
+            </a>
+        </div>
+    </div>
 
     <div class="col-md-4">
-        <a class="dashboard-stat dashboard-stat-v2 red" href="OvertimeReport">
-            <div class="visual">
-                <i class="fa fa-file"></i>
-            </div>
-            <div class="details">
-                <div class="number">
-                    Overtime Report
-                </div>
-                <div class="desc">View Overtime Report</div>
-            </div>
-        </a>
+        <div class="list-group">
+            <a class="list-group-item red">
+                <h4 class="list-group-item-heading" style="color:white"><i class="fa fa-money"></i>  Labor Summary Report</h4>
+            </a>
+            <a href="/LaborReports/LaborSummaryView" class="list-group-item">
+                <h4 class="list-group-item-heading"><i class="fa fa-file-o"></i>  Labor Summary Report - View</h4>
+                <p class="list-group-item-text">Labor Summary Report - View</p>
+            </a>
+            <a href="/LaborReports/LaborSummarySearch" class="list-group-item">
+                <h4 class="list-group-item-heading"><i class="fa fa-file-o"></i>  Labor Summary Reportt - Search</h4>
+                <p class="list-group-item-text">Labor Summary Report - Search</p>
+            </a>
+        </div>
     </div>
+
     <div class="col-md-4">
-        <a class="dashboard-stat dashboard-stat-v2 red" href="LaborSummary">
-            <div class="visual">
-                <i class="fa fa-file"></i>
-            </div>
-            <div class="details">
-                <div class="number">
-                    Labor Summary Report
-                </div>
-                <div class="desc">View Labor Summary Report</div>
-            </div>
-        </a>
+        <div class="list-group">
+            <a class="list-group-item red">
+                <h4 class="list-group-item-heading" style="color:white"><i class="fa fa-money"></i>  Overtime Report</h4>
+            </a>
+            <a href="/LaborReports/OvertimeView" class="list-group-item">
+                <h4 class="list-group-item-heading"><i class="fa fa-file-o"></i>  Overtime Report - View</h4>
+                <p class="list-group-item-text">Overtime Report - View</p>
+            </a>
+            <a href="/LaborReports/OvertimeSearch" class="list-group-item">
+                <h4 class="list-group-item-heading"><i class="fa fa-file-o"></i>  Overtime Report - Search</h4>
+                <p class="list-group-item-text">Overtime Report - Search</p>
+            </a>
+        </div>
     </div>
 </div>
 

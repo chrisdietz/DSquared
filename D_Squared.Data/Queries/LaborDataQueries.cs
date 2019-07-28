@@ -118,10 +118,12 @@ namespace D_Squared.Data.Queries
             return BuildLabor8020DTOs(lsLabor8020s);
         }
 
-        public List<Labor8020DTO> GetLabor8020ByWeekAnd8020Filter(string storeNumber, DateTime startDate, DateTime endDate, string filter_8020)
+        public List<Labor8020DTO> GetLabor8020ByWeekAnd8020Filter(string storeNumber, DateTime startDate, DateTime endDate, string filter_8020 = null)
         {
             DateTime realEndDate = endDate.AddDays(1);
-            var lsLabor8020s = db.LS8020s.Where(ld => ld.BusinessDate >= startDate && ld.BusinessDate < realEndDate 
+            var lsLabor8020s = (filter_8020 == null) ? db.LS8020s.Where(ld => ld.BusinessDate >= startDate && ld.BusinessDate < realEndDate
+                                                        && ld.Store.Contains(storeNumber)).ToList()
+                                                     : db.LS8020s.Where(ld => ld.BusinessDate >= startDate && ld.BusinessDate < realEndDate
                                                         && ld.Store.Contains(storeNumber) && ld.P_8020 == filter_8020).ToList();
 
             return BuildLabor8020DTOs(lsLabor8020s);

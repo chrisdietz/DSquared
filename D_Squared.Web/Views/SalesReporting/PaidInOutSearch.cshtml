@@ -59,7 +59,7 @@
         </div>
         <div class="col-md-4">
             <div class="text-center" style="display: block; margin: 0 auto; max-width:600px">
-                <h2>Paid In/Out Report</h2>
+                <h3>Paid In/Out Report - Search</h3>
                 <p class="lead">
                     Location: <strong><u>@Model.EmployeeInfo.StoreNumber</u></strong>
                 </p>
@@ -259,5 +259,5 @@
 }
 
 <!--must explicitly define the controller and action and pageHeaderKey. PageHeaderKey can be found in HelpDocument.cs-->
-@{Html.RenderAction("ModalDetails", "Home", new { @controller = "SalesReporting", @action = "PaidInOut", @pageHeaderKey = "PaidInOut" });}
+@{Html.RenderAction("ModalDetails", "Home", new { @controller = "SalesReporting", @action = "PaidInOutSearch", @pageHeaderKey = "PaidInOutSearch" });}
 

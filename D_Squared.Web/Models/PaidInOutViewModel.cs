@@ -11,6 +11,14 @@ namespace D_Squared.Web.Models
     public class PaidInOutViewModel
     {
         public EmployeeDTO EmployeeInfo { get; set; }
+
+        public List<PaidInOutDTO> PaidInOutList { get; set; }
+
+        public DateTime BusinessWeekStartDate { get; set; }
+
+        public DateTime BusinessWeekEndDate { get; set; }
+
+        public bool CurrentWeekFlag { get; set; }
     }
 
     public class PaidInOutSearchViewModel
