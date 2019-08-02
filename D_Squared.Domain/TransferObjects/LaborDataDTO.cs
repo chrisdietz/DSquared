@@ -23,13 +23,13 @@ namespace D_Squared.Domain.TransferObjects
         public double RegularHours { get; set; }
         [Display(Name = "OT Hours")]
         public double OTHours { get; set; }
-        [Display(Name = "Regular Pay Payment")]
+        [Display(Name = "Regular Pay Amount")]
         public double RegularPayAmount { get; set; }
-        [Display(Name = "OT Pay Payment")]
+        [Display(Name = "OT Pay Amount")]
         public double OTPayAmount { get; set; }
         [Display(Name = "Total Hours")]
         public double TotalHours { get; set; }
-        [Display(Name = "Total Pay Payment")]
+        [Display(Name = "Total Pay Amount")]
         public double TotalPayAmount { get; set; }
     }
 

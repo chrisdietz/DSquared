@@ -7,11 +7,11 @@
     string reportType = string.Empty;
     if (Model.SearchDTO.SelectedDayOrWeekFilter == PaidInOutSearchDTO.ReportByDay)
     {
-        reportType = (Model.SearchDTO.SelectedAccountTypeFilter == PaidInOutSearchDTO.ReportByPaidIn) ? "Paid In/Out Report by Date/Paid In" : "Paid In/Out Report by Date/Paid Out";
+        reportType = "Paid In/Out Report by Date";
     }
     else
     {
-        reportType = (Model.SearchDTO.SelectedAccountTypeFilter == PaidInOutSearchDTO.ReportByPaidIn) ? "Paid In/Out Report by Week/Paid In" : "Paid In/Out Report by Week/Paid Out";
+        reportType = "Paid In/Out Report by Week";
     }
 
 }
@@ -121,6 +121,8 @@
                             @Html.RadioButtonFor(m => m.SearchDTO.SelectedAccountTypeFilter, PaidInOutSearchDTO.ReportByPaidIn)&nbsp;&nbsp;<span><strong>Paid In</strong></span>
                             &nbsp;&nbsp;&nbsp;&nbsp;
                             @Html.RadioButtonFor(m => m.SearchDTO.SelectedAccountTypeFilter, PaidInOutSearchDTO.ReportByPaidOut)&nbsp;&nbsp;<span><strong>Paid Out</strong></span>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            @Html.RadioButtonFor(m => m.SearchDTO.SelectedAccountTypeFilter, PaidInOutSearchDTO.ReportByPaidInNOut)&nbsp;&nbsp;<span><strong>Both</strong></span>
                         </div>
                     </div>
                 </div>

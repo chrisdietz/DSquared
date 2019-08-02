@@ -98,7 +98,35 @@
         </div>
 
     </div>
-
+    <div class="col-md-4">
+        <div class="list-group">
+            <a class="list-group-item red">
+                <h4 class="list-group-item-heading" style="color:white"><i class="fa fa-bar-chart-o"></i>  Forecasts</h4>
+            </a>
+            @if (User.IsDivisionalVP() || User.IsRegionalManager() || User.IsDSquaredAdmin())
+            {
+                <a href="/SalesForecast/Search" class="list-group-item">
+                    <h4 class="list-group-item-heading"><i class="fa fa-binoculars"></i>  Search Sales Forecasts</h4>
+                    <p class="list-group-item-text">Search Sales Forecasts</p>
+                </a>
+                <a class="list-group-item">
+                    <h4 class="list-group-item-heading">&nbsp;</h4>
+                    <p class="list-group-item-text">&nbsp;</p>
+                </a>
+            }
+            else
+            {
+                <a href="/SalesForecast" class="list-group-item">
+                    <h4 class="list-group-item-heading"><i class="fa fa-pencil"></i>  Record Sales Forecasts</h4>
+                    <p class="list-group-item-text">Record Sales Forecasts</p>
+                </a>
+                <a class="list-group-item">
+                    <h4 class="list-group-item-heading">&nbsp;</h4>
+                    <p class="list-group-item-text">&nbsp;</p>
+                </a>
+            }
+        </div>
+    </div>
     @if (User.IsDSquaredReports() || User.IsDivisionalVP() || User.IsRegionalManager() || User.IsDSquaredAdmin())
     {
         <div class="col-md-4">
@@ -148,37 +176,6 @@
 
         </div>
     }
-    <div class="col-md-4">
-        <div class="list-group">
-            <a class="list-group-item red">
-                <h4 class="list-group-item-heading" style="color:white"><i class="fa fa-bar-chart-o"></i>  Sales Forecasts</h4>
-            </a>
-            @if (User.IsDivisionalVP() || User.IsRegionalManager() || User.IsDSquaredAdmin())
-            {
-                <a href="/SalesForecast/Search" class="list-group-item">
-                    <h4 class="list-group-item-heading"><i class="fa fa-binoculars"></i>  Search Sales Forecasts</h4>
-                    <p class="list-group-item-text">Search Sales Forecasts</p>
-                </a>
-                <a class="list-group-item">
-                    <h4 class="list-group-item-heading">&nbsp;</h4>
-                    <p class="list-group-item-text">&nbsp;</p>
-                </a>
-            }
-            else
-            {
-                <a href="/SalesForecast" class="list-group-item">
-                    <h4 class="list-group-item-heading"><i class="fa fa-pencil"></i>  Record Sales Forecasts</h4>
-                    <p class="list-group-item-text">Record Sales Forecasts</p>
-                </a>
-                <a class="list-group-item">
-                    <h4 class="list-group-item-heading">&nbsp;</h4>
-                    <p class="list-group-item-text">&nbsp;</p>
-                </a>
-            }
-        </div>
-
-    </div>
-
 
     @if (User.IsDSquaredReports() || User.IsDivisionalVP() || User.IsRegionalManager() || User.IsDSquaredAdmin())
     {

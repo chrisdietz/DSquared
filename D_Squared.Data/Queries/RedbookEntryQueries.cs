@@ -169,7 +169,9 @@ namespace D_Squared.Data.Queries
             {
                 RedbookEntry updatedRecord = UpdateRedbookEntryRecord(redbookEntry, salesEvents, currentUser, true);
 
-                ec.SendRedbookSubmitEmail(updatedRecord, salesForecast);
+                List<SalesDataDTO> salesDataDTOs = GetRedbookDailySalesData(redbookEntry.Id);
+
+                ec.SendRedbookSubmitEmail(updatedRecord, salesDataDTOs);
             }
         }
 

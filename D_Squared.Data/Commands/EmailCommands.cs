@@ -36,7 +36,7 @@ namespace D_Squared.Data.Commands
             return locationId + " Redbook";
         }
 
-        private string BuildBody(RedbookEntry entry, SalesForecastExportDTO dto)
+        private string BuildBody(RedbookEntry entry, List<SalesDataDTO> salesDataDTOs)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -84,69 +84,115 @@ namespace D_Squared.Data.Commands
             }
 
             //sales forecast
-            sb.AppendLine("<br><br><br><br>Sales Forecast Details<br><br>");
-            sb.AppendLine("<b>Day of Week: </b>" + dto.Record.DayOfWeek + "<br>");
-            sb.AppendLine("<b>Total Forecast: </b>" + dto.Record.ForecastAmount.ToString("C0") + "<br>");
-            sb.AppendLine("<b>AM Forecast: </b>" + dto.Record.ForecastAM.ToString("C0") + "<br>");
-            sb.AppendLine("<b>PM Forecast: </b>" + dto.Record.ForecastPM.ToString("C0") + "<br>");
-            sb.AppendLine($"<b>FY{currentYear - 1} Sales: </b>" + dto.Record.PriorYearSales.ToString("C0") + "<br>");
-            sb.AppendLine($"<b>FY{currentYear - 2} Sales: </b>" + dto.Record.Prior2YearSales.ToString("C0") + "<br>");
-            sb.AppendLine("<b>6 Week Average: </b>" + dto.Record.AverageSalesPerMonth.ToString("C0") + "<br>");
-            sb.AppendLine("<b>Labor Forecast: </b>" + dto.Record.LaborForecast.ToString("C0") + "<br><br>");
+            //sb.AppendLine("<br><br><br><br>Sales Forecast Details<br><br>");
+            //sb.AppendLine("<b>Day of Week: </b>" + dto.Record.DayOfWeek + "<br>");
+            //sb.AppendLine("<b>Total Forecast: </b>" + dto.Record.ForecastAmount.ToString("C0") + "<br>");
+            //sb.AppendLine("<b>AM Forecast: </b>" + dto.Record.ForecastAM.ToString("C0") + "<br>");
+            //sb.AppendLine("<b>PM Forecast: </b>" + dto.Record.ForecastPM.ToString("C0") + "<br>");
+            //sb.AppendLine($"<b>FY{currentYear - 1} Sales: </b>" + dto.Record.PriorYearSales.ToString("C0") + "<br>");
+            //sb.AppendLine($"<b>FY{currentYear - 2} Sales: </b>" + dto.Record.Prior2YearSales.ToString("C0") + "<br>");
+            //sb.AppendLine("<b>6 Week Average: </b>" + dto.Record.AverageSalesPerMonth.ToString("C0") + "<br>");
+            //sb.AppendLine("<b>Labor Forecast: </b>" + dto.Record.LaborForecast.ToString("C0") + "<br><br>");
 
-            sb.AppendLine("<b>Rec. Labor FOH: </b>" + dto.Calculations.RecommendedFOHLabor.ToString("C0") + "<br>");
-            sb.AppendLine("<b>FOH Variance: </b>" + dto.Calculations.VarianceFOH.ToString("C0") + "<br>");
-            sb.AppendLine("<b>Rec. Labor BOH: </b>" + dto.Calculations.RecommendedBOHLabor.ToString("C0") + "<br>");
-            sb.AppendLine("<b>BOH Variance: </b>" + dto.Calculations.VarianceBOH.ToString("C0") + "<br>");
-            sb.AppendLine("<b>Rec. Labor: </b>" + dto.Calculations.RecommendedLabor.ToString("C0") + "<br>");
-            sb.AppendLine("<b>Variance: </b>" + dto.Calculations.Variance.ToString("C0") + "<br><br><br>");
+            //sb.AppendLine("<b>Rec. Labor FOH: </b>" + dto.Calculations.RecommendedFOHLabor.ToString("C0") + "<br>");
+            //sb.AppendLine("<b>FOH Variance: </b>" + dto.Calculations.VarianceFOH.ToString("C0") + "<br>");
+            //sb.AppendLine("<b>Rec. Labor BOH: </b>" + dto.Calculations.RecommendedBOHLabor.ToString("C0") + "<br>");
+            //sb.AppendLine("<b>BOH Variance: </b>" + dto.Calculations.VarianceBOH.ToString("C0") + "<br>");
+            //sb.AppendLine("<b>Rec. Labor: </b>" + dto.Calculations.RecommendedLabor.ToString("C0") + "<br>");
+            //sb.AppendLine("<b>Variance: </b>" + dto.Calculations.Variance.ToString("C0") + "<br><br><br>");
 
 
             //weekday breakdown
-            sb.AppendLine("<br><br>Weekly Sales Forecast Details<br><br>");
+            //sb.AppendLine("<br><br>Weekly Sales Forecast Details<br><br>");
 
-            //open table
-            sb.Append("<table class='table'>");
+            ////open table
+            //sb.Append("<table class='table'>");
 
-            //open thead
-            sb.Append("<thead>");
+            ////open thead
+            //sb.Append("<thead>");
 
-            //open tr
-            sb.Append("<tr>");
-            sb.Append("<th>Date</th>");
-            sb.Append("<th>Day of Week</th>");
-            sb.Append("<th>Total Forecast</th>");
-            sb.Append("<th>AM Forecast</th>");
-            sb.Append("<th>PM Forecast</th>");
-            sb.Append($"<th>FY{currentYear - 1} Sales</th>");
-            sb.Append($"<th>FY{currentYear - 2} Sales</th>");
-            sb.Append("<th>6 Week Average</th>");
-            sb.Append("<th>Labor Forecast</th>");
-            sb.Append("</tr>");
-            //close tr
+            ////open tr
+            //sb.Append("<tr>");
+            //sb.Append("<th>Date</th>");
+            //sb.Append("<th>Day of Week</th>");
+            //sb.Append("<th>Total Forecast</th>");
+            //sb.Append("<th>AM Forecast</th>");
+            //sb.Append("<th>PM Forecast</th>");
+            //sb.Append($"<th>FY{currentYear - 1} Sales</th>");
+            //sb.Append($"<th>FY{currentYear - 2} Sales</th>");
+            //sb.Append("<th>6 Week Average</th>");
+            //sb.Append("<th>Labor Forecast</th>");
+            //sb.Append("</tr>");
+            ////close tr
 
-            //close thead
-            sb.Append("</thead>");
+            ////close thead
+            //sb.Append("</thead>");
 
-            if (dto.Weekdays != null && dto.Weekdays.Count > 0)
+            //if (dto.Weekdays != null && dto.Weekdays.Count > 0)
+            //{
+            //    //open tbody
+            //    sb.Append("<tbody>");
+
+            //    foreach (SalesForecastDTO day in dto.Weekdays)
+            //    {
+            //        //open tr
+            //        sb.Append("<tr>");
+
+            //        sb.Append("<td>" + day.DateOfEntry.ToShortDateString() + "</td>");
+            //        sb.Append("<td>" + day.DayOfWeek + "</td>");
+            //        sb.Append("<td>" + day.ForecastAmount.ToString("C0") + "</td>");
+            //        sb.Append("<td>" + day.ForecastAM.ToString("C0") + "</td>");
+            //        sb.Append("<td>" + day.ForecastPM.ToString("C0") + "</td>");
+            //        sb.Append("<td>" + day.PriorYearSales.ToString("C0") + "</td>");
+            //        sb.Append("<td>" + day.Prior2YearSales.ToString("C0") + "</td>");
+            //        sb.Append("<td>" + day.AverageSalesPerMonth.ToString("C0") + "</td>");
+            //        sb.Append("<td>" + day.LaborForecast.ToString("C0") + "</td>");
+
+            //        //close tr
+            //        sb.Append("</tr>");
+            //    }
+
+            //    //close tbody
+            //    sb.Append("</tbody>");
+            //}
+            //else
+            //{
+            //    sb.AppendLine("<br><i>N/A</i>");
+            //}
+
+            ////close table
+            //sb.Append("</table>");
+
+            if(salesDataDTOs.Count > 0)
             {
+                sb.AppendLine("<br><br>Daily Sales #s<br><br>");
+                //open table
+                sb.Append("<table class='table'>");
+                //open thead
+                sb.Append("<thead>");
+                //open tr
+                sb.Append("<tr>");
+                sb.Append("<th>Time</th>");
+                sb.Append("<th>Sales</th>");
+                sb.Append("<th>Discounts</th>");
+                sb.Append("<th>Checks</th>");
+                sb.Append("<th>Manager</th>");
+                //close tr
+                sb.Append("</tr>");
+                //close thead
+                sb.Append("</thead>");
                 //open tbody
                 sb.Append("<tbody>");
-
-                foreach (SalesForecastDTO day in dto.Weekdays)
+                foreach (SalesDataDTO salesData in salesDataDTOs)
                 {
                     //open tr
                     sb.Append("<tr>");
 
-                    sb.Append("<td>" + day.DateOfEntry.ToShortDateString() + "</td>");
-                    sb.Append("<td>" + day.DayOfWeek + "</td>");
-                    sb.Append("<td>" + day.ForecastAmount.ToString("C0") + "</td>");
-                    sb.Append("<td>" + day.ForecastAM.ToString("C0") + "</td>");
-                    sb.Append("<td>" + day.ForecastPM.ToString("C0") + "</td>");
-                    sb.Append("<td>" + day.PriorYearSales.ToString("C0") + "</td>");
-                    sb.Append("<td>" + day.Prior2YearSales.ToString("C0") + "</td>");
-                    sb.Append("<td>" + day.AverageSalesPerMonth.ToString("C0") + "</td>");
-                    sb.Append("<td>" + day.LaborForecast.ToString("C0") + "</td>");
+                    sb.Append("<td>" + salesData.DateOfEntry.ToShortTimeString() + "</td>");
+                    sb.Append("<td>" + salesData.Sales.ToString("C0") + "</td>");
+                    sb.Append("<td>" + salesData.Discounts.ToString("C0") + "</td>");
+                    sb.Append("<td>" + salesData.Checks + "</td>");
+                    sb.Append("<td>" + salesData.Manager + "</td>");
 
                     //close tr
                     sb.Append("</tr>");
@@ -160,18 +206,15 @@ namespace D_Squared.Data.Commands
                 sb.AppendLine("<br><i>N/A</i>");
             }
 
-            //close table
-            sb.Append("</table>");
-
             return sb.ToString();
         }
 
-        public void SendRedbookSubmitEmail(RedbookEntry entry, SalesForecastExportDTO dto)
+        public void SendRedbookSubmitEmail(RedbookEntry entry, List<SalesDataDTO> salesDataDTOs)
         {
             MailMessage msg = new MailMessage(new MailAddress("redbook@millersalehouse.com"), new MailAddress(entry.LocationId + "redbook@millersalehouse.com"))
             {
                 Subject = BuildSubject(entry.LocationId),
-                Body = BuildBody(entry, dto),
+                Body = BuildBody(entry, salesDataDTOs),
                 IsBodyHtml = true
             };
 

@@ -128,6 +128,29 @@
                                 </ul>
                             </li>
                         }
+                        if (User.SalesForecastsEntryAllowed() || User.SalesForecastsSearchAllowed())
+                        {
+                            <li class="dropdown">
+                                <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
+                                    Forecasts
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    @if (User.SalesForecastsEntryAllowed())
+                                    {
+                                        <li>
+                                            @Html.ActionLink("Entry", "Index", "SalesForecast", null, new { @class = "custom-navbar" })
+                                        </li>
+                                    }
+                                    @if (User.SalesForecastsSearchAllowed())
+                                    {
+                                        <li>
+                                            @Html.ActionLink("Search", "Search", "SalesForecast", null, new { @class = "custom-navbar" })
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                        }
                         if (User.GratuityManagementAllowed())
                         {
                             <li class="dropdown">
@@ -225,29 +248,7 @@
                                 </ul>
                             </li>
                         }
-                        if (User.SalesForecastsEntryAllowed() || User.SalesForecastsSearchAllowed())
-                        {
-                            <li class="dropdown">
-                                <a href="" class="nav custom-navbar dropdown-toggle" data-toggle="dropdown">
-                                    Sales Forecasts
-                                    <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    @if (User.SalesForecastsEntryAllowed())
-                                    {
-                                        <li>
-                                            @Html.ActionLink("Entry", "Index", "SalesForecast", null, new { @class = "custom-navbar" })
-                                        </li>
-                                    }
-                                    @if (User.SalesForecastsSearchAllowed())
-                                    {
-                                        <li>
-                                            @Html.ActionLink("Search", "Search", "SalesForecast", null, new { @class = "custom-navbar" })
-                                        </li>
-                                    }
-                                </ul>
-                            </li>
-                        }
+
                     }
                 </ul>
                 <p class="nav navbar-text navbar-right">Hello, @User.TruncatedName!</p>
