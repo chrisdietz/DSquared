@@ -147,7 +147,8 @@
     {
         <table id="dtOvertime" class="table table-striped table-bordered table-responsive">
             <caption class="caption">
-                Total Items: @Model.SearchResults.Count()
+                Total Items: @Model.SearchResults.Count
+                <span style="float: right; margin-right: 5px;"><input name="action:ExportSalesRptCSV" type="submit" value="Export CSV" class="btn btn-success btn-xs" /></span>
             </caption>
             <thead>
                 <tr>

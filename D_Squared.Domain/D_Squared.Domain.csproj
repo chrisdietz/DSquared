@@ -126,6 +126,7 @@
     <Compile Include="Entities\TipPercentage.cs" />
     <Compile Include="Entities\WeeklyTotalDuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TransferObjects\Attributes\ExportableAttribute.cs" />
     <Compile Include="TransferObjects\BudgetDTO.cs" />
     <Compile Include="TransferObjects\DepositEntryDTO.cs" />
     <Compile Include="TransferObjects\DepositSummaryDTO.cs" />

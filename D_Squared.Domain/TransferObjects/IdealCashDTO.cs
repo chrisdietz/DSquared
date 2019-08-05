@@ -1,4 +1,5 @@
-﻿using System;
+﻿using D_Squared.Domain.TransferObjects.Attributes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -11,21 +12,28 @@ namespace D_Squared.Domain.TransferObjects
     {
         public long ID { get; set; }
         [Display(Name = "Business Date")]
+        [Exportable("Business Date", DataFormatType.Date, false, DisplayFor.Weekly)]
         public DateTime BusinessDate { get; set; }
+        [Display(Name = "Total Sales")]
+        [Exportable("Total Sales", DataFormatType.Currency, true)]
+        public double TotalSales { get; set; }
         [Display(Name = "Location")]
         public string Store { get; set; }
         [Display(Name = "Cash")]
+        [Exportable("Cash", DataFormatType.Currency, true)]
         public double Cash { get; set; }
         [Display(Name = "CC Tips")]
+        [Exportable("CC Tips", DataFormatType.Currency, true)]
         public double CCTips { get; set; }
         [Display(Name = "Paid In")]
+        [Exportable("Paid In", DataFormatType.Currency, true)]
         public double PaidIn { get; set; }
         [Display(Name = "Paid Out")]
+        [Exportable("Paid Out", DataFormatType.Currency, true)]
         public double PaidOut { get; set; }
         [Display(Name = "Ideal Cash")]
+        [Exportable("Ideal Cash", DataFormatType.Currency, true)]
         public double IdealCash { get; set; }
-        [Display(Name = "Total Sales")]
-        public double TotalSales { get; set; }
     }
 
     public class IdealCashSearchDTO

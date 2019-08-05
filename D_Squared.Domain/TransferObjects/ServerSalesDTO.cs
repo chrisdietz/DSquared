@@ -1,4 +1,5 @@
-﻿using System;
+﻿using D_Squared.Domain.TransferObjects.Attributes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -11,26 +12,35 @@ namespace D_Squared.Domain.TransferObjects
     {
         public long ID { get; set; }
         [Display(Name = "Business Date")]
+        [Exportable("Business Date", DataFormatType.Date, false, DisplayFor.Weekly)]
         public DateTime BusinessDate { get; set; }
+        [Display(Name = "Employee Name")]
+        [Exportable("Employee Name", DataFormatType.String, false)]
+        public string EmployeeName { get; set; }
         [Display(Name = "Location Name")]
         public string Store { get; set; }
         [Display(Name = "Total Sales")]
+        [Exportable("Total Sales", DataFormatType.Currency, false)]
         public decimal TotalSales { get; set; }
         [Display(Name = "Food Sales")]
+        [Exportable("Food Sales", DataFormatType.Currency, false)]
         public decimal FoodSales { get; set; }
         [Display(Name = "Food Sales%")]
+        [Exportable("Food Sales%", DataFormatType.Decimal, false)]
         public decimal FoodSalesPercent { get; set; }
         [Display(Name = "LBW Sales")]
+        [Exportable("LBW Sales", DataFormatType.Currency, false)]
         public decimal LBWSales { get; set; }
         [Display(Name = "LBW Sales%")]
+        [Exportable("LBW Sales%", DataFormatType.Decimal, false)]
         public decimal LBWSalesPercent { get; set; }
         [Display(Name = "Non Alc Bev Sales")]
+        [Exportable("Non Alc Bev Sales", DataFormatType.Currency, false)]
         public decimal NonAlcBevSales { get; set; }
         [Display(Name = "Non Alc Bev Sales%")]
+        [Exportable("Non Alc Bev Sales%", DataFormatType.Decimal, false)]
         public decimal NonAlcBevSalesPercent { get; set; }
         public int EmployeeID { get; set; }
-        [Display(Name = "Employee Name")]
-        public string EmployeeName { get; set; }
     }
 
     public class ServerSalesSearchDTO

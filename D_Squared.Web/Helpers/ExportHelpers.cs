@@ -1,7 +1,9 @@
 ﻿using D_Squared.Domain.TransferObjects;
+using D_Squared.Domain.TransferObjects.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Web;
 
@@ -114,4 +116,126 @@ namespace D_Squared.Web.Helpers
             return sb;
         }
     }
+
+    public static class ReportExportHelper<T>
+    {
+        public static string BuildExportString(List<T> dataObjects, DisplayFor displayFor)
+        {
+            StringBuilder builder = new StringBuilder();
+            List<string> columnHeaders = new List<string>();
+            List<string> dataRow = new List<string>();
+            List<string> totalsRow = new List<string>();
+            Dictionary<string, object> totalsMap = new Dictionary<string, object>();
+            bool headerRowComplete = false;
+            PropertyInfo[] properties = typeof(T).GetProperties();
+            foreach (var obj in dataObjects)
+            {
+                foreach (var property in properties)
+                {
+                    var customAttribs = property.GetCustomAttributes(true);
+                    foreach (var customAttrib in customAttribs)
+                    {
+                        if(customAttrib is ExportableAttribute)
+                        {
+                            var eaAttrib = (ExportableAttribute)customAttrib;
+                            if (!headerRowComplete && (eaAttrib.DisplayFor == DisplayFor.NA || eaAttrib.DisplayFor == displayFor))
+                                columnHeaders.Add(eaAttrib.DisplayName);
+                            if(eaAttrib.DisplayFor == DisplayFor.NA || eaAttrib.DisplayFor == displayFor)
+                                dataRow.Add("\"" + FormatDisplayValue(property.GetValue(obj), property, eaAttrib, totalsMap) + "\"");
+                        }
+                    }
+                }
+                if (!headerRowComplete) builder.AppendLine(string.Join(",", columnHeaders));
+                headerRowComplete = true;
+                builder.AppendLine(string.Join(",", dataRow));
+                dataRow.Clear();
+            }
+            // Totals row
+            if (totalsMap.Values.Count > 0)
+            {
+                foreach (var property in properties)
+                {
+                    var customAttribs = property.GetCustomAttributes(true);
+                    foreach (var customAttrib in customAttribs)
+                    {
+                        if (customAttrib is ExportableAttribute)
+                        {
+                            var eaAttrib = (ExportableAttribute)customAttrib;
+                            if (eaAttrib.AddToTotal)
+                            {
+                                var totalColValue = totalsMap[eaAttrib.DisplayName];
+                                totalsRow.Add("\"" + FormatDisplayValue(totalColValue, property, eaAttrib) + "\"");
+                            }
+                            else
+                            {
+                                if (eaAttrib.DisplayFor == DisplayFor.NA || eaAttrib.DisplayFor == displayFor)
+                                    totalsRow.Add(string.Empty);
+                            }
+                        }
+                    }
+                }
+            }
+            if (totalsRow.Count > 0) builder.AppendLine(string.Join(",", totalsRow));
+            return builder.ToString();
+        }
+
+        private static string FormatDisplayValue(object objVal, PropertyInfo property, ExportableAttribute attrib, Dictionary<string, object> totalsMap = null)
+        {
+            string formattedVal = string.Empty;
+            //object objVal = property.GetValue(obj);
+            if(objVal != null && objVal.ToString().Length > 0)
+            {
+                switch (attrib.DataFormatType)
+                {
+                    case DataFormatType.String:
+                        formattedVal = objVal.ToString();
+                        break;
+                    case DataFormatType.Currency:
+                        formattedVal = string.Format("{0:C2}", Convert.ToDecimal(objVal));//((decimal)objVal).ToString("C2");
+                        if(totalsMap != null) AddToTotalsMap(totalsMap, objVal, attrib);
+                        break;
+                    case DataFormatType.Decimal:
+                        formattedVal = string.Format("{0:0.00}", objVal);//((decimal)objVal).ToString("0.00");
+                        if (totalsMap != null) AddToTotalsMap(totalsMap, objVal, attrib);
+                        break;
+                    case DataFormatType.WholeNumber:
+                        formattedVal = string.Format("{0,0}", objVal); //((long)objVal).ToString();
+                        break;
+                    case DataFormatType.BigNumber:
+                        formattedVal = $"=Text({string.Format("{0,0}", objVal)}, 0)"; //((long)objVal).ToString();
+                        break;
+                    case DataFormatType.Time:
+                        formattedVal = ((DateTime)objVal).ToShortTimeString();
+                        break;
+                    case DataFormatType.Date:
+                        formattedVal = ((DateTime)objVal).ToShortDateString();
+                        break;
+                    case DataFormatType.TimeStamp:
+                        formattedVal = string.Format("{0:g}", (DateTime)objVal);
+                        break;
+                    default:
+                        formattedVal = string.Empty;
+                        break;
+                }
+            }
+            return formattedVal;
+        }
+
+        private static void AddToTotalsMap(Dictionary<string, object> totalsMap, object dataValue, ExportableAttribute attrib)
+        {
+            if (attrib.AddToTotal)
+            {
+                if (totalsMap.ContainsKey(attrib.DisplayName))
+                {
+                    totalsMap[attrib.DisplayName] = Convert.ToDecimal(totalsMap[attrib.DisplayName]) + Convert.ToDecimal(dataValue);
+                }
+                else
+                {
+                    totalsMap.Add(attrib.DisplayName, Convert.ToDecimal(dataValue));
+                }
+            }
+        }
+
+    }
+
 }

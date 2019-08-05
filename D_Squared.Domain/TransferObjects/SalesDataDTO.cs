@@ -1,4 +1,5 @@
 ﻿using D_Squared.Domain.Entities;
+using D_Squared.Domain.TransferObjects.Attributes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -59,57 +60,71 @@ namespace D_Squared.Domain.TransferObjects
         public string DayOfWeek { get; set; }
 
         [Display(Name = "Date")]
+        [Exportable("Business Date", DataFormatType.Date, false, DisplayFor.Weekly)]
         public DateTime DateOfEntry { get; set; }
 
         [Display(Name = "Time")]
+        [Exportable("Time", DataFormatType.Time, false, DisplayFor.Daily)]
         public DateTime CloseTime { get; set; }
 
+        [Display(Name = "Food Sales")]
+        [Exportable("Food Sales", DataFormatType.Currency, true)]
+        public decimal FoodSales { get; set; }
+
+        [Display(Name = "Non Alc Bev Sales")]
+        [Exportable("Non Alc Bev Sales", DataFormatType.Currency, true)]
+        public decimal NonAlcBevSales { get; set; }
+        
+        [Display(Name = "Beer Bottle Sales")]
+        [Exportable("Beer Bottle Sales", DataFormatType.Currency, true)]
+        public decimal BeerBottleSales { get; set; }
+        
+        [Display(Name = "Beer Draft Sales")]
+        [Exportable("Beer Draft Sales", DataFormatType.Currency, true)]
+        public decimal BeerDraftSales { get; set; }
+
+        [Display(Name = "Liquor Sales")]
+        [Exportable("Liquor Sales", DataFormatType.Currency, true)]
+        public decimal LiquorSales { get; set; }
+
+        [Display(Name = "Retail Sales")]
+        [Exportable("Retail Sales", DataFormatType.Currency, true)]
+        public decimal RetailSales { get; set; }
+
+        [Display(Name = "Wine Sales")]
+        [Exportable("Wine Sales", DataFormatType.Currency, true)]
+        public decimal WineSales { get; set; }
+
         [Display(Name = "Sales")]
+        [Exportable("Total Sales", DataFormatType.Currency, true)]
         public decimal Sales { get; set; }
 
         [Display(Name = "Discounts")]
+        [Exportable("Discount/Comp Amount", DataFormatType.Currency, true)]
         public decimal Discounts { get; set; }
 
+        [Display(Name = "Adjustment Sales")]
+        [Exportable("Adjustment Sales", DataFormatType.Currency, true)]
+        public decimal AdjustmentSales { get; set; }
+
+        [Display(Name = "Tax Amount")]
+        [Exportable("Tax Amount", DataFormatType.Currency, true)]
+        public decimal TaxAmount { get; set; }
+        
+        [Display(Name = "Check Number")]
+        [Exportable("Check Number", DataFormatType.String, false, DisplayFor.Daily)]
+        public string CheckNumber { get; set; }
+
+        [Display(Name = "Retail Beer Sales")]
+        public decimal RetailBeerSales { get; set; }
+        
+        [Display(Name = "Payment Amount")]
+        public decimal PaymentAmount { get; set; }
+        
         [Display(Name = "Checks")]
         public string Checks { get; set; }
 
         public string Manager { get; set; }
-
-        [Display(Name = "Food Sales")]
-        public decimal FoodSales { get; set; }
-
-        [Display(Name = "Liquor Sales")]
-        public decimal LiquorSales { get; set; }
-
-        [Display(Name = "Beer Draft Sales")]
-        public decimal BeerDraftSales { get; set; }
-
-        [Display(Name = "Beer Bottle Sales")]
-        public decimal BeerBottleSales { get; set; }
-
-        [Display(Name = "Non Alc Bev Sales")]
-        public decimal NonAlcBevSales { get; set; }
-
-        [Display(Name = "Wine Sales")]
-        public decimal WineSales { get; set; }
-
-        [Display(Name = "Retail Beer Sales")]
-        public decimal RetailBeerSales { get; set; }
-
-        [Display(Name = "Retail Sales")]
-        public decimal RetailSales { get; set; }
-
-        [Display(Name = "Tax Amount")]
-        public decimal TaxAmount { get; set; }
-
-        [Display(Name = "Payment Amount")]
-        public decimal PaymentAmount { get; set; }
-
-        [Display(Name = "Adjustment Sales")]
-        public decimal AdjustmentSales { get; set; }
-
-        [Display(Name = "Check Number")]
-        public string CheckNumber { get; set; }
     }
 
     public class SalesDataSearchDTO
