@@ -119,7 +119,7 @@ namespace D_Squared.Web.Helpers
 
     public static class ReportExportHelper<T>
     {
-        public static string BuildExportString(List<T> dataObjects, DisplayFor displayFor)
+        public static string BuildExportString(List<T> dataObjects, DisplayFor displayFor, Dictionary<string, string> dynamicColumnNames = null)
         {
             StringBuilder builder = new StringBuilder();
             List<string> columnHeaders = new List<string>();
@@ -139,7 +139,18 @@ namespace D_Squared.Web.Helpers
                         {
                             var eaAttrib = (ExportableAttribute)customAttrib;
                             if (!headerRowComplete && (eaAttrib.DisplayFor == DisplayFor.NA || eaAttrib.DisplayFor == displayFor))
-                                columnHeaders.Add(eaAttrib.DisplayName);
+                            {
+                                //columnHeaders.Add(eaAttrib.DisplayName);
+                                if(dynamicColumnNames != null && dynamicColumnNames.ContainsKey(eaAttrib.DisplayName))
+                                {
+                                    columnHeaders.Add(dynamicColumnNames[eaAttrib.DisplayName]);
+                                }
+                                else
+                                {
+                                    columnHeaders.Add(eaAttrib.DisplayName);
+                                }
+                            }
+                                
                             if(eaAttrib.DisplayFor == DisplayFor.NA || eaAttrib.DisplayFor == displayFor)
                                 dataRow.Add("\"" + FormatDisplayValue(property.GetValue(obj), property, eaAttrib, totalsMap) + "\"");
                         }

@@ -1,4 +1,5 @@
 ﻿using D_Squared.Domain.Entities;
+using D_Squared.Domain.TransferObjects.Attributes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,10 +15,13 @@ namespace D_Squared.Domain.TransferObjects
         [Display(Name = "Store Number")]
         public string StoreNumber { get; set; }
         [Display(Name = "Employee Name")]
+        [Exportable("Employee Name", DataFormatType.String, false)]
         public string StaffName { get; set; }
         [Display(Name = "Hours Worked")]
+        [Exportable("Hours Worked", DataFormatType.Decimal, false)]
         public double TotalDuration { get; set; }
         [Display(Name = "Hours Over 35")]
+        [Exportable("Hours Over 35", DataFormatType.Decimal, false)]
         public double Overtime { get; set; }
 
         public WeeklyTotalDurationDTO()

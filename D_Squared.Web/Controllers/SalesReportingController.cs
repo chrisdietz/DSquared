@@ -108,21 +108,6 @@ namespace D_Squared.Web.Controllers
             return View(model);
         }
 
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [MultipleButton(Name = "action", Argument = "ExportServerSalesRptCSV")]
-        public ActionResult ExportServerSalesRptCSV(ServerSalesSearchDTO searchDTO)
-        {
-            string username = User.TruncatedName;
-            EmployeeDTO employee = eq.GetEmployeeInfo(username);
-            ServerSalesSearchViewModel model = init.InitializeServerSalesSearchViewModel(User, searchDTO);
-
-            string exportData = ReportExportHelper<ServerSalesDTO>.BuildExportString(model.SearchResults,
-                                                                    (searchDTO.SelectedDWBWFilter == ServerSalesSearchDTO.ReportByDay) ? DisplayFor.Daily : DisplayFor.Weekly);
-            return new Export("ServerSalesReportExport.csv", Encoding.ASCII.GetBytes(exportData));
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         [MultipleButton(Name = "action", Argument = "ExportIdealCashRptCSV")]
@@ -138,6 +123,20 @@ namespace D_Squared.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [MultipleButton(Name = "action", Argument = "ExportPaidInOutRptCSV")]
+        public ActionResult ExportPaidInOutRptCSV(PaidInOutSearchDTO searchDTO)
+        {
+            string username = User.TruncatedName;
+            EmployeeDTO employee = eq.GetEmployeeInfo(username);
+            PaidInOutSearchViewModel model = init.InitializePaidInOutSearchViewModel(User, searchDTO);
+
+            string exportData = ReportExportHelper<PaidInOutDTO>.BuildExportString(model.SearchResults, 
+                                                                    (searchDTO.SelectedDayOrWeekFilter == SalesDataSearchDTO.ReportByDay) ? DisplayFor.Daily : DisplayFor.Weekly);
+            return new Export("PaidInOutReportExport.csv", Encoding.ASCII.GetBytes(exportData));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         [MultipleButton(Name = "action", Argument = "ExportSalesRptCSV")]
         public ActionResult ExportSalesRptCSV(SalesDataSearchDTO searchDTO)
         {
@@ -149,6 +148,20 @@ namespace D_Squared.Web.Controllers
             string exportData = ReportExportHelper<SalesDataDTO>.BuildExportString(model.SearchResults, 
                                                                     (searchDTO.SelectedReportType == SalesDataSearchDTO.ReportByDay) ? DisplayFor.Daily : DisplayFor.Weekly );
             return new Export("SalesReportExport.csv", Encoding.ASCII.GetBytes(exportData));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MultipleButton(Name = "action", Argument = "ExportServerSalesRptCSV")]
+        public ActionResult ExportServerSalesRptCSV(ServerSalesSearchDTO searchDTO)
+        {
+            string username = User.TruncatedName;
+            EmployeeDTO employee = eq.GetEmployeeInfo(username);
+            ServerSalesSearchViewModel model = init.InitializeServerSalesSearchViewModel(User, searchDTO);
+
+            string exportData = ReportExportHelper<ServerSalesDTO>.BuildExportString(model.SearchResults,
+                                                                    (searchDTO.SelectedDWBWFilter == ServerSalesSearchDTO.ReportByDay) ? DisplayFor.Daily : DisplayFor.Weekly);
+            return new Export("ServerSalesReportExport.csv", Encoding.ASCII.GetBytes(exportData));
         }
     }
 }

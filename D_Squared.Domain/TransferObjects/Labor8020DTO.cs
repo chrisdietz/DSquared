@@ -1,4 +1,5 @@
-﻿using System;
+﻿using D_Squared.Domain.TransferObjects.Attributes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -14,19 +15,25 @@ namespace D_Squared.Domain.TransferObjects
         [Display(Name = "Location Name")]
         public string Store { get; set; }
         [Display(Name = "Business Date")]
+        [Exportable("Business Date", DataFormatType.Date, false, DisplayFor.Weekly)]
         public DateTime BusinessDate { get; set; }
         [Display(Name = "Personnel Number")]
+        [Exportable("Personnel Number", DataFormatType.WholeNumber, false)]
         public int PersonnelNumber { get; set; }
         [Display(Name = "Employee Name")]
+        [Exportable("Employee Name", DataFormatType.String, false)]
         public string EmployeeName { get; set; }
         [Display(Name = "Job")]
+        [Exportable("Job", DataFormatType.String, false)]
         public string JobName { get; set; }
         public DateTime Time { get; set; }
         [Display(Name = "80/20")]
+        [Exportable("80/20", DataFormatType.String, false)]
         public string P_8020 { get; set; }
         
         public int P_8020ManagerID { get; set; }
         [Display(Name = "Manager")]
+        [Exportable("Manager", DataFormatType.String, false)]
         public string P_8020Manager { get; set; }
     }
 
