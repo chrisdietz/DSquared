@@ -14,7 +14,7 @@ namespace D_Squared.Domain.TransferObjects
         [Display(Name = "Location Name")]
         public string Store { get; set; }
         [Display(Name = "Business Date")]
-        [Exportable("Business Date", DataFormatType.Date, false, DisplayFor.Weekly)]
+        [Exportable("Business Date", DataFormatType.Date, false, DisplayFor.Condition_2)]
         public DateTime BusinessDate { get; set; }
         [Display(Name = "Receipt")]
         [Exportable("Receipt", DataFormatType.BigNumber, false)]

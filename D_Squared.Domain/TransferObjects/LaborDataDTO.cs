@@ -17,10 +17,10 @@ namespace D_Squared.Domain.TransferObjects
         public string Store { get; set; }
         public long ClockID { get; set; }
         [Display(Name = "Job ID")]
-        [Exportable("Job ID", DataFormatType.String, false, DisplayFor.Daily)]
+        [Exportable("Job ID", DataFormatType.String, false, DisplayFor.Condition_1)]
         public string JobName { get; set; }
         [Display(Name = "Center")]
-        [Exportable("Center", DataFormatType.String, false, DisplayFor.Weekly)]
+        [Exportable("Center", DataFormatType.String, false, DisplayFor.Condition_2)]
         public string Center { get; set; }
         [Display(Name = "Regular Hours")]
         [Exportable("Regular Hours", DataFormatType.Decimal, true)]

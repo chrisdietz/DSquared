@@ -60,11 +60,11 @@ namespace D_Squared.Domain.TransferObjects
         public string DayOfWeek { get; set; }
 
         [Display(Name = "Date")]
-        [Exportable("Business Date", DataFormatType.Date, false, DisplayFor.Weekly)]
+        [Exportable("Business Date", DataFormatType.Date, false, DisplayFor.Condition_2)]
         public DateTime DateOfEntry { get; set; }
 
         [Display(Name = "Time")]
-        [Exportable("Time", DataFormatType.Time, false, DisplayFor.Daily)]
+        [Exportable("Time", DataFormatType.Time, false, DisplayFor.Condition_1)]
         public DateTime CloseTime { get; set; }
 
         [Display(Name = "Food Sales")]
@@ -112,7 +112,7 @@ namespace D_Squared.Domain.TransferObjects
         public decimal TaxAmount { get; set; }
         
         [Display(Name = "Check Number")]
-        [Exportable("Check Number", DataFormatType.String, false, DisplayFor.Daily)]
+        [Exportable("Check Number", DataFormatType.String, false, DisplayFor.Condition_1)]
         public string CheckNumber { get; set; }
 
         [Display(Name = "Retail Beer Sales")]

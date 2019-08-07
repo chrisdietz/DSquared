@@ -12,7 +12,7 @@ namespace D_Squared.Domain.TransferObjects
     {
         public long ID { get; set; }
         [Display(Name = "Business Date")]
-        [Exportable("Business Date", DataFormatType.Date, false, DisplayFor.Weekly)]
+        [Exportable("Business Date", DataFormatType.Date, false, DisplayFor.Condition_2)]
         public DateTime BusinessDate { get; set; }
         [Display(Name = "Employee Name")]
         [Exportable("Employee Name", DataFormatType.String, false)]

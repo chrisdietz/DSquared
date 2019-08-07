@@ -101,7 +101,7 @@ namespace D_Squared.Web.Controllers
             Labor8020SearchViewModel model = init.InitializeLabor8020SearchViewModel(User, searchDTO);
 
             string exportData = ReportExportHelper<Labor8020DTO>.BuildExportString(model.SearchResults,
-                                                                    (searchDTO.SelectedDayOrWeekFilter == Labor8020SearchDTO.ReportByDay) ? DisplayFor.Daily : DisplayFor.Weekly);
+                                                                    (searchDTO.SelectedDayOrWeekFilter == Labor8020SearchDTO.ReportByDay) ? DisplayFor.Condition_1 : DisplayFor.Condition_2);
             return new Export("Labor8020ReportExport.csv", Encoding.ASCII.GetBytes(exportData));
         }
 
@@ -115,7 +115,7 @@ namespace D_Squared.Web.Controllers
             LaborSummarySearchViewModel model = init.InitializeLaborSummarySearchViewModel(User, searchDTO);
 
             string exportData = ReportExportHelper<LaborDataDTO>.BuildExportString(model.SearchResults,
-                                                                    (searchDTO.SelectedJobOrCenterFilter == LaborDataSearchDTO.ReportByJob) ? DisplayFor.Daily : DisplayFor.Weekly);
+                                                                    (searchDTO.SelectedJobOrCenterFilter == LaborDataSearchDTO.ReportByJob) ? DisplayFor.Condition_1 : DisplayFor.Condition_2);
             return new Export("LaborSummaryReportExport.csv", Encoding.ASCII.GetBytes(exportData));
         }
 
@@ -129,8 +129,47 @@ namespace D_Squared.Web.Controllers
             OvertimeReportingSearchViewModel model = init.InitializeOvertimeReportingSearchViewModel(User, searchDTO);
             Dictionary<string, string> dynamicColumnNames = new Dictionary<string, string>();
             dynamicColumnNames.Add("Hours Over 35", $"Hours Over {searchDTO.SelectedHours}");
-            string exportData = ReportExportHelper<WeeklyTotalDurationDTO>.BuildExportString(model.SearchResults, DisplayFor.Weekly, dynamicColumnNames);
+            string exportData = ReportExportHelper<WeeklyTotalDurationDTO>.BuildExportString(model.SearchResults, DisplayFor.Condition_2, dynamicColumnNames);
             return new Export("OvertimeReportExport.csv", Encoding.ASCII.GetBytes(exportData));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MultipleButton(Name = "action", Argument = "ExportLabor8020ViewCSV")]
+        public ActionResult ExportLabor8020ViewCSV(bool isLastWeek = false)
+        {
+            string username = User.TruncatedName;
+            EmployeeDTO employee = eq.GetEmployeeInfo(username);
+            Labor8020ViewModel model = init.InitializeLabor8020ViewModel(User, isLastWeek);
+
+            string exportData = ReportExportHelper<Labor8020DTO>.BuildExportString(model.Labor8020List, DisplayFor.Condition_2);
+            return new Export("Labor8020ViewExport.csv", Encoding.ASCII.GetBytes(exportData));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MultipleButton(Name = "action", Argument = "ExportLaborSummaryViewCSV")]
+        public ActionResult ExportLaborSummaryViewCSV(bool isLastWeek = false)
+        {
+            string username = User.TruncatedName;
+            EmployeeDTO employee = eq.GetEmployeeInfo(username);
+            LaborSummaryViewModel model = init.InitializeLaborSummaryViewModel(User, isLastWeek);
+
+            string exportData = ReportExportHelper<LaborDataDTO>.BuildExportString(model.LaborDataList, DisplayFor.Condition_1);
+            return new Export("LaborSummaryViewExport.csv", Encoding.ASCII.GetBytes(exportData));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MultipleButton(Name = "action", Argument = "ExportOvertimeViewCSV")]
+        public ActionResult ExportOvertimeViewCSV(bool isLastWeek = false)
+        {
+            string username = User.TruncatedName;
+            EmployeeDTO employee = eq.GetEmployeeInfo(username);
+            OvertimeReportingViewModel model = init.InitializeOvertimeReportingViewModel(User, isLastWeek);
+
+            string exportData = ReportExportHelper<WeeklyTotalDurationDTO>.BuildExportString(model.WeeklyTotalDurationList, DisplayFor.Condition_2);
+            return new Export("OvertimeViewExport.csv", Encoding.ASCII.GetBytes(exportData));
         }
     }
 }

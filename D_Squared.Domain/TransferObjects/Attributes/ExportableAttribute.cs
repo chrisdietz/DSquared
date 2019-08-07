@@ -33,8 +33,8 @@ namespace D_Squared.Domain.TransferObjects.Attributes
     }
     public enum DisplayFor
     {
-        Daily,
-        Weekly,
+        Condition_1,
+        Condition_2,
         NA
     }
 }

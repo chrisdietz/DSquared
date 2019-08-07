@@ -119,6 +119,15 @@ namespace D_Squared.Web.Helpers
 
     public static class ReportExportHelper<T>
     {
+        /// <summary>
+        /// Builds a string containing Comma Separated Values by iterating through a list of data objects.
+        /// Uses reflection to find the object and it's properties. Checks the ExportableAttribute decoration
+        /// for the property to determine how the data should be formatted, set the column name, etc.
+        /// </summary>
+        /// <param name="dataObjects"></param>
+        /// <param name="displayFor"></param>
+        /// <param name="dynamicColumnNames"></param>
+        /// <returns></returns>
         public static string BuildExportString(List<T> dataObjects, DisplayFor displayFor, Dictionary<string, string> dynamicColumnNames = null)
         {
             StringBuilder builder = new StringBuilder();
@@ -140,7 +149,7 @@ namespace D_Squared.Web.Helpers
                             var eaAttrib = (ExportableAttribute)customAttrib;
                             if (!headerRowComplete && (eaAttrib.DisplayFor == DisplayFor.NA || eaAttrib.DisplayFor == displayFor))
                             {
-                                //columnHeaders.Add(eaAttrib.DisplayName);
+                                // Some of the column names can be dynamic. Check for dynamic names existence.
                                 if(dynamicColumnNames != null && dynamicColumnNames.ContainsKey(eaAttrib.DisplayName))
                                 {
                                     columnHeaders.Add(dynamicColumnNames[eaAttrib.DisplayName]);
@@ -190,10 +199,17 @@ namespace D_Squared.Web.Helpers
             return builder.ToString();
         }
 
+        /// <summary>
+        /// Formats the CSV display value using the ExportableAttribute attribute values set on the property in the data object's class.
+        /// </summary>
+        /// <param name="objVal"></param>
+        /// <param name="property"></param>
+        /// <param name="attrib"></param>
+        /// <param name="totalsMap"></param>
+        /// <returns></returns>
         private static string FormatDisplayValue(object objVal, PropertyInfo property, ExportableAttribute attrib, Dictionary<string, object> totalsMap = null)
         {
             string formattedVal = string.Empty;
-            //object objVal = property.GetValue(obj);
             if(objVal != null && objVal.ToString().Length > 0)
             {
                 switch (attrib.DataFormatType)
@@ -202,18 +218,18 @@ namespace D_Squared.Web.Helpers
                         formattedVal = objVal.ToString();
                         break;
                     case DataFormatType.Currency:
-                        formattedVal = string.Format("{0:C2}", Convert.ToDecimal(objVal));//((decimal)objVal).ToString("C2");
+                        formattedVal = string.Format("{0:C2}", Convert.ToDecimal(objVal));
                         if(totalsMap != null) AddToTotalsMap(totalsMap, objVal, attrib);
                         break;
                     case DataFormatType.Decimal:
-                        formattedVal = string.Format("{0:0.00}", objVal);//((decimal)objVal).ToString("0.00");
+                        formattedVal = string.Format("{0:0.00}", objVal);
                         if (totalsMap != null) AddToTotalsMap(totalsMap, objVal, attrib);
                         break;
                     case DataFormatType.WholeNumber:
-                        formattedVal = string.Format("{0,0}", objVal); //((long)objVal).ToString();
+                        formattedVal = string.Format("{0,0}", objVal); 
                         break;
                     case DataFormatType.BigNumber:
-                        formattedVal = $"=Text({string.Format("{0,0}", objVal)}, 0)"; //((long)objVal).ToString();
+                        formattedVal = $"=Text({string.Format("{0,0}", objVal)}, 0)"; 
                         break;
                     case DataFormatType.Time:
                         formattedVal = ((DateTime)objVal).ToShortTimeString();
