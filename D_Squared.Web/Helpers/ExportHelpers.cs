@@ -238,7 +238,7 @@ namespace D_Squared.Web.Helpers
                         formattedVal = ((DateTime)objVal).ToShortDateString();
                         break;
                     case DataFormatType.TimeStamp:
-                        formattedVal = string.Format("{0:g}", (DateTime)objVal);
+                        formattedVal = $"{((DateTime)objVal).ToShortDateString()} - {((DateTime)objVal).ToShortTimeString()}";
                         break;
                     default:
                         formattedVal = string.Empty;

@@ -1304,6 +1304,79 @@ namespace D_Squared.Web.Helpers
 
             return model;
         }
+
+        public HourlySalesViewModel InitializeHourlySalesViewModel(CustomClaimsPrincipal User, bool isLastWeek = false)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(User.TruncatedName);
+
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(!isLastWeek ? DateTime.Today : DateTime.Today.AddDays(-7));
+
+            List<HourlySalesDTO> hourlySalesDTOs = sdq.GetHourlySalesDTOsByDateRange(employee.StoreNumber, daysInWeek.FirstOrDefault(), daysInWeek.LastOrDefault());
+
+            HourlySalesViewModel model = new HourlySalesViewModel
+            {
+                HourlySalesList = hourlySalesDTOs,
+                BusinessWeekStartDate = daysInWeek.FirstOrDefault(),
+                BusinessWeekEndDate = daysInWeek.LastOrDefault(),
+                EmployeeInfo = employee,
+                CurrentWeekFlag = !isLastWeek
+            };
+
+            return model;
+        }
+
+        public HourlySalesSearchViewModel InitializeHourlySalesSearchViewModel(CustomClaimsPrincipal User, HourlySalesSearchDTO searchDTO)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(User.TruncatedName);
+
+            List<string> locationList = GetLocationList(employee, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin(), false);
+
+            List<SelectListItem> locSelectList = null;
+            if (locationList.Count() == 0)
+            {
+                locSelectList = locationList.ToSelectList(null, null, null, true, employee.StoreNumber, employee.StoreNumber);
+            }
+            else
+            {
+                locSelectList = locationList.ToSelectList(null, null, null, true, "Select", "Select");
+            }
+
+            if (string.IsNullOrEmpty(searchDTO.SelectedLocation)) searchDTO.SelectedLocation = employee.StoreNumber;
+
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(searchDTO.SelectedDate);
+            List<HourlySalesDTO> hourlySalesDTOs = null;
+            switch (searchDTO.SelectedReportType)
+            {
+                case HourlySalesSearchDTO.ReportByDay:
+                    hourlySalesDTOs = sdq.GetHourlySalesDTOsByDate(searchDTO.SelectedLocation, searchDTO.SelectedDate);
+                    break;
+                case HourlySalesSearchDTO.ReportByWeek:
+                    hourlySalesDTOs = sdq.GetHourlySalesDTOsByDateRange(searchDTO.SelectedLocation, daysInWeek.FirstOrDefault(), daysInWeek.LastOrDefault());
+                    break;
+                case HourlySalesSearchDTO.ReportByDateRange:
+                    hourlySalesDTOs = sdq.GetHourlySalesDTOsByDateRange(searchDTO.SelectedLocation, searchDTO.SelectedDateRangeBegin, searchDTO.SelectedDateRangeEnd);
+                    break;
+                default:
+                    break;
+            }
+            var startDate = searchDTO.SelectedDateRangeBegin;
+            var endDate = searchDTO.SelectedDateRangeEnd;
+            if (searchDTO.SelectedReportType == HourlySalesSearchDTO.ReportByWeek)
+            {
+                startDate = daysInWeek.FirstOrDefault();
+                endDate = daysInWeek.LastOrDefault();
+            }
+            HourlySalesSearchViewModel model = new HourlySalesSearchViewModel()
+            {
+                EmployeeInfo = employee,
+                LocationSelectList = locSelectList,
+                SearchResults = hourlySalesDTOs,
+                BusinessWeekStartDate = startDate,
+                BusinessWeekEndDate = endDate,
+            };
+
+            return model;
+        }
     }
 
     public class LaborReportsInitializer : InitializerBase
@@ -1514,5 +1587,81 @@ namespace D_Squared.Web.Helpers
             return model;
         }
 
+        public TimeClockDetailViewModel InitializeTimeClockDetailViewModel(CustomClaimsPrincipal User, bool isLastWeek = false)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(User.TruncatedName);
+
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(!isLastWeek ? DateTime.Today : DateTime.Today.AddDays(-7));
+
+            List<TimeClockDetailDTO> timeClockDetailDTOs = ldq.GetTimeClockDetailDTOsByDateRange(employee.StoreNumber.Substring(0, 3), daysInWeek.FirstOrDefault(),
+                                                        daysInWeek.LastOrDefault());
+            TimeClockDetailViewModel model = new TimeClockDetailViewModel
+            {
+                TimeClockDetailList = timeClockDetailDTOs,
+                BusinessWeekStartDate = daysInWeek.FirstOrDefault(),
+                BusinessWeekEndDate = daysInWeek.LastOrDefault(),
+                EmployeeInfo = employee,
+                CurrentWeekFlag = !isLastWeek
+            };
+
+            return model;
+        }
+
+        public TimeClockDetailSearchViewModel InitializeTimeClockDetailSearchViewModel(CustomClaimsPrincipal User, TimeClockDetailSearchDTO searchDTO)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(User.TruncatedName);
+
+            List<string> locationList = GetLocationList(employee, User.IsRegionalManager(), User.IsDivisionalVP(), User.IsDSquaredAdmin(), false);
+
+            List<SelectListItem> locSelectList = null;
+            if (locationList.Count() == 0)
+            {
+                locSelectList = locationList.ToSelectList(null, null, null, true, employee.StoreNumber, employee.StoreNumber);
+            }
+            else
+            {
+                locSelectList = locationList.ToSelectList(null, null, null, true, "Select", "Select");
+            }
+
+            if (string.IsNullOrEmpty(searchDTO.SelectedLocation)) searchDTO.SelectedLocation = employee.StoreNumber;
+
+
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(searchDTO.SelectedDate);
+
+            List<TimeClockDetailDTO> timeClockDetailDTOs = null;
+
+            if (searchDTO.SelectedReportType == TimeClockDetailSearchDTO.ReportByDay)
+            {
+                timeClockDetailDTOs = ldq.GetTimeClockDetailDTOsByDate(searchDTO.SelectedLocation.Substring(0, 3), searchDTO.SelectedDate);
+            }
+            else if (searchDTO.SelectedReportType == TimeClockDetailSearchDTO.ReportByWeek)
+            {
+                timeClockDetailDTOs = ldq.GetTimeClockDetailDTOsByDateRange(searchDTO.SelectedLocation.Substring(0, 3), daysInWeek.FirstOrDefault(),
+                                                                        daysInWeek.LastOrDefault());
+            }
+            else
+            {
+                timeClockDetailDTOs = ldq.GetTimeClockDetailDTOsByDateRange(searchDTO.SelectedLocation.Substring(0, 3), searchDTO.SelectedDateRangeBegin,
+                                                                        searchDTO.SelectedDateRangeEnd);
+            }
+            var startDate = searchDTO.SelectedDateRangeBegin;
+            var endDate = searchDTO.SelectedDateRangeEnd;
+            if (searchDTO.SelectedReportType == HourlySalesSearchDTO.ReportByWeek)
+            {
+                startDate = daysInWeek.FirstOrDefault();
+                endDate = daysInWeek.LastOrDefault();
+            }
+            TimeClockDetailSearchViewModel model = new TimeClockDetailSearchViewModel
+            {
+                SearchResults = timeClockDetailDTOs,
+                BusinessWeekStartDate = startDate,
+                BusinessWeekEndDate = endDate,
+                EmployeeInfo = employee,
+                SearchDTO = searchDTO,
+                LocationSelectList = locSelectList
+            };
+
+            return model;
+        }
     }
 }

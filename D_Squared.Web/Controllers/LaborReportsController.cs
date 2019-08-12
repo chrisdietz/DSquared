@@ -49,8 +49,6 @@ namespace D_Squared.Web.Controllers
 
         public ActionResult OvertimeSearch(WeeklyTotalDurationSearchDTO searchDTO)
         {
-            string username = User.TruncatedName;
-            EmployeeDTO employee = eq.GetEmployeeInfo(username);
             OvertimeReportingSearchViewModel model = init.InitializeOvertimeReportingSearchViewModel(User, searchDTO);
             model.SearchDTO = searchDTO;
 
@@ -65,9 +63,6 @@ namespace D_Squared.Web.Controllers
 
         public ActionResult LaborSummarySearch(LaborDataSearchDTO searchDTO)
         {
-            string username = User.TruncatedName;
-            EmployeeDTO employee = eq.GetEmployeeInfo(username);
-            
             LaborSummarySearchViewModel model = init.InitializeLaborSummarySearchViewModel(User, searchDTO);
             model.SearchDTO = searchDTO;
 
@@ -82,10 +77,21 @@ namespace D_Squared.Web.Controllers
 
         public ActionResult Labor8020Search(Labor8020SearchDTO searchDTO)
         {
-            string username = User.TruncatedName;
-            EmployeeDTO employee = eq.GetEmployeeInfo(username);
-
             Labor8020SearchViewModel model = init.InitializeLabor8020SearchViewModel(User, searchDTO);
+            model.SearchDTO = searchDTO;
+
+            return View(model);
+        }
+
+        public ActionResult TimeClockDetailView(bool isLastWeek = false)
+        {
+            TimeClockDetailViewModel model = init.InitializeTimeClockDetailViewModel(User, isLastWeek);
+            return View(model);
+        }
+
+        public ActionResult TimeClockDetailSearch(TimeClockDetailSearchDTO searchDTO)
+        {
+            TimeClockDetailSearchViewModel model = init.InitializeTimeClockDetailSearchViewModel(User, searchDTO);
             model.SearchDTO = searchDTO;
 
             return View(model);
@@ -96,10 +102,7 @@ namespace D_Squared.Web.Controllers
         [MultipleButton(Name = "action", Argument = "ExportLabor8020RptCSV")]
         public ActionResult ExportLabor8020RptCSV(Labor8020SearchDTO searchDTO)
         {
-            string username = User.TruncatedName;
-            EmployeeDTO employee = eq.GetEmployeeInfo(username);
             Labor8020SearchViewModel model = init.InitializeLabor8020SearchViewModel(User, searchDTO);
-
             string exportData = ReportExportHelper<Labor8020DTO>.BuildExportString(model.SearchResults,
                                                                     (searchDTO.SelectedDayOrWeekFilter == Labor8020SearchDTO.ReportByDay) ? DisplayFor.Condition_1 : DisplayFor.Condition_2);
             return new Export("Labor8020ReportExport.csv", Encoding.ASCII.GetBytes(exportData));
@@ -110,10 +113,7 @@ namespace D_Squared.Web.Controllers
         [MultipleButton(Name = "action", Argument = "ExportLaborSummaryRptCSV")]
         public ActionResult ExportLaborSummaryRptCSV(LaborDataSearchDTO searchDTO)
         {
-            string username = User.TruncatedName;
-            EmployeeDTO employee = eq.GetEmployeeInfo(username);
             LaborSummarySearchViewModel model = init.InitializeLaborSummarySearchViewModel(User, searchDTO);
-
             string exportData = ReportExportHelper<LaborDataDTO>.BuildExportString(model.SearchResults,
                                                                     (searchDTO.SelectedJobOrCenterFilter == LaborDataSearchDTO.ReportByJob) ? DisplayFor.Condition_1 : DisplayFor.Condition_2);
             return new Export("LaborSummaryReportExport.csv", Encoding.ASCII.GetBytes(exportData));
@@ -124,8 +124,6 @@ namespace D_Squared.Web.Controllers
         [MultipleButton(Name = "action", Argument = "ExportOvertimeRptCSV")]
         public ActionResult ExportOvertimeRptCSV(WeeklyTotalDurationSearchDTO searchDTO)
         {
-            string username = User.TruncatedName;
-            EmployeeDTO employee = eq.GetEmployeeInfo(username);
             OvertimeReportingSearchViewModel model = init.InitializeOvertimeReportingSearchViewModel(User, searchDTO);
             Dictionary<string, string> dynamicColumnNames = new Dictionary<string, string>();
             dynamicColumnNames.Add("Hours Over 35", $"Hours Over {searchDTO.SelectedHours}");
@@ -135,13 +133,20 @@ namespace D_Squared.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [MultipleButton(Name = "action", Argument = "ExportTimeClockDetailRptCSV")]
+        public ActionResult ExportTimeClockDetailRptCSV(TimeClockDetailSearchDTO searchDTO)
+        {
+            TimeClockDetailSearchViewModel model = init.InitializeTimeClockDetailSearchViewModel(User, searchDTO);
+            string exportData = ReportExportHelper<TimeClockDetailDTO>.BuildExportString(model.SearchResults, DisplayFor.Condition_2);
+            return new Export("TimeClockDetailReportExport.csv", Encoding.ASCII.GetBytes(exportData));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         [MultipleButton(Name = "action", Argument = "ExportLabor8020ViewCSV")]
         public ActionResult ExportLabor8020ViewCSV(bool isLastWeek = false)
         {
-            string username = User.TruncatedName;
-            EmployeeDTO employee = eq.GetEmployeeInfo(username);
             Labor8020ViewModel model = init.InitializeLabor8020ViewModel(User, isLastWeek);
-
             string exportData = ReportExportHelper<Labor8020DTO>.BuildExportString(model.Labor8020List, DisplayFor.Condition_2);
             return new Export("Labor8020ViewExport.csv", Encoding.ASCII.GetBytes(exportData));
         }
@@ -151,10 +156,7 @@ namespace D_Squared.Web.Controllers
         [MultipleButton(Name = "action", Argument = "ExportLaborSummaryViewCSV")]
         public ActionResult ExportLaborSummaryViewCSV(bool isLastWeek = false)
         {
-            string username = User.TruncatedName;
-            EmployeeDTO employee = eq.GetEmployeeInfo(username);
             LaborSummaryViewModel model = init.InitializeLaborSummaryViewModel(User, isLastWeek);
-
             string exportData = ReportExportHelper<LaborDataDTO>.BuildExportString(model.LaborDataList, DisplayFor.Condition_1);
             return new Export("LaborSummaryViewExport.csv", Encoding.ASCII.GetBytes(exportData));
         }
@@ -164,12 +166,19 @@ namespace D_Squared.Web.Controllers
         [MultipleButton(Name = "action", Argument = "ExportOvertimeViewCSV")]
         public ActionResult ExportOvertimeViewCSV(bool isLastWeek = false)
         {
-            string username = User.TruncatedName;
-            EmployeeDTO employee = eq.GetEmployeeInfo(username);
             OvertimeReportingViewModel model = init.InitializeOvertimeReportingViewModel(User, isLastWeek);
-
             string exportData = ReportExportHelper<WeeklyTotalDurationDTO>.BuildExportString(model.WeeklyTotalDurationList, DisplayFor.Condition_2);
             return new Export("OvertimeViewExport.csv", Encoding.ASCII.GetBytes(exportData));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MultipleButton(Name = "action", Argument = "ExportTimeClockDetailViewCSV")]
+        public ActionResult ExportTimeClockDetailViewCSV(bool isLastWeek = false)
+        {
+            TimeClockDetailViewModel model = init.InitializeTimeClockDetailViewModel(User, isLastWeek);
+            string exportData = ReportExportHelper<TimeClockDetailDTO>.BuildExportString(model.TimeClockDetailList, DisplayFor.Condition_2);
+            return new Export("TimeClockDetailViewExport.csv", Encoding.ASCII.GetBytes(exportData));
         }
     }
 }

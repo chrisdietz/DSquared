@@ -151,5 +151,45 @@ namespace D_Squared.Data.Queries
             return labor8020DTOs;
         }
 
+        public List<TimeClockDetailDTO> GetTimeClockDetailDTOsByDate(string storeNumber, DateTime businessDate)
+        {
+            var lsTimeClockDetails = db.LSTimeClockDetails.Where(lt => lt.BusinessDate == businessDate.Date && lt.Store.StartsWith(storeNumber)).ToList();                                        
+
+            return BuildTimeClockDetailDTOs(lsTimeClockDetails);
+        }
+
+        public List<TimeClockDetailDTO> GetTimeClockDetailDTOsByDateRange(string storeNumber, DateTime startDate, DateTime endDate)
+        {
+            DateTime realEndDate = endDate.AddDays(1);
+            var lsTimeClockDetails = db.LSTimeClockDetails.Where(ld => ld.BusinessDate >= startDate && ld.BusinessDate < realEndDate && ld.Store.StartsWith(storeNumber)).ToList();
+            
+            return BuildTimeClockDetailDTOs(lsTimeClockDetails); 
+        }
+
+        private List<TimeClockDetailDTO> BuildTimeClockDetailDTOs(List<LSTimeClockDetail> lsTimeClockDetails)
+        {
+            List<TimeClockDetailDTO> timeClockDetailDTOs = new List<TimeClockDetailDTO>();
+            foreach (var lsTimeClockDetail in lsTimeClockDetails)
+            {
+                TimeClockDetailDTO timeClockDetailDTO = new TimeClockDetailDTO
+                {
+                    Store = lsTimeClockDetail.Store,
+                    BusinessDate = lsTimeClockDetail.BusinessDate,
+                    PersonnelNUmber = lsTimeClockDetail.PersonnelNUmber,
+                    EmployeeName = lsTimeClockDetail.EmployeeName,
+                    JobID = lsTimeClockDetail.JobID,
+                    Rate = lsTimeClockDetail.Rate,
+                    Intime = lsTimeClockDetail.Intime,
+                    Outtime = lsTimeClockDetail.Outtime,
+                    TotalDuration = lsTimeClockDetail.TotalDuration,
+                    TotalAmount = lsTimeClockDetail.TotalAmount,
+                    TotalTips = lsTimeClockDetail.TotalTips
+                };
+
+                timeClockDetailDTOs.Add(timeClockDetailDTO);
+            }
+
+            return timeClockDetailDTOs;
+        }
     }
 }

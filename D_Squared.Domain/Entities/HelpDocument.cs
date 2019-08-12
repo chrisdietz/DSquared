@@ -39,6 +39,10 @@ namespace D_Squared.Domain.Entities
             PageHeaders.Add("PaidInOutSearch", "Paid In/Out Report - Search");
             PageHeaders.Add("ServerSalesView", "Server Sales Report - View");
             PageHeaders.Add("ServerSalesSearch", "Server Sales Report - Search");
+            PageHeaders.Add("HourlySalesSearch", "Hourly Sales Report - Search");
+            PageHeaders.Add("HourlySalesView", "Hourly Sales Report - View");
+            PageHeaders.Add("TimeClockDetailSearch", "Time Clock Detail Report - Search");
+            PageHeaders.Add("TimeClockDetailView", "Time Clock Detail Report - View");
         }
 
         public int Id { get; set; }

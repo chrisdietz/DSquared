@@ -249,5 +249,63 @@ namespace D_Squared.Data.Queries
 
             return serverSalesDTOs;
         }
+
+        public List<HourlySalesDTO> GetHourlySalesDTOsByDate(string storeNumber, DateTime businessDate)
+        {
+            var lsHourlySales = db.LSHourlySales.Where(hs => hs.BusinessDate == businessDate.Date && hs.Store.Contains(storeNumber)).ToList();
+
+            var lsHourlySalesGroup = from sd in db.LSHourlySales
+                                     where sd.BusinessDate == businessDate && sd.Store == storeNumber
+                                     group sd by sd.Hour into sDataGroup
+                                     orderby sDataGroup.Key ascending
+                                     select sDataGroup;
+
+            return BuildHourlySalesDTOs(lsHourlySalesGroup);
+        }
+
+        public List<HourlySalesDTO> GetHourlySalesDTOsByDateRange(string storeNumber, DateTime startDate, DateTime endDate)
+        {
+            DateTime realEndDate = endDate.AddDays(1);
+
+            var lsHourlySalesGroup = from sd in db.LSHourlySales
+                                       where sd.BusinessDate >= startDate && sd.BusinessDate < realEndDate && sd.Store == storeNumber
+                                       group sd by sd.Hour into sDataGroup
+                                       orderby sDataGroup.Key ascending
+                                       select sDataGroup;
+
+            return BuildHourlySalesDTOs(lsHourlySalesGroup);
+        }
+
+        private List<HourlySalesDTO> BuildHourlySalesDTOs(IOrderedQueryable<IGrouping<int, LSHourlySales>> lsHourlySalesGroup)
+        {
+            List<HourlySalesDTO> hourlySalesDTOs = new List<HourlySalesDTO>();
+            foreach (var sDataGroup in lsHourlySalesGroup)
+            {
+                HourlySalesDTO sdDTO = new HourlySalesDTO()
+                {
+                    DisplayHour = $"{GetFormattedTime(sDataGroup.Key)} - {GetFormattedTime(sDataGroup.Key + 1)}",
+                    BeerBottleSales = sDataGroup.Sum(hs => hs.BeerBottleSales),
+                    BeerDraftSales = sDataGroup.Sum(hs => hs.BeerDraftSales),
+                    FoodSales = sDataGroup.Sum(hs => hs.FoodSales),
+                    LiquorSales = sDataGroup.Sum(hs => hs.LiquorSales),
+                    RetailSales = sDataGroup.Sum(hs => hs.RetailSales),
+                    WineSales = sDataGroup.Sum(hs => hs.WineSales),
+                    NonAlcBevSales = sDataGroup.Sum(hs => hs.NonAlcBevSales),
+                    RetailBeerSales = sDataGroup.Sum(hs => hs.RetailBeerSales),
+                    TotalSales = sDataGroup.Sum(hs => hs.TotalSales)
+                };
+                hourlySalesDTOs.Add(sdDTO);
+            }
+            return hourlySalesDTOs;
+        }
+
+        private string GetFormattedTime(int hour)
+        {
+            int hh = (hour > 12) ? hour - 12 : hour;
+            string hourPart = (hh.ToString().Length < 2) ? $"0{hh.ToString()}" : hh.ToString();
+            string ampm = (hour < 12 || hour == 24) ? "AM" : "PM";
+            string formattedTime = $"{hourPart}:00 {ampm}";
+            return formattedTime;
+        }
     }
 }

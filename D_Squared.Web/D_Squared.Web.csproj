@@ -219,6 +219,7 @@
     <Compile Include="Models\Export.cs" />
     <Compile Include="Models\HelpDocumentViewModel.cs" />
     <Compile Include="Models\HomeViewModel.cs" />
+    <Compile Include="Models\HourlySalesViewModel.cs" />
     <Compile Include="Models\IdealCashReportViewModel.cs" />
     <Compile Include="Models\Labor8020ViewModel.cs" />
     <Compile Include="Models\LaborSummaryViewModel.cs" />
@@ -232,12 +233,13 @@
     <Compile Include="Models\SalesReportViewModel.cs" />
     <Compile Include="Models\ServerSalesViewModel.cs" />
     <Compile Include="Models\SpreadHourViewModels.cs" />
+    <Compile Include="Models\TimeClockDetailViewModel.cs" />
     <Compile Include="Models\TipPercentageViewModel.cs" />
     <Compile Include="Models\TipReportingViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Scripts\LaborReports\SearchInit.js" />
+    <Content Include="App_Scripts\Reports\SearchInit.js" />
     <Content Include="App_Scripts\NYS\SearchInit.js" />
     <Content Include="App_Scripts\Redbook\CreateInit.js" />
     <Content Include="App_Scripts\Redbook\EntryInit.js" />
@@ -766,6 +768,10 @@
     <Content Include="Views\LaborReports\Labor8020View.cshtml" />
     <Content Include="Views\LaborReports\LaborSummaryView.cshtml" />
     <Content Include="Views\LaborReports\OvertimeView.cshtml" />
+    <Content Include="Views\SalesReporting\HourlySalesView.cshtml" />
+    <Content Include="Views\SalesReporting\HourlySalesSearch.cshtml" />
+    <Content Include="Views\LaborReports\TimeClockDetailSearch.cshtml" />
+    <Content Include="Views\LaborReports\TimeClockDetailView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

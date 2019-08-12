@@ -28,7 +28,10 @@
 jQuery(document).ready(function () {
     initSearch.init();
 
-    $('#dtOvertime').DataTable();
+    $('#dtReports').DataTable({
+        "order": []
+    });
+
     $('.dataTables_length').addClass('bs-select');
 
 });

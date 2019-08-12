@@ -1,0 +1,242 @@
+﻿@model D_Squared.Web.Models.HourlySalesViewModel
+@using D_Squared.Domain.TransferObjects
+@section Scripts{
+    <script src="~/App_Scripts/Reports/SearchInit.js" type="text/javascript"></script>
+}
+
+<style type="text/css">
+    dl {
+        width: 100%;
+        overflow: hidden;
+        margin-left: 50px;
+        margin-bottom: 0;
+        padding: 0
+    }
+
+    dt {
+        float: left;
+        width: 50%;
+        /* adjust the width; make sure the total of both is 100% */
+        margin: 0;
+        padding: 0
+    }
+
+    dd {
+        float: left;
+        width: 50%;
+        /* adjust the width; make sure the total of both is 100% */
+        margin: 0;
+        padding: 0
+    }
+
+    tbody {
+        text-align: right;
+    }
+
+    tfoot {
+        font-weight: bold;
+        text-align: right;
+    }
+</style>
+
+<div class="jumbotron" style="background-image: url('/Content/images/lightwood-bg.jpg'); padding-bottom:5px; padding-top:20px; margin-bottom:10px">
+    <div class="row">
+        <div class="col-md-4">
+            <div style="max-width:500px; display: block; margin: 0 auto;float:left;">
+                <img src="~/Content/images/millers_d2_logo.png" style="max-width:300px;" />
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="text-center" style="display: block; margin: 0 auto; max-width:600px">
+                <h3>Hourly Sales Report - View</h3>
+                <p class="lead">
+                    Location: <strong><u>@Model.EmployeeInfo.StoreNumber</u></strong>
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="text-center" style="display: block; margin: 0 auto; max-width:400px">
+                <p class="lead">
+                    Time: @DateTime.Now.ToLocalTime().ToString()
+                    <br />
+                    Employee: @Model.EmployeeInfo.FirstName @Model.EmployeeInfo.LastName
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            @if (Model.CurrentWeekFlag)
+            {
+                @Html.ActionLink("Previous Week", "PreviousWeek", "SalesReporting", new { @actionName = "HourlySalesView" }, new { @class = "btn btn-dsquared btn-xs" })
+            }
+            else
+            {
+                @Html.ActionLink("Current Week", "HourlySalesView", "SalesReporting", null, new { @class = "btn btn-dsquared btn-xs" })
+            }
+        </div>
+    </div>
+    <div class="col-md-6">
+        <a data-toggle="modal" href="#helpModal" class="btn btn-dsquared btn-sm" style="float:right; margin-left: 10px;"><i class="fa fa-question-circle" aria-hidden="true"></i></a>
+    </div>
+</div>
+<br />
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="panel panel-default firstRowPanel">
+                    <div class="form-group">
+                        <dl>
+                            <dt>
+                                Business Week
+                            </dt>
+                            <dd>
+                                @Model.BusinessWeekStartDate.ToShortDateString() - @Model.BusinessWeekEndDate.ToShortDateString()
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+    </div>
+
+    <hr />
+
+    if (Model.HourlySalesList.Count > 0)
+    {
+    <table id="dtReports" class="table table-striped table-bordered table-responsive">
+        <caption class="caption">
+            Total Items: @Model.HourlySalesList.Count()
+            <span style="float: right; margin-right: 5px;"><input name="action:ExportHourlySalesViewCSV" type="submit" value="Export CSV" class="btn btn-success btn-xs" /></span>
+        </caption>
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.HourlySalesList.FirstOrDefault().DisplayHour)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HourlySalesList.FirstOrDefault().BeerBottleSales)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HourlySalesList.FirstOrDefault().BeerDraftSales)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HourlySalesList.FirstOrDefault().FoodSales)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HourlySalesList.FirstOrDefault().LiquorSales)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HourlySalesList.FirstOrDefault().RetailSales)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HourlySalesList.FirstOrDefault().WineSales)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HourlySalesList.FirstOrDefault().NonAlcBevSales)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HourlySalesList.FirstOrDefault().RetailBeerSales)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HourlySalesList.FirstOrDefault().TotalSales)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @{
+                foreach (var result in Model.HourlySalesList)
+                {
+                    <tr>
+                        <td style="text-align:center">
+                            @result.DisplayHour
+                        </td>
+                        <td>
+                            @result.BeerBottleSales.ToString("C2")
+                        </td>
+                        <td>
+                            @result.BeerDraftSales.ToString("C2")
+                        </td>
+                        <td>
+                            @result.FoodSales.ToString("C2")
+                        </td>
+                        <td>
+                            @result.LiquorSales.ToString("C2")
+                        </td>
+                        <td>
+                            @result.RetailSales.ToString("C2")
+                        </td>
+                        <td>
+                            @result.WineSales.ToString("C2")
+                        </td>
+                        <td>
+                            @result.NonAlcBevSales.ToString("C2")
+                        </td>
+                        <td>
+                            @result.RetailBeerSales.ToString("C2")
+                        </td>
+                        <td>
+                            @result.TotalSales.ToString("C2")
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+        <tfoot>
+            @{
+                <tr>
+                    <td>
+                        Total
+                    </td>
+                    <td>
+                        @Model.HourlySalesList.Sum(sd => sd.BeerBottleSales).ToString("C2")
+                    </td>
+                    <td>
+                        @Model.HourlySalesList.Sum(sd => sd.BeerDraftSales).ToString("C2")
+                    </td>
+                    <td>
+                        @Model.HourlySalesList.Sum(sd => sd.FoodSales).ToString("C2")
+                    </td>
+                    <td>
+                        @Model.HourlySalesList.Sum(sd => sd.LiquorSales).ToString("C2")
+                    </td>
+                    <td>
+                        @Model.HourlySalesList.Sum(sd => sd.RetailSales).ToString("C2")
+                    </td>
+                    <td>
+                        @Model.HourlySalesList.Sum(sd => sd.WineSales).ToString("C2")
+                    </td>
+                    <td>
+                        @Model.HourlySalesList.Sum(sd => sd.NonAlcBevSales).ToString("C2")
+                    </td>
+                    <td>
+                        @Model.HourlySalesList.Sum(sd => sd.RetailBeerSales).ToString("C2")
+                    </td>
+                    <td>
+                        @Model.HourlySalesList.Sum(sd => sd.TotalSales).ToString("C2")
+                    </td>
+                </tr>
+            }
+        <tfoot>
+    </table>
+    }
+    else
+    {
+        <p class="text-center">
+            <i>No Hourly Sales data found</i>
+        </p>
+    }
+}
+
+<!--must explicitly define the controller and action and pageHeaderKey. PageHeaderKey can be found in HelpDocument.cs-->
+@{Html.RenderAction("ModalDetails", "Home", new { @controller = "SalesReporting", @action = "HourlySalesView", @pageHeaderKey = "HourlySalesView" });}
+
