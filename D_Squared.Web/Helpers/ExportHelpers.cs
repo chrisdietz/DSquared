@@ -144,9 +144,8 @@ namespace D_Squared.Web.Helpers
                     var customAttribs = property.GetCustomAttributes(true);
                     foreach (var customAttrib in customAttribs)
                     {
-                        if(customAttrib is ExportableAttribute)
+                        if(customAttrib is ExportableAttribute eaAttrib)
                         {
-                            var eaAttrib = (ExportableAttribute)customAttrib;
                             if (!headerRowComplete && (eaAttrib.DisplayFor == DisplayFor.NA || eaAttrib.DisplayFor == displayFor))
                             {
                                 // Some of the column names can be dynamic. Check for dynamic names existence.
@@ -160,7 +159,7 @@ namespace D_Squared.Web.Helpers
                                 }
                             }
                                 
-                            if(eaAttrib.DisplayFor == DisplayFor.NA || eaAttrib.DisplayFor == displayFor)
+                            if (eaAttrib.DisplayFor == DisplayFor.NA || eaAttrib.DisplayFor == displayFor)
                                 dataRow.Add("\"" + FormatDisplayValue(property.GetValue(obj), property, eaAttrib, totalsMap) + "\"");
                         }
                     }
@@ -178,9 +177,8 @@ namespace D_Squared.Web.Helpers
                     var customAttribs = property.GetCustomAttributes(true);
                     foreach (var customAttrib in customAttribs)
                     {
-                        if (customAttrib is ExportableAttribute)
+                        if (customAttrib is ExportableAttribute eaAttrib)
                         {
-                            var eaAttrib = (ExportableAttribute)customAttrib;
                             if (eaAttrib.AddToTotal)
                             {
                                 var totalColValue = totalsMap[eaAttrib.DisplayName];

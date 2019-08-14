@@ -1485,6 +1485,14 @@ namespace D_Squared.Web.Helpers
 
             List<LaborDataDTO> laborDataDTOs = null;
 
+            var startDate = searchDTO.SelectedDateRangeBegin;
+            var endDate = searchDTO.SelectedDateRangeEnd;
+            if (searchDTO.SelectedDayOrWeekFilter == LaborDataSearchDTO.ReportByWeek)
+            {
+                startDate = daysInWeek.FirstOrDefault();
+                endDate = daysInWeek.LastOrDefault();
+            }
+
             if (searchDTO.SelectedDayOrWeekFilter == LaborDataSearchDTO.ReportByDay)
             {
                 if(searchDTO.SelectedJobOrCenterFilter == LaborDataSearchDTO.ReportByJob)
@@ -1500,19 +1508,19 @@ namespace D_Squared.Web.Helpers
             {
                 if (searchDTO.SelectedJobOrCenterFilter == LaborDataSearchDTO.ReportByJob)
                 {
-                    laborDataDTOs = ldq.GetLaborDataByWeekAndJob(searchDTO.SelectedLocation.Substring(0, 3), daysInWeek.FirstOrDefault(), daysInWeek.LastOrDefault());
+                    laborDataDTOs = ldq.GetLaborDataByWeekAndJob(searchDTO.SelectedLocation.Substring(0, 3), startDate, endDate);
                 }
                 else
                 {
-                    laborDataDTOs = ldq.GetLaborDataByWeekAndCenter(searchDTO.SelectedLocation.Substring(0, 3), daysInWeek.FirstOrDefault(), daysInWeek.LastOrDefault());
+                    laborDataDTOs = ldq.GetLaborDataByWeekAndCenter(searchDTO.SelectedLocation.Substring(0, 3), startDate, endDate);
                 }
             }
 
             LaborSummarySearchViewModel model = new LaborSummarySearchViewModel
             {
                 SearchResults = laborDataDTOs,
-                BusinessWeekStartDate = daysInWeek.FirstOrDefault(),
-                BusinessWeekEndDate = daysInWeek.LastOrDefault(),
+                BusinessWeekStartDate = startDate,
+                BusinessWeekEndDate = endDate,
                 EmployeeInfo = employee,
                 SearchDTO = searchDTO,
                 LocationSelectList = locSelectList
@@ -1564,21 +1572,28 @@ namespace D_Squared.Web.Helpers
 
             List<Labor8020DTO> labor8020DTOs = null;
 
+            var startDate = searchDTO.SelectedDateRangeBegin;
+            var endDate = searchDTO.SelectedDateRangeEnd;
+            if (searchDTO.SelectedDayOrWeekFilter == Labor8020SearchDTO.ReportByWeek)
+            {
+                startDate = daysInWeek.FirstOrDefault();
+                endDate = daysInWeek.LastOrDefault();
+            }
+
             if (searchDTO.SelectedDayOrWeekFilter == Labor8020SearchDTO.ReportByDay)
             {
                 labor8020DTOs = ldq.GetLabor8020ByDayAnd8020Filter(searchDTO.SelectedLocation.Substring(0, 3), searchDTO.SelectedDate, searchDTO.Selected8020Filter);
             }
             else
             {
-                labor8020DTOs = ldq.GetLabor8020ByWeekAnd8020Filter(searchDTO.SelectedLocation.Substring(0, 3), daysInWeek.FirstOrDefault(), 
-                                                                        daysInWeek.LastOrDefault(), searchDTO.Selected8020Filter);
+                labor8020DTOs = ldq.GetLabor8020ByWeekAnd8020Filter(searchDTO.SelectedLocation.Substring(0, 3), startDate, endDate, searchDTO.Selected8020Filter);
             }
 
             Labor8020SearchViewModel model = new Labor8020SearchViewModel
             {
                 SearchResults = labor8020DTOs,
-                BusinessWeekStartDate = daysInWeek.FirstOrDefault(),
-                BusinessWeekEndDate = daysInWeek.LastOrDefault(),
+                BusinessWeekStartDate = startDate,
+                BusinessWeekEndDate = endDate,
                 EmployeeInfo = employee,
                 SearchDTO = searchDTO,
                 LocationSelectList = locSelectList

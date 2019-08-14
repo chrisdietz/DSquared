@@ -38,8 +38,10 @@ namespace D_Squared.Data.Queries
         public SalesDataDTO GetSelectedBusinessDaySales(DateTime businessDate, string storeNumber)
         {
             List<LSSales> sDataList = db.LSSales.Where(sd => sd.BusinessDate == businessDate.Date && sd.Store.StartsWith(storeNumber)).ToList();
-            SalesDataDTO sdDTO = new SalesDataDTO();
-            sdDTO.DateOfEntry = businessDate;
+            SalesDataDTO sdDTO = new SalesDataDTO
+            {
+                DateOfEntry = businessDate
+            };
             if (sDataList != null && sDataList.Count > 0)
             {
                 sdDTO.Sales = sDataList.Sum(sd => sd.Sales);

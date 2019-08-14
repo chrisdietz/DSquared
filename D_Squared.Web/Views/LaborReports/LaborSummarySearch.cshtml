@@ -5,15 +5,20 @@
 }
 @{
     string reportType = string.Empty;
+    string dateSpan = "Business Week";
     if (Model.SearchDTO.SelectedDayOrWeekFilter == LaborDataSearchDTO.ReportByDay)
     {
         reportType = (Model.SearchDTO.SelectedJobOrCenterFilter == LaborDataSearchDTO.ReportByJob) ? "Labor Summary by Date/Job" : "Labor Summary by Date/Center";
     }
-    else
+    else if (Model.SearchDTO.SelectedDayOrWeekFilter == LaborDataSearchDTO.ReportByWeek)
     {
         reportType = (Model.SearchDTO.SelectedJobOrCenterFilter == LaborDataSearchDTO.ReportByJob) ? "Labor Summary by Week/Job" : "Labor Summary by Week/Center";
     }
-
+    else
+    {
+        reportType = (Model.SearchDTO.SelectedJobOrCenterFilter == LaborDataSearchDTO.ReportByJob) ? "Labor Summary by Date Range/Job" : "Labor Summary by Date Range/Center";
+        dateSpan = "Business Date Range";
+    }
 }
 <style type="text/css">
     dl {
@@ -107,11 +112,23 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    @Html.LabelFor(model => model.SearchDTO.SelectedDateRangeBegin, htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
-                        <div class="input-group col-md-8 col-md-offset-6">
+                        <div class="input-group col-md-8">
+                            @Html.EditorFor(model => model.SearchDTO.SelectedDateRangeBegin, new { htmlAttributes = new { @class = "form-control date-picker", onkeydown = "return false", onpaste = "return false" } })
+                            <span class="input-group-addon"> to </span>
+                            @Html.EditorFor(model => model.SearchDTO.SelectedDateRangeEnd, new { htmlAttributes = new { @class = "form-control date-picker", onkeydown = "return false", onpaste = "return false" } })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <div class="input-group col-md-10 col-md-offset-4">
                             @Html.RadioButtonFor(m => m.SearchDTO.SelectedDayOrWeekFilter, LaborDataSearchDTO.ReportByDay)&nbsp;&nbsp;<span><strong>By Date</strong></span>
                             &nbsp;&nbsp;&nbsp;&nbsp;
                             @Html.RadioButtonFor(m => m.SearchDTO.SelectedDayOrWeekFilter, LaborDataSearchDTO.ReportByWeek)&nbsp;&nbsp;<span><strong>By Week</strong></span>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            @Html.RadioButtonFor(m => m.SearchDTO.SelectedDayOrWeekFilter, LaborDataSearchDTO.ReportByDateRange)&nbsp;&nbsp;<span><strong>By Date Range</strong></span>
                         </div>
                     </div>
                 </div>
@@ -126,13 +143,13 @@
                 </div>
             </div>
             <div class="col-md-5">
-                @if (Model.SearchDTO.SelectedDayOrWeekFilter == SalesDataSearchDTO.ReportByWeek)
+                @if (Model.SearchDTO.SelectedDayOrWeekFilter != SalesDataSearchDTO.ReportByDay)
                 {
                     <div class="panel panel-default firstRowPanel">
                         <div class="form-group">
                             <dl>
                                 <dt>
-                                    Business Week
+                                    @dateSpan
                                 </dt>
                                 <dd>
                                     @Model.BusinessWeekStartDate.ToShortDateString() - @Model.BusinessWeekEndDate.ToShortDateString()
@@ -275,7 +292,7 @@
     else
     {
         <p class="text-center">
-            <i>No Labor data found</i>
+            <i>There are no completed shifts for the date(s).</i>
         </p>
     }
 }

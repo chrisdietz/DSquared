@@ -12,7 +12,6 @@ namespace D_Squared.Data.Queries
     public class TipPercentageQueries
     {
         private readonly D_SquaredDbContext db;
-        private readonly ForecastDataDbContext f_db;
 
         public TipPercentageQueries(D_SquaredDbContext db)
         {

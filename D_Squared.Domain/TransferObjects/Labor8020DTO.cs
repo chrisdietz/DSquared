@@ -41,6 +41,7 @@ namespace D_Squared.Domain.TransferObjects
     {
         public const string ReportByDay = "ByDay";
         public const string ReportByWeek = "ByWeek";
+        public const string ReportByDateRange = "ByDateRange";
         public const string ReportByDisagree = "Disagree";
         public const string ReportByOverride = "Manager Override";
 
@@ -51,6 +52,13 @@ namespace D_Squared.Domain.TransferObjects
         public string Selected8020Filter { get; set; }
 
         public string SelectedLocation { get; set; }
+        
+        [Display(Name = "Business Date Range")]
+        [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime SelectedDateRangeBegin { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime SelectedDateRangeEnd { get; set; }
 
         public Labor8020SearchDTO()
         {
@@ -58,6 +66,8 @@ namespace D_Squared.Domain.TransferObjects
             SelectedLocation = string.Empty;
             SelectedDayOrWeekFilter = ReportByDay;
             Selected8020Filter = ReportByOverride;
+            SelectedDateRangeBegin = DateTime.Today;
+            SelectedDateRangeEnd = DateTime.Today;
         }
     }
 }
