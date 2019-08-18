@@ -64,7 +64,7 @@ namespace D_Squared.Data.Queries
             return BuildLaborDataDTOs(lsLaborGroup, "Center");
         }
 
-        public List<LaborDataDTO> GetLaborDataByWeekAndJob(string storeNumber, DateTime startDate, DateTime endDate)
+        public List<LaborDataDTO> GetLaborDataByDateRangeAndJob(string storeNumber, DateTime startDate, DateTime endDate)
         {
             DateTime realEndDate = endDate.AddDays(1);
             var lsLaborGroup = db.LSLabors.Where(ld => ld.BusinessDate >= startDate && ld.BusinessDate < realEndDate && ld.Store == storeNumber)
@@ -73,7 +73,7 @@ namespace D_Squared.Data.Queries
             return BuildLaborDataDTOs(lsLaborGroup, "Job");
         }
 
-        public List<LaborDataDTO> GetLaborDataByWeekAndCenter(string storeNumber, DateTime startDate, DateTime endDate)
+        public List<LaborDataDTO> GetLaborDataByDateRangeAndCenter(string storeNumber, DateTime startDate, DateTime endDate)
         {
             DateTime realEndDate = endDate.AddDays(1);
             var lsLaborGroup = db.LSLabors.Where(ld => ld.BusinessDate >= startDate && ld.BusinessDate < realEndDate && ld.Store == storeNumber)
@@ -118,7 +118,7 @@ namespace D_Squared.Data.Queries
             return BuildLabor8020DTOs(lsLabor8020s);
         }
 
-        public List<Labor8020DTO> GetLabor8020ByWeekAnd8020Filter(string storeNumber, DateTime startDate, DateTime endDate, string filter_8020 = null)
+        public List<Labor8020DTO> GetLabor8020ByDateRangeAnd8020Filter(string storeNumber, DateTime startDate, DateTime endDate, string filter_8020 = null)
         {
             DateTime realEndDate = endDate.AddDays(1);
             var lsLabor8020s = (filter_8020 == null) ? db.LS8020s.Where(ld => ld.BusinessDate >= startDate && ld.BusinessDate < realEndDate

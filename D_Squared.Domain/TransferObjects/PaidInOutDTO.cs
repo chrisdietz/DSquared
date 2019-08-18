@@ -40,6 +40,7 @@ namespace D_Squared.Domain.TransferObjects
     {
         public const string ReportByDay = "ByDay";
         public const string ReportByWeek = "ByWeek";
+        public const string ReportByDateRange = "ByDateRange";
         public const string ReportByPaidIn = "Paid In";
         public const string ReportByPaidOut = "Paid Out";
         public const string ReportByPaidInNOut = "Both";
@@ -52,12 +53,21 @@ namespace D_Squared.Domain.TransferObjects
 
         public string SelectedLocation { get; set; }
 
+        [Display(Name = "Business Date Range")]
+        [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime SelectedDateRangeBegin { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime SelectedDateRangeEnd { get; set; }
+
         public PaidInOutSearchDTO()
         {
             SelectedDate = DateTime.Today;
             SelectedLocation = string.Empty;
             SelectedDayOrWeekFilter = ReportByDay;
             SelectedAccountTypeFilter = ReportByPaidInNOut;
+            SelectedDateRangeBegin = DateTime.Today;
+            SelectedDateRangeEnd = DateTime.Today;
         }
     }
 }

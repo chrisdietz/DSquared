@@ -4,7 +4,22 @@
     <script src="~/App_Scripts/Reports/SearchInit.js" type="text/javascript"></script>
 }
 @{
-    string reportType = Model.SearchDTO.SelectedReportType == SalesDataSearchDTO.ReportByDay ? "Sales Report by Day" : "Sales Report by Week";
+    string reportType = string.Empty;
+    string datesSpan = "Business Week";
+    if (Model.SearchDTO.SelectedReportType == SalesDataSearchDTO.ReportByDay)
+    {
+        reportType = "Sales Report by Day";
+    }
+    else if (Model.SearchDTO.SelectedReportType == SalesDataSearchDTO.ReportByWeek)
+    {
+        reportType = "Sales Report by Week";
+    }
+    else
+    {
+        reportType = "Sales Report by Date Range";
+        datesSpan = "Business Date Range";
+    }
+
 }
 <style type="text/css">
     dl {
@@ -98,23 +113,35 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    @Html.LabelFor(model => model.SearchDTO.SelectedDateRangeBegin, htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
-                        <div class="input-group col-md-8 col-md-offset-6">
+                        <div class="input-group col-md-8">
+                            @Html.EditorFor(model => model.SearchDTO.SelectedDateRangeBegin, new { htmlAttributes = new { @class = "form-control date-picker", onkeydown = "return false", onpaste = "return false" } })
+                            <span class="input-group-addon"> to </span>
+                            @Html.EditorFor(model => model.SearchDTO.SelectedDateRangeEnd, new { htmlAttributes = new { @class = "form-control date-picker", onkeydown = "return false", onpaste = "return false" } })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <div class="input-group col-md-10 col-md-offset-4">
                             @Html.RadioButtonFor(m => m.SearchDTO.SelectedReportType, SalesDataSearchDTO.ReportByDay)&nbsp;&nbsp;<span><strong>By Date</strong></span>
                             &nbsp;&nbsp;&nbsp;&nbsp;
                             @Html.RadioButtonFor(m => m.SearchDTO.SelectedReportType, SalesDataSearchDTO.ReportByWeek)&nbsp;&nbsp;<span><strong>By Week</strong></span>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            @Html.RadioButtonFor(m => m.SearchDTO.SelectedReportType, SalesDataSearchDTO.ReportByDateRange)&nbsp;&nbsp;<span><strong>By Date Range</strong></span>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-5">
-                @if (Model.SearchDTO.SelectedReportType == SalesDataSearchDTO.ReportByWeek)
+                @if (Model.SearchDTO.SelectedReportType != SalesDataSearchDTO.ReportByDay)
                 {
                     <div class="panel panel-default firstRowPanel">
                         <div class="form-group">
                             <dl>
                                 <dt>
-                                    Business Week
+                                    @datesSpan
                                 </dt>
                                 <dd>
                                     @Model.BusinessWeekStartDate.ToShortDateString() - @Model.BusinessWeekEndDate.ToShortDateString()
@@ -152,16 +179,16 @@
             </caption>
             <thead>
                 <tr>
-                    @if (Model.SearchDTO.SelectedReportType == SalesDataSearchDTO.ReportByWeek)
+                    @if (Model.SearchDTO.SelectedReportType == SalesDataSearchDTO.ReportByDay)
                     {
                         <th>
-                            Business Date
+                            Time
                         </th>
                     }
                     else
                     {
                         <th>
-                            Time
+                            Business Date
                         </th>
                     }
                     <th>
@@ -210,107 +237,107 @@
                 @{
                     foreach (var result in Model.SearchResults)
                     {
-                <tr>
-                    @if (Model.SearchDTO.SelectedReportType == SalesDataSearchDTO.ReportByWeek)
-                    {
-                        <td>
-                            @result.DateOfEntry.ToShortDateString()
-                        </td>
-                    }
-                    else
-                    {
-                        <td>
-                            @result.CloseTime.ToShortTimeString()
-                        </td>
-                    }
-                    <td>
-                        @result.FoodSales.ToString("C2")
-                    </td>
-                    <td>
-                        @result.NonAlcBevSales.ToString("C2")
-                    </td>
-                    <td>
-                        @result.BeerBottleSales.ToString("C2")
-                    </td>
-                    <td>
-                        @result.BeerDraftSales.ToString("C2")
-                    </td>
-                    <td>
-                        @result.LiquorSales.ToString("C2")
-                    </td>
-                    <td>
-                        @result.RetailSales.ToString("C2")
-                    </td>
-                    <td>
-                        @result.WineSales.ToString("C2")
-                    </td>
-                    <td>
-                        @result.Sales.ToString("C2")
-                    </td>
-                    <td>
-                        @result.Discounts.ToString("C2")
-                    </td>
-                    <td>
-                        @result.AdjustmentSales.ToString("C2")
-                    </td>
-                    <td>
-                        @result.TaxAmount.ToString("C2")
-                    </td>
-                    @if (Model.SearchDTO.SelectedReportType == SalesDataSearchDTO.ReportByDay)
-                    {
-                        <td>
-                            @result.CheckNumber
-                        </td>
-                    }
-                </tr>
+                        <tr>
+                            @if (Model.SearchDTO.SelectedReportType == SalesDataSearchDTO.ReportByDay)
+                            {
+                                <td>
+                                    @result.CloseTime.ToShortTimeString()
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    @result.DateOfEntry.ToShortDateString()
+                                </td>
+                            }
+                            <td>
+                                @result.FoodSales.ToString("C2")
+                            </td>
+                            <td>
+                                @result.NonAlcBevSales.ToString("C2")
+                            </td>
+                            <td>
+                                @result.BeerBottleSales.ToString("C2")
+                            </td>
+                            <td>
+                                @result.BeerDraftSales.ToString("C2")
+                            </td>
+                            <td>
+                                @result.LiquorSales.ToString("C2")
+                            </td>
+                            <td>
+                                @result.RetailSales.ToString("C2")
+                            </td>
+                            <td>
+                                @result.WineSales.ToString("C2")
+                            </td>
+                            <td>
+                                @result.Sales.ToString("C2")
+                            </td>
+                            <td>
+                                @result.Discounts.ToString("C2")
+                            </td>
+                            <td>
+                                @result.AdjustmentSales.ToString("C2")
+                            </td>
+                            <td>
+                                @result.TaxAmount.ToString("C2")
+                            </td>
+                            @if (Model.SearchDTO.SelectedReportType == SalesDataSearchDTO.ReportByDay)
+                            {
+                                <td>
+                                    @result.CheckNumber
+                                </td>
+                            }
+                        </tr>
                     }
                 }
 
             </tbody>
             <tfoot>
                 @{
-                <tr>
-                    <td>
-                        Total
-                    </td>
-                    <td>
-                        @Model.SearchResults.Sum(sd => sd.FoodSales).ToString("C2")
-                    </td>
-                    <td>
-                        @Model.SearchResults.Sum(sd => sd.NonAlcBevSales).ToString("C2")
-                    </td>
-                    <td>
-                        @Model.SearchResults.Sum(sd => sd.BeerBottleSales).ToString("C2")
-                    </td>
-                    <td>
-                        @Model.SearchResults.Sum(sd => sd.BeerDraftSales).ToString("C2")
-                    </td>
-                    <td>
-                        @Model.SearchResults.Sum(sd => sd.LiquorSales).ToString("C2")
-                    </td>
-                    <td>
-                        @Model.SearchResults.Sum(sd => sd.RetailSales).ToString("C2")
-                    </td>
-                    <td>
-                        @Model.SearchResults.Sum(sd => sd.WineSales).ToString("C2")
-                    </td>
-                    <td>
-                        @Model.SearchResults.Sum(sd => sd.Sales).ToString("C2")
-                    </td>
-                    <td>
-                        @Model.SearchResults.Sum(sd => sd.Discounts).ToString("C2")
-                    </td>
-                    <td>
-                        @Model.SearchResults.Sum(sd => sd.AdjustmentSales).ToString("C2")
-                    </td>
-                    <td>
-                        @Model.SearchResults.Sum(sd => sd.TaxAmount).ToString("C2")
-                    </td>
-                    @if (Model.SearchDTO.SelectedReportType == SalesDataSearchDTO.ReportByDay)
-                    {
-                    <td>&nbsp;</td>
-                    }
-                </tr>
+                    <tr>
+                        <td>
+                            Total
+                        </td>
+                        <td>
+                            @Model.SearchResults.Sum(sd => sd.FoodSales).ToString("C2")
+                        </td>
+                        <td>
+                            @Model.SearchResults.Sum(sd => sd.NonAlcBevSales).ToString("C2")
+                        </td>
+                        <td>
+                            @Model.SearchResults.Sum(sd => sd.BeerBottleSales).ToString("C2")
+                        </td>
+                        <td>
+                            @Model.SearchResults.Sum(sd => sd.BeerDraftSales).ToString("C2")
+                        </td>
+                        <td>
+                            @Model.SearchResults.Sum(sd => sd.LiquorSales).ToString("C2")
+                        </td>
+                        <td>
+                            @Model.SearchResults.Sum(sd => sd.RetailSales).ToString("C2")
+                        </td>
+                        <td>
+                            @Model.SearchResults.Sum(sd => sd.WineSales).ToString("C2")
+                        </td>
+                        <td>
+                            @Model.SearchResults.Sum(sd => sd.Sales).ToString("C2")
+                        </td>
+                        <td>
+                            @Model.SearchResults.Sum(sd => sd.Discounts).ToString("C2")
+                        </td>
+                        <td>
+                            @Model.SearchResults.Sum(sd => sd.AdjustmentSales).ToString("C2")
+                        </td>
+                        <td>
+                            @Model.SearchResults.Sum(sd => sd.TaxAmount).ToString("C2")
+                        </td>
+                        @if (Model.SearchDTO.SelectedReportType == SalesDataSearchDTO.ReportByDay)
+                        {
+                            <td>&nbsp;</td>
+                        }
+                    </tr>
                 }
             <tfoot>
         </table>

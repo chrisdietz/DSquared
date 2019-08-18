@@ -1,10 +1,23 @@
 ﻿
 @model D_Squared.Web.Models.IdealCashReportSearchViewModel
-
+@using D_Squared.Domain.TransferObjects
 @section Scripts{
     <script src="~/App_Scripts/Reports/SearchInit.js" type="text/javascript"></script>
 }
+@{
+    string reportType = string.Empty;
+    string datesSpan = "Business Week";
+    if (Model.SearchDTO.SelectedReportType == IdealCashSearchDTO.ReportByWeek)
+    {
+        reportType = "Ideal Cash Report By Week";
+    }
+    else
+    {
+        reportType = "Ideal Cash Report By Date Range";
+        datesSpan = "Business Date Range";
+    }
 
+}
 <style type="text/css">
     dl {
         width: 100%;
@@ -96,13 +109,32 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SearchDTO.SelectedDateRangeBegin, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        <div class="input-group col-md-8">
+                            @Html.EditorFor(model => model.SearchDTO.SelectedDateRangeBegin, new { htmlAttributes = new { @class = "form-control date-picker", onkeydown = "return false", onpaste = "return false" } })
+                            <span class="input-group-addon"> to </span>
+                            @Html.EditorFor(model => model.SearchDTO.SelectedDateRangeEnd, new { htmlAttributes = new { @class = "form-control date-picker", onkeydown = "return false", onpaste = "return false" } })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <div class="input-group col-md-10 col-md-offset-4">
+                            @Html.RadioButtonFor(m => m.SearchDTO.SelectedReportType, IdealCashSearchDTO.ReportByWeek)&nbsp;&nbsp;<span><strong>By Week</strong></span>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            @Html.RadioButtonFor(m => m.SearchDTO.SelectedReportType, IdealCashSearchDTO.ReportByDateRange)&nbsp;&nbsp;<span><strong>By Date Range</strong></span>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col-md-5">
                 <div class="panel panel-default firstRowPanel">
                     <div class="form-group">
                         <dl>
                             <dt>
-                                Business Week
+                                @datesSpan
                             </dt>
                             <dd>
                                 @Model.BusinessWeekStartDate.ToShortDateString() - @Model.BusinessWeekEndDate.ToShortDateString()
@@ -123,7 +155,11 @@
             </div>
         </div>
     </div>
-
+    <div class="form-horizontal">
+        <div class="row" style="text-align:center">
+            <h3>@reportType</h3>
+        </div>
+    </div>
     <hr />
 
     if (Model.SearchResults.Count > 0)

@@ -131,6 +131,7 @@ namespace D_Squared.Domain.TransferObjects
     {
         public const string ReportByDay = "ByDay";
         public const string ReportByWeek = "ByWeek";
+        public const string ReportByDateRange = "ByDateRange";
 
         [Display(Name = "Business Date")]
         [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
@@ -139,11 +140,20 @@ namespace D_Squared.Domain.TransferObjects
 
         public string SelectedLocation { get; set; }
 
+        [Display(Name = "Business Date Range")]
+        [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime SelectedDateRangeBegin { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime SelectedDateRangeEnd { get; set; }
+
         public SalesDataSearchDTO()
         {
             SelectedDate = DateTime.Today;
             SelectedLocation = string.Empty;
             SelectedReportType = ReportByDay;
+            SelectedDateRangeBegin = DateTime.Today;
+            SelectedDateRangeEnd = DateTime.Today;
         }
 
         public SalesDataSearchDTO(DateTime selectedDate)

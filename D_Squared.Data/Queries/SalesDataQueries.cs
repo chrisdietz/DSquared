@@ -87,7 +87,7 @@ namespace D_Squared.Data.Queries
 
         }
 
-        public List<SalesDataDTO> GetSalesDataByWeek(string storeNumber, DateTime startDate, DateTime endDate)
+        public List<SalesDataDTO> GetSalesDataByDateRange(string storeNumber, DateTime startDate, DateTime endDate)
         {
             DateTime realEndDate = endDate.AddDays(1);
             var lsSalesGroup = from sd in db.LSSales
@@ -122,7 +122,7 @@ namespace D_Squared.Data.Queries
         }
 
 
-        public List<IdealCashDTO> GetIdealCashDataByWeek(string storeNumber, DateTime startDate, DateTime endDate)
+        public List<IdealCashDTO> GetIdealCashDataByDateRange(string storeNumber, DateTime startDate, DateTime endDate)
         {
             DateTime realEndDate = endDate.AddDays(1);
             List<IdealCashDTO> idealCashDTOs = db.LSIdealCashes.Where(i => i.Store == storeNumber && i.BusinessDate >= startDate && i.BusinessDate < realEndDate)
@@ -137,7 +137,7 @@ namespace D_Squared.Data.Queries
                                                         IdealCash = i.IdealCash
                                                     }).ToList();
 
-            List<SalesDataDTO> salesDataDTOs = GetSalesDataByWeek(storeNumber, startDate, endDate);
+            List<SalesDataDTO> salesDataDTOs = GetSalesDataByDateRange(storeNumber, startDate, endDate);
             foreach (var idealCashDTO in idealCashDTOs)
             {
                 SalesDataDTO sdDTO = salesDataDTOs.Find(s => s.DateOfEntry == idealCashDTO.BusinessDate);
@@ -158,7 +158,7 @@ namespace D_Squared.Data.Queries
             return BuildPaidInOutDTOs(paidInOuts);
         }
 
-        public List<PaidInOutDTO> GetPaidInOutByWeekAndAccountTypeFilter(string storeNumber, DateTime startDate, DateTime endDate, string accountTypeFilter = null)
+        public List<PaidInOutDTO> GetPaidInOutByDateRangeAndAccountTypeFilter(string storeNumber, DateTime startDate, DateTime endDate, string accountTypeFilter = null)
         {
             DateTime realEndDate = endDate.AddDays(1);
             var paidInOuts = (accountTypeFilter == null || accountTypeFilter == PaidInOutSearchDTO.ReportByPaidInNOut) 
@@ -203,19 +203,7 @@ namespace D_Squared.Data.Queries
             return BuildServerSalesDTOs(lsServerSales);
         }
 
-        public List<ServerSalesDTO> GetServerSalesDTOsByWeek(string storeNumber, DateTime startDate, DateTime endDate, int employeeID)
-        {
-            DateTime realEndDate = endDate.AddDays(1);
-            var lsServerSales =
-                (employeeID == -1)
-                        ? db.LSServerSales.Where(ss => ss.BusinessDate >= startDate && ss.BusinessDate < realEndDate && ss.Store.Contains(storeNumber)).ToList()
-                        : db.LSServerSales.Where(ss => ss.BusinessDate >= startDate && ss.BusinessDate < realEndDate && ss.Store.Contains(storeNumber) 
-                            && ss.EmployeeID == employeeID).ToList();
-
-            return BuildServerSalesDTOs(lsServerSales);
-        }
-
-        public List<ServerSalesDTO> GetServerSalesDTOsBy_BiWeekly(string storeNumber, DateTime startDate, DateTime endDate, int employeeID)
+        public List<ServerSalesDTO> GetServerSalesDTOsByDateRange(string storeNumber, DateTime startDate, DateTime endDate, int employeeID)
         {
             DateTime realEndDate = endDate.AddDays(1);
             var lsServerSales =
