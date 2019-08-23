@@ -104,7 +104,7 @@ namespace D_Squared.Web.Controllers
         {
             Labor8020SearchViewModel model = init.InitializeLabor8020SearchViewModel(User, searchDTO);
             string exportData = ReportExportHelper<Labor8020DTO>.BuildExportString(model.SearchResults,
-                                                                    (searchDTO.SelectedDayOrWeekFilter == Labor8020SearchDTO.ReportByDay) ? DisplayFor.Condition_1 : DisplayFor.Condition_2);
+                                                                    (searchDTO.SelectedDateFilter == Labor8020SearchDTO.ReportByDay) ? DisplayFor.Condition_1 : DisplayFor.Condition_2);
             return new Export("Labor8020ReportExport.csv", Encoding.ASCII.GetBytes(exportData));
         }
 
@@ -125,8 +125,10 @@ namespace D_Squared.Web.Controllers
         public ActionResult ExportOvertimeRptCSV(WeeklyTotalDurationSearchDTO searchDTO)
         {
             OvertimeReportingSearchViewModel model = init.InitializeOvertimeReportingSearchViewModel(User, searchDTO);
-            Dictionary<string, string> dynamicColumnNames = new Dictionary<string, string>();
-            dynamicColumnNames.Add("Hours Over 35", $"Hours Over {searchDTO.SelectedHours}");
+            Dictionary<string, string> dynamicColumnNames = new Dictionary<string, string>
+            {
+                { "Hours Over 35", $"Hours Over {searchDTO.SelectedHours}" }
+            };
             string exportData = ReportExportHelper<WeeklyTotalDurationDTO>.BuildExportString(model.SearchResults, DisplayFor.Condition_2, dynamicColumnNames);
             return new Export("OvertimeReportExport.csv", Encoding.ASCII.GetBytes(exportData));
         }

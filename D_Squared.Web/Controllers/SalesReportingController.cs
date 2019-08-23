@@ -130,7 +130,7 @@ namespace D_Squared.Web.Controllers
         {
             PaidInOutSearchViewModel model = init.InitializePaidInOutSearchViewModel(User, searchDTO);
             string exportData = ReportExportHelper<PaidInOutDTO>.BuildExportString(model.SearchResults, 
-                                                                    (searchDTO.SelectedDayOrWeekFilter == PaidInOutSearchDTO.ReportByDay) ? DisplayFor.Condition_1 : DisplayFor.Condition_2);
+                                                                    (searchDTO.SelectedDateFilter == PaidInOutSearchDTO.ReportByDay) ? DisplayFor.Condition_1 : DisplayFor.Condition_2);
             return new Export("PaidInOutReportExport.csv", Encoding.ASCII.GetBytes(exportData));
         }
 
@@ -141,7 +141,7 @@ namespace D_Squared.Web.Controllers
         {
             SalesReportSearchViewModel model = init.InitializeSalesReportSearchViewModel(User, searchDTO);
             string exportData = ReportExportHelper<SalesDataDTO>.BuildExportString(model.SearchResults, 
-                                                                    (searchDTO.SelectedReportType == SalesDataSearchDTO.ReportByDay) ? DisplayFor.Condition_1 : DisplayFor.Condition_2 );
+                                                                    (searchDTO.SelectedDateFilter == SalesDataSearchDTO.ReportByDay) ? DisplayFor.Condition_1 : DisplayFor.Condition_2 );
             return new Export("SalesReportExport.csv", Encoding.ASCII.GetBytes(exportData));
         }
 
@@ -152,7 +152,7 @@ namespace D_Squared.Web.Controllers
         {
             ServerSalesSearchViewModel model = init.InitializeServerSalesSearchViewModel(User, searchDTO);
             string exportData = ReportExportHelper<ServerSalesDTO>.BuildExportString(model.SearchResults,
-                                                                    (searchDTO.SelectedDWBWFilter == ServerSalesSearchDTO.ReportByDay) ? DisplayFor.Condition_1 : DisplayFor.Condition_2);
+                                                                    (searchDTO.SelectedDateFilter == ServerSalesSearchDTO.ReportByDay) ? DisplayFor.Condition_1 : DisplayFor.Condition_2);
             return new Export("ServerSalesReportExport.csv", Encoding.ASCII.GetBytes(exportData));
         }
 
@@ -163,7 +163,7 @@ namespace D_Squared.Web.Controllers
         {
             HourlySalesSearchViewModel model = init.InitializeHourlySalesSearchViewModel(User, searchDTO);
             string exportData = ReportExportHelper<HourlySalesDTO>.BuildExportString(model.SearchResults,
-                                                                    (searchDTO.SelectedReportType == HourlySalesSearchDTO.ReportByDay) ? DisplayFor.Condition_1 : DisplayFor.Condition_2);
+                                                                    (searchDTO.SelectedDateFilter == HourlySalesSearchDTO.ReportByDay) ? DisplayFor.Condition_1 : DisplayFor.Condition_2);
             return new Export("HourlySalesReportExport.csv", Encoding.ASCII.GetBytes(exportData));
         }
         #endregion

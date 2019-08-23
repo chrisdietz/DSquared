@@ -5,19 +5,14 @@
 }
 @{
     string reportType = string.Empty;
-    string dateSpan = "Business Week";
-    if (Model.SearchDTO.SelectedReportType == TimeClockDetailSearchDTO.ReportByDay)
+    string dateSpan = "Business Date Range";
+    if (Model.SearchDTO.SelectedDateFilter == TimeClockDetailSearchDTO.ReportByDay)
     {
         reportType = "Time Clock Detail Report by Date";
-    }
-    else if (Model.SearchDTO.SelectedReportType == TimeClockDetailSearchDTO.ReportByWeek)
-    {
-        reportType = "Time Clock Detail Report by Week";
     }
     else
     {
         reportType = "Time Clock Detail Report by Date Range";
-        dateSpan = "Business Date Range";
     }
 
 }
@@ -95,50 +90,56 @@
     @Html.AntiForgeryToken()
     <div class="form-horizontal">
         <div class="row">
-            <div class="col-md-7">
+            <div class="col-md-8">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.LocationSelectList, htmlAttributes: new { @class = "control-label col-md-4" })
-                    <div class="col-md-8">
+                    <div class="col-md-3">
+                        @Html.LabelFor(model => model.LocationSelectList, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="input-group col-md-6">
                         @Html.DropDownListFor(model => model.SearchDTO.SelectedLocation, Model.LocationSelectList, htmlAttributes: new { @class = "locationSelect form-control select2-single select2-hidden-accessible" })
                         @Html.ValidationMessageFor(model => model.SearchDTO.SelectedLocation, string.Empty, new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(model => model.SearchDTO.SelectedDate, htmlAttributes: new { @class = "control-label col-md-4" })
-                    <div class="col-md-8">
-                        <div class="input-group col-md-8">
+                    <div class="col-md-3">
+                        <span>@Html.RadioButtonFor(m => m.SearchDTO.SelectedDateFilter, TimeClockDetailSearchDTO.ReportByDay, new { @onclick = "DisableOtherDateOption('DateId')" })</span>&nbsp;&nbsp;<span><strong>Business Date</strong></span>
+                    </div>
+                    <div id="DateId" class="input-group col-md-4">
+                        @if (Model.SearchDTO.SelectedDateFilter == TimeClockDetailSearchDTO.ReportByDay)
+                        {
                             @Html.EditorFor(model => model.SearchDTO.SelectedDate, new { htmlAttributes = new { @class = "form-control date-picker", onkeydown = "return false", onpaste = "return false" } })
-                            @*@Html.TextBoxFor(m => m.SearchDTO.SelectedDate, new { @Value = Model.SearchDTO.SelectedDate.ToString("MM-dd-yyyy"), @class= "form-control datepicker" })*@
-                        </div>
+                        }
+                        else
+                        {
+                            @Html.EditorFor(model => model.SearchDTO.SelectedDate, new { htmlAttributes = new { @class = "form-control date-picker", @disabled = "disabled", onkeydown = "return false", onpaste = "return false" } })
+                        }
                     </div>
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(model => model.SearchDTO.SelectedDateRangeBegin, htmlAttributes: new { @class = "control-label col-md-4" })
-                    <div class="col-md-8">
-                        <div class="input-group col-md-8">
+                    <div class="col-md-3">
+                        <span>@Html.RadioButtonFor(m => m.SearchDTO.SelectedDateFilter, TimeClockDetailSearchDTO.ReportByDateRange, new { @onclick = "DisableOtherDateOption('DateRangeId')" })</span>&nbsp;&nbsp;<span><strong>Business Date Range</strong></span>
+                    </div>
+                    <div id="DateRangeId" class="input-group col-md-4">
+                        @if (Model.SearchDTO.SelectedDateFilter == TimeClockDetailSearchDTO.ReportByDay)
+                        {
+                            @Html.EditorFor(model => model.SearchDTO.SelectedDateRangeBegin, new { htmlAttributes = new { @class = "form-control date-picker", @disabled = "disabled", onkeydown = "return false", onpaste = "return false" } })
+                            <span class="input-group-addon"> to </span>
+                            @Html.EditorFor(model => model.SearchDTO.SelectedDateRangeEnd, new { htmlAttributes = new { @class = "form-control date-picker", @disabled = "disabled", onkeydown = "return false", onpaste = "return false" } })
+                        }
+                        else
+                        {
                             @Html.EditorFor(model => model.SearchDTO.SelectedDateRangeBegin, new { htmlAttributes = new { @class = "form-control date-picker", onkeydown = "return false", onpaste = "return false" } })
                             <span class="input-group-addon"> to </span>
                             @Html.EditorFor(model => model.SearchDTO.SelectedDateRangeEnd, new { htmlAttributes = new { @class = "form-control date-picker", onkeydown = "return false", onpaste = "return false" } })
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <div class="input-group col-md-10 col-md-offset-4">
-                            @Html.RadioButtonFor(m => m.SearchDTO.SelectedReportType, TimeClockDetailSearchDTO.ReportByDay)&nbsp;&nbsp;<span><strong>By Date</strong></span>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            @Html.RadioButtonFor(m => m.SearchDTO.SelectedReportType, TimeClockDetailSearchDTO.ReportByWeek)&nbsp;&nbsp;<span><strong>By Week</strong></span>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            @Html.RadioButtonFor(m => m.SearchDTO.SelectedReportType, TimeClockDetailSearchDTO.ReportByDateRange)&nbsp;&nbsp;<span><strong>By Date Range</strong></span>
-                        </div>
+                        }
                     </div>
                 </div>
             </div>
-            <div class="col-md-5">
-                @if (Model.SearchDTO.SelectedReportType != TimeClockDetailSearchDTO.ReportByDay)
+            <div class="col-md-4">
+                @if (Model.SearchDTO.SelectedDateFilter != TimeClockDetailSearchDTO.ReportByDay)
                 {
                     <div class="panel panel-default firstRowPanel">
-                        <div class="form-group">
+                        <div class="form-group" style="padding-top:10px;margin-right:20px;">
                             <dl>
                                 <dt>
                                     @dateSpan
@@ -151,7 +152,6 @@
                     </div>
                 }
             </div>
-            <div class="col-md-1"></div>
         </div>
         <div class="row">
             <div class="col-md-6">

@@ -45,7 +45,6 @@ namespace D_Squared.Domain.TransferObjects
     public class LaborDataSearchDTO
     {
         public const string ReportByDay = "ByDay";
-        public const string ReportByWeek = "ByWeek";
         public const string ReportByDateRange = "ByDateRange";
         public const string ReportByJob = "ByJob";
         public const string ReportByCenter = "ByCenter";
@@ -53,7 +52,7 @@ namespace D_Squared.Domain.TransferObjects
         [Display(Name = "Business Date")]
         [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime SelectedDate { get; set; }
-        public string SelectedDayOrWeekFilter { get; set; }
+        public string SelectedDateFilter { get; set; }
         public string SelectedJobOrCenterFilter { get; set; }
 
         public string SelectedLocation { get; set; }
@@ -69,10 +68,10 @@ namespace D_Squared.Domain.TransferObjects
         {
             SelectedDate = DateTime.Today;
             SelectedLocation = string.Empty;
-            SelectedDayOrWeekFilter = ReportByDay;
+            SelectedDateFilter = ReportByDay;
             SelectedJobOrCenterFilter = ReportByJob;
-            SelectedDateRangeBegin = DateTime.Today;
-            SelectedDateRangeEnd = DateTime.Today;
+            SelectedDateRangeBegin = DateTime.MinValue;
+            SelectedDateRangeEnd = DateTime.MinValue;
         }
 
     }

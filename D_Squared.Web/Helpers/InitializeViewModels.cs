@@ -44,7 +44,7 @@ namespace D_Squared.Web.Helpers
             return dates;
         }
 
-        protected List<DateTime> GetCurrentWeekAsDates(DateTime selectedDay)
+        public List<DateTime> GetCurrentWeekAsDates(DateTime selectedDay)
         {
             int currentDayOfWeek = (int)selectedDay.DayOfWeek;
             DateTime sunday = selectedDay.AddDays(-currentDayOfWeek);
@@ -1099,17 +1099,16 @@ namespace D_Squared.Web.Helpers
 
             if (string.IsNullOrEmpty(searchDTO.SelectedLocation)) searchDTO.SelectedLocation = employee.StoreNumber;
 
-            List<DateTime> daysInWeek = GetCurrentWeekAsDates(searchDTO.SelectedDate);
-
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(DateTime.Now);
+            if(searchDTO.SelectedDateRangeBegin == DateTime.MinValue)
+            {
+                searchDTO.SelectedDateRangeBegin = daysInWeek.FirstOrDefault();
+                searchDTO.SelectedDateRangeEnd = daysInWeek.LastOrDefault();
+            }
             var startDate = searchDTO.SelectedDateRangeBegin;
             var endDate = searchDTO.SelectedDateRangeEnd;
-            if (searchDTO.SelectedReportType == SalesDataSearchDTO.ReportByWeek)
-            {
-                startDate = daysInWeek.FirstOrDefault();
-                endDate = daysInWeek.LastOrDefault();
-            }
 
-            List<SalesDataDTO> salesDataDTOs = (searchDTO.SelectedReportType == SalesDataSearchDTO.ReportByDay) ? sdq.GetSalesDataByDay(searchDTO.SelectedLocation.Substring(0, 3), searchDTO.SelectedDate)
+            List<SalesDataDTO> salesDataDTOs = (searchDTO.SelectedDateFilter == SalesDataSearchDTO.ReportByDay) ? sdq.GetSalesDataByDay(searchDTO.SelectedLocation.Substring(0, 3), searchDTO.SelectedDate)
                                                                     : sdq.GetSalesDataByDateRange(searchDTO.SelectedLocation.Substring(0, 3), startDate, endDate);
             SalesReportSearchViewModel model = new SalesReportSearchViewModel
             {
@@ -1151,15 +1150,14 @@ namespace D_Squared.Web.Helpers
 
             if (string.IsNullOrEmpty(searchDTO.SelectedLocation)) searchDTO.SelectedLocation = employee.StoreNumber;
 
-            List<DateTime> daysInWeek = GetCurrentWeekAsDates(searchDTO.SelectedDate);
-
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(DateTime.Now);
+            if (searchDTO.SelectedDateRangeBegin == DateTime.MinValue)
+            {
+                searchDTO.SelectedDateRangeBegin = daysInWeek.FirstOrDefault();
+                searchDTO.SelectedDateRangeEnd = daysInWeek.LastOrDefault();
+            }
             var startDate = searchDTO.SelectedDateRangeBegin;
             var endDate = searchDTO.SelectedDateRangeEnd;
-            if (searchDTO.SelectedReportType == IdealCashSearchDTO.ReportByWeek)
-            {
-                startDate = daysInWeek.FirstOrDefault();
-                endDate = daysInWeek.LastOrDefault();
-            }
 
             List<IdealCashDTO> idealCashDTOs = sdq.GetIdealCashDataByDateRange(searchDTO.SelectedLocation.Substring(0, 3), startDate, endDate);
 
@@ -1203,19 +1201,18 @@ namespace D_Squared.Web.Helpers
 
             if (string.IsNullOrEmpty(searchDTO.SelectedLocation)) searchDTO.SelectedLocation = employee.StoreNumber;
 
-            List<DateTime> daysInWeek = GetCurrentWeekAsDates(searchDTO.SelectedDate);
-
             List<PaidInOutDTO> paidInOutDTOs = null;
 
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(DateTime.Now);
+            if (searchDTO.SelectedDateRangeBegin == DateTime.MinValue)
+            {
+                searchDTO.SelectedDateRangeBegin = daysInWeek.FirstOrDefault();
+                searchDTO.SelectedDateRangeEnd = daysInWeek.LastOrDefault();
+            }
             var startDate = searchDTO.SelectedDateRangeBegin;
             var endDate = searchDTO.SelectedDateRangeEnd;
-            if (searchDTO.SelectedDayOrWeekFilter == PaidInOutSearchDTO.ReportByWeek)
-            {
-                startDate = daysInWeek.FirstOrDefault();
-                endDate = daysInWeek.LastOrDefault();
-            }
 
-            if (searchDTO.SelectedDayOrWeekFilter == PaidInOutSearchDTO.ReportByDay)
+            if (searchDTO.SelectedDateFilter == PaidInOutSearchDTO.ReportByDay)
             {
                 paidInOutDTOs = sdq.GetPaidInOutByDayAndAccountTypeFilter(searchDTO.SelectedLocation.Substring(0, 3), searchDTO.SelectedDate, searchDTO.SelectedAccountTypeFilter);
             }
@@ -1272,15 +1269,18 @@ namespace D_Squared.Web.Helpers
             }).ToList();
             employees.Insert(0, new SelectListItem { Value = "-1", Text = "All" });
 
-            List<DateTime> daysInWeek = GetCurrentWeekAsDates(searchDTO.SelectedDate);
             List<ServerSalesDTO> serverSalesDTOs = null;
 
-            var startDate = searchDTO.SelectedDWBWFilter == ServerSalesSearchDTO.ReportByDateRange ? searchDTO.SelectedDateRangeBegin
-                                                            : searchDTO.SelectedDWBWFilter == ServerSalesSearchDTO.ReportByBiWeekly ? daysInWeek.FirstOrDefault().AddDays(-7) 
-                                                                                                                                    : daysInWeek.FirstOrDefault();
-            var endDate = searchDTO.SelectedDWBWFilter == ServerSalesSearchDTO.ReportByDateRange ? searchDTO.SelectedDateRangeEnd : daysInWeek.LastOrDefault();
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(DateTime.Now);
+            if (searchDTO.SelectedDateRangeBegin == DateTime.MinValue)
+            {
+                searchDTO.SelectedDateRangeBegin = daysInWeek.FirstOrDefault();
+                searchDTO.SelectedDateRangeEnd = daysInWeek.LastOrDefault();
+            }
+            var startDate = searchDTO.SelectedDateRangeBegin;
+            var endDate = searchDTO.SelectedDateRangeEnd;
 
-            if (searchDTO.SelectedDWBWFilter == ServerSalesSearchDTO.ReportByDay)
+            if (searchDTO.SelectedDateFilter == ServerSalesSearchDTO.ReportByDay)
             {
                 serverSalesDTOs = sdq.GetServerSalesDTOsByDate(searchDTO.SelectedLocation, searchDTO.SelectedDate, Convert.ToInt32(searchDTO.SelectedEmployee));
             }
@@ -1330,18 +1330,18 @@ namespace D_Squared.Web.Helpers
 
             if (string.IsNullOrEmpty(searchDTO.SelectedLocation)) searchDTO.SelectedLocation = employee.StoreNumber;
 
-            List<DateTime> daysInWeek = GetCurrentWeekAsDates(searchDTO.SelectedDate);
             List<HourlySalesDTO> hourlySalesDTOs = null;
 
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(DateTime.Now);
+            if (searchDTO.SelectedDateRangeBegin == DateTime.MinValue)
+            {
+                searchDTO.SelectedDateRangeBegin = daysInWeek.FirstOrDefault();
+                searchDTO.SelectedDateRangeEnd = daysInWeek.LastOrDefault();
+            }
             var startDate = searchDTO.SelectedDateRangeBegin;
             var endDate = searchDTO.SelectedDateRangeEnd;
-            if (searchDTO.SelectedReportType == HourlySalesSearchDTO.ReportByWeek)
-            {
-                startDate = daysInWeek.FirstOrDefault();
-                endDate = daysInWeek.LastOrDefault();
-            }
 
-            if(searchDTO.SelectedReportType == HourlySalesSearchDTO.ReportByDay)
+            if (searchDTO.SelectedDateFilter == HourlySalesSearchDTO.ReportByDay)
             {
                 hourlySalesDTOs = sdq.GetHourlySalesDTOsByDate(searchDTO.SelectedLocation, searchDTO.SelectedDate);
             }
@@ -1444,20 +1444,18 @@ namespace D_Squared.Web.Helpers
 
             if (string.IsNullOrEmpty(searchDTO.SelectedLocation)) searchDTO.SelectedLocation = employee.StoreNumber;
 
-
-            List<DateTime> daysInWeek = GetCurrentWeekAsDates(searchDTO.SelectedDate);
-
             List<LaborDataDTO> laborDataDTOs = null;
 
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(DateTime.Now);
+            if (searchDTO.SelectedDateRangeBegin == DateTime.MinValue)
+            {
+                searchDTO.SelectedDateRangeBegin = daysInWeek.FirstOrDefault();
+                searchDTO.SelectedDateRangeEnd = daysInWeek.LastOrDefault();
+            }
             var startDate = searchDTO.SelectedDateRangeBegin;
             var endDate = searchDTO.SelectedDateRangeEnd;
-            if (searchDTO.SelectedDayOrWeekFilter == LaborDataSearchDTO.ReportByWeek)
-            {
-                startDate = daysInWeek.FirstOrDefault();
-                endDate = daysInWeek.LastOrDefault();
-            }
 
-            if (searchDTO.SelectedDayOrWeekFilter == LaborDataSearchDTO.ReportByDay)
+            if (searchDTO.SelectedDateFilter == LaborDataSearchDTO.ReportByDay)
             {
                 if(searchDTO.SelectedJobOrCenterFilter == LaborDataSearchDTO.ReportByJob)
                 {
@@ -1521,19 +1519,18 @@ namespace D_Squared.Web.Helpers
 
             if (string.IsNullOrEmpty(searchDTO.SelectedLocation)) searchDTO.SelectedLocation = employee.StoreNumber;
 
-            List<DateTime> daysInWeek = GetCurrentWeekAsDates(searchDTO.SelectedDate);
-
             List<Labor8020DTO> labor8020DTOs = null;
 
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(DateTime.Now);
+            if (searchDTO.SelectedDateRangeBegin == DateTime.MinValue)
+            {
+                searchDTO.SelectedDateRangeBegin = daysInWeek.FirstOrDefault();
+                searchDTO.SelectedDateRangeEnd = daysInWeek.LastOrDefault();
+            }
             var startDate = searchDTO.SelectedDateRangeBegin;
             var endDate = searchDTO.SelectedDateRangeEnd;
-            if (searchDTO.SelectedDayOrWeekFilter == Labor8020SearchDTO.ReportByWeek)
-            {
-                startDate = daysInWeek.FirstOrDefault();
-                endDate = daysInWeek.LastOrDefault();
-            }
 
-            if (searchDTO.SelectedDayOrWeekFilter == Labor8020SearchDTO.ReportByDay)
+            if (searchDTO.SelectedDateFilter == Labor8020SearchDTO.ReportByDay)
             {
                 labor8020DTOs = ldq.GetLabor8020ByDayAnd8020Filter(searchDTO.SelectedLocation.Substring(0, 3), searchDTO.SelectedDate, searchDTO.Selected8020Filter);
             }
@@ -1582,20 +1579,19 @@ namespace D_Squared.Web.Helpers
             List<SelectListItem> locSelectList = GetLocationSelectList(employee, user);
 
             if (string.IsNullOrEmpty(searchDTO.SelectedLocation)) searchDTO.SelectedLocation = employee.StoreNumber;
-            
-            List<DateTime> daysInWeek = GetCurrentWeekAsDates(searchDTO.SelectedDate);
 
             List<TimeClockDetailDTO> timeClockDetailDTOs = null;
 
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(DateTime.Now);
+            if (searchDTO.SelectedDateRangeBegin == DateTime.MinValue)
+            {
+                searchDTO.SelectedDateRangeBegin = daysInWeek.FirstOrDefault();
+                searchDTO.SelectedDateRangeEnd = daysInWeek.LastOrDefault();
+            }
             var startDate = searchDTO.SelectedDateRangeBegin;
             var endDate = searchDTO.SelectedDateRangeEnd;
-            if (searchDTO.SelectedReportType == HourlySalesSearchDTO.ReportByWeek)
-            {
-                startDate = daysInWeek.FirstOrDefault();
-                endDate = daysInWeek.LastOrDefault();
-            }
 
-            if (searchDTO.SelectedReportType == TimeClockDetailSearchDTO.ReportByDay)
+            if (searchDTO.SelectedDateFilter == TimeClockDetailSearchDTO.ReportByDay)
             {
                 timeClockDetailDTOs = ldq.GetTimeClockDetailDTOsByDate(searchDTO.SelectedLocation.Substring(0, 3), searchDTO.SelectedDate);
             }

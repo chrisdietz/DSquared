@@ -82,7 +82,6 @@
                     <div class="col-md-8">
                         <div class="input-group col-md-8">
                             @Html.EditorFor(model => model.SearchDTO.SelectedDate, new { htmlAttributes = new { @class = "form-control date-picker", onkeydown = "return false", onpaste = "return false" } })
-                            @*@Html.TextBoxFor(m => m.SearchDTO.SelectedDate, new { @Value = Model.SearchDTO.SelectedDate.ToString("MM-dd-yyyy"), @class= "form-control datepicker" })*@
                         </div>
                     </div>
                 </div>
@@ -97,7 +96,7 @@
             </div>
             <div class="col-md-5">
                 <div class="panel panel-default firstRowPanel">
-                    <div class="form-group">
+                    <div class="form-group" style="padding-top:10px;margin-right:20px;">
                         <dl>
                             <dt>
                                 Business Week

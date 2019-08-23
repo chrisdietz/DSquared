@@ -38,14 +38,13 @@ namespace D_Squared.Domain.TransferObjects
 
     public class IdealCashSearchDTO
     {
-        public const string ReportByWeek = "ByWeek";
         public const string ReportByDateRange = "ByDateRange";
 
         [Display(Name = "Business Date")]
         [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime SelectedDate { get; set; }
         public string SelectedLocation { get; set; }
-        public string SelectedReportType { get; set; }
+        public string SelectedDateFilter { get; set; }
 
         [Display(Name = "Business Date Range")]
         [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
@@ -58,9 +57,9 @@ namespace D_Squared.Domain.TransferObjects
         {
             SelectedDate = DateTime.Today;
             SelectedLocation = string.Empty;
-            SelectedReportType = ReportByWeek;
-            SelectedDateRangeBegin = DateTime.Today;
-            SelectedDateRangeEnd = DateTime.Today;
+            SelectedDateFilter = ReportByDateRange;
+            SelectedDateRangeBegin = DateTime.MinValue;
+            SelectedDateRangeEnd = DateTime.MinValue;
         }
     }
 }

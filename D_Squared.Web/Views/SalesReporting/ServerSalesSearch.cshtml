@@ -5,24 +5,14 @@
 }
 @{
     string reportType = string.Empty;
-    string dateSpan = "Current Week";
-    if (Model.SearchDTO.SelectedDWBWFilter == ServerSalesSearchDTO.ReportByDay)
+    string dateSpan = "Business Date Range";
+    if (Model.SearchDTO.SelectedDateFilter == ServerSalesSearchDTO.ReportByDay)
     {
         reportType = "Server Sales Report By Date";
-    }
-    else if (Model.SearchDTO.SelectedDWBWFilter == ServerSalesSearchDTO.ReportByWeek)
-    {
-        reportType = "Server Sales Report By Week";
-    }
-    else if (Model.SearchDTO.SelectedDWBWFilter == ServerSalesSearchDTO.ReportByBiWeekly)
-    {
-        reportType = "Server Sales Report By Bi-Weekly";
-        dateSpan = "Bi-Weekly (Previous and Current Week)";
     }
     else
     {
         reportType = "Server Sales Report By Date Range";
-        dateSpan = "Business Date Range";
     }
 
 }
@@ -100,59 +90,56 @@
     @Html.AntiForgeryToken()
     <div class="form-horizontal">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.LocationSelectList, htmlAttributes: new { @class = "control-label col-md-4" })
-                    <div class="col-md-8">
+                    <div class="col-md-3">
+                        @Html.LabelFor(model => model.LocationSelectList, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="input-group col-md-6">
                         @Html.DropDownListFor(model => model.SearchDTO.SelectedLocation, Model.LocationSelectList, htmlAttributes: new { @class = "locationSelect form-control select2-single select2-hidden-accessible" })
                         @Html.ValidationMessageFor(model => model.SearchDTO.SelectedLocation, string.Empty, new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(model => model.EmployeeSelectList, htmlAttributes: new { @class = "control-label col-md-4" })
-                    <div class="col-md-8">
-                        @Html.DropDownListFor(model => model.SearchDTO.SelectedEmployee, Model.EmployeeSelectList, htmlAttributes: new { @class = "employeeSelect form-control select2-single select2-hidden-accessible" })
-                        @Html.ValidationMessageFor(model => model.SearchDTO.SelectedEmployee, string.Empty, new { @class = "text-danger" })
+                    <div class="col-md-3">
+                        <span>@Html.RadioButtonFor(m => m.SearchDTO.SelectedDateFilter, ServerSalesSearchDTO.ReportByDay, new { @onclick = "DisableOtherDateOption('DateId')" })</span>&nbsp;&nbsp;<span><strong>Business Date</strong></span>
                     </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.SearchDTO.SelectedDate, htmlAttributes: new { @class = "control-label col-md-4" })
-                    <div class="col-md-8">
-                        <div class="input-group col-md-8">
+                    <div id="DateId" class="input-group col-md-4">
+                        @if (Model.SearchDTO.SelectedDateFilter == ServerSalesSearchDTO.ReportByDay)
+                        {
                             @Html.EditorFor(model => model.SearchDTO.SelectedDate, new { htmlAttributes = new { @class = "form-control date-picker", onkeydown = "return false", onpaste = "return false" } })
-                            @*@Html.TextBoxFor(m => m.SearchDTO.SelectedDate, new { @Value = Model.SearchDTO.SelectedDate.ToString("MM-dd-yyyy"), @class= "form-control datepicker" })*@
-                        </div>
+                        }
+                        else
+                        {
+                            @Html.EditorFor(model => model.SearchDTO.SelectedDate, new { htmlAttributes = new { @class = "form-control date-picker", @disabled = "disabled", onkeydown = "return false", onpaste = "return false" } })
+                        }
                     </div>
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(model => model.SearchDTO.SelectedDateRangeBegin, htmlAttributes: new { @class = "control-label col-md-4" })
-                    <div class="col-md-8">
-                        <div class="input-group col-md-8">
+                    <div class="col-md-3">
+                        <span>@Html.RadioButtonFor(m => m.SearchDTO.SelectedDateFilter, ServerSalesSearchDTO.ReportByDateRange, new { @onclick = "DisableOtherDateOption('DateRangeId')" })</span>&nbsp;&nbsp;<span><strong>Business Date Range</strong></span>
+                    </div>
+                    <div id="DateRangeId" class="input-group col-md-4">
+                        @if (Model.SearchDTO.SelectedDateFilter == ServerSalesSearchDTO.ReportByDay)
+                        {
+                            @Html.EditorFor(model => model.SearchDTO.SelectedDateRangeBegin, new { htmlAttributes = new { @class = "form-control date-picker", @disabled = "disabled", onkeydown = "return false", onpaste = "return false" } })
+                            <span class="input-group-addon"> to </span>
+                            @Html.EditorFor(model => model.SearchDTO.SelectedDateRangeEnd, new { htmlAttributes = new { @class = "form-control date-picker", @disabled = "disabled", onkeydown = "return false", onpaste = "return false" } })
+                        }
+                        else
+                        {
                             @Html.EditorFor(model => model.SearchDTO.SelectedDateRangeBegin, new { htmlAttributes = new { @class = "form-control date-picker", onkeydown = "return false", onpaste = "return false" } })
                             <span class="input-group-addon"> to </span>
                             @Html.EditorFor(model => model.SearchDTO.SelectedDateRangeEnd, new { htmlAttributes = new { @class = "form-control date-picker", onkeydown = "return false", onpaste = "return false" } })
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <div class="input-group col-md-10 col-md-offset-4">
-                            @Html.RadioButtonFor(m => m.SearchDTO.SelectedDWBWFilter, ServerSalesSearchDTO.ReportByDay)&nbsp;&nbsp;<span><strong>By Date</strong></span>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            @Html.RadioButtonFor(m => m.SearchDTO.SelectedDWBWFilter, ServerSalesSearchDTO.ReportByWeek)&nbsp;&nbsp;<span><strong>By Week</strong></span>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            @Html.RadioButtonFor(m => m.SearchDTO.SelectedDWBWFilter, ServerSalesSearchDTO.ReportByBiWeekly)&nbsp;&nbsp;<span><strong>By Bi-Weekly</strong></span>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            @Html.RadioButtonFor(m => m.SearchDTO.SelectedDWBWFilter, ServerSalesSearchDTO.ReportByDateRange)&nbsp;&nbsp;<span><strong>By Date Range</strong></span>
-                        </div>
+                        }
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                @if (Model.SearchDTO.SelectedDWBWFilter != ServerSalesSearchDTO.ReportByDay)
+            <div class="col-md-4">
+                @if (Model.SearchDTO.SelectedDateFilter != ServerSalesSearchDTO.ReportByDay)
                 {
                     <div class="panel panel-default firstRowPanel">
-                        <div class="form-group" style="padding-top:10px">
+                        <div class="form-group" style="padding-top:10px;margin-right:20px;">
                             <dl>
                                 <dt>
                                     @dateSpan
@@ -192,7 +179,7 @@
         </caption>
         <thead>
             <tr>
-                @if (Model.SearchDTO.SelectedDWBWFilter != ServerSalesSearchDTO.ReportByDay)
+                @if (Model.SearchDTO.SelectedDateFilter != ServerSalesSearchDTO.ReportByDay)
                 {
                     <th>
                         @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().BusinessDate)
@@ -230,7 +217,7 @@
                 foreach (var result in Model.SearchResults)
                 {
             <tr>
-                @if (Model.SearchDTO.SelectedDWBWFilter != ServerSalesSearchDTO.ReportByDay)
+                @if (Model.SearchDTO.SelectedDateFilter != ServerSalesSearchDTO.ReportByDay)
                 {
                     <td style="text-align:center">
                         @result.BusinessDate.ToShortDateString()

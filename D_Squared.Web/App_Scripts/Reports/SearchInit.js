@@ -35,3 +35,15 @@ jQuery(document).ready(function () {
     $('.dataTables_length').addClass('bs-select');
 
 });
+
+function DisableOtherDateOption(rdBtnId) {
+    if (rdBtnId == "DateId") {
+        $("#SearchDTO_SelectedDate").datepicker("option", "disabled", false);
+        $("#SearchDTO_SelectedDateRangeBegin").datepicker("option", "disabled", true);
+        $("#SearchDTO_SelectedDateRangeEnd").datepicker("option", "disabled", true);
+    } else {
+        $("#SearchDTO_SelectedDate").datepicker("option", "disabled", true);
+        $("#SearchDTO_SelectedDateRangeBegin").datepicker("option", "disabled", false);
+        $("#SearchDTO_SelectedDateRangeEnd").datepicker("option", "disabled", false);
+    }
+}

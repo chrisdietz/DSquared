@@ -45,15 +45,13 @@ namespace D_Squared.Domain.TransferObjects
 
     public class ServerSalesSearchDTO
     {
-        public const string ReportByDay = "Date";
-        public const string ReportByWeek = "Week";
-        public const string ReportByBiWeekly = "Bi-Weekly";
+        public const string ReportByDay = "ByDay";
         public const string ReportByDateRange = "ByDateRange";
 
         [Display(Name = "Business Date")]
         [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime SelectedDate { get; set; }
-        public string SelectedDWBWFilter { get; set; }
+        public string SelectedDateFilter { get; set; }
         public string SelectedEmployee { get; set; }
         public string SelectedLocation { get; set; }
 
@@ -68,10 +66,10 @@ namespace D_Squared.Domain.TransferObjects
         {
             SelectedDate = DateTime.Today;
             SelectedLocation = string.Empty;
-            SelectedDWBWFilter = ReportByDay;
+            SelectedDateFilter = ReportByDay;
             SelectedEmployee = "-1";
-            SelectedDateRangeBegin = DateTime.Today;
-            SelectedDateRangeEnd = DateTime.Today;
+            SelectedDateRangeBegin = DateTime.MinValue;
+            SelectedDateRangeEnd = DateTime.MinValue;
         }
     }
 }
