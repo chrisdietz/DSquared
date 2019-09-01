@@ -71,6 +71,10 @@ namespace D_Squared.Data.Context
 
         public DbSet<LSTimeClockDetail> LSTimeClockDetails { get; set; }
 
+        public DbSet<ForcedOutEmployee> ForcedOutEmployees { get; set; }
+
+        public DbSet<LSMenuMix> LSMenuMixes { get; set; }
+
         public static D_SquaredDbContext Create()
         {
             return new D_SquaredDbContext();
@@ -92,6 +96,8 @@ namespace D_Squared.Data.Context
             modelBuilder.Entity<LSServerSales>().ToTable("LSServerSales");
             modelBuilder.Entity<LSHourlySales>().ToTable("LSHourlySales");
             modelBuilder.Entity<LSTimeClockDetail>().ToTable("LSTimeClockDetail");
+            modelBuilder.Entity<ForcedOutEmployee>().ToTable("ForcedOutEmployees");
+            modelBuilder.Entity<LSMenuMix>().ToTable("LSMenuMix");
 
             base.OnModelCreating(modelBuilder);
         }

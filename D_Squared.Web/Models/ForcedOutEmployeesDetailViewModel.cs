@@ -8,11 +8,12 @@ using System.Web.Mvc;
 
 namespace D_Squared.Web.Models
 {
-    public class LaborSummaryViewModel
+    public class ForcedOutEmployeesDetailViewModel
     {
+            
         public EmployeeDTO EmployeeInfo { get; set; }
 
-        public List<LaborDataDTO> LaborDataList { get; set; }
+        public List<ForcedOutEmployeeDTO> ForcedOutEmployeeDTOList { get; set; }
 
         public DateTime BusinessWeekStartDate { get; set; }
 
@@ -21,11 +22,11 @@ namespace D_Squared.Web.Models
         public bool CurrentWeekFlag { get; set; }
     }
 
-    public class LaborSummarySearchViewModel
+    public class ForcedOutEmployeesDetailSearchViewModel
     {
-        public LaborDataSearchDTO SearchDTO { get; set; }
+        public ForcedOutEmployeeSearchDTO SearchDTO { get; set; }
 
-        public List<LaborDataDTO> SearchResults { get; set; }
+        public List<ForcedOutEmployeeDTO> SearchResults { get; set; }
 
         public EmployeeDTO EmployeeInfo { get; set; }
 
@@ -35,9 +36,5 @@ namespace D_Squared.Web.Models
         public DateTime BusinessWeekStartDate { get; set; }
 
         public DateTime BusinessWeekEndDate { get; set; }
-
-        [Display(Name = "Center")]
-        public SelectList CenterSelectList { get; set; }
     }
-
 }

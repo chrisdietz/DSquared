@@ -1,4 +1,4 @@
-﻿@model D_Squared.Web.Models.LaborSummarySearchViewModel
+﻿@model D_Squared.Web.Models.ForcedOutEmployeesDetailSearchViewModel
 @using D_Squared.Domain.TransferObjects
 @section Scripts{
     <script src="~/App_Scripts/Reports/SearchInit.js" type="text/javascript"></script>
@@ -6,14 +6,15 @@
 @{
     string reportType = string.Empty;
     string dateSpan = "Business Date Range";
-    if (Model.SearchDTO.SelectedDateFilter == LaborDataSearchDTO.ReportByDay)
+    if (Model.SearchDTO.SelectedDateFilter == ForcedOutEmployeeSearchDTO.ReportByDay)
     {
-        reportType = (Model.SearchDTO.SelectedJobOrCenterFilter == LaborDataSearchDTO.ReportByJob) ? "Labor Summary by Date/Job" : "Labor Summary by Date/Center";
+        reportType = "Forced Clock Out Employee Report by Date";
     }
     else
     {
-        reportType = (Model.SearchDTO.SelectedJobOrCenterFilter == LaborDataSearchDTO.ReportByJob) ? "Labor Summary by Date Range/Job" : "Labor Summary by Date Range/Center";
+        reportType = "Forced Clock Out Employee Report by Date Range";
     }
+
 }
 <style type="text/css">
     dl {
@@ -41,7 +42,7 @@
     }
 
     tbody {
-        text-align: right;
+        text-align: left;
     }
 
     tfoot {
@@ -59,7 +60,7 @@
         </div>
         <div class="col-md-4">
             <div class="text-center" style="display: block; margin: 0 auto; max-width:600px">
-                <h2>Labor Summary Report - Search</h2>
+                <h2>Forced Clock Out Employee Report - Search</h2>
                 <p class="lead">
                     Location: <strong><u>@Model.EmployeeInfo.StoreNumber</u></strong>
                 </p>
@@ -101,10 +102,10 @@
                 </div>
                 <div class="form-group">
                     <div class="col-md-3">
-                        <span>@Html.RadioButtonFor(m => m.SearchDTO.SelectedDateFilter, LaborDataSearchDTO.ReportByDay, new { @onclick = "DisableOtherDateOption('DateId')" })</span>&nbsp;&nbsp;<span><strong>Business Date</strong></span>
+                        <span>@Html.RadioButtonFor(m => m.SearchDTO.SelectedDateFilter, ForcedOutEmployeeSearchDTO.ReportByDay, new { @onclick = "DisableOtherDateOption('DateId')" })</span>&nbsp;&nbsp;<span><strong>Business Date</strong></span>
                     </div>
                     <div id="DateId" class="input-group col-md-4">
-                        @if (Model.SearchDTO.SelectedDateFilter == LaborDataSearchDTO.ReportByDay)
+                        @if (Model.SearchDTO.SelectedDateFilter == ForcedOutEmployeeSearchDTO.ReportByDay)
                         {
                             @Html.EditorFor(model => model.SearchDTO.SelectedDate, new { htmlAttributes = new { @class = "form-control date-picker", onkeydown = "return false", onpaste = "return false" } })
                         }
@@ -116,10 +117,10 @@
                 </div>
                 <div class="form-group">
                     <div class="col-md-3">
-                        <span>@Html.RadioButtonFor(m => m.SearchDTO.SelectedDateFilter, LaborDataSearchDTO.ReportByDateRange, new { @onclick = "DisableOtherDateOption('DateRangeId')" })</span>&nbsp;&nbsp;<span><strong>Business Date Range</strong></span>
+                        <span>@Html.RadioButtonFor(m => m.SearchDTO.SelectedDateFilter, ForcedOutEmployeeSearchDTO.ReportByDateRange, new { @onclick = "DisableOtherDateOption('DateRangeId')" })</span>&nbsp;&nbsp;<span><strong>Business Date Range</strong></span>
                     </div>
                     <div id="DateRangeId" class="input-group col-md-4">
-                        @if (Model.SearchDTO.SelectedDateFilter == LaborDataSearchDTO.ReportByDay)
+                        @if (Model.SearchDTO.SelectedDateFilter == ForcedOutEmployeeSearchDTO.ReportByDay)
                         {
                             @Html.EditorFor(model => model.SearchDTO.SelectedDateRangeBegin, new { htmlAttributes = new { @class = "form-control date-picker", @disabled = "disabled", onkeydown = "return false", onpaste = "return false" } })
                             <span class="input-group-addon"> to </span>
@@ -133,35 +134,9 @@
                         }
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-md-8">
-                        <div class="input-group col-md-8 col-md-offset-6">
-                            @Html.RadioButtonFor(m => m.SearchDTO.SelectedJobOrCenterFilter, LaborDataSearchDTO.ReportByJob)&nbsp;&nbsp;<span><strong>By Job</strong></span>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            @Html.RadioButtonFor(m => m.SearchDTO.SelectedJobOrCenterFilter, LaborDataSearchDTO.ReportByCenter)&nbsp;&nbsp;<span><strong>By Center</strong></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-3">
-                        @Html.LabelFor(model => model.CenterSelectList, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="input-group col-md-6">
-                        @if (Model.SearchDTO.SelectedJobOrCenterFilter == LaborDataSearchDTO.ReportByJob)
-                        {
-                            @Html.DropDownListFor(model => model.SearchDTO.SelectedCenter, Model.CenterSelectList, htmlAttributes: new { @class = "locationSelect form-control select2-single select2-hidden-accessible" })
-                        }
-                        else
-                        {
-                            @Html.DropDownListFor(model => model.SearchDTO.SelectedCenter, Model.CenterSelectList, htmlAttributes: new { @class = "locationSelect form-control select2-single select2-hidden-accessible", @disabled = "disabled" })
-                        }
-                        @Html.ValidationMessageFor(model => model.SearchDTO.SelectedCenter, string.Empty, new { @class = "text-danger" })
-                    </div>
-                </div>
             </div>
-
             <div class="col-md-4">
-                @if (Model.SearchDTO.SelectedDateFilter != LaborDataSearchDTO.ReportByDay)
+                @if (Model.SearchDTO.SelectedDateFilter != ForcedOutEmployeeSearchDTO.ReportByDay)
                 {
                     <div class="panel panel-default firstRowPanel">
                         <div class="form-group" style="padding-top:10px;margin-right:20px;">
@@ -200,120 +175,88 @@
         <table id="dtReports" class="table table-striped table-bordered table-responsive">
             <caption class="caption">
                 Total Items: @Model.SearchResults.Count()
-                <span style="float: right; margin-right: 5px;"><input name="action:ExportLaborSummaryRptCSV" type="submit" value="Export CSV" class="btn btn-success btn-xs" /></span>
+                <span style="float: right; margin-right: 5px;"><input name="action:ExportForcedOutEmployeesRptCSV" type="submit" value="Export CSV" class="btn btn-success btn-xs" /></span>
             </caption>
             <thead>
                 <tr>
-                    @if (Model.SearchDTO.SelectedJobOrCenterFilter == LaborDataSearchDTO.ReportByJob)
+                    @if (Model.SearchDTO.SelectedDateFilter == ForcedOutEmployeeSearchDTO.ReportByDateRange)
                     {
                         <th>
-                            @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().JobName)
-                        </th>
-                    }
-                    else
-                    {
-                        <th>
-                            @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().Center)
+                            @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().BusinessDate)
                         </th>
                     }
                     <th>
-                        @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().RegularHours)
+                        @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().Store)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().OTHours)
+                        @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().StaffName)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().RegularPayAmount)
+                        @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().Job)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().OTPayAmount)
+                        @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().SalaryRate)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().TotalHours)
+                        @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().InTime)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().TotalPayAmount)
+                        @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().OutTime)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().TotalDuration)
                     </th>
                 </tr>
             </thead>
             <tbody>
 
                 @{
-                    foreach (var result in Model.SearchResults)
+                foreach (var result in Model.SearchResults)
+                {
+                <tr>
+                    @if (Model.SearchDTO.SelectedDateFilter == ForcedOutEmployeeSearchDTO.ReportByDateRange)
                     {
-                        <tr>
-                            @if (Model.SearchDTO.SelectedJobOrCenterFilter == LaborDataSearchDTO.ReportByJob)
-                            {
-                                <td style="text-align:left">
-                                    @result.JobName
-                                </td>
-                            }
-                            else
-                            {
-                                <td style="text-align:left">
-                                    @result.Center
-                                </td>
-                            }
-                            <td>
-                                @result.RegularHours.ToString("0.00")
-                            </td>
-                            <td>
-                                @result.OTHours.ToString("0.00")
-                            </td>
-                            <td>
-                                @result.RegularPayAmount.ToString("C2")
-                            </td>
-                            <td>
-                                @result.OTPayAmount.ToString("C2")
-                            </td>
-                            <td>
-                                @result.TotalHours.ToString("0.00")
-                            </td>
-                            <td>
-                                @result.TotalPayAmount.ToString("C2")
-                            </td>
-                        </tr>
+                        <td>
+                            @result.BusinessDate.ToShortDateString()
+                        </td>
                     }
+                    <td>
+                        @result.Store
+                    </td>
+
+                    <td>
+                        @result.StaffName
+                    </td>
+                    <td>
+                        @result.Job
+                    </td>
+                    <td style="text-align:right">
+                        @result.SalaryRate.ToString("C2")
+                    </td>
+                    <td>
+                        @(result.InTime.ToShortDateString() + " " + result.InTime.ToShortTimeString())
+                    </td>
+                    <td>
+                        @(result.OutTime.ToShortDateString() + " " + result.OutTime.ToShortTimeString())
+                    </td>
+                    <td style="text-align:right">
+                        @result.TotalDuration.ToString("0.00")
+                    </td>
+                </tr>
+                }
                 }
 
             </tbody>
-            <tfoot>
-                @{
-                    <tr>
-                        <td>
-                            Total
-                        </td>
-                        <td>
-                            @Model.SearchResults.Sum(sd => sd.RegularHours).ToString("0.00")
-                        </td>
-                        <td>
-                            @Model.SearchResults.Sum(sd => sd.OTHours).ToString("0.00")
-                        </td>
-                        <td>
-                            @Model.SearchResults.Sum(sd => sd.RegularPayAmount).ToString("C2")
-                        </td>
-                        <td>
-                            @Model.SearchResults.Sum(sd => sd.OTPayAmount).ToString("C2")
-                        </td>
-                        <td>
-                            @Model.SearchResults.Sum(sd => sd.TotalHours).ToString("0.00")
-                        </td>
-                        <td>
-                            @Model.SearchResults.Sum(sd => sd.TotalPayAmount).ToString("C2")
-                        </td>
-                    </tr>
-                }
-            <tfoot>
         </table>
     }
     else
     {
         <p class="text-center">
-            <i>There are no completed shifts for the date(s).</i>
+            <i>No Forced Out Employees data found</i>
         </p>
     }
 }
 
 <!--must explicitly define the controller and action and pageHeaderKey. PageHeaderKey can be found in HelpDocument.cs-->
-@{Html.RenderAction("ModalDetails", "Home", new { @controller = "LaborReports", @action = "LaborSummarySearch", @pageHeaderKey = "LaborSummarySearch" });}
+@{Html.RenderAction("ModalDetails", "Home", new { @controller = "LaborReports", @action = "ForcedOutEmployeesSearch", @pageHeaderKey = "ForcedOutEmployeesSearch" });}
 

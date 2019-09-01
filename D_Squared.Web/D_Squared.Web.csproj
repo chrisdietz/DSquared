@@ -217,12 +217,14 @@
     <Compile Include="Models\DepositReportViewModel.cs" />
     <Compile Include="Models\ErrorViewModel.cs" />
     <Compile Include="Models\Export.cs" />
+    <Compile Include="Models\ForcedOutEmployeesDetailViewModel.cs" />
     <Compile Include="Models\HelpDocumentViewModel.cs" />
     <Compile Include="Models\HomeViewModel.cs" />
     <Compile Include="Models\HourlySalesViewModel.cs" />
     <Compile Include="Models\IdealCashReportViewModel.cs" />
     <Compile Include="Models\Labor8020ViewModel.cs" />
     <Compile Include="Models\LaborSummaryViewModel.cs" />
+    <Compile Include="Models\MenuMixViewModel.cs" />
     <Compile Include="Models\NYSViewModel.cs" />
     <Compile Include="Models\OvertimeReportingViewModel.cs" />
     <Compile Include="Models\PaidInOutViewModel.cs" />
@@ -772,6 +774,10 @@
     <Content Include="Views\SalesReporting\HourlySalesSearch.cshtml" />
     <Content Include="Views\LaborReports\TimeClockDetailSearch.cshtml" />
     <Content Include="Views\LaborReports\TimeClockDetailView.cshtml" />
+    <Content Include="Views\LaborReports\ForcedOutEmployeesSearch.cshtml" />
+    <Content Include="Views\LaborReports\ForcedOutEmployeesView.cshtml" />
+    <Content Include="Views\SalesReporting\MenuMixSearch.cshtml" />
+    <Content Include="Views\SalesReporting\MenuMixView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

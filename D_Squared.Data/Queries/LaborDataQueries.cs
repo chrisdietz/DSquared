@@ -47,10 +47,12 @@ namespace D_Squared.Data.Queries
             return weeklyTotalDurationDTOs;
         }
 
-        public List<LaborDataDTO> GetLaborDataByDayAndJob(string storeNumber, DateTime businessDate)
+        public List<LaborDataDTO> GetLaborDataByDayAndJob(string storeNumber, DateTime businessDate, string center = "All")
         {
-            var lsLaborGroup = db.LSLabors.Where(ld => ld.BusinessDate == businessDate.Date && ld.Store == storeNumber)
-                                                .GroupBy(ld => ld.JobName);
+            var lsLaborGroup = (center == "All") ? db.LSLabors.Where(ld => ld.BusinessDate == businessDate.Date && ld.Store == storeNumber)
+                                                        .GroupBy(ld => ld.JobName)
+                                                : db.LSLabors.Where(ld => ld.BusinessDate == businessDate.Date && ld.Store == storeNumber && ld.Center == center)
+                                                        .GroupBy(ld => ld.JobName);
 
 
             return BuildLaborDataDTOs(lsLaborGroup, "Job");
@@ -64,11 +66,13 @@ namespace D_Squared.Data.Queries
             return BuildLaborDataDTOs(lsLaborGroup, "Center");
         }
 
-        public List<LaborDataDTO> GetLaborDataByDateRangeAndJob(string storeNumber, DateTime startDate, DateTime endDate)
+        public List<LaborDataDTO> GetLaborDataByDateRangeAndJob(string storeNumber, DateTime startDate, DateTime endDate, string center = "All")
         {
             DateTime realEndDate = endDate.AddDays(1);
-            var lsLaborGroup = db.LSLabors.Where(ld => ld.BusinessDate >= startDate && ld.BusinessDate < realEndDate && ld.Store == storeNumber)
-                                        .GroupBy(ld => ld.JobName);
+            var lsLaborGroup = (center == "All") ? db.LSLabors.Where(ld => ld.BusinessDate >= startDate && ld.BusinessDate < realEndDate && ld.Store == storeNumber)
+                                                        .GroupBy(ld => ld.JobName)
+                                                : db.LSLabors.Where(ld => ld.BusinessDate >= startDate && ld.BusinessDate < realEndDate && ld.Store == storeNumber && ld.Center == center)
+                                                        .GroupBy(ld => ld.JobName);
 
             return BuildLaborDataDTOs(lsLaborGroup, "Job");
         }
@@ -190,6 +194,44 @@ namespace D_Squared.Data.Queries
             }
 
             return timeClockDetailDTOs;
+        }
+
+        public List<ForcedOutEmployeeDTO> GetForcedOutEmployeeDTOsByDate(string storeNumber, DateTime businessDate)
+        {
+            var forcedOutEmployees = db.ForcedOutEmployees.Where(lt => lt.BusinessDate == businessDate.Date && lt.Store.StartsWith(storeNumber)).ToList();
+
+            return BuildForcedOutEmployeeDTOs(forcedOutEmployees);
+        }
+
+        public List<ForcedOutEmployeeDTO> GetForcedOutEmployeeDTOsByDateRange(string storeNumber, DateTime startDate, DateTime endDate)
+        {
+            DateTime realEndDate = endDate.AddDays(1);
+            var forcedOutEmployees = db.ForcedOutEmployees.Where(ld => ld.BusinessDate >= startDate && ld.BusinessDate < realEndDate && ld.Store.StartsWith(storeNumber)).ToList();
+
+            return BuildForcedOutEmployeeDTOs(forcedOutEmployees);
+        }
+
+        private List<ForcedOutEmployeeDTO> BuildForcedOutEmployeeDTOs(List<ForcedOutEmployee> forcedOutEmployees)
+        {
+            List<ForcedOutEmployeeDTO> forcedOutEmployeeDTOs = new List<ForcedOutEmployeeDTO>();
+            foreach (var forcedOutEmployee in forcedOutEmployees)
+            {
+                ForcedOutEmployeeDTO forcedOutEmployeeDTO = new ForcedOutEmployeeDTO
+                {
+                    Store = forcedOutEmployee.Store,
+                    BusinessDate = forcedOutEmployee.BusinessDate,
+                    StaffName = forcedOutEmployee.StaffName,
+                    SalaryRate = forcedOutEmployee.SalaryRate,
+                    InTime = forcedOutEmployee.InTime,
+                    OutTime = forcedOutEmployee.OutTime,
+                    Job = forcedOutEmployee.Job,
+                    TotalDuration = forcedOutEmployee.TotalDuration,
+                };
+
+                forcedOutEmployeeDTOs.Add(forcedOutEmployeeDTO);
+            }
+
+            return forcedOutEmployeeDTOs;
         }
     }
 }

@@ -297,5 +297,48 @@ namespace D_Squared.Data.Queries
             string formattedTime = $"{hourPart}:00 {ampm}";
             return formattedTime;
         }
+
+        public List<MenuMixDTO> GetMenuMixDTOsByDate(string storeNumber, DateTime businessDate)
+        {
+            var lsMenuMixes = db.LSMenuMixes.Where(ss => ss.BusinessDate == businessDate.Date && ss.Store.Contains(storeNumber)).ToList();
+
+            return BuildMenuMixDTOs(lsMenuMixes);
+        }
+
+        public List<MenuMixDTO> GetMenuMixDTOsByDateRange(string storeNumber, DateTime startDate, DateTime endDate)
+        {
+            DateTime realEndDate = endDate.AddDays(1);
+            var lsMenuMixes = db.LSMenuMixes.Where(ss => ss.BusinessDate >= startDate && ss.BusinessDate < realEndDate && ss.Store.Contains(storeNumber)).ToList();
+
+            return BuildMenuMixDTOs(lsMenuMixes);
+        }
+
+        private List<MenuMixDTO> BuildMenuMixDTOs(List<LSMenuMix> lsMenuMixes)
+        {
+            List<MenuMixDTO> menuMixDTOs = new List<MenuMixDTO>();
+            foreach (var lsMenuMix in lsMenuMixes)
+            {
+                MenuMixDTO menuMixDTO = new MenuMixDTO
+                {
+                    Store = lsMenuMix.Store,
+                    BusinessDate = lsMenuMix.BusinessDate,
+                    Department = lsMenuMix.Department,
+                    Category = lsMenuMix.Category,
+                    REPORTINGCATEGORY = lsMenuMix.REPORTINGCATEGORY,
+                    PLU = lsMenuMix.PLU,
+                    ItemName = lsMenuMix.ItemName,
+                    Price = lsMenuMix.Price,
+                    BasicUnit = lsMenuMix.BasicUnit,
+                    BasicQty = lsMenuMix.BasicQty,
+                    SellingUnit = lsMenuMix.SellingUnit,
+                    SellingQty = lsMenuMix.SellingQty,
+                    Amount = lsMenuMix.Amount
+                };
+
+                menuMixDTOs.Add(menuMixDTO);
+            }
+
+            return menuMixDTOs;
+        }
     }
 }

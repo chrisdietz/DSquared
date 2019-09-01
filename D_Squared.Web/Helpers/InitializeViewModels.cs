@@ -1361,15 +1361,78 @@ namespace D_Squared.Web.Helpers
 
             return model;
         }
+
+        public MenuMixViewModel InitializeMenuMixViewModel(CustomClaimsPrincipal User, bool isLastWeek = false)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(User.TruncatedName);
+
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(!isLastWeek ? DateTime.Today : DateTime.Today.AddDays(-7));
+
+            List<MenuMixDTO> menuMixDTOs = sdq.GetMenuMixDTOsByDateRange(employee.StoreNumber, daysInWeek.FirstOrDefault(), daysInWeek.LastOrDefault());
+
+            MenuMixViewModel model = new MenuMixViewModel
+            {
+                MenuMixDTOList = menuMixDTOs,
+                BusinessWeekStartDate = daysInWeek.FirstOrDefault(),
+                BusinessWeekEndDate = daysInWeek.LastOrDefault(),
+                EmployeeInfo = employee,
+                CurrentWeekFlag = !isLastWeek
+            };
+
+            return model;
+        }
+
+        public MenuMixSearchViewModel InitializeMenuMixSearchViewModel(CustomClaimsPrincipal user, MenuMixSearchDTO searchDTO)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(user.TruncatedName);
+
+            List<SelectListItem> locSelectList = GetLocationSelectList(employee, user);
+
+            if (string.IsNullOrEmpty(searchDTO.SelectedLocation)) searchDTO.SelectedLocation = employee.StoreNumber;
+
+            List<MenuMixDTO> menuMixDTOs = null;
+
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(DateTime.Now);
+            if (searchDTO.SelectedDateRangeBegin == DateTime.MinValue)
+            {
+                searchDTO.SelectedDateRangeBegin = daysInWeek.FirstOrDefault();
+                searchDTO.SelectedDateRangeEnd = daysInWeek.LastOrDefault();
+            }
+            var startDate = searchDTO.SelectedDateRangeBegin;
+            var endDate = searchDTO.SelectedDateRangeEnd;
+
+            if (searchDTO.SelectedDateFilter == HourlySalesSearchDTO.ReportByDay)
+            {
+                menuMixDTOs = sdq.GetMenuMixDTOsByDate(searchDTO.SelectedLocation, searchDTO.SelectedDate);
+            }
+            else
+            {
+                menuMixDTOs = sdq.GetMenuMixDTOsByDateRange(searchDTO.SelectedLocation, startDate, endDate);
+            }
+
+            MenuMixSearchViewModel model = new MenuMixSearchViewModel()
+            {
+                EmployeeInfo = employee,
+                LocationSelectList = locSelectList,
+                SearchResults = menuMixDTOs,
+                BusinessWeekStartDate = startDate,
+                BusinessWeekEndDate = endDate,
+            };
+
+            return model;
+        }
+
     }
 
     public class LaborReportsInitializer : InitializerBase
     {
         private readonly LaborDataQueries ldq;
+        private readonly CodeQueries cq;
 
-        public LaborReportsInitializer(EmployeeQueries eq, LaborDataQueries ldq) : base(eq)
+        public LaborReportsInitializer(EmployeeQueries eq, LaborDataQueries ldq, CodeQueries cq) : base(eq)
         {
             this.ldq = ldq;
+            this.cq = cq;
         }
 
         public OvertimeReportingViewModel InitializeOvertimeReportingViewModel(CustomClaimsPrincipal User, bool isLastWeek = false)
@@ -1459,7 +1522,7 @@ namespace D_Squared.Web.Helpers
             {
                 if(searchDTO.SelectedJobOrCenterFilter == LaborDataSearchDTO.ReportByJob)
                 {
-                    laborDataDTOs = ldq.GetLaborDataByDayAndJob(searchDTO.SelectedLocation.Substring(0, 3), searchDTO.SelectedDate);
+                    laborDataDTOs = ldq.GetLaborDataByDayAndJob(searchDTO.SelectedLocation.Substring(0, 3), searchDTO.SelectedDate, searchDTO.SelectedCenter);
                 }
                 else
                 {
@@ -1470,7 +1533,7 @@ namespace D_Squared.Web.Helpers
             {
                 if (searchDTO.SelectedJobOrCenterFilter == LaborDataSearchDTO.ReportByJob)
                 {
-                    laborDataDTOs = ldq.GetLaborDataByDateRangeAndJob(searchDTO.SelectedLocation.Substring(0, 3), startDate, endDate);
+                    laborDataDTOs = ldq.GetLaborDataByDateRangeAndJob(searchDTO.SelectedLocation.Substring(0, 3), startDate, endDate, searchDTO.SelectedCenter);
                 }
                 else
                 {
@@ -1485,7 +1548,8 @@ namespace D_Squared.Web.Helpers
                 BusinessWeekEndDate = endDate,
                 EmployeeInfo = employee,
                 SearchDTO = searchDTO,
-                LocationSelectList = locSelectList
+                LocationSelectList = locSelectList,
+                CenterSelectList = cq.GetDistinctListByCodeCategory("Center").ToSelectList(null, true, "All")
             };
 
             return model;
@@ -1603,6 +1667,67 @@ namespace D_Squared.Web.Helpers
             TimeClockDetailSearchViewModel model = new TimeClockDetailSearchViewModel
             {
                 SearchResults = timeClockDetailDTOs,
+                BusinessWeekStartDate = startDate,
+                BusinessWeekEndDate = endDate,
+                EmployeeInfo = employee,
+                SearchDTO = searchDTO,
+                LocationSelectList = locSelectList
+            };
+
+            return model;
+        }
+
+        public ForcedOutEmployeesDetailViewModel InitializeForcedOutEmployeesDetailViewModel(CustomClaimsPrincipal User, bool isLastWeek = false)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(User.TruncatedName);
+
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(!isLastWeek ? DateTime.Today : DateTime.Today.AddDays(-7));
+
+            List<ForcedOutEmployeeDTO> forcedOutEmployeeDTOs = ldq.GetForcedOutEmployeeDTOsByDateRange(employee.StoreNumber.Substring(0, 3), daysInWeek.FirstOrDefault(),
+                                                        daysInWeek.LastOrDefault());
+            ForcedOutEmployeesDetailViewModel model = new ForcedOutEmployeesDetailViewModel
+            {
+                ForcedOutEmployeeDTOList = forcedOutEmployeeDTOs,
+                BusinessWeekStartDate = daysInWeek.FirstOrDefault(),
+                BusinessWeekEndDate = daysInWeek.LastOrDefault(),
+                EmployeeInfo = employee,
+                CurrentWeekFlag = !isLastWeek
+            };
+
+            return model;
+        }
+
+        public ForcedOutEmployeesDetailSearchViewModel InitializeForcedOutEmployeesDetailSearchViewModel(CustomClaimsPrincipal user, ForcedOutEmployeeSearchDTO searchDTO)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(user.TruncatedName);
+
+            List<SelectListItem> locSelectList = GetLocationSelectList(employee, user);
+
+            if (string.IsNullOrEmpty(searchDTO.SelectedLocation)) searchDTO.SelectedLocation = employee.StoreNumber;
+
+            List<ForcedOutEmployeeDTO> forcedOutEmployeeDTOs = null;
+
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(DateTime.Now);
+            if (searchDTO.SelectedDateRangeBegin == DateTime.MinValue)
+            {
+                searchDTO.SelectedDateRangeBegin = daysInWeek.FirstOrDefault();
+                searchDTO.SelectedDateRangeEnd = daysInWeek.LastOrDefault();
+            }
+            var startDate = searchDTO.SelectedDateRangeBegin;
+            var endDate = searchDTO.SelectedDateRangeEnd;
+
+            if (searchDTO.SelectedDateFilter == TimeClockDetailSearchDTO.ReportByDay)
+            {
+                forcedOutEmployeeDTOs = ldq.GetForcedOutEmployeeDTOsByDate(searchDTO.SelectedLocation.Substring(0, 3), searchDTO.SelectedDate);
+            }
+            else
+            {
+                forcedOutEmployeeDTOs = ldq.GetForcedOutEmployeeDTOsByDateRange(searchDTO.SelectedLocation.Substring(0, 3), startDate, endDate);
+            }
+
+            ForcedOutEmployeesDetailSearchViewModel model = new ForcedOutEmployeesDetailSearchViewModel
+            {
+                SearchResults = forcedOutEmployeeDTOs,
                 BusinessWeekStartDate = startDate,
                 BusinessWeekEndDate = endDate,
                 EmployeeInfo = employee,

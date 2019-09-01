@@ -43,6 +43,10 @@ namespace D_Squared.Domain.Entities
             PageHeaders.Add("HourlySalesView", "Hourly Sales Report - View");
             PageHeaders.Add("TimeClockDetailSearch", "Time Clock Detail Report - Search");
             PageHeaders.Add("TimeClockDetailView", "Time Clock Detail Report - View");
+            PageHeaders.Add("ForcedOutEmployeesSearch", "Forced Clock Out Employee Report - Search");
+            PageHeaders.Add("ForcedOutEmployeesView", "Forced Clock Out Employee Report - View");
+            PageHeaders.Add("MenuMixSearch", "Menu Mix Report - Search");
+            PageHeaders.Add("MenuMixView", "Menu Mix Report - View");
         }
 
         public int Id { get; set; }

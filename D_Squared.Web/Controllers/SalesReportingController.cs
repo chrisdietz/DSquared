@@ -73,6 +73,13 @@ namespace D_Squared.Web.Controllers
             model.SearchDTO = searchDTO;
             return View(model);
         }
+
+        public ActionResult MenuMixSearch(MenuMixSearchDTO searchDTO)
+        {
+            MenuMixSearchViewModel model = init.InitializeMenuMixSearchViewModel(User, searchDTO);
+            model.SearchDTO = searchDTO;
+            return View(model);
+        }
         #endregion
 
         #region Sales Reprots - View Screens actions
@@ -108,6 +115,12 @@ namespace D_Squared.Web.Controllers
         public ActionResult ServerSalesView(bool isLastWeek = false)
         {
             ServerSalesViewModel model = init.InitializeServerSalesViewModel(User, isLastWeek);
+            return View(model);
+        }
+
+        public ActionResult MenuMixView(bool isLastWeek = false)
+        {
+            MenuMixViewModel model = init.InitializeMenuMixViewModel(User, isLastWeek);
             return View(model);
         }
         #endregion
@@ -166,6 +179,17 @@ namespace D_Squared.Web.Controllers
                                                                     (searchDTO.SelectedDateFilter == HourlySalesSearchDTO.ReportByDay) ? DisplayFor.Condition_1 : DisplayFor.Condition_2);
             return new Export("HourlySalesReportExport.csv", Encoding.ASCII.GetBytes(exportData));
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MultipleButton(Name = "action", Argument = "ExportMenuMixRptCSV")]
+        public ActionResult ExportMenuMixRptCSV(MenuMixSearchDTO searchDTO)
+        {
+            MenuMixSearchViewModel model = init.InitializeMenuMixSearchViewModel(User, searchDTO);
+            string exportData = ReportExportHelper<MenuMixDTO>.BuildExportString(model.SearchResults,
+                                                                    (searchDTO.SelectedDateFilter == MenuMixSearchDTO.ReportByDay) ? DisplayFor.Condition_1 : DisplayFor.Condition_2);
+            return new Export("MenuMixReportExport.csv", Encoding.ASCII.GetBytes(exportData));
+        }
         #endregion
 
         #region Export to CSV for View Screens
@@ -217,6 +241,16 @@ namespace D_Squared.Web.Controllers
             HourlySalesViewModel model = init.InitializeHourlySalesViewModel(User, isLastWeek);
             string exportData = ReportExportHelper<HourlySalesDTO>.BuildExportString(model.HourlySalesList, DisplayFor.Condition_2);
             return new Export("HourlySalesViewExport.csv", Encoding.ASCII.GetBytes(exportData));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MultipleButton(Name = "action", Argument = "ExportMenuMixViewCSV")]
+        public ActionResult ExportMenuMixViewCSV(bool isLastWeek = false)
+        {
+            MenuMixViewModel model = init.InitializeMenuMixViewModel(User, isLastWeek);
+            string exportData = ReportExportHelper<MenuMixDTO>.BuildExportString(model.MenuMixDTOList, DisplayFor.Condition_2);
+            return new Export("MenuMixViewExport.csv", Encoding.ASCII.GetBytes(exportData));
         }
         #endregion
     }

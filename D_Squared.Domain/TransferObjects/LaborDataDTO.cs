@@ -56,6 +56,7 @@ namespace D_Squared.Domain.TransferObjects
         public string SelectedJobOrCenterFilter { get; set; }
 
         public string SelectedLocation { get; set; }
+        public string SelectedCenter { get; set; }
 
         [Display(Name = "Business Date Range")]
         [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
@@ -68,6 +69,7 @@ namespace D_Squared.Domain.TransferObjects
         {
             SelectedDate = DateTime.Today;
             SelectedLocation = string.Empty;
+            SelectedCenter = string.Empty;
             SelectedDateFilter = ReportByDay;
             SelectedJobOrCenterFilter = ReportByJob;
             SelectedDateRangeBegin = DateTime.MinValue;

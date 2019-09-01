@@ -47,3 +47,9 @@ function DisableOtherDateOption(rdBtnId) {
         $("#SearchDTO_SelectedDateRangeEnd").datepicker("option", "disabled", false);
     }
 }
+
+jQuery(document).ready(function () {
+    $("input[name='SearchDTO.SelectedJobOrCenterFilter']").change(function () {
+        $("#SearchDTO_SelectedCenter").prop("disabled", $(this).val() != 'ByJob');
+    });
+});

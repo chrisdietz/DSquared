@@ -104,6 +104,7 @@
     <Compile Include="Entities\DailyDeposit.cs" />
     <Compile Include="Entities\Employee.cs" />
     <Compile Include="Entities\EmployeeJob.cs" />
+    <Compile Include="Entities\ForcedOutEmployee.cs" />
     <Compile Include="Entities\ForecastDatum.cs" />
     <Compile Include="Entities\FY18Budget.cs" />
     <Compile Include="Entities\HelpDocument.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="Entities\LSHourlySales.cs" />
     <Compile Include="Entities\LSIdealCash.cs" />
     <Compile Include="Entities\LSLabor.cs" />
+    <Compile Include="Entities\LSMenuMix.cs" />
     <Compile Include="Entities\LSServerSales.cs" />
     <Compile Include="Entities\LSTimeClockDetail.cs" />
     <Compile Include="Entities\MakeUpPay.cs" />
@@ -135,11 +137,13 @@
     <Compile Include="TransferObjects\EmployeeDTO.cs" />
     <Compile Include="TransferObjects\EmployeeJobDTO.cs" />
     <Compile Include="TransferObjects\EventDTO.cs" />
+    <Compile Include="TransferObjects\ForcedOutEmployeeDTO.cs" />
     <Compile Include="TransferObjects\FY18BudgetDTO.cs" />
     <Compile Include="TransferObjects\HourlySalesDTO.cs" />
     <Compile Include="TransferObjects\IdealCashDTO.cs" />
     <Compile Include="TransferObjects\Labor8020DTO.cs" />
     <Compile Include="TransferObjects\LaborDataDTO.cs" />
+    <Compile Include="TransferObjects\MenuMixDTO.cs" />
     <Compile Include="TransferObjects\NYSDTO.cs" />
     <Compile Include="TransferObjects\PaidInOutDTO.cs" />
     <Compile Include="TransferObjects\RedbookSearchDTO.cs" />

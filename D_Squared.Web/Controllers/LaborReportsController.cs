@@ -17,14 +17,16 @@ namespace D_Squared.Web.Controllers
     {
         private readonly D_SquaredDbContext db;
         private readonly LaborDataQueries ldq;
+        private readonly CodeQueries cq;
         private readonly LaborReportsInitializer init;
 
         public LaborReportsController()
         {
             db = new D_SquaredDbContext();
             ldq = new LaborDataQueries(db);
+            cq = new CodeQueries(db);
 
-            init = new LaborReportsInitializer(eq, ldq);
+            init = new LaborReportsInitializer(eq, ldq, cq);
         }
 
         // GET: LaborReports
@@ -97,6 +99,19 @@ namespace D_Squared.Web.Controllers
             return View(model);
         }
 
+        public ActionResult ForcedOutEmployeesView(bool isLastWeek = false)
+        {
+            ForcedOutEmployeesDetailViewModel model = init.InitializeForcedOutEmployeesDetailViewModel(User, isLastWeek);
+            return View(model);
+        }
+
+        public ActionResult ForcedOutEmployeesSearch(ForcedOutEmployeeSearchDTO searchDTO)
+        {
+            ForcedOutEmployeesDetailSearchViewModel model = init.InitializeForcedOutEmployeesDetailSearchViewModel(User, searchDTO);
+            model.SearchDTO = searchDTO;
+
+            return View(model);
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         [MultipleButton(Name = "action", Argument = "ExportLabor8020RptCSV")]
@@ -145,6 +160,16 @@ namespace D_Squared.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [MultipleButton(Name = "action", Argument = "ExportForcedOutEmployeesRptCSV")]
+        public ActionResult ExportForcedOutEmployeesRptCSV(ForcedOutEmployeeSearchDTO searchDTO)
+        {
+            ForcedOutEmployeesDetailSearchViewModel model = init.InitializeForcedOutEmployeesDetailSearchViewModel(User, searchDTO);
+            string exportData = ReportExportHelper<ForcedOutEmployeeDTO>.BuildExportString(model.SearchResults, DisplayFor.Condition_2);
+            return new Export("ForcedOutEmployeesReportExport.csv", Encoding.ASCII.GetBytes(exportData));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         [MultipleButton(Name = "action", Argument = "ExportLabor8020ViewCSV")]
         public ActionResult ExportLabor8020ViewCSV(bool isLastWeek = false)
         {
@@ -181,6 +206,16 @@ namespace D_Squared.Web.Controllers
             TimeClockDetailViewModel model = init.InitializeTimeClockDetailViewModel(User, isLastWeek);
             string exportData = ReportExportHelper<TimeClockDetailDTO>.BuildExportString(model.TimeClockDetailList, DisplayFor.Condition_2);
             return new Export("TimeClockDetailViewExport.csv", Encoding.ASCII.GetBytes(exportData));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MultipleButton(Name = "action", Argument = "ExportForcedOutEmployeesViewCSV")]
+        public ActionResult ExportForcedOutEmployeesViewCSV(bool isLastWeek = false)
+        {
+            ForcedOutEmployeesDetailViewModel model = init.InitializeForcedOutEmployeesDetailViewModel(User, isLastWeek);
+            string exportData = ReportExportHelper<ForcedOutEmployeeDTO>.BuildExportString(model.ForcedOutEmployeeDTOList, DisplayFor.Condition_2);
+            return new Export("ForcedOutEmployeesViewExport.csv", Encoding.ASCII.GetBytes(exportData));
         }
     }
 }
