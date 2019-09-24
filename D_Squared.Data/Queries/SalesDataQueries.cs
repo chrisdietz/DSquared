@@ -197,8 +197,8 @@ namespace D_Squared.Data.Queries
         {
             var lsServerSales =
                 (employeeID == -1)
-                        ? db.LSServerSales.Where(ss => ss.BusinessDate == businessDate.Date && ss.Store.Contains(storeNumber)).ToList()
-                        : db.LSServerSales.Where(ss => ss.BusinessDate == businessDate.Date && ss.Store.Contains(storeNumber) && ss.EmployeeID == employeeID).ToList();
+                        ? db.LSServerSales.Where(ss => ss.BusinessDate == businessDate.Date && storeNumber.Contains(ss.Store)).ToList()
+                        : db.LSServerSales.Where(ss => ss.BusinessDate == businessDate.Date && storeNumber.Contains(ss.Store) && ss.EmployeeID == employeeID).ToList();
 
             return BuildServerSalesDTOs(lsServerSales);
         }
@@ -208,8 +208,8 @@ namespace D_Squared.Data.Queries
             DateTime realEndDate = endDate.AddDays(1);
             var lsServerSales =
                 (employeeID == -1)
-                        ? db.LSServerSales.Where(ss => ss.BusinessDate >= startDate && ss.BusinessDate < realEndDate && ss.Store.Contains(storeNumber)).ToList()
-                        : db.LSServerSales.Where(ss => ss.BusinessDate >= startDate && ss.BusinessDate < realEndDate && ss.Store.Contains(storeNumber)
+                        ? db.LSServerSales.Where(ss => ss.BusinessDate >= startDate && ss.BusinessDate < realEndDate && storeNumber.Contains(ss.Store)).ToList()
+                        : db.LSServerSales.Where(ss => ss.BusinessDate >= startDate && ss.BusinessDate < realEndDate && storeNumber.Contains(ss.Store)
                             && ss.EmployeeID == employeeID).ToList();
 
             return BuildServerSalesDTOs(lsServerSales);
@@ -242,10 +242,10 @@ namespace D_Squared.Data.Queries
 
         public List<HourlySalesDTO> GetHourlySalesDTOsByDate(string storeNumber, DateTime businessDate)
         {
-            var lsHourlySales = db.LSHourlySales.Where(hs => hs.BusinessDate == businessDate.Date && hs.Store.Contains(storeNumber)).ToList();
+            var lsHourlySales = db.LSHourlySales.Where(hs => hs.BusinessDate == businessDate.Date && storeNumber.Contains(hs.Store)).ToList();
 
             var lsHourlySalesGroup = from sd in db.LSHourlySales
-                                     where sd.BusinessDate == businessDate && sd.Store == storeNumber
+                                     where sd.BusinessDate == businessDate && storeNumber.Contains(sd.Store)
                                      group sd by sd.Hour into sDataGroup
                                      orderby sDataGroup.Key ascending
                                      select sDataGroup;
@@ -258,7 +258,7 @@ namespace D_Squared.Data.Queries
             DateTime realEndDate = endDate.AddDays(1);
 
             var lsHourlySalesGroup = from sd in db.LSHourlySales
-                                       where sd.BusinessDate >= startDate && sd.BusinessDate < realEndDate && sd.Store == storeNumber
+                                       where sd.BusinessDate >= startDate && sd.BusinessDate < realEndDate && storeNumber.Contains(sd.Store)
                                        group sd by sd.Hour into sDataGroup
                                        orderby sDataGroup.Key ascending
                                        select sDataGroup;
@@ -300,7 +300,7 @@ namespace D_Squared.Data.Queries
 
         public List<MenuMixDTO> GetMenuMixDTOsByDate(string storeNumber, DateTime businessDate)
         {
-            var lsMenuMixes = db.LSMenuMixes.Where(ss => ss.BusinessDate == businessDate.Date && ss.Store.Contains(storeNumber)).ToList();
+            var lsMenuMixes = db.LSMenuMixes.Where(ss => ss.BusinessDate == businessDate.Date && storeNumber.Contains(ss.Store)).ToList();
 
             return BuildMenuMixDTOs(lsMenuMixes);
         }
@@ -308,7 +308,7 @@ namespace D_Squared.Data.Queries
         public List<MenuMixDTO> GetMenuMixDTOsByDateRange(string storeNumber, DateTime startDate, DateTime endDate)
         {
             DateTime realEndDate = endDate.AddDays(1);
-            var lsMenuMixes = db.LSMenuMixes.Where(ss => ss.BusinessDate >= startDate && ss.BusinessDate < realEndDate && ss.Store.Contains(storeNumber)).ToList();
+            var lsMenuMixes = db.LSMenuMixes.Where(ss => ss.BusinessDate >= startDate && ss.BusinessDate < realEndDate && storeNumber.Contains(ss.Store)).ToList();
 
             return BuildMenuMixDTOs(lsMenuMixes);
         }
