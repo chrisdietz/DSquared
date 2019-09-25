@@ -49,7 +49,8 @@ namespace D_Squared.Data.Millers.Queries
         {
             storeNumber = storeNumber.Substring(0, 3);
 
-            return db.Employees.Where(e => e.Location == storeNumber && e.EmployeeId != "9999").ToList();
+            // Filter managers who are terminated (EmployeeStatus = "T")
+            return db.Employees.Where(e => e.Location == storeNumber && e.EmployeeId != "9999" && e.EmployeeStatus != "T").ToList();
         }
 
         public List<Employee> GetManagersForLocation(List<string> storeNumbers)
@@ -57,12 +58,14 @@ namespace D_Squared.Data.Millers.Queries
             for (int i = 0; i < storeNumbers.Count(); i++)
                 storeNumbers[i] = storeNumbers[i].Substring(0, 3);
 
-            return db.Employees.Where(e => storeNumbers.Contains(e.Location) && e.EmployeeId != "9999").ToList();
+            // Filter managers who are terminated (EmployeeStatus = "T")
+            return db.Employees.Where(e => storeNumbers.Contains(e.Location) && e.EmployeeId != "9999" && e.EmployeeStatus != "T").ToList();
         }
 
         public List<Employee> GetAllManagers()
         {
-            return db.Employees.Where(e => e.EmployeeId != "9999").ToList();
+            // Filter managers who are terminated (EmployeeStatus = "T")
+            return db.Employees.Where(e => e.EmployeeId != "9999" && e.EmployeeStatus != "T").ToList();
         }
 
         public List<string> GetAllValidStoreLocations()

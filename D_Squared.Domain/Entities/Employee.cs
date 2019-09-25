@@ -39,6 +39,9 @@ namespace D_Squared.Domain.Entities
         [Required]
         public string sAMAccountName { get; set; }
 
+        [Column("employeeStatus")]
+        public string EmployeeStatus { get; set; }
+
         [StringLength(50)]
         [Column(TypeName = "varchar")]
         [Required]
