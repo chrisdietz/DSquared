@@ -231,6 +231,9 @@
                     <th>
                         @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().TotalPayAmount)
                     </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SearchResults.FirstOrDefault().LaborPercentage)
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -238,38 +241,41 @@
                 @{
                     foreach (var result in Model.SearchResults)
                     {
-                        <tr>
-                            @if (Model.SearchDTO.SelectedJobOrCenterFilter == LaborDataSearchDTO.ReportByJob)
-                            {
-                                <td style="text-align:left">
-                                    @result.JobName
-                                </td>
-                            }
-                            else
-                            {
-                                <td style="text-align:left">
-                                    @result.Center
-                                </td>
-                            }
-                            <td>
-                                @result.RegularHours.ToString("0.00")
-                            </td>
-                            <td>
-                                @result.OTHours.ToString("0.00")
-                            </td>
-                            <td>
-                                @result.RegularPayAmount.ToString("C2")
-                            </td>
-                            <td>
-                                @result.OTPayAmount.ToString("C2")
-                            </td>
-                            <td>
-                                @result.TotalHours.ToString("0.00")
-                            </td>
-                            <td>
-                                @result.TotalPayAmount.ToString("C2")
-                            </td>
-                        </tr>
+                <tr>
+                    @if (Model.SearchDTO.SelectedJobOrCenterFilter == LaborDataSearchDTO.ReportByJob)
+                    {
+                        <td style="text-align:left">
+                            @result.JobName
+                        </td>
+                    }
+                    else
+                    {
+                        <td style="text-align:left">
+                            @result.Center
+                        </td>
+                    }
+                    <td>
+                        @result.RegularHours.ToString("0.00")
+                    </td>
+                    <td>
+                        @result.OTHours.ToString("0.00")
+                    </td>
+                    <td>
+                        @result.RegularPayAmount.ToString("C2")
+                    </td>
+                    <td>
+                        @result.OTPayAmount.ToString("C2")
+                    </td>
+                    <td>
+                        @result.TotalHours.ToString("0.00")
+                    </td>
+                    <td>
+                        @result.TotalPayAmount.ToString("C2")
+                    </td>
+                    <td>
+                        @result.LaborPercentage.ToString("0.00")
+                    </td>
+                </tr>
                     }
                 }
 
@@ -298,6 +304,7 @@
                         <td>
                             @Model.SearchResults.Sum(sd => sd.TotalPayAmount).ToString("C2")
                         </td>
+                        <td>&nbsp;</td>
                     </tr>
                 }
             <tfoot>

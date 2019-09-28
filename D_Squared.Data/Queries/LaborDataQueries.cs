@@ -98,7 +98,8 @@ namespace D_Squared.Data.Queries
                     RegularPayAmount = ldGroup.Sum(ld => ld.RegularPayAmount),
                     OTPayAmount = ldGroup.Sum(ld => ld.OTPayAmount),
                     TotalHours = ldGroup.Sum(ld => ld.TotalHours),
-                    TotalPayAmount = ldGroup.Sum(ld => ld.TotalPayAmount)
+                    TotalPayAmount = ldGroup.Sum(ld => ld.TotalPayAmount),
+                    LaborPercentage = ldGroup.Sum(ld => ld.LaborPercentage)
                 };
                 if (reportType == "Job")
                 {

@@ -40,6 +40,9 @@ namespace D_Squared.Domain.TransferObjects
         [Display(Name = "Total Pay Amount")]
         [Exportable("Total Pay Amount", DataFormatType.Currency, true)]
         public double TotalPayAmount { get; set; }
+        [Display(Name = "Labor %")]
+        [Exportable("Labor %", DataFormatType.Decimal, false)]
+        public double LaborPercentage { get; set; }
     }
 
     public class LaborDataSearchDTO

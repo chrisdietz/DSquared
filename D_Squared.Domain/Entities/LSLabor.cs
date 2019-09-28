@@ -22,5 +22,6 @@ namespace D_Squared.Domain.Entities
         public double OTPayAmount { get; set; }
         public double TotalHours { get; set; }
         public double TotalPayAmount { get; set; }
+        public double LaborPercentage { get; set; }
     }
 }
