@@ -47,6 +47,9 @@ namespace D_Squared.Domain.Entities
             PageHeaders.Add("ForcedOutEmployeesView", "Forced Clock Out Employee Report - View");
             PageHeaders.Add("MenuMixSearch", "Menu Mix Report - Search");
             PageHeaders.Add("MenuMixView", "Menu Mix Report - View");
+            PageHeaders.Add("HuddleNotesView", "Meeting Notes - Bartender/Server View");
+            PageHeaders.Add("NotesView", "Meeting Notes - View");
+            PageHeaders.Add("NotesEntry", "Meeting Notes - Entry");
         }
 
         public int Id { get; set; }

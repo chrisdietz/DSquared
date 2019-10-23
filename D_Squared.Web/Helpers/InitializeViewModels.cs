@@ -1167,7 +1167,8 @@ namespace D_Squared.Web.Helpers
                 LocationSelectList = locSelectList,
                 SearchResults = idealCashDTOs,
                 BusinessWeekStartDate = startDate,
-                BusinessWeekEndDate = endDate
+                BusinessWeekEndDate = endDate,
+                SearchDTO = searchDTO
             };
 
             return model;
@@ -1297,6 +1298,7 @@ namespace D_Squared.Web.Helpers
                 SearchResults = serverSalesDTOs,
                 BusinessWeekStartDate = startDate,
                 BusinessWeekEndDate = endDate,
+                SearchDTO = searchDTO
             };
 
             return model;
@@ -1357,6 +1359,7 @@ namespace D_Squared.Web.Helpers
                 SearchResults = hourlySalesDTOs,
                 BusinessWeekStartDate = startDate,
                 BusinessWeekEndDate = endDate,
+                SearchDTO = searchDTO
             };
 
             return model;
@@ -1417,6 +1420,7 @@ namespace D_Squared.Web.Helpers
                 SearchResults = menuMixDTOs,
                 BusinessWeekStartDate = startDate,
                 BusinessWeekEndDate = endDate,
+                SearchDTO = searchDTO
             };
 
             return model;
@@ -1733,6 +1737,67 @@ namespace D_Squared.Web.Helpers
                 EmployeeInfo = employee,
                 SearchDTO = searchDTO,
                 LocationSelectList = locSelectList
+            };
+
+            return model;
+        }
+    }
+
+    public class MeetingNotesInitializer : InitializerBase
+    {
+        private readonly StoreManagerQueries smq;
+
+        public MeetingNotesInitializer(StoreManagerQueries smq, EmployeeQueries eq) : base(eq)
+        {
+            this.smq = smq;
+        }
+
+        public MeetingNotesBaseViewModel InitializeMeetingNotesBaseViewModel(string userName, bool createNew = false)
+        {
+            MeetingNotesBaseViewModel model = new MeetingNotesBaseViewModel()
+            {
+                EmployeeInfo = eq.GetEmployeeInfo(userName),
+            };
+            if (!createNew)
+            {
+                var notesDTO = smq.GetMostRecentNotes(model.EmployeeInfo.StoreNumber);
+                if (notesDTO != null) model.NotesDTO = notesDTO;
+            }
+
+            return model;
+        }
+
+        
+        public MeetingNotesListViewModel InitializeMeetingNotesListViewModel(CustomClaimsPrincipal User, bool isLastWeek = false)
+        {
+            EmployeeDTO employee = eq.GetEmployeeInfo(User.TruncatedName);
+
+            List<DateTime> daysInWeek = GetCurrentWeekAsDates(!isLastWeek ? DateTime.Today : DateTime.Today.AddDays(-7));
+
+            List<MeetingNotesDTO> meetingNotesDTOs = smq.GetMeetingNotes(employee.StoreNumber.Substring(0, 3), daysInWeek.FirstOrDefault(),
+                                                                                            daysInWeek.LastOrDefault());
+            MeetingNotesListViewModel model = new MeetingNotesListViewModel
+            {
+                NotesDTOList = meetingNotesDTOs,
+                BusinessWeekStartDate = daysInWeek.FirstOrDefault(),
+                BusinessWeekEndDate = daysInWeek.LastOrDefault(),
+                EmployeeInfo = employee,
+                CurrentWeekFlag = !isLastWeek
+            };
+
+            return model;
+        }
+
+        public MeetingNotesBaseViewModel InitializeMostRecentMeetingNotesViewModel(string store)
+        {
+            MeetingNotesDTO meetingNotesDTO = smq.GetMostRecentMeetingNotes(store);
+
+            EmployeeDTO noteCreatedByMgr = eq.GetEmployeeInfo(meetingNotesDTO.UpdatedBy ?? meetingNotesDTO.CreatedBy);
+
+            MeetingNotesBaseViewModel model = new MeetingNotesBaseViewModel
+            {
+                EmployeeInfo = noteCreatedByMgr,
+                NotesDTO = meetingNotesDTO
             };
 
             return model;

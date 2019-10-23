@@ -39,90 +39,33 @@ namespace D_Squared.Web.Controllers
         }
 
         #region Sales Reports - Search Screens actions
-        public ActionResult SalesSearch(SalesDataSearchDTO searchDTO)
-        {
-            SalesReportSearchViewModel model = init.InitializeSalesReportSearchViewModel(User, searchDTO);
-            model.SearchDTO = searchDTO;
-            return View(model);
-        }
+        public ActionResult SalesSearch(SalesDataSearchDTO searchDTO) => View(init.InitializeSalesReportSearchViewModel(User, searchDTO));
 
-        public ActionResult IdealCashSearch(IdealCashSearchDTO searchDTO)
-        {
-            IdealCashReportSearchViewModel model = init.InitializeIdealCashReportSearchViewModel(User, searchDTO);
-            model.SearchDTO = searchDTO;
-            return View(model);
-        }
+        public ActionResult IdealCashSearch(IdealCashSearchDTO searchDTO) => View(init.InitializeIdealCashReportSearchViewModel(User, searchDTO));
 
-        public ActionResult PaidInOutSearch(PaidInOutSearchDTO searchDTO)
-        {
-            PaidInOutSearchViewModel model = init.InitializePaidInOutSearchViewModel(User, searchDTO);
-            model.SearchDTO = searchDTO;
-            return View(model);
-        }
+        public ActionResult PaidInOutSearch(PaidInOutSearchDTO searchDTO) => View(init.InitializePaidInOutSearchViewModel(User, searchDTO));
 
-        public ActionResult ServerSalesSearch(ServerSalesSearchDTO searchDTO)
-        {
-            ServerSalesSearchViewModel model = init.InitializeServerSalesSearchViewModel(User, searchDTO);
-            model.SearchDTO = searchDTO;
-            return View(model);
-        }
+        public ActionResult ServerSalesSearch(ServerSalesSearchDTO searchDTO) => View(init.InitializeServerSalesSearchViewModel(User, searchDTO));
 
-        public ActionResult HourlySalesSearch(HourlySalesSearchDTO searchDTO)
-        {
-            HourlySalesSearchViewModel model = init.InitializeHourlySalesSearchViewModel(User, searchDTO);
-            model.SearchDTO = searchDTO;
-            return View(model);
-        }
+        public ActionResult HourlySalesSearch(HourlySalesSearchDTO searchDTO) => View(init.InitializeHourlySalesSearchViewModel(User, searchDTO));
 
-        public ActionResult MenuMixSearch(MenuMixSearchDTO searchDTO)
-        {
-            MenuMixSearchViewModel model = init.InitializeMenuMixSearchViewModel(User, searchDTO);
-            model.SearchDTO = searchDTO;
-            return View(model);
-        }
+        public ActionResult MenuMixSearch(MenuMixSearchDTO searchDTO) => View(init.InitializeMenuMixSearchViewModel(User, searchDTO));
         #endregion
 
         #region Sales Reprots - View Screens actions
-        public ActionResult PreviousWeek(string actionName)
-        {
-            return RedirectToAction(actionName, new { isLastWeek = true });
-        }
+        public ActionResult PreviousWeek(string actionName) => RedirectToAction(actionName, new { isLastWeek = true });
 
-        public ActionResult IdealCashView(bool isLastWeek = false)
-        {
-            IdealCashReportViewModel model = init.InitializeIdealCashReportViewModel(User, isLastWeek);
-            return View(model);
-        }
+        public ActionResult IdealCashView(bool isLastWeek = false) => View(init.InitializeIdealCashReportViewModel(User, isLastWeek));
 
-        public ActionResult HourlySalesView(bool isLastWeek = false)
-        {
-            HourlySalesViewModel model = init.InitializeHourlySalesViewModel(User, isLastWeek);
-            return View(model);
-        }
+        public ActionResult HourlySalesView(bool isLastWeek = false) => View(init.InitializeHourlySalesViewModel(User, isLastWeek));
 
-        public ActionResult PaidInOutView(bool isLastWeek = false)
-        {
-            PaidInOutViewModel model = init.InitializePaidInOutViewModel(User, isLastWeek);
-            return View(model);
-        }
+        public ActionResult PaidInOutView(bool isLastWeek = false) => View(init.InitializePaidInOutViewModel(User, isLastWeek));
 
-        public ActionResult SalesView(bool isLastWeek = false)
-        {
-            SalesReportViewModel model = init.InitializeSalesReportViewModel(User, isLastWeek);
-            return View(model);
-        }
+        public ActionResult SalesView(bool isLastWeek = false) => View(init.InitializeSalesReportViewModel(User, isLastWeek));
 
-        public ActionResult ServerSalesView(bool isLastWeek = false)
-        {
-            ServerSalesViewModel model = init.InitializeServerSalesViewModel(User, isLastWeek);
-            return View(model);
-        }
+        public ActionResult ServerSalesView(bool isLastWeek = false) => View(init.InitializeServerSalesViewModel(User, isLastWeek));
 
-        public ActionResult MenuMixView(bool isLastWeek = false)
-        {
-            MenuMixViewModel model = init.InitializeMenuMixViewModel(User, isLastWeek);
-            return View(model);
-        }
+        public ActionResult MenuMixView(bool isLastWeek = false) => View(init.InitializeMenuMixViewModel(User, isLastWeek));
         #endregion
 
         #region Expor to CSV for Search screens

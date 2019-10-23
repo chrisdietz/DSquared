@@ -191,6 +191,7 @@
     <Compile Include="Controllers\HelpDocumentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LaborReportsController.cs" />
+    <Compile Include="Controllers\MeetingNotesController.cs" />
     <Compile Include="Controllers\NYSController.cs" />
     <Compile Include="Controllers\RedbookController.cs" />
     <Compile Include="Controllers\SalesForecastController.cs" />
@@ -224,6 +225,7 @@
     <Compile Include="Models\IdealCashReportViewModel.cs" />
     <Compile Include="Models\Labor8020ViewModel.cs" />
     <Compile Include="Models\LaborSummaryViewModel.cs" />
+    <Compile Include="Models\MeetingNotesViewModel.cs" />
     <Compile Include="Models\MenuMixViewModel.cs" />
     <Compile Include="Models\NYSViewModel.cs" />
     <Compile Include="Models\OvertimeReportingViewModel.cs" />
@@ -241,6 +243,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Scripts\MeetingNotes\NotesEntry.js" />
     <Content Include="App_Scripts\Reports\SearchInit.js" />
     <Content Include="App_Scripts\NYS\SearchInit.js" />
     <Content Include="App_Scripts\Redbook\CreateInit.js" />
@@ -778,6 +781,9 @@
     <Content Include="Views\LaborReports\ForcedOutEmployeesView.cshtml" />
     <Content Include="Views\SalesReporting\MenuMixSearch.cshtml" />
     <Content Include="Views\SalesReporting\MenuMixView.cshtml" />
+    <Content Include="Views\MeetingNotes\NotesEntry.cshtml" />
+    <Content Include="Views\MeetingNotes\NotesView.cshtml" />
+    <Content Include="Views\MeetingNotes\HuddleNotesView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

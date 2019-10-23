@@ -75,6 +75,8 @@ namespace D_Squared.Data.Context
 
         public DbSet<LSMenuMix> LSMenuMixes { get; set; }
 
+        public DbSet<MeetingNote> MeetingNotes { get; set; }
+
         public static D_SquaredDbContext Create()
         {
             return new D_SquaredDbContext();
@@ -98,6 +100,7 @@ namespace D_Squared.Data.Context
             modelBuilder.Entity<LSTimeClockDetail>().ToTable("LSTimeClockDetail");
             modelBuilder.Entity<ForcedOutEmployee>().ToTable("ForcedOutEmployees");
             modelBuilder.Entity<LSMenuMix>().ToTable("LSMenuMix");
+            modelBuilder.Entity<MeetingNote>().ToTable("MeetingNotes");
 
             base.OnModelCreating(modelBuilder);
         }

@@ -64,32 +64,37 @@ namespace D_Squared.Web.Controllers
                 logger.Error(exceptionContext.Exception, message);
             }
         }
-        
-        protected virtual new CustomClaimsPrincipal User
-        {
-            get { return HttpContext.User as CustomClaimsPrincipal; }
-        }
+
+        protected virtual new CustomClaimsPrincipal User => HttpContext.User as CustomClaimsPrincipal;
+        //protected virtual new CustomClaimsPrincipal User
+        //{
+        //    get { return HttpContext.User as CustomClaimsPrincipal; }
+        //}
 
         #region Alerts
-        public void Warning(string message)
-        {
-            TempData.Add(WebConstants.Alerts.WARNING, message);
-        }
+        public void Warning(string message) => TempData.Add(WebConstants.Alerts.WARNING, message);
+        //public void Warning(string message)
+        //{
+        //    TempData.Add(WebConstants.Alerts.WARNING, message);
+        //}
 
-        public void Success(string message)
-        {
-            TempData.Add(WebConstants.Alerts.SUCCESS, message);
-        }
+        public void Success(string message) => TempData.Add(WebConstants.Alerts.SUCCESS, message);
+        //public void Success(string message)
+        //{
+        //    TempData.Add(WebConstants.Alerts.SUCCESS, message);
+        //}
 
-        public void Information(string message)
-        {
-            TempData.Add(WebConstants.Alerts.INFORMATION, message);
-        }
+        public void Information(string message) => TempData.Add(WebConstants.Alerts.INFORMATION, message);
+        //public void Information(string message)
+        //{
+        //    TempData.Add(WebConstants.Alerts.INFORMATION, message);
+        //}
 
-        public void Error(string message)
-        {
-            TempData.Add(WebConstants.Alerts.ERROR, message);
-        }
+        public void Error(string message) => TempData.Add(WebConstants.Alerts.ERROR, message);
+        //public void Error(string message)
+        //{
+        //    TempData.Add(WebConstants.Alerts.ERROR, message);
+        //}
         #endregion
     }
 }

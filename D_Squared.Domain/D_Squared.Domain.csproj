@@ -116,6 +116,7 @@
     <Compile Include="Entities\LSServerSales.cs" />
     <Compile Include="Entities\LSTimeClockDetail.cs" />
     <Compile Include="Entities\MakeUpPay.cs" />
+    <Compile Include="Entities\MeetingNote.cs" />
     <Compile Include="Entities\MinimumWage.cs" />
     <Compile Include="Entities\NYS.cs" />
     <Compile Include="Entities\PaidInOut.cs" />
@@ -143,6 +144,7 @@
     <Compile Include="TransferObjects\IdealCashDTO.cs" />
     <Compile Include="TransferObjects\Labor8020DTO.cs" />
     <Compile Include="TransferObjects\LaborDataDTO.cs" />
+    <Compile Include="TransferObjects\MeetingNotesDTO.cs" />
     <Compile Include="TransferObjects\MenuMixDTO.cs" />
     <Compile Include="TransferObjects\NYSDTO.cs" />
     <Compile Include="TransferObjects\PaidInOutDTO.cs" />

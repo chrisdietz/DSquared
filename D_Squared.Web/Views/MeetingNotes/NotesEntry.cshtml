@@ -1,0 +1,88 @@
+﻿@model D_Squared.Web.Models.MeetingNotesBaseViewModel
+
+@section Scripts{
+    <script src="~/App_Scripts/MeetingNotes/NotesEntry.js" type="text/javascript"></script>
+}
+
+<div class="jumbotron" style="background-image: url('/Content/images/lightwood-bg.jpg'); padding-bottom:5px; padding-top:20px; margin-bottom:10px">
+    <div class="row">
+        <div class="col-sm-4">
+            <div style="max-width:500px; display: block; margin: 0 auto;float:left;">
+                <img src="~/Content/images/millers_d2_logo.png" style="max-width:300px;" />
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="text-center" style="display: block; margin: 0 auto; max-width:500px">
+                <h2>Meeting Notes</h2>
+                <p class="lead">
+                    Restaurant: <strong><u>@Model.EmployeeInfo.StoreNumber</u></strong>
+                </p>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="text-center" style="display: block; margin: 0 auto; max-width:500px">
+                <p class="lead">
+                    Time: @DateTime.Now.ToLocalTime().ToString()
+                    <br />
+                    Employee: @Model.EmployeeInfo.FirstName @Model.EmployeeInfo.LastName
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<hr />
+
+@using (Html.BeginForm("NotesEntrySave", "MeetingNotes", FormMethod.Post, htmlAttributes: new { @id = "entryForm" }))
+{
+    @Html.HiddenFor(model => model.NotesDTO.ID)
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col-sm-12">
+            <a data-toggle="modal" href="#helpModal" class="btn btn-dsquared btn-sm" style="float:right; margin-left: 10px;"><i class="fa fa-question-circle" aria-hidden="true"></i></a>
+        </div>
+        <br />
+        <br />
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading lead" style="margin-bottom: 0px">
+                    Meeting Notes
+                    <span style="float:right">
+                        <input name="action:CreateNewNotes" type="submit" value="Create New" class="btn btn-dsquared" />
+                    </span>
+                </div>
+                <div class="panel-body">
+                    <div class='col-xs-3' style="min-width:250px">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.NotesDTO.HuddleDate, htmlAttributes: new { @class = "control-label" })
+                            <div class='input-group date' id='Huddle_datetimepicker'>
+                                @Html.EditorFor(model => model.NotesDTO.HuddleDate, new { htmlAttributes = new { @class = "form-control" } })
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.NotesDTO.HuddleDate, string.Empty, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.NotesDTO.Notes, htmlAttributes: new { @class = "control-label" })
+                            @Html.CustomTextAreaFor(model => model.NotesDTO.Notes, htmlAttributes: new { @class = "form-control", @style = "max-width: inherit;", @rows = "10" }, disabled: false)
+                            @Html.ValidationMessageFor(model => model.NotesDTO.Notes, string.Empty, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    //submit and save
+    <div class="row text-center">
+        <div class="col-sm-12">
+            <input type="submit" value="Save Notes" name="action:NotesEntrySave" class="btn btn-dsquared" />
+        </div>
+    </div>
+}
+<!--must explicitly define the controller and action and pageHeaderKey. PageHeaderKey can be found in HelpDocument.cs-->
+@{Html.RenderAction("ModalDetails", "Home", new { @controller = "MeetingNotes", @action = "NotesEntry", @pageHeaderKey = "NotesEntry" });}

@@ -97,6 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\EmailCommands.cs" />
+    <Compile Include="Context\StoreDB.cs" />
     <Compile Include="Context\D_SquaredDb.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -105,11 +106,13 @@
     <Compile Include="Queries\DailyDepositQueries.cs" />
     <Compile Include="Queries\HelpDocumentQueries.cs" />
     <Compile Include="Queries\LaborDataQueries.cs" />
+    <Compile Include="Queries\MAHImpersonator.cs" />
     <Compile Include="Queries\NYSQueries.cs" />
     <Compile Include="Queries\RedbookEntryQueries.cs" />
     <Compile Include="Queries\SalesDataQueries.cs" />
     <Compile Include="Queries\SalesForecastQueries.cs" />
     <Compile Include="Queries\SpreadHourQueries.cs" />
+    <Compile Include="Queries\StoreManagerQueries.cs" />
     <Compile Include="Queries\TipPercentageQueries.cs" />
     <Compile Include="Queries\TipQueries.cs" />
   </ItemGroup>
