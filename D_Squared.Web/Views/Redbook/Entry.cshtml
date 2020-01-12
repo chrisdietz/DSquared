@@ -4,7 +4,9 @@
     <script src="~/App_Scripts/Redbook/EntryInit.js" type="text/javascript"></script>
     <script src="~/App_Scripts/Redbook/CreateInit.js" type="text/javascript"></script>
 }
-
+@{ 
+    string employeeName = $"{@Model.EmployeeInfo.FirstName} {@Model.EmployeeInfo.LastName}";
+}
 <div class="jumbotron" style="background-image: url('/Content/images/lightwood-bg.jpg'); padding-bottom:5px; padding-top:20px; margin-bottom:10px">
     <div class="row">
         <div class="col-md-4">
@@ -301,15 +303,63 @@
         {
             //only show submit/save buttons if IsReadOnly == false
             <div class="col-md-12">
-                <a data-toggle="modal" href="#myModal" class="btn btn-dsquared btn-lg">Save Changes</a>
-                <a data-toggle="modal" href="#submitModal" class="btn btn-dsquared btn-lg">Save and Email RM</a>
+                <a data-toggle="modal" href="#PCISubModuleSaveModal" class="btn btn-dsquared btn-lg">Save Changes</a>
+                <a data-toggle="modal" href="#PCISubModuleSubmitModal" class="btn btn-dsquared btn-lg">Save and Email RM</a>
             </div>
         }
     </div>
 
-
+    // PCI Sub-module Save modal
+    <div class="modal fade" id="PCISubModuleSaveModal" tabindex="-1" role="dialog" aria-labelledby="PCISubModuleSaveModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">@employeeName, Please validate that you have inspected all of your restaurants installed EMV readers for Restaurant: @Model.SelectedLocation</h4>
+                </div>
+                <div class="modal-body" style="font-size:18px">
+                    @for (int i = 0; i < Model.Questions.Count(); i++)
+                    {
+                        @Html.HiddenFor(model => model.Questions[i].Id)
+                        <div class="form-check">
+                            @Html.CustomCheckBoxFor(model => model.Questions[i].IsChecked, new { @class = "form-check-input" }, false)&nbsp;&nbsp;@string.Format(Model.Questions[i].Question, employeeName)
+                        </div>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dsquared" data-dismiss="modal">Close</button>
+                    <a data-toggle="modal" href="#saveModal" class="btn btn-dsquared" data-dismiss="modal">Continue to: Save</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    // PCI Sub-module Submit modal
+    <div class="modal fade" id="PCISubModuleSubmitModal" tabindex="-1" role="dialog" aria-labelledby="PCISubModuleSubmitModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">@employeeName, Please validate that you have inspected all of your restaurants installed EMV readers for Restaurant: @Model.SelectedLocation</h4>
+                </div>
+                <div class="modal-body" style="font-size:18px">
+                    @for (int i = 0; i < Model.Questions.Count(); i++)
+                    {
+                        @Html.HiddenFor(model => model.Questions[i].Id)
+                        @Html.HiddenFor(model => model.Questions[i].Question)
+                        <div class="form-check">
+                            @Html.CustomCheckBoxFor(model => model.Questions[i].IsChecked, new { @class = "form-check-input" }, false)&nbsp;&nbsp;@string.Format(Model.Questions[i].Question, employeeName)
+                        </div>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dsquared" data-dismiss="modal">Close</button>
+                    <a data-toggle="modal" href="#submitModal" class="btn btn-dsquared" data-dismiss="modal">Continue to:<br />Save and Email RM</a>
+                </div>
+            </div>
+        </div>
+    </div>
     //save modal
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="saveModal" tabindex="-1" role="dialog" aria-labelledby="saveModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -381,4 +431,4 @@
 </div>
 
 <!--must explicitly define the controller and action and pageHeaderKey. PageHeaderKey can be found in HelpDocument.cs-->
-@{Html.RenderAction("ModalDetails", "Home", new { @controller = "Redbook", @action = "Entry", @pageHeaderKey =  "RedbookEntry" });}
+@{Html.RenderAction("ModalDetails", "Home", new { @controller = "Redbook", @action = "Entry", @pageHeaderKey = "RedbookEntry" });}

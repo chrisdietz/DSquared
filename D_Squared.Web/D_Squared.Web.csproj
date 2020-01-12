@@ -193,6 +193,7 @@
     <Compile Include="Controllers\LaborReportsController.cs" />
     <Compile Include="Controllers\MeetingNotesController.cs" />
     <Compile Include="Controllers\NYSController.cs" />
+    <Compile Include="Controllers\QuestionBankController.cs" />
     <Compile Include="Controllers\RedbookController.cs" />
     <Compile Include="Controllers\SalesForecastController.cs" />
     <Compile Include="Controllers\SalesReportingController.cs" />
@@ -230,6 +231,9 @@
     <Compile Include="Models\NYSViewModel.cs" />
     <Compile Include="Models\OvertimeReportingViewModel.cs" />
     <Compile Include="Models\PaidInOutViewModel.cs" />
+    <Compile Include="Models\QuestionBankViewModel.cs" />
+    <Compile Include="Models\QuestionCategoryViewModel.cs" />
+    <Compile Include="Models\QuestionResponseViewModel.cs" />
     <Compile Include="Models\RedbookViewModels.cs" />
     <Compile Include="Models\SalesDataPartialViewModel.cs" />
     <Compile Include="Models\SalesForecastReportViewModel.cs" />
@@ -784,6 +788,13 @@
     <Content Include="Views\MeetingNotes\NotesEntry.cshtml" />
     <Content Include="Views\MeetingNotes\NotesView.cshtml" />
     <Content Include="Views\MeetingNotes\HuddleNotesView.cshtml" />
+    <Content Include="Views\QuestionBank\CreateCategory.cshtml" />
+    <Content Include="Views\QuestionBank\CategoryList.cshtml" />
+    <Content Include="Views\QuestionBank\EditCategory.cshtml" />
+    <Content Include="Views\QuestionBank\QuestionList.cshtml" />
+    <Content Include="Views\QuestionBank\CreateQuestion.cshtml" />
+    <Content Include="Views\QuestionBank\EditQuestion.cshtml" />
+    <Content Include="Views\Redbook\PCICompResponses.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

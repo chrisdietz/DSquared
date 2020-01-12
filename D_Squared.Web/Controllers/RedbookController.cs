@@ -25,6 +25,7 @@ namespace D_Squared.Web.Controllers
         private readonly SalesForecastQueries sfq;
         private readonly BudgetQueries bq;
         private readonly SalesDataQueries sd;
+        private readonly QuestionBankQueries qq;
 
         private readonly RedbookEntryInitializer init;
         private readonly SalesForecastInitializer s_init;
@@ -39,8 +40,9 @@ namespace D_Squared.Web.Controllers
             sfq = new SalesForecastQueries(db, f_db);
             bq = new BudgetQueries(db);
             sd = new SalesDataQueries(db);
+            qq = new QuestionBankQueries(db);
 
-            init = new RedbookEntryInitializer(rbeq, cq, sfq, sd, eq);
+            init = new RedbookEntryInitializer(rbeq, cq, sfq, sd, eq, qq);
             s_init = new SalesForecastInitializer(sfq, bq, eq, cq);
         }
 
@@ -105,6 +107,7 @@ namespace D_Squared.Web.Controllers
                     model.RedbookEntry.Sales = model.SalesDataDTO.Sales;
                     model.RedbookEntry.Discounts = model.SalesDataDTO.Discounts;
                     model.RedbookEntry.Checks = model.SalesDataDTO.Checks;
+                    model.RedbookEntry.PCIComplianceResponses = init.InitializePCICompliance(model, username);
 
                     rbeq.SaveRedbookEntry(model.RedbookEntry, model.EventDTOs, username);
                     Success("The Redbook for Restaurant: <u>" + model.RedbookEntry.LocationId + "</u> and Date: <u>" + model.RedbookEntry.BusinessDate.ToShortDateString() + "</u> has been saved successfully. You may close this window");
@@ -156,6 +159,7 @@ namespace D_Squared.Web.Controllers
                     model.RedbookEntry.Sales = model.SalesDataDTO.Sales;
                     model.RedbookEntry.Discounts = model.SalesDataDTO.Discounts;
                     model.RedbookEntry.Checks = model.SalesDataDTO.Checks;
+                    model.RedbookEntry.PCIComplianceResponses = init.InitializePCICompliance(model, username);
 
                     SalesForecastExportDTO dto = s_init.GetSalesForecastExportDTO(username, model.SelectedDateString);
                     rbeq.SubmitRedbookEntry(model.RedbookEntry, model.EventDTOs, dto, username);
@@ -245,6 +249,12 @@ namespace D_Squared.Web.Controllers
             SalesDataPartialViewModel partial = init.InitializeSalesDataPartialViewModel(redbookEntryId);
 
             return PartialView("~/Views/Redbook/_SalesDataDetail.cshtml", partial);
+        }
+
+        public ActionResult PCICompResponses(PCIComplianceSearchDTO searchDTO)
+        {
+            QuestionResponseViewModel model = init.InitializeQuestionResponseViewModel(User, searchDTO);
+            return View(model);
         }
 
         protected override void Dispose(bool disposing)

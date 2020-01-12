@@ -100,5 +100,7 @@ namespace D_Squared.Domain.Entities
         public virtual ICollection<RedbookSalesEvent> SalesEvents { get; set; }
 
         public virtual ICollection<RedbookSalesData> RedbookSalesDatas { get; set; }
+
+        public virtual ICollection<PCICompliance> PCIComplianceResponses { get; set; }
     }
 }

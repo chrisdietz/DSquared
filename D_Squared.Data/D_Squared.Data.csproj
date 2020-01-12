@@ -108,6 +108,7 @@
     <Compile Include="Queries\LaborDataQueries.cs" />
     <Compile Include="Queries\MAHImpersonator.cs" />
     <Compile Include="Queries\NYSQueries.cs" />
+    <Compile Include="Queries\QuestionBankQueries.cs" />
     <Compile Include="Queries\RedbookEntryQueries.cs" />
     <Compile Include="Queries\SalesDataQueries.cs" />
     <Compile Include="Queries\SalesForecastQueries.cs" />

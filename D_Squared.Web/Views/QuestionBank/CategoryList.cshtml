@@ -1,0 +1,40 @@
+﻿@model IEnumerable<D_Squared.Domain.Entities.QuestionCategory>
+
+@{
+    ViewBag.Title = "Index";
+}
+<br />
+<h2>Question Categories</h2>
+
+<table class="table table-striped table-bordered table-condensed table-hover table-responsive">
+    <caption>
+        @Html.ActionLink("Create New", "CreateCategory", null, new { @class = "btn btn-dsquared btn-sm", @style = "float:right;" })
+    </caption>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Category)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AllowQuestionsModification)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DisplayAllowQuestionsModification)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "EditCategory", new { id = item.Id }) | @Html.ActionLink("Questions", "QuestionList", new { categoryId = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>
+
+

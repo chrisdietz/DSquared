@@ -77,6 +77,12 @@ namespace D_Squared.Data.Context
 
         public DbSet<MeetingNote> MeetingNotes { get; set; }
 
+        public DbSet<QuestionCategory> QuestionCategories { get; set; }
+
+        public DbSet<QuestionBank> QuestionBank { get; set; }
+
+        public DbSet<PCICompliance> PCICompliance { get; set; }
+
         public static D_SquaredDbContext Create()
         {
             return new D_SquaredDbContext();
@@ -101,6 +107,9 @@ namespace D_Squared.Data.Context
             modelBuilder.Entity<ForcedOutEmployee>().ToTable("ForcedOutEmployees");
             modelBuilder.Entity<LSMenuMix>().ToTable("LSMenuMix");
             modelBuilder.Entity<MeetingNote>().ToTable("MeetingNotes");
+            modelBuilder.Entity<QuestionCategory>().ToTable("QuestionCategory");
+            modelBuilder.Entity<QuestionBank>().ToTable("QuestionBank");
+            modelBuilder.Entity<PCICompliance>().ToTable("PCICompliance");
 
             base.OnModelCreating(modelBuilder);
         }

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using D_Squared.Data.Commands;
 using Newtonsoft.Json;
+using System.Data.Entity;
 
 namespace D_Squared.Data.Queries
 {
@@ -118,6 +119,8 @@ namespace D_Squared.Data.Queries
             // Save Sales data to RedbookSalesData
             InsertRedbookSalesData(model, currentUser);
 
+            UpdatePCIComplianceResponses(model);
+
             db.SaveChanges();
 
             CompareAndUpdateRedbookSalesEvents(currentUser, exisitingRecord.Id, salesEvents);
@@ -153,6 +156,25 @@ namespace D_Squared.Data.Queries
             redbookSalesData.CreatedDate = DateTime.Now;
 
             db.RedbookSalesDatas.Add(redbookSalesData);
+        }
+
+        private void InsertPCIComplianceResponses(RedbookEntry model)
+        {
+            model.PCIComplianceResponses.ToList().ForEach(r => r.RedbookEntryId = model.Id);
+            model.PCIComplianceResponses.ToList().ForEach(r => db.PCICompliance.Add(r));
+        }
+
+        private void UpdatePCIComplianceResponses(RedbookEntry model)
+        {
+            if(model.PCIComplianceResponses.ToList().Exists(p => p.Id <= 0))
+            {
+                InsertPCIComplianceResponses(model);
+            }
+            else
+            {
+                model.PCIComplianceResponses.ToList().ForEach(r => db.Entry(r).State = EntityState.Modified);
+            }
+            
         }
 
         public void SaveRedbookEntry(RedbookEntry redbookEntry, List<EventDTO> salesEvents, string currentUser, bool insertSalesData = true)
@@ -243,6 +265,29 @@ namespace D_Squared.Data.Queries
             List<SalesDataDTO> salesDataDTOs = new List<SalesDataDTO>();
             dailySales.ForEach(ds => salesDataDTOs.Add(new SalesDataDTO(ds)));
             return salesDataDTOs;
+        }
+
+        public List<PCICompliance> GetPCIComplianceResponses(int redbookEntryId)
+        {
+            List<PCICompliance> responses = db.PCICompliance.Where(p => p.RedbookEntryId == redbookEntryId).ToList();
+            return responses;
+        }
+
+        public List<PCIComplianceDTO> GetPCIComplianceDTOs(DateTime businessDate, string locationId)
+        {
+            var PCIComplianceDTOs = (from re in db.RedbookEntries
+                                     where re.BusinessDate == businessDate && re.LocationId == locationId
+                                     from p in db.PCICompliance
+                                     where p.RedbookEntryId == re.Id
+                                     from q in db.QuestionBank
+                                     where q.Id == p.QuestionId
+                                     select (new PCIComplianceDTO
+                                     {
+                                         Question = q.Question,
+                                         Response = p.Response,
+                                         MODUserName = p.MODsAMAcccountName
+                                     })).ToList();
+            return PCIComplianceDTOs;
         }
     }
 }

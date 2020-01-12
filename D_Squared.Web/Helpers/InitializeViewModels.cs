@@ -104,14 +104,16 @@ namespace D_Squared.Web.Helpers
         private readonly CodeQueries cq;
         private readonly SalesForecastQueries sfq;
         private readonly SalesDataQueries sd;
+        private readonly QuestionBankQueries qq;
         //private readonly EmployeeQueries eq; 
 
-        public RedbookEntryInitializer(RedbookEntryQueries rbeq, CodeQueries cq, SalesForecastQueries sfq, SalesDataQueries sd, EmployeeQueries eq) : base(eq)
+        public RedbookEntryInitializer(RedbookEntryQueries rbeq, CodeQueries cq, SalesForecastQueries sfq, SalesDataQueries sd, EmployeeQueries eq, QuestionBankQueries qq) : base(eq)
         {
             this.rbeq = rbeq;
             this.cq = cq;
             this.sfq = sfq;
             this.sd = sd;
+            this.qq = qq;
             //this.eq = eq;
         }
 
@@ -192,9 +194,18 @@ namespace D_Squared.Web.Helpers
                 ManagerSelectListPM = eq.GetManagersForLocation(storeNumber).ToSelectList("sAMAccountName", "FullName", null, true, "--Select--", string.Empty),
                 RedbookEntry = redbookEntry,
                 TicketURL = ConfigurationManager.AppSettings["RedbookTicketURL"],
-                CompetitiveEventListViewModel = new CompetitiveEventListViewModel(rbeq.GetCompetitiveEvents(redbookEntry.Id, redbookEntry.LocationId))
+                CompetitiveEventListViewModel = new CompetitiveEventListViewModel(rbeq.GetCompetitiveEvents(redbookEntry.Id, redbookEntry.LocationId)),
+                Questions = qq.GetQuestions(ConfigurationManager.AppSettings["PCICompliance"])
             };
 
+            var responses = rbeq.GetPCIComplianceResponses(redbookEntry.Id);
+            if(responses != null && responses.Count() > 0)
+            {
+                foreach (var response in responses)
+                {
+                    model.Questions.Where(q => q.Id == response.QuestionId).FirstOrDefault().IsChecked = response.Response;
+                }
+            }
             return model;
         }
 
@@ -202,6 +213,43 @@ namespace D_Squared.Web.Helpers
         {
             DateTime convertedSelectedDate = TryParseDateTimeString(selectedDateString);
             return sd.GetSelectedBusinessDaySales(convertedSelectedDate, storeNumber);
+        }
+
+        public List<PCICompliance> InitializePCICompliance(RedbookEntryBaseViewModel model, string userName)
+        {
+            List<PCICompliance> responses = null;
+            if (model.RedbookEntry.Id > 0) {
+                responses = rbeq.GetPCIComplianceResponses(model.RedbookEntry.Id);
+                if (responses == null || responses.Count == 0)
+                {
+                    foreach (var question in model.Questions)
+                    {
+                        responses.Add(new PCICompliance
+                        {
+                            QuestionId = question.Id,
+                            RedbookEntryId = model.RedbookEntry.Id,
+                            Response = question.IsChecked,
+                            MODsAMAcccountName = userName,
+                            CreatedBy = userName,
+                            CreatedDate = DateTime.Now,
+                            UpdatedBy = userName,
+                            UpdatedDate = DateTime.Now
+                        });
+                    }
+                }
+                else
+                {
+                    foreach (var response in responses)
+                    {
+                        var question = model.Questions.Where(q => q.Id == response.QuestionId).FirstOrDefault();
+                        response.Response = question.IsChecked;
+                        response.MODsAMAcccountName = userName;
+                        response.UpdatedBy = userName;
+                        response.UpdatedDate = DateTime.Now;
+                    }
+                }
+            }
+            return responses;
         }
 
         public RedbookEntryBaseViewModel InitializeBaseViewModel(RedbookEntryBaseViewModel model, string userName)
@@ -326,6 +374,29 @@ namespace D_Squared.Web.Helpers
             salesDataPartialViewModel.DateOfEntry = redbookEntry.BusinessDate;
             salesDataPartialViewModel.StoreNumber = redbookEntry.LocationId;
             return salesDataPartialViewModel;
+        }
+
+        public QuestionResponseViewModel InitializeQuestionResponseViewModel(CustomClaimsPrincipal user, PCIComplianceSearchDTO searchDTO)
+        {
+            QuestionResponseViewModel viewModel = new QuestionResponseViewModel();
+            EmployeeDTO employee = eq.GetEmployeeInfo(user.TruncatedName);
+            viewModel.EmployeeInfo = employee;
+
+            List<SelectListItem> locSelectList = GetLocationSelectList(employee, user);
+            viewModel.LocationSelectList = locSelectList;
+            viewModel.SearchDTO = searchDTO;
+
+            if (!string.IsNullOrEmpty(searchDTO.SelectedLocation))
+            {
+                List<PCIComplianceDTO> pCIComplianceDTOs = rbeq.GetPCIComplianceDTOs(searchDTO.SelectedDate, searchDTO.SelectedLocation.Substring(0,3));
+                if (pCIComplianceDTOs != null)
+                {
+                    var mod = eq.GetEmployeeInfo(pCIComplianceDTOs.FirstOrDefault().MODUserName);
+                    pCIComplianceDTOs.ForEach(p => p.MODUserName = $"{mod.FirstName} {mod.LastName}");
+                    viewModel.pCIComplianceResponses = pCIComplianceDTOs;
+                }
+            }
+            return viewModel;
         }
     }
 

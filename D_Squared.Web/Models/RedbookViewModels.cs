@@ -16,7 +16,7 @@ namespace D_Squared.Web.Models
         {
             SalesForecastDTO = new SalesForecastDTO();
             RedbookEntry = new RedbookEntry();
-            SalesDataDTO = new SalesDataDTO();
+            SalesDataDTO = new SalesDataDTO();            
         }
 
         public RedbookEntryBaseViewModel(RedbookEntry redbookEntry, SalesForecastDTO salesForecastDTO, SalesDataDTO salesDataDTO)
@@ -65,6 +65,10 @@ namespace D_Squared.Web.Models
         public CompetitiveEventListViewModel CompetitiveEventListViewModel { get; set; }
 
         public CompetitiveEventCreateEditViewModel CompetitiveEventCreateEditViewModel { get; set; }
+
+        public List<QuestionBank> Questions { get; set; }
+
+        public List<PCICompliance> PCIComplianceResponses { get; set; }
 
         public string EndingPeriod { get; set; }
 
