@@ -203,7 +203,8 @@ namespace D_Squared.Web.Helpers
             {
                 foreach (var response in responses)
                 {
-                    model.Questions.Where(q => q.Id == response.QuestionId).FirstOrDefault().IsChecked = response.Response;
+                    var qstn = model.Questions.Where(q => q.Id == response.QuestionId).FirstOrDefault();
+                    if(qstn != null) qstn.IsChecked = response.Response;
                 }
             }
             return model;
