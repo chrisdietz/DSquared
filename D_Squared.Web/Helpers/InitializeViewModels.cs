@@ -390,7 +390,7 @@ namespace D_Squared.Web.Helpers
             if (!string.IsNullOrEmpty(searchDTO.SelectedLocation))
             {
                 List<PCIComplianceDTO> pCIComplianceDTOs = rbeq.GetPCIComplianceDTOs(searchDTO.SelectedDate, searchDTO.SelectedLocation.Substring(0,3));
-                if (pCIComplianceDTOs != null)
+                if (pCIComplianceDTOs != null && pCIComplianceDTOs.Count > 0)
                 {
                     var mod = eq.GetEmployeeInfo(pCIComplianceDTOs.FirstOrDefault().MODUserName);
                     pCIComplianceDTOs.ForEach(p => p.MODUserName = $"{mod.FirstName} {mod.LastName}");
