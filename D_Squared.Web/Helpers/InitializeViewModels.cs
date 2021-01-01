@@ -435,7 +435,7 @@ namespace D_Squared.Web.Helpers
 
         protected decimal CalculateRecommendedLabor(BudgetDTO dto, decimal forecastAmountTotal, List<string> validLocations, string employeeStore)
         {
-            if (validLocations.Contains(employeeStore) && dto.Budget.SalesBudgetAmount != 0 && dto.NumberOfWeeks != 0)
+            if (dto != null && validLocations.Contains(employeeStore) && dto.Budget.SalesBudgetAmount != 0 && dto.NumberOfWeeks != 0)
             {
                 return ((decimal)dto.Budget.LaborBudgetAmount / dto.NumberOfWeeks) +
                                                 ((forecastAmountTotal - ((decimal)dto.Budget.SalesBudgetAmount / dto.NumberOfWeeks))
